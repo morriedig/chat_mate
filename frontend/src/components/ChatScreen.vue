@@ -130,7 +130,9 @@ async function getAIResponse(isGreeting = false) {
     } else {
       const response = await fetch(API_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'text/plain' },
+        headers: {
+          'Content-Type': 'text/plain;charset=utf-8',
+        },
         body: JSON.stringify({
           messages: messages.value,
           character: props.character.id,
@@ -138,6 +140,7 @@ async function getAIResponse(isGreeting = false) {
           language: props.language,
           isGreeting,
         }),
+        redirect: 'follow',
       })
       const data = await response.json()
 
