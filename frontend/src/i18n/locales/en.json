@@ -1,0 +1,40 @@
+{
+  "app": {
+    "title": "Chat Mate",
+    "subtitle": "Practice English with AI friends"
+  },
+  "setup": {
+    "choosePartner": "Choose your chat partner",
+    "yourLevel": "Your English level",
+    "startChatting": "Start Chatting"
+  },
+  "chat": {
+    "typeMessage": "Type a message...",
+    "send": "Send",
+    "tryUsing": "Try using:",
+    "rateLimitError": "I need a quick breather! Too many messages at once. Wait a few seconds and try again.",
+    "genericError": "Hmm, something went wrong. Let's try that again?"
+  },
+  "levels": {
+    "beginner": {
+      "name": "Beginner",
+      "description": "Simple words"
+    },
+    "intermediate": {
+      "name": "Intermediate",
+      "description": "Everyday talk"
+    },
+    "advanced": {
+      "name": "Advanced",
+      "description": "Natural speech"
+    }
+  },
+  "characters": {
+    "emma": {
+      "tagline": "Loves coffee, cats & creativity"
+    },
+    "marcus": {
+      "tagline": "Tech nerd exploring Tokyo"
+    }
+  }
+}

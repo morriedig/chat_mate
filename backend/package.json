@@ -1,0 +1,12 @@
+{
+  "name": "chat-mate-backend",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^4.18.2"
+  }
+}

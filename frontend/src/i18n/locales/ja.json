@@ -1,0 +1,40 @@
+{
+  "app": {
+    "title": "Chat Mate",
+    "subtitle": "AIの友達と日本語を練習しよう"
+  },
+  "setup": {
+    "choosePartner": "チャット相手を選ぶ",
+    "yourLevel": "あなたの日本語レベル",
+    "startChatting": "チャットを始める"
+  },
+  "chat": {
+    "typeMessage": "メッセージを入力...",
+    "send": "送信",
+    "tryUsing": "使ってみよう:",
+    "rateLimitError": "ちょっと休憩が必要！メッセージが多すぎました。少し待ってからもう一度試してください。",
+    "genericError": "うーん、何か問題が起きました。もう一度試してみましょう？"
+  },
+  "levels": {
+    "beginner": {
+      "name": "初級",
+      "description": "簡単な言葉"
+    },
+    "intermediate": {
+      "name": "中級",
+      "description": "日常会話"
+    },
+    "advanced": {
+      "name": "上級",
+      "description": "自然な会話"
+    }
+  },
+  "characters": {
+    "emma": {
+      "tagline": "コーヒー、猫、クリエイティブが大好き"
+    },
+    "marcus": {
+      "tagline": "東京を探検するテック好き"
+    }
+  }
+}
