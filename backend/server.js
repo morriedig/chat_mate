@@ -5,11 +5,24 @@ import 'dotenv/config';
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(express.text({ type: 'text/plain' }));
+
+// Middleware to parse text/plain as JSON
+app.use((req, res, next) => {
+  if (req.headers['content-type']?.includes('text/plain') && typeof req.body === 'string') {
+    try {
+      req.body = JSON.parse(req.body);
+    } catch (e) {
+      // Not JSON, leave as string
+    }
+  }
+  next();
+});
 
 const API_KEYS = (process.env.GEMINI_API_KEYS || '').split(',').filter(Boolean);
 
 let currentKeyIndex = 0;
-const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
+const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
 
 async function callGeminiWithFallback(body) {
   console.log(`Using API key ${currentKeyIndex + 1} of ${API_KEYS.length}`);
@@ -51,7 +64,7 @@ async function callGeminiWithFallback(body) {
 
 app.post('/chat', async (req, res) => {
   try {
-    const { messages, character, level, language = 'en', isGreeting } = req.body;
+    const { messages = [], character = 'emma', level = 'intermediate', language = 'en', isGreeting } = req.body;
 
     const systemPrompt = buildSystemPrompt(character, level, language);
     const geminiMessages = buildGeminiMessages(systemPrompt, messages, isGreeting);
