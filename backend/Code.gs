@@ -11,7 +11,7 @@
 // Set your Gemini API keys in Script Properties:
 // File > Project Settings > Script Properties > Add: GEMINI_API_KEYS = key1,key2
 const GEMINI_API_KEYS = (PropertiesService.getScriptProperties().getProperty('GEMINI_API_KEYS') || '').split(',').filter(k => k.trim());
-const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
+const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
 let currentKeyIndex = 0;
 
 // === MAIN ENDPOINT ===
