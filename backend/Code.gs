@@ -8,21 +8,24 @@
  */
 
 // === CONFIGURATION ===
-// Set your Gemini API key in Script Properties:
-// File > Project Settings > Script Properties > Add: GEMINI_API_KEY = your_key
-const GEMINI_API_KEY = PropertiesService.getScriptProperties().getProperty('GEMINI_API_KEY');
+// Set your Gemini API keys in Script Properties:
+// File > Project Settings > Script Properties > Add: GEMINI_API_KEYS = key1,key2
+const GEMINI_API_KEYS = (PropertiesService.getScriptProperties().getProperty('GEMINI_API_KEYS') || '').split(',').filter(k => k.trim());
 const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
-
-// === CORS HANDLER ===
-function doOptions(e) {
-  return ContentService.createTextOutput('')
-    .setMimeType(ContentService.MimeType.TEXT)
-    .setHeader('Access-Control-Allow-Origin', '*')
-    .setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS')
-    .setHeader('Access-Control-Allow-Headers', 'Content-Type');
-}
+let currentKeyIndex = 0;
 
 // === MAIN ENDPOINT ===
+// Note: Google Apps Script handles CORS automatically for web apps deployed with "Anyone" access
+
+// Handle GET requests (for testing the endpoint)
+function doGet(e) {
+  return createResponse({
+    success: true,
+    message: 'Chat Mate API is running. Use POST to send messages.',
+    keys: GEMINI_API_KEYS.length
+  });
+}
+
 function doPost(e) {
   try {
     const data = JSON.parse(e.postData.contents);
@@ -75,14 +78,30 @@ function callGemini(messages) {
     muteHttpExceptions: true,
   };
 
-  const response = UrlFetchApp.fetch(`${GEMINI_URL}?key=${GEMINI_API_KEY}`, options);
-  const result = JSON.parse(response.getContentText());
+  // Try each API key until one works
+  for (let i = 0; i < GEMINI_API_KEYS.length; i++) {
+    const keyIndex = (currentKeyIndex + i) % GEMINI_API_KEYS.length;
+    const apiKey = GEMINI_API_KEYS[keyIndex].trim();
 
-  if (result.error) {
-    throw new Error(result.error.message);
+    console.log(`Using API key ${keyIndex + 1} of ${GEMINI_API_KEYS.length}`);
+
+    const response = UrlFetchApp.fetch(`${GEMINI_URL}?key=${apiKey}`, options);
+    const result = JSON.parse(response.getContentText());
+
+    if (result.error) {
+      // Check if rate limited
+      if (result.error.code === 429 || result.error.message.includes('quota')) {
+        console.log(`Key ${keyIndex + 1} rate limited, trying next...`);
+        currentKeyIndex = (keyIndex + 1) % GEMINI_API_KEYS.length;
+        continue;
+      }
+      throw new Error(result.error.message);
+    }
+
+    return result.candidates[0].content.parts[0].text;
   }
 
-  return result.candidates[0].content.parts[0].text;
+  throw new Error('All API keys are rate limited. Please try again later.');
 }
 
 function buildGeminiMessages(systemPrompt, messages, isGreeting) {
