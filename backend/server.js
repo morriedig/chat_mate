@@ -21,9 +21,99 @@ app.use((req, res, next) => {
 
 const API_KEYS = (process.env.GEMINI_API_KEYS || '').split(',').filter(Boolean);
 const MOCK_API = process.env.MOCK_API === 'true';
+const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || '').split(',').filter(Boolean);
+const SKIP_AUTH = process.env.SKIP_AUTH === 'true'; // For local development
 
 let currentKeyIndex = 0;
 const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
+
+// === TOKEN MANAGEMENT ===
+const TOKEN_EXPIRY_MS = 3600 * 1000; // 1 hour
+const TOKEN_RATE_LIMIT_MS = 60000; // 1 token per minute per origin
+const RATE_LIMIT_MS = 1000; // 1 request per second
+
+const tokenStore = new Map(); // token -> { createdAt: timestamp }
+const tokenRateLimits = new Map(); // origin -> lastTokenRequest timestamp
+const clientRateLimits = new Map(); // clientId -> lastRequest timestamp
+
+function generateToken() {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let token = '';
+  for (let i = 0; i < 32; i++) {
+    token += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return token;
+}
+
+function isAllowedOrigin(origin) {
+  // In development, allow all origins if ALLOWED_ORIGINS is not set
+  if (!ALLOWED_ORIGINS.length) return true;
+  if (!origin) return false;
+  return ALLOWED_ORIGINS.some(allowed => origin.includes(allowed.trim()));
+}
+
+function checkTokenRateLimit(origin) {
+  const key = origin || 'unknown';
+  const lastRequest = tokenRateLimits.get(key);
+  const now = Date.now();
+
+  if (lastRequest && (now - lastRequest) < TOKEN_RATE_LIMIT_MS) {
+    return false;
+  }
+  tokenRateLimits.set(key, now);
+  return true;
+}
+
+function createAuthToken(origin) {
+  if (!isAllowedOrigin(origin)) {
+    return null;
+  }
+
+  const token = generateToken();
+  tokenStore.set(token, { createdAt: Date.now() });
+
+  // Clean up expired tokens periodically
+  cleanupExpiredTokens();
+
+  return token;
+}
+
+function validateToken(token) {
+  if (!token) return false;
+
+  const tokenData = tokenStore.get(token);
+  if (!tokenData) return false;
+
+  // Check if token has expired
+  if (Date.now() - tokenData.createdAt > TOKEN_EXPIRY_MS) {
+    tokenStore.delete(token);
+    return false;
+  }
+
+  return true;
+}
+
+function cleanupExpiredTokens() {
+  const now = Date.now();
+  for (const [token, data] of tokenStore.entries()) {
+    if (now - data.createdAt > TOKEN_EXPIRY_MS) {
+      tokenStore.delete(token);
+    }
+  }
+}
+
+function checkRateLimit(clientId) {
+  if (!clientId) return true; // No rate limit without clientId
+
+  const lastRequest = clientRateLimits.get(clientId);
+  const now = Date.now();
+
+  if (lastRequest && (now - lastRequest) < RATE_LIMIT_MS) {
+    return false;
+  }
+  clientRateLimits.set(clientId, now);
+  return true;
+}
 
 // Mock responses for testing
 function getMockResponse(character, level, isGreeting, article, language = 'en') {
@@ -170,9 +260,47 @@ async function callGeminiWithFallback(body) {
   }
 }
 
+// === TOKEN ENDPOINT ===
+app.get('/token', (req, res) => {
+  const origin = req.query.origin || req.get('origin') || '';
+
+  // Check if origin is allowed
+  if (!isAllowedOrigin(origin)) {
+    return res.status(403).json({ success: false, error: 'Unauthorized origin' });
+  }
+
+  // Rate limit token requests
+  if (!checkTokenRateLimit(origin)) {
+    return res.status(429).json({ success: false, error: 'Token rate limit exceeded. Try again later.' });
+  }
+
+  // Create and return token
+  const token = createAuthToken(origin);
+  if (token) {
+    res.json({ success: true, token, expiresIn: TOKEN_EXPIRY_MS / 1000 });
+  } else {
+    res.status(500).json({ success: false, error: 'Failed to create token' });
+  }
+});
+
 app.post('/chat', async (req, res) => {
   try {
-    const { messages = [], character = 'emma', level = 'intermediate', language = 'en', isGreeting, article } = req.body;
+    const { messages = [], character = 'emma', level = 'intermediate', language = 'en', isGreeting, article, clientId, origin, authToken } = req.body;
+
+    // Check origin
+    if (!isAllowedOrigin(origin || '')) {
+      return res.status(403).json({ success: false, error: 'Unauthorized origin', isRateLimit: false });
+    }
+
+    // Validate auth token (skip in development mode)
+    if (!SKIP_AUTH && !validateToken(authToken)) {
+      return res.status(401).json({ success: false, error: 'Invalid or expired token. Please refresh the page.', isTokenError: true });
+    }
+
+    // Check rate limit
+    if (!checkRateLimit(clientId)) {
+      return res.status(429).json({ success: false, error: 'Too many requests. Please wait 1 second.', isRateLimit: true });
+    }
 
     // Use mock API if enabled
     if (MOCK_API) {

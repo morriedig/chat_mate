@@ -2,6 +2,82 @@ import { ref } from 'vue'
 
 const API_URL = import.meta.env.VITE_API_URL || ''
 
+// Auth token storage (in-memory, refreshed on page load)
+let authToken = null
+let tokenPromise = null
+
+// Generate a unique client ID for rate limiting
+function getClientId() {
+  let clientId = localStorage.getItem('chatmate_clientId')
+  if (!clientId) {
+    clientId = 'client_' + Math.random().toString(36).substring(2) + Date.now().toString(36)
+    localStorage.setItem('chatmate_clientId', clientId)
+  }
+  return clientId
+}
+
+// Build token URL based on backend type
+function getTokenUrl() {
+  const origin = encodeURIComponent(window.location.origin)
+
+  // Check if API_URL is a Google Apps Script (contains 'script.google.com')
+  if (API_URL.includes('script.google.com')) {
+    return `${API_URL}?action=token&origin=${origin}`
+  }
+
+  // For local/Node.js server, construct token endpoint
+  // API_URL might be 'http://localhost:3000/chat' or 'http://localhost:3000'
+  const baseUrl = API_URL.replace(/\/chat$/, '')
+  return `${baseUrl}/token?origin=${origin}`
+}
+
+// Request auth token from server
+async function requestAuthToken() {
+  if (!API_URL) return null
+
+  // Reuse existing promise if already requesting
+  if (tokenPromise) return tokenPromise
+
+  tokenPromise = (async () => {
+    try {
+      const tokenUrl = getTokenUrl()
+
+      const response = await fetch(tokenUrl, {
+        method: 'GET',
+        redirect: 'follow',
+      })
+
+      const data = await response.json()
+
+      if (data.success && data.token) {
+        authToken = data.token
+        return authToken
+      } else {
+        console.error('Failed to get auth token:', data.error)
+        return null
+      }
+    } catch (err) {
+      console.error('Error requesting auth token:', err)
+      return null
+    } finally {
+      tokenPromise = null
+    }
+  })()
+
+  return tokenPromise
+}
+
+// Get current token or request new one
+async function getAuthToken() {
+  if (authToken) return authToken
+  return await requestAuthToken()
+}
+
+// Clear token (for when token expires)
+function clearAuthToken() {
+  authToken = null
+}
+
 export function useChatApi() {
   const isLoading = ref(false)
   const error = ref(null)
@@ -25,12 +101,18 @@ export function useChatApi() {
         return { reply, hints: [] }
       }
 
+      // Get auth token (request if needed)
+      const token = await getAuthToken()
+
       const requestBody = {
         messages,
         character: characterId,
         level: levelId,
         language,
         isGreeting,
+        clientId: getClientId(),
+        origin: window.location.origin,
+        authToken: token,
       }
 
       if (article) {
@@ -54,7 +136,30 @@ export function useChatApi() {
       const data = await response.json()
 
       if (!data.success) {
-        throw { isRateLimit: data.isRateLimit, message: data.error }
+        // If token error, clear token and retry once
+        if (data.isTokenError) {
+          clearAuthToken()
+          const newToken = await requestAuthToken()
+          if (newToken) {
+            requestBody.authToken = newToken
+            const retryResponse = await fetch(API_URL, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'text/plain;charset=utf-8',
+              },
+              body: JSON.stringify(requestBody),
+              redirect: 'follow',
+            })
+            const retryData = await retryResponse.json()
+            if (retryData.success) {
+              return {
+                reply: retryData.reply,
+                hints: retryData.hints || []
+              }
+            }
+          }
+        }
+        throw { isRateLimit: data.isRateLimit, isTokenError: data.isTokenError, message: data.error }
       }
 
       return {
@@ -69,10 +174,18 @@ export function useChatApi() {
     }
   }
 
+  // Initialize token on first use
+  async function init() {
+    if (API_URL && !authToken) {
+      await requestAuthToken()
+    }
+  }
+
   return {
     isLoading,
     error,
-    sendMessage
+    sendMessage,
+    init
   }
 }
 

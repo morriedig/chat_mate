@@ -5,11 +5,124 @@
 
 // === CONFIGURATION ===
 const GEMINI_API_KEYS = (PropertiesService.getScriptProperties().getProperty('GEMINI_API_KEYS') || '').split(',').filter(k => k.trim());
+const ALLOWED_ORIGINS = (PropertiesService.getScriptProperties().getProperty('ALLOWED_ORIGINS') || '').split(',').filter(o => o.trim());
 const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
+const TOKEN_EXPIRY_SECONDS = 3600; // 1 hour
 let currentKeyIndex = 0;
+
+// === TOKEN MANAGEMENT ===
+function generateToken() {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let token = '';
+  for (let i = 0; i < 32; i++) {
+    token += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return token;
+}
+
+function createAuthToken(origin) {
+  if (!isAllowedOrigin(origin)) {
+    return null;
+  }
+
+  const token = generateToken();
+  const cache = CacheService.getScriptCache();
+  // Store token with expiry (value = creation timestamp)
+  cache.put('token_' + token, Date.now().toString(), TOKEN_EXPIRY_SECONDS);
+  return token;
+}
+
+function validateToken(token) {
+  if (!token) return false;
+  const cache = CacheService.getScriptCache();
+  const stored = cache.get('token_' + token);
+  return stored !== null;
+}
+
+// === ORIGIN CHECK ===
+function isAllowedOrigin(origin) {
+  if (!ALLOWED_ORIGINS.length) return true; // No restriction if not configured
+  if (!origin) return false;
+  return ALLOWED_ORIGINS.some(allowed => origin.includes(allowed.trim()));
+}
+
+// === RATE LIMITING ===
+const RATE_LIMIT_MS = 1000; // 1 request per second
+const GLOBAL_RATE_LIMIT_MS = 5000; // 5 seconds for unknown origins
+
+function checkRateLimit(clientId, isFromAllowedOrigin) {
+  const cache = CacheService.getScriptCache();
+
+  if (isFromAllowedOrigin && clientId) {
+    // Allowed origin + clientId: per-client rate limit
+    const key = 'ratelimit_' + clientId;
+    const lastRequest = cache.get(key);
+    const now = Date.now();
+
+    if (lastRequest && (now - parseInt(lastRequest)) < RATE_LIMIT_MS) {
+      return false;
+    }
+    cache.put(key, now.toString(), 60);
+    return true;
+  } else {
+    // Unknown origin: strict global rate limit
+    const key = 'ratelimit_global';
+    const lastRequest = cache.get(key);
+    const now = Date.now();
+
+    if (lastRequest && (now - parseInt(lastRequest)) < GLOBAL_RATE_LIMIT_MS) {
+      return false;
+    }
+    cache.put(key, now.toString(), 60);
+    return true;
+  }
+}
+
+// === TOKEN RATE LIMITING ===
+const TOKEN_RATE_LIMIT_MS = 60000; // 1 token per minute per origin
+
+function checkTokenRateLimit(origin) {
+  const cache = CacheService.getScriptCache();
+  const key = 'token_ratelimit_' + (origin || 'unknown');
+  const lastRequest = cache.get(key);
+  const now = Date.now();
+
+  if (lastRequest && (now - parseInt(lastRequest)) < TOKEN_RATE_LIMIT_MS) {
+    return false;
+  }
+  cache.put(key, now.toString(), 120);
+  return true;
+}
 
 // === MAIN ENDPOINT ===
 function doGet(e) {
+  // Get origin from request parameters (since doGet doesn't have headers access)
+  const params = e ? e.parameter : {};
+  const origin = params.origin || '';
+  const action = params.action || '';
+
+  // Token request endpoint
+  if (action === 'token') {
+    // Check if origin is allowed
+    if (!isAllowedOrigin(origin)) {
+      return createResponse({ success: false, error: 'Unauthorized origin' });
+    }
+
+    // Rate limit token requests
+    if (!checkTokenRateLimit(origin)) {
+      return createResponse({ success: false, error: 'Token rate limit exceeded. Try again later.' });
+    }
+
+    // Create and return token
+    const token = createAuthToken(origin);
+    if (token) {
+      return createResponse({ success: true, token: token, expiresIn: TOKEN_EXPIRY_SECONDS });
+    } else {
+      return createResponse({ success: false, error: 'Failed to create token' });
+    }
+  }
+
+  // Default health check
   return createResponse({
     success: true,
     message: 'Chat Mate API is running. Use POST to send messages.',
@@ -20,7 +133,22 @@ function doGet(e) {
 function doPost(e) {
   try {
     const data = JSON.parse(e.postData.contents);
-    const { messages = [], character = 'emma', level = 'intermediate', language = 'en', isGreeting, article } = data;
+    const { messages = [], character = 'emma', level = 'intermediate', language = 'en', isGreeting, article, clientId, origin, authToken } = data;
+
+    // Block requests from unknown origins
+    if (!isAllowedOrigin(origin || '')) {
+      return createResponse({ success: false, error: 'Unauthorized origin', isRateLimit: false });
+    }
+
+    // Validate auth token (required for allowed origins)
+    if (!validateToken(authToken)) {
+      return createResponse({ success: false, error: 'Invalid or expired token. Please refresh the page.', isTokenError: true });
+    }
+
+    // Check rate limit (1 req/sec per client)
+    if (!checkRateLimit(clientId, true)) {
+      return createResponse({ success: false, error: 'Too many requests. Please wait 1 second.', isRateLimit: true });
+    }
 
     const systemPrompt = buildSystemPrompt(character, level, language, article);
     const geminiMessages = buildGeminiMessages(systemPrompt, messages, isGreeting, article);
