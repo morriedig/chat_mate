@@ -79,6 +79,7 @@ const messages = ref([])
 const inputText = ref('')
 const isLoading = ref(false)
 const messagesContainer = ref(null)
+const inputRef = ref(null)
 const currentHints = ref([])
 const errorMessage = ref('')
 
@@ -104,6 +105,14 @@ async function scrollToBottom() {
   if (messagesContainer.value) {
     messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight
   }
+}
+
+function focusInput() {
+  nextTick(() => {
+    if (inputRef.value) {
+      inputRef.value.focus()
+    }
+  })
 }
 
 async function sendMessage() {
@@ -142,7 +151,6 @@ async function getAIResponse(isGreeting = false) {
         isGreeting,
       }
 
-      // Add article data for article mode
       if (isArticleMode.value) {
         requestBody.article = {
           title: props.article.title,
@@ -183,6 +191,7 @@ async function getAIResponse(isGreeting = false) {
 
   isLoading.value = false
   scrollToBottom()
+  focusInput()
 }
 
 function getDemoResponse(isGreeting) {
@@ -253,458 +262,183 @@ function toggleArticle() {
 </script>
 
 <template>
-  <div class="chat-screen">
-    <header class="chat-header">
-      <button class="back-btn" @click="emit('back')">←</button>
-      <div class="header-info">
-        <span class="avatar">{{ character.avatar }}</span>
-        <span class="name">{{ character.name }}</span>
-        <span class="level-badge">{{ t(`levels.${level.id}.name`) }}</span>
-        <span v-if="isArticleMode" class="mode-badge">{{ t('chat.articleMode') }}</span>
-      </div>
-      <button class="renew-btn" @click="renewChat" :disabled="isLoading">↻</button>
-    </header>
+  <div class="flex h-screen w-full overflow-hidden">
+    <!-- Main Content Area -->
+    <div class="flex flex-1 flex-col h-full relative bg-background-light dark:bg-background-dark">
+      <!-- TopNavBar -->
+      <header class="flex items-center justify-between border-b border-[#e7eff3] dark:border-slate-800 px-4 sm:px-6 py-4 bg-surface-light dark:bg-surface-dark z-10 shadow-sm">
+        <div class="flex items-center gap-3 text-text-main dark:text-white">
+          <button @click="emit('back')" class="flex items-center justify-center">
+            <span class="material-symbols-outlined cursor-pointer">arrow_back</span>
+          </button>
+          <div class="flex items-center justify-center rounded-full size-10 shrink-0 shadow-sm border-2 border-white dark:border-slate-700 bg-slate-100 dark:bg-slate-800 text-2xl">
+            {{ character.avatar }}
+          </div>
+          <div class="flex flex-col">
+            <h2 class="text-base font-bold leading-tight tracking-[-0.015em]">{{ character.name }}</h2>
+            <span class="text-xs text-text-muted dark:text-slate-400">{{ t(`levels.${level.id}.name`) }}</span>
+          </div>
+          <span class="px-2 py-0.5 rounded-full bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 text-xs font-semibold">Online</span>
+          <span v-if="isArticleMode" class="px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 text-xs font-semibold">{{ t('chat.articleMode') }}</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <!-- Article toggle button -->
+          <button
+            v-if="isArticleMode"
+            @click="toggleArticle"
+            class="hidden sm:flex h-9 px-3 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-text-main dark:text-slate-200 text-sm font-medium transition-colors"
+          >
+            <span class="mr-1 material-symbols-outlined text-[18px]">article</span>
+            {{ showArticle ? 'Hide' : 'Show' }}
+          </button>
+          <button
+            @click="renewChat"
+            :disabled="isLoading"
+            class="flex h-9 px-3 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-text-main dark:text-slate-200 text-sm font-medium transition-colors disabled:opacity-50"
+          >
+            <span class="material-symbols-outlined text-[18px]">refresh</span>
+            <span class="hidden sm:inline ml-1">New Chat</span>
+          </button>
+        </div>
+      </header>
 
-    <!-- Article panel for article mode -->
-    <div v-if="isArticleMode" class="article-panel" :class="{ collapsed: !showArticle }">
-      <div class="article-toggle" @click="toggleArticle">
-        <span class="toggle-icon">{{ showArticle ? '▼' : '▶' }}</span>
-        <span class="article-title-small">{{ article.title }}</span>
-      </div>
-      <div v-if="showArticle" class="article-content">
-        <p>{{ article.content }}</p>
-        <div class="article-vocab">
-          <span class="vocab-label">{{ t('articles.keyWords') }}:</span>
-          <div class="vocab-list">
-            <div v-for="item in article.vocabulary" :key="item.word" class="vocab-item">
-              <span class="vocab-word">{{ item.word }}</span>
-              <span class="vocab-def">{{ item.definition }}</span>
+      <!-- Content Area (Article + Chat side by side in article mode) -->
+      <div class="flex flex-1 overflow-hidden" :class="isArticleMode && showArticle ? 'flex-col lg:flex-row' : 'flex-col'">
+        <!-- Article Panel (side panel in article mode) -->
+        <div v-if="isArticleMode && showArticle" class="w-full lg:w-[500px] shrink-0 max-h-64 lg:max-h-none border-b lg:border-b-0 lg:border-r border-[#e7eff3] dark:border-slate-800 bg-slate-50 dark:bg-slate-900 p-4 overflow-y-auto">
+          <h3 class="font-bold text-lg mb-2 text-text-main dark:text-white">{{ article.title }}</h3>
+          <p class="text-sm text-text-main dark:text-slate-300 whitespace-pre-line mb-3">{{ article.content }}</p>
+          <div class="mb-3">
+            <span class="text-xs font-bold text-primary uppercase tracking-wider">{{ t('articles.keyWords') }}</span>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <div v-for="item in article.vocabulary" :key="item.word" class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-3 py-2">
+              <span class="font-semibold text-primary text-sm">{{ item.word }}</span>
+              <span class="text-xs text-text-muted dark:text-slate-400 block">{{ item.definition }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chat Area -->
+        <div class="flex flex-col flex-1 overflow-hidden">
+          <div ref="messagesContainer" class="flex-1 overflow-y-auto overflow-x-hidden p-4 sm:p-6 space-y-6 scroll-smooth">
+        <!-- Date Separator -->
+        <div class="flex justify-center">
+          <span class="text-xs font-medium text-slate-400 bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-full">Today</span>
+        </div>
+
+        <!-- Messages -->
+        <template v-for="(msg, i) in messages" :key="i">
+          <!-- Bot Message -->
+          <div v-if="msg.role === 'assistant'" class="flex items-end gap-2 sm:gap-3 max-w-[calc(100%-2.5rem)] sm:max-w-3xl">
+            <div class="flex items-center justify-center rounded-full size-8 sm:size-10 shrink-0 shadow-sm bg-slate-100 dark:bg-slate-800 text-xl sm:text-2xl">
+              {{ character.avatar }}
+            </div>
+            <div class="flex flex-col gap-1 items-start min-w-0 overflow-hidden">
+              <span class="text-text-muted dark:text-slate-400 text-[13px] font-medium ml-1">{{ character.name }}</span>
+              <div class="p-3 sm:p-4 rounded-2xl rounded-bl-none bg-surface-light dark:bg-surface-dark text-text-main dark:text-slate-200 shadow-sm border border-slate-100 dark:border-slate-700">
+                <p class="text-sm sm:text-base leading-relaxed whitespace-pre-wrap break-words overflow-wrap-anywhere">{{ msg.content }}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- User Message -->
+          <div v-else class="flex items-end gap-2 sm:gap-3 justify-end">
+            <div class="flex flex-col gap-1 items-end min-w-0 max-w-[80%] sm:max-w-xl">
+              <span class="text-text-muted dark:text-slate-400 text-[13px] font-medium mr-1">You</span>
+              <div class="p-3 sm:p-4 rounded-2xl rounded-br-none bg-primary text-[#0d171b] shadow-md">
+                <p class="text-sm sm:text-base leading-relaxed font-medium whitespace-pre-wrap break-words">{{ msg.content }}</p>
+              </div>
+            </div>
+            <div class="flex items-center justify-center rounded-full size-8 sm:size-10 shrink-0 shadow-sm bg-primary/20 text-xl sm:text-2xl">
+              👤
+            </div>
+          </div>
+        </template>
+
+        <!-- Typing Indicator -->
+        <div v-if="isLoading" class="flex items-end gap-2 sm:gap-3 max-w-full sm:max-w-3xl">
+          <div class="flex items-center justify-center rounded-full size-8 sm:size-10 shrink-0 shadow-sm bg-slate-100 dark:bg-slate-800 text-xl sm:text-2xl">
+            {{ character.avatar }}
+          </div>
+          <div class="flex flex-col gap-1 items-start">
+            <span class="text-text-muted dark:text-slate-400 text-[13px] font-medium ml-1">{{ character.name }}</span>
+            <div class="p-3 sm:p-4 rounded-2xl rounded-bl-none bg-surface-light dark:bg-surface-dark shadow-sm border border-slate-100 dark:border-slate-700">
+              <div class="flex gap-1">
+                <span class="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style="animation-delay: 0ms"></span>
+                <span class="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style="animation-delay: 150ms"></span>
+                <span class="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style="animation-delay: 300ms"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Error Banner -->
+        <div v-if="errorMessage" class="flex items-center justify-between p-4 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-xl">
+          <span>{{ errorMessage }}</span>
+          <button @click="errorMessage = ''" class="material-symbols-outlined text-lg">close</button>
+        </div>
+
+        <!-- Vocabulary Suggestions (hidden in article mode) -->
+        <div v-if="currentHints.length > 0 && !isArticleMode" class="sm:max-w-3xl" style="max-width: calc(100vw - 2rem);">
+          <div class="flex items-center gap-2 mb-3 px-1">
+            <span class="material-symbols-outlined text-primary text-sm">auto_awesome</span>
+            <span class="text-xs font-bold text-primary uppercase tracking-wider">{{ t('chat.tryUsing') }}</span>
+          </div>
+          <div class="flex gap-3 pb-2 overflow-x-auto sm:grid sm:grid-cols-3 sm:overflow-visible">
+            <div
+              v-for="hint in currentHints"
+              :key="hint.word"
+              @click="useHint(hint.word)"
+              class="group flex flex-col p-3 sm:p-4 bg-white dark:bg-[#1e2930] rounded-xl border border-slate-200 dark:border-slate-700 hover:border-primary/50 dark:hover:border-primary/50 transition-all cursor-pointer shadow-sm hover:shadow-md shrink-0 w-48 sm:w-auto sm:shrink"
+            >
+              <div class="flex justify-between items-start mb-2">
+                <span class="font-bold text-primary text-lg">{{ hint.word }}</span>
+                <span class="material-symbols-outlined text-slate-300 group-hover:text-primary text-[20px]">add_circle</span>
+              </div>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mb-2 font-medium">{{ hint.description }}</p>
+              <div class="mt-auto pt-2 border-t border-slate-100 dark:border-slate-700">
+                <p class="text-xs italic text-text-main dark:text-slate-300">"{{ hint.example }}"</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+          <!-- Spacer for scrolling -->
+          <div class="h-4"></div>
+          </div>
+
+          <!-- Input Area -->
+          <div class="p-4 sm:p-6 bg-surface-light dark:bg-surface-dark border-t border-[#e7eff3] dark:border-slate-800 z-10">
+            <div class="flex items-center gap-3 max-w-4xl mx-auto">
+              <!-- Text Input Field -->
+              <div class="flex-1 relative">
+                <textarea
+                  ref="inputRef"
+                  v-model="inputText"
+                  @keydown="handleKeydown"
+                  :disabled="isLoading"
+                  class="w-full resize-none rounded-2xl border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-[#1e2930] text-text-main dark:text-white px-4 py-3 pr-12 text-base focus:border-primary focus:ring-1 focus:ring-primary dark:focus:ring-primary placeholder-slate-400 disabled:opacity-50"
+                  :placeholder="t('chat.typeMessage')"
+                  rows="1"
+                  style="min-height: 50px; max-height: 150px;"
+                ></textarea>
+              </div>
+              <!-- Send Button -->
+              <button
+                @click="sendMessage"
+                :disabled="!inputText.trim() || isLoading"
+                class="shrink-0 flex items-center justify-center size-12 rounded-full bg-primary text-[#0d171b] shadow-lg hover:bg-primary/90 hover:scale-105 active:scale-95 transition-all disabled:opacity-50 disabled:hover:scale-100"
+              >
+                <span class="material-symbols-outlined icon-filled text-[24px]">send</span>
+              </button>
+            </div>
+            <div class="text-center mt-2">
+              <p class="text-[11px] text-slate-400 dark:text-slate-500">Press Enter to send, Shift+Enter for new line</p>
             </div>
           </div>
         </div>
       </div>
     </div>
-
-    <div class="messages" ref="messagesContainer">
-      <div
-        v-for="(msg, i) in messages"
-        :key="i"
-        class="message"
-        :class="msg.role"
-      >
-        <div class="bubble">{{ msg.content }}</div>
-      </div>
-      <div v-if="isLoading" class="message assistant">
-        <div class="bubble typing">
-          <span></span><span></span><span></span>
-        </div>
-      </div>
-      <div v-if="errorMessage" class="error-banner">
-        {{ errorMessage }}
-        <button @click="errorMessage = ''" class="error-close">x</button>
-      </div>
-    </div>
-
-    <!-- Word hints -->
-    <div v-if="currentHints.length > 0" class="hints-area">
-      <span class="hints-label">{{ t('chat.tryUsing') }}</span>
-      <div class="hints-list">
-        <button
-          v-for="hint in currentHints"
-          :key="hint.word"
-          class="hint-chip"
-          @click="useHint(hint.word)"
-        >
-          <span class="hint-word">{{ hint.word }}</span>
-          <span class="hint-desc">{{ hint.description }}</span>
-          <span class="hint-example">"{{ hint.example }}"</span>
-        </button>
-      </div>
-    </div>
-
-    <div class="input-area">
-      <textarea
-        v-model="inputText"
-        :placeholder="t('chat.typeMessage')"
-        @keydown="handleKeydown"
-        :disabled="isLoading"
-      ></textarea>
-      <button @click="sendMessage" :disabled="!inputText.trim() || isLoading">
-        {{ t('chat.send') }}
-      </button>
-    </div>
   </div>
 </template>
-
-<style scoped>
-.chat-screen {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.chat-header {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 1rem;
-  border-bottom: 1px solid #e0e0e0;
-  background: white;
-}
-
-.back-btn {
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  padding: 0.25rem 0.5rem;
-}
-
-.header-info {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  flex: 1;
-  flex-wrap: wrap;
-}
-
-.renew-btn {
-  background: none;
-  border: 1px solid #ddd;
-  font-size: 1.2rem;
-  cursor: pointer;
-  padding: 0.4rem 0.6rem;
-  border-radius: 8px;
-  color: #666;
-  transition: all 0.2s;
-}
-
-.renew-btn:hover:not(:disabled) {
-  background: #f0f0f0;
-  color: #333;
-}
-
-.renew-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.avatar {
-  font-size: 1.5rem;
-}
-
-.name {
-  font-weight: 600;
-}
-
-.level-badge {
-  font-size: 0.75rem;
-  padding: 0.2rem 0.5rem;
-  background: #e8f4e8;
-  border-radius: 1rem;
-  color: #2d5a2d;
-}
-
-.mode-badge {
-  font-size: 0.75rem;
-  padding: 0.2rem 0.5rem;
-  background: #e8f0f4;
-  border-radius: 1rem;
-  color: #2d4a5a;
-}
-
-/* Article panel */
-.article-panel {
-  background: #f8f9fa;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.article-toggle {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1rem;
-  cursor: pointer;
-  font-weight: 500;
-}
-
-.article-toggle:hover {
-  background: #eee;
-}
-
-.toggle-icon {
-  font-size: 0.75rem;
-  color: #666;
-}
-
-.article-title-small {
-  font-size: 0.9rem;
-  color: #333;
-}
-
-.article-content {
-  padding: 0 1rem 1rem 1rem;
-  font-size: 0.9rem;
-  line-height: 1.6;
-  color: #444;
-  max-height: 200px;
-  overflow-y: auto;
-}
-
-.article-content p {
-  margin: 0 0 0.75rem 0;
-  white-space: pre-line;
-}
-
-.article-vocab {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
-  padding-top: 0.5rem;
-  border-top: 1px solid #e0e0e0;
-}
-
-.vocab-label {
-  font-size: 0.75rem;
-  color: #888;
-}
-
-.vocab-tag {
-  font-size: 0.75rem;
-  padding: 0.2rem 0.5rem;
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  color: #555;
-}
-
-.vocab-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  width: 100%;
-}
-
-.vocab-item {
-  display: flex;
-  flex-direction: column;
-  padding: 0.5rem;
-  background: #fff;
-  border: 1px solid #e0e0e0;
-  border-radius: 6px;
-}
-
-.vocab-word {
-  font-weight: 600;
-  color: #333;
-  font-size: 0.85rem;
-}
-
-.vocab-def {
-  font-size: 0.75rem;
-  color: #666;
-  margin-top: 0.2rem;
-  line-height: 1.3;
-}
-
-.messages {
-  flex: 1;
-  overflow-y: auto;
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.message {
-  display: flex;
-}
-
-.message.user {
-  justify-content: flex-end;
-}
-
-.message.assistant {
-  justify-content: flex-start;
-}
-
-.bubble {
-  max-width: 80%;
-  padding: 0.75rem 1rem;
-  border-radius: 1rem;
-  line-height: 1.4;
-}
-
-.user .bubble {
-  background: #4a90d9;
-  color: white;
-  border-bottom-right-radius: 0.25rem;
-}
-
-.assistant .bubble {
-  background: #f0f0f0;
-  color: #333;
-  border-bottom-left-radius: 0.25rem;
-}
-
-.typing {
-  display: flex;
-  gap: 0.3rem;
-  padding: 1rem;
-}
-
-.typing span {
-  width: 8px;
-  height: 8px;
-  background: #999;
-  border-radius: 50%;
-  animation: bounce 1.4s infinite;
-}
-
-.typing span:nth-child(2) {
-  animation-delay: 0.2s;
-}
-
-.typing span:nth-child(3) {
-  animation-delay: 0.4s;
-}
-
-@keyframes bounce {
-  0%, 60%, 100% {
-    transform: translateY(0);
-  }
-  30% {
-    transform: translateY(-4px);
-  }
-}
-
-.error-banner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.75rem 1rem;
-  margin: 0.5rem;
-  background: #fee2e2;
-  color: #991b1b;
-  border-radius: 0.5rem;
-  font-size: 0.9rem;
-}
-
-.error-close {
-  background: none;
-  border: none;
-  color: #991b1b;
-  font-size: 1rem;
-  cursor: pointer;
-  padding: 0 0.25rem;
-}
-
-.error-close:hover {
-  color: #7f1d1d;
-}
-
-.input-area {
-  display: flex;
-  gap: 0.5rem;
-  padding: 1rem;
-  border-top: 1px solid #e0e0e0;
-  background: white;
-}
-
-.input-area textarea {
-  flex: 1;
-  padding: 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 1rem;
-  resize: none;
-  font-family: inherit;
-  font-size: 1rem;
-  min-height: 44px;
-  max-height: 120px;
-}
-
-.input-area textarea:focus {
-  outline: none;
-  border-color: #4a90d9;
-}
-
-.input-area button {
-  padding: 0.75rem 1.5rem;
-  background: #4a90d9;
-  color: white;
-  border: none;
-  border-radius: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.input-area button:disabled {
-  background: #ccc;
-  cursor: not-allowed;
-}
-
-.input-area button:hover:not(:disabled) {
-  background: #3a7bc8;
-}
-
-/* Hints area */
-.hints-area {
-  padding: 0.75rem 1rem;
-  background: #f8f9fa;
-  border-top: 1px solid #e0e0e0;
-}
-
-.hints-label {
-  font-size: 0.75rem;
-  color: #666;
-  display: block;
-  margin-bottom: 0.5rem;
-}
-
-.hints-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.hint-chip {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 0.5rem 0.75rem;
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 0.75rem;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.hint-chip:hover {
-  border-color: #4a90d9;
-  background: #f0f7ff;
-}
-
-.hint-word {
-  font-weight: 600;
-  font-size: 0.9rem;
-  color: #333;
-}
-
-.hint-desc {
-  font-size: 0.7rem;
-  color: #888;
-  margin-top: 0.15rem;
-}
-
-.hint-example {
-  font-size: 0.7rem;
-  color: #666;
-  font-style: italic;
-  margin-top: 0.25rem;
-  line-height: 1.3;
-}
-</style>

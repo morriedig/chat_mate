@@ -8,7 +8,7 @@ const emit = defineEmits(['start'])
 
 const selectedCharacter = ref(null)
 const selectedLevel = ref(null)
-const selectedMode = ref('free') // 'free' or 'article'
+const selectedMode = ref('free')
 
 function toggleLanguage() {
   locale.value = locale.value === 'en' ? 'ja' : 'en'
@@ -28,230 +28,126 @@ function startChat() {
 </script>
 
 <template>
-  <div class="setup-screen">
-    <button class="lang-toggle" @click="toggleLanguage">
-      {{ locale === 'en' ? '日本語' : 'English' }}
-    </button>
-
-    <h1>{{ t('app.title') }}</h1>
-    <p class="subtitle">{{ t('app.subtitle') }}</p>
-
-    <section class="selection-section">
-      <h2>{{ t('setup.choosePartner') }}</h2>
-      <div class="cards">
-        <div
-          v-for="char in characters"
-          :key="char.id"
-          class="card character-card"
-          :class="{ selected: selectedCharacter?.id === char.id }"
-          @click="selectedCharacter = char"
+  <div class="min-h-screen overflow-y-auto bg-background-light dark:bg-background-dark">
+    <div class="max-w-2xl mx-auto px-4 py-8 pb-12">
+      <!-- Header with language toggle -->
+      <div class="flex justify-between items-center mb-8">
+        <div></div>
+        <button
+          @click="toggleLanguage"
+          class="flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark hover:bg-slate-50 dark:hover:bg-slate-800 text-text-main dark:text-slate-200 text-sm font-medium transition-colors"
         >
-          <div class="avatar">{{ char.avatar }}</div>
-          <div class="info">
-            <h3>{{ char.name }}</h3>
-            <p class="meta">{{ char.age }} · {{ char.location }}</p>
-            <p class="tagline">{{ t(`characters.${char.id}.tagline`) }}</p>
+          <span class="material-symbols-outlined text-[18px]">translate</span>
+          {{ locale === 'en' ? '日本語' : 'English' }}
+        </button>
+      </div>
+
+      <!-- Title -->
+      <div class="text-center mb-10">
+        <h1 class="text-3xl font-bold text-text-main dark:text-white mb-2">{{ t('app.title') }}</h1>
+        <p class="text-text-muted dark:text-slate-400">{{ t('app.subtitle') }}</p>
+      </div>
+
+      <!-- Choose Partner Section -->
+      <section class="mb-8">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="material-symbols-outlined text-primary">person</span>
+          <h2 class="text-lg font-semibold text-text-main dark:text-white">{{ t('setup.choosePartner') }}</h2>
+        </div>
+        <div class="flex gap-4 overflow-x-auto pb-2">
+          <div
+            v-for="char in characters"
+            :key="char.id"
+            @click="selectedCharacter = char"
+            class="flex items-center gap-4 p-4 rounded-xl border-2 transition-all cursor-pointer bg-surface-light dark:bg-surface-dark shrink-0 w-72"
+            :class="selectedCharacter?.id === char.id
+              ? 'border-primary bg-primary/5 dark:bg-primary/10'
+              : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'"
+          >
+            <div class="flex items-center justify-center rounded-full size-16 shrink-0 shadow-md bg-slate-100 dark:bg-slate-800 text-4xl">
+              {{ char.avatar }}
+            </div>
+            <div class="flex-1">
+              <h3 class="font-bold text-text-main dark:text-white text-lg">{{ char.name }}</h3>
+              <p class="text-sm text-text-muted dark:text-slate-400">{{ char.age }} · {{ char.location }}</p>
+              <p class="text-sm text-text-main dark:text-slate-300 mt-1">{{ t(`characters.${char.id}.tagline`) }}</p>
+            </div>
+            <div v-if="selectedCharacter?.id === char.id" class="shrink-0">
+              <span class="material-symbols-outlined icon-filled text-primary text-2xl">check_circle</span>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="selection-section">
-      <h2>{{ t('setup.yourLevel') }}</h2>
-      <div class="cards level-cards">
-        <div
-          v-for="level in levels"
-          :key="level.id"
-          class="card level-card"
-          :class="{ selected: selectedLevel?.id === level.id }"
-          @click="selectedLevel = level"
-        >
-          <div class="icon">{{ level.icon }}</div>
-          <h3>{{ t(`levels.${level.id}.name`) }}</h3>
-          <p>{{ t(`levels.${level.id}.description`) }}</p>
+      <!-- Choose Level Section -->
+      <section class="mb-8">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="material-symbols-outlined text-primary">signal_cellular_alt</span>
+          <h2 class="text-lg font-semibold text-text-main dark:text-white">{{ t('setup.yourLevel') }}</h2>
         </div>
-      </div>
-    </section>
+        <div class="grid grid-cols-3 gap-3">
+          <div
+            v-for="level in levels"
+            :key="level.id"
+            @click="selectedLevel = level"
+            class="flex flex-col items-center p-4 rounded-xl border-2 transition-all cursor-pointer bg-surface-light dark:bg-surface-dark"
+            :class="selectedLevel?.id === level.id
+              ? 'border-primary bg-primary/5 dark:bg-primary/10'
+              : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'"
+          >
+            <span class="text-2xl mb-2">{{ level.icon }}</span>
+            <h3 class="font-semibold text-text-main dark:text-white text-sm">{{ t(`levels.${level.id}.name`) }}</h3>
+            <p class="text-xs text-text-muted dark:text-slate-400 text-center mt-1">{{ t(`levels.${level.id}.description`) }}</p>
+          </div>
+        </div>
+      </section>
 
-    <section class="selection-section">
-      <h2>{{ t('setup.chooseMode') }}</h2>
-      <div class="cards mode-cards">
-        <div
-          class="card mode-card"
-          :class="{ selected: selectedMode === 'free' }"
-          @click="selectedMode = 'free'"
-        >
-          <div class="icon">💬</div>
-          <h3>{{ t('setup.modes.free.name') }}</h3>
-          <p>{{ t('setup.modes.free.description') }}</p>
+      <!-- Choose Mode Section -->
+      <section class="mb-10">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="material-symbols-outlined text-primary">category</span>
+          <h2 class="text-lg font-semibold text-text-main dark:text-white">{{ t('setup.chooseMode') }}</h2>
         </div>
-        <div
-          class="card mode-card"
-          :class="{ selected: selectedMode === 'article' }"
-          @click="selectedMode = 'article'"
-        >
-          <div class="icon">📖</div>
-          <h3>{{ t('setup.modes.article.name') }}</h3>
-          <p>{{ t('setup.modes.article.description') }}</p>
+        <div class="grid grid-cols-2 gap-4">
+          <div
+            @click="selectedMode = 'free'"
+            class="flex flex-col items-center p-5 rounded-xl border-2 transition-all cursor-pointer bg-surface-light dark:bg-surface-dark"
+            :class="selectedMode === 'free'
+              ? 'border-primary bg-primary/5 dark:bg-primary/10'
+              : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'"
+          >
+            <span class="material-symbols-outlined text-4xl mb-2" :class="selectedMode === 'free' ? 'text-primary' : 'text-slate-400'">chat_bubble</span>
+            <h3 class="font-semibold text-text-main dark:text-white">{{ t('setup.modes.free.name') }}</h3>
+            <p class="text-xs text-text-muted dark:text-slate-400 text-center mt-1">{{ t('setup.modes.free.description') }}</p>
+          </div>
+          <div
+            @click="selectedMode = 'article'"
+            class="flex flex-col items-center p-5 rounded-xl border-2 transition-all cursor-pointer bg-surface-light dark:bg-surface-dark"
+            :class="selectedMode === 'article'
+              ? 'border-primary bg-primary/5 dark:bg-primary/10'
+              : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'"
+          >
+            <span class="material-symbols-outlined text-4xl mb-2" :class="selectedMode === 'article' ? 'text-primary' : 'text-slate-400'">article</span>
+            <h3 class="font-semibold text-text-main dark:text-white">{{ t('setup.modes.article.name') }}</h3>
+            <p class="text-xs text-text-muted dark:text-slate-400 text-center mt-1">{{ t('setup.modes.article.description') }}</p>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <button
-      class="start-btn"
-      :disabled="!selectedCharacter || !selectedLevel"
-      @click="startChat"
-    >
-      {{ t('setup.startChatting') }}
-    </button>
+      <!-- Start Button -->
+      <button
+        @click="startChat"
+        :disabled="!selectedCharacter || !selectedLevel"
+        class="w-full py-4 rounded-xl font-bold text-lg transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none"
+        :class="selectedCharacter && selectedLevel
+          ? 'bg-primary text-[#0d171b] hover:bg-primary/90 hover:scale-[1.02] active:scale-[0.98]'
+          : 'bg-slate-300 dark:bg-slate-700 text-slate-500 dark:text-slate-400'"
+      >
+        <span class="flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined">arrow_forward</span>
+          {{ t('setup.startChatting') }}
+        </span>
+      </button>
+    </div>
   </div>
 </template>
-
-<style scoped>
-.setup-screen {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 2rem;
-  position: relative;
-}
-
-.lang-toggle {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  padding: 0.5rem 1rem;
-  background: #f0f0f0;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 0.9rem;
-}
-
-.lang-toggle:hover {
-  background: #e0e0e0;
-}
-
-h1 {
-  text-align: center;
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
-}
-
-.subtitle {
-  text-align: center;
-  color: #666;
-  margin-bottom: 2rem;
-}
-
-.selection-section {
-  margin-bottom: 2rem;
-}
-
-.selection-section h2 {
-  font-size: 1rem;
-  color: #333;
-  margin-bottom: 1rem;
-}
-
-.cards {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.level-cards,
-.mode-cards {
-  flex-direction: row;
-}
-
-.card {
-  padding: 1rem;
-  border: 2px solid #e0e0e0;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.card:hover {
-  border-color: #999;
-}
-
-.card.selected {
-  border-color: #4a90d9;
-  background: #f0f7ff;
-}
-
-.character-card {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-}
-
-.character-card .avatar {
-  font-size: 2.5rem;
-}
-
-.character-card .info h3 {
-  margin: 0 0 0.25rem 0;
-  font-size: 1.1rem;
-}
-
-.character-card .meta {
-  font-size: 0.85rem;
-  color: #666;
-  margin: 0 0 0.25rem 0;
-}
-
-.character-card .tagline {
-  font-size: 0.9rem;
-  color: #444;
-  margin: 0;
-}
-
-.level-card,
-.mode-card {
-  flex: 1;
-  text-align: center;
-}
-
-.level-card .icon,
-.mode-card .icon {
-  font-size: 1.5rem;
-  margin-bottom: 0.5rem;
-}
-
-.level-card h3,
-.mode-card h3 {
-  margin: 0 0 0.25rem 0;
-  font-size: 0.95rem;
-}
-
-.level-card p,
-.mode-card p {
-  margin: 0;
-  font-size: 0.75rem;
-  color: #666;
-}
-
-.start-btn {
-  width: 100%;
-  padding: 1rem;
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: white;
-  background: #4a90d9;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.start-btn:hover:not(:disabled) {
-  background: #3a7bc8;
-}
-
-.start-btn:disabled {
-  background: #ccc;
-  cursor: not-allowed;
-}
-</style>

@@ -59,6 +59,15 @@
     },
     "marcus": {
       "tagline": "Tech nerd exploring Tokyo"
+    },
+    "sophia": {
+      "tagline": "Pastry chef with a Paris flair"
+    },
+    "james": {
+      "tagline": "NYC journalist, jazz & coffee lover"
+    },
+    "yuki": {
+      "tagline": "Osaka student, anime & food enthusiast"
     }
   }
 }

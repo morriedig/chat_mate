@@ -19,6 +19,36 @@ export const characters = [
     tagline: 'Laid-back Brit in Tokyo, foodie and gamer',
     traits: ['relaxed', 'witty', 'thoughtful'],
   },
+  {
+    id: 'sophia',
+    name: 'Sophia',
+    age: 25,
+    location: 'Paris',
+    occupation: 'Pastry Chef',
+    avatar: '👩‍🍳',
+    tagline: 'Passionate about baking and French culture',
+    traits: ['enthusiastic', 'warm', 'expressive'],
+  },
+  {
+    id: 'james',
+    name: 'James',
+    age: 35,
+    location: 'New York',
+    occupation: 'Journalist',
+    avatar: '👨‍💼',
+    tagline: 'Curious storyteller, loves jazz and coffee',
+    traits: ['inquisitive', 'articulate', 'friendly'],
+  },
+  {
+    id: 'yuki',
+    name: 'Yuki',
+    age: 23,
+    location: 'Osaka',
+    occupation: 'University Student',
+    avatar: '👩‍🎓',
+    tagline: 'Studying abroad, anime fan and foodie',
+    traits: ['cheerful', 'curious', 'casual'],
+  },
 ]
 
 export const levels = [
