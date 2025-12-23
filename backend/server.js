@@ -25,7 +25,6 @@ let currentKeyIndex = 0;
 const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
 
 async function callGeminiWithFallback(body) {
-  console.log(`Using API key ${currentKeyIndex + 1} of ${API_KEYS.length}`);
 
   for (let attempt = 0; attempt < API_KEYS.length; attempt++) {
     const keyIndex = (currentKeyIndex + attempt) % API_KEYS.length;
@@ -43,7 +42,6 @@ async function callGeminiWithFallback(body) {
       if (data.error) {
         const isRateLimit = data.error.message?.includes('quota') || data.error.message?.includes('rate');
         if (isRateLimit && attempt < API_KEYS.length - 1) {
-          console.log(`Key ${keyIndex + 1} rate limited, trying key ${((keyIndex + 1) % API_KEYS.length) + 1}...`);
           currentKeyIndex = (keyIndex + 1) % API_KEYS.length;
           continue;
         }
@@ -54,7 +52,6 @@ async function callGeminiWithFallback(body) {
       return data;
     } catch (error) {
       if (attempt < API_KEYS.length - 1) {
-        console.log(`Key ${keyIndex + 1} failed, trying next key...`);
         continue;
       }
       throw error;
@@ -107,7 +104,6 @@ app.post('/chat', async (req, res) => {
     res.json({ success: true, reply: parsed.message, hints: parsed.hints || [] });
 
   } catch (error) {
-    console.error('Error:', error);
     const isRateLimit = error.message?.includes('quota') || error.message?.includes('rate');
     res.status(isRateLimit ? 429 : 500).json({
       success: false,

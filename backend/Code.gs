@@ -44,7 +44,6 @@ function doPost(e) {
     return createResponse({ success: true, reply });
 
   } catch (error) {
-    console.error('Error:', error);
     return createResponse({ success: false, error: error.message });
   }
 }
@@ -79,29 +78,39 @@ function callGemini(messages) {
   };
 
   // Try each API key until one works
+  let lastError = null;
   for (let i = 0; i < GEMINI_API_KEYS.length; i++) {
     const keyIndex = (currentKeyIndex + i) % GEMINI_API_KEYS.length;
     const apiKey = GEMINI_API_KEYS[keyIndex].trim();
 
-    console.log(`Using API key ${keyIndex + 1} of ${GEMINI_API_KEYS.length}`);
+    try {
+      const response = UrlFetchApp.fetch(`${GEMINI_URL}?key=${apiKey}`, options);
+      const result = JSON.parse(response.getContentText());
 
-    const response = UrlFetchApp.fetch(`${GEMINI_URL}?key=${apiKey}`, options);
-    const result = JSON.parse(response.getContentText());
+      if (result.error) {
+        lastError = result.error.message;
+        // Check if rate limited
+        if (result.error.code === 429 || result.error.message.includes('quota') || result.error.message.includes('rate')) {
+          currentKeyIndex = (keyIndex + 1) % GEMINI_API_KEYS.length;
+          continue;
+        }
+        throw new Error(result.error.message);
+      }
 
-    if (result.error) {
-      // Check if rate limited
-      if (result.error.code === 429 || result.error.message.includes('quota')) {
-        console.log(`Key ${keyIndex + 1} rate limited, trying next...`);
+      return result.candidates[0].content.parts[0].text;
+    } catch (e) {
+      lastError = e.message;
+      // If it's a quota/rate error, try next key
+      if (e.message.includes('quota') || e.message.includes('rate') || e.message.includes('429')) {
         currentKeyIndex = (keyIndex + 1) % GEMINI_API_KEYS.length;
         continue;
       }
-      throw new Error(result.error.message);
+      // For other errors, throw immediately
+      throw e;
     }
-
-    return result.candidates[0].content.parts[0].text;
   }
 
-  throw new Error('All API keys are rate limited. Please try again later.');
+  throw new Error(lastError || 'All API keys failed. Please try again later.');
 }
 
 function buildGeminiMessages(systemPrompt, messages, isGreeting) {
@@ -294,5 +303,4 @@ function generateDailyContext(character) {
 // === TEST FUNCTION ===
 function testPrompt() {
   const prompt = buildSystemPrompt('emma', 'intermediate');
-  console.log(prompt);
 }

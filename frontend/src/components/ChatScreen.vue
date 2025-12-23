@@ -158,7 +158,7 @@ async function getAIResponse(isGreeting = false) {
       }
     }
   } catch (error) {
-    console.error('Error:', error)
+    console.error('Chat error:', error)
     errorMessage.value = error.isRateLimit
       ? t('chat.rateLimitError')
       : t('chat.genericError')
