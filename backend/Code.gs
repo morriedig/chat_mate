@@ -20,10 +20,10 @@ function doGet(e) {
 function doPost(e) {
   try {
     const data = JSON.parse(e.postData.contents);
-    const { messages = [], character = 'emma', level = 'intermediate', language = 'en', isGreeting } = data;
+    const { messages = [], character = 'emma', level = 'intermediate', language = 'en', isGreeting, article } = data;
 
-    const systemPrompt = buildSystemPrompt(character, level, language);
-    const geminiMessages = buildGeminiMessages(systemPrompt, messages, isGreeting);
+    const systemPrompt = buildSystemPrompt(character, level, language, article);
+    const geminiMessages = buildGeminiMessages(systemPrompt, messages, isGreeting, article);
 
     const result = callGemini(geminiMessages);
 
@@ -126,17 +126,24 @@ function callGemini(messages) {
   throw new Error(lastError || 'All API keys failed. Please try again later.');
 }
 
-function buildGeminiMessages(systemPrompt, messages, isGreeting) {
+function buildGeminiMessages(systemPrompt, messages, isGreeting, article) {
   const geminiMessages = [
     { role: 'user', parts: [{ text: systemPrompt + '\n\n---\nStart the conversation now.' }] },
     { role: 'model', parts: [{ text: "Got it! I'll stay in character." }] },
   ];
 
   if (isGreeting) {
-    geminiMessages.push({
-      role: 'user',
-      parts: [{ text: '[System: The user just started a conversation. Send a natural greeting based on your character and today\'s context.]' }]
-    });
+    if (article) {
+      geminiMessages.push({
+        role: 'user',
+        parts: [{ text: `[System: The user just selected an article to discuss: "${article.title}". Start a conversation about this article. You've both read it. Begin with a casual greeting and share your initial reaction to the article, then ask what they thought.]` }]
+      });
+    } else {
+      geminiMessages.push({
+        role: 'user',
+        parts: [{ text: '[System: The user just started a conversation. Send a natural greeting based on your character and today\'s context.]' }]
+      });
+    }
   } else {
     for (const msg of messages) {
       if (msg.content && msg.content.trim()) {
@@ -152,11 +159,12 @@ function buildGeminiMessages(systemPrompt, messages, isGreeting) {
 }
 
 // === SYSTEM PROMPTS ===
-function buildSystemPrompt(character, level, language) {
+function buildSystemPrompt(character, level, language, article) {
   language = language || 'en';
   const characterPrompt = getCharacterPrompt(character, language);
   const levelInstructions = getLevelInstructions(level, language);
-  const dailyContext = generateDailyContext(character, language);
+  const dailyContext = article ? null : generateDailyContext(character, language);
+  const articleContext = article ? buildArticleContext(article, language) : null;
 
   const languageName = language === 'ja' ? 'Japanese' : 'English';
   const languageExamples = language === 'ja' ? {
@@ -177,12 +185,18 @@ function buildSystemPrompt(character, level, language) {
     ? '「そういえば...」「それで思い出したんだけど...」「ところで...」'
     : '"That reminds me...", "Speaking of...", "Oh by the way..."';
 
+  const contextSection = articleContext
+    ? `## Article Discussion
+
+${articleContext}`
+    : `## Today's Context
+${dailyContext}`;
+
   return `${characterPrompt}
 
 ---
 
-## Today's Context
-${dailyContext}
+${contextSection}
 
 ---
 
@@ -450,6 +464,57 @@ function generateDailyContext(character, language) {
 
   const characterContexts = contexts[character] || contexts.emma;
   return characterContexts[Math.floor(Math.random() * characterContexts.length)];
+}
+
+function buildArticleContext(article, language) {
+  if (!article) return null;
+
+  const vocabList = article.vocabulary ? article.vocabulary.join(', ') : '';
+  const discussionPoints = article.discussionPoints ? article.discussionPoints.join(', ') : '';
+
+  if (language === 'ja') {
+    return `あなたたちは一緒にこの記事について話しています：
+
+**タイトル:** ${article.title}
+
+**内容:**
+${article.content}
+
+**キーワード:** ${vocabList}
+
+**ディスカッションポイント:** ${discussionPoints}
+
+---
+
+**記事モードの行動ルール:**
+- 記事について自然に話し合う - テスト形式にしない
+- 最初に理解度の質問をして、その後意見を聞く
+- 自分の考えや経験も共有する
+- キーワードを自然に会話に取り入れる
+- ユーザーの考えや関連した経験について聞く
+- 議論を押し付けず、自然な流れで進める`;
+  }
+
+  return `You are both discussing this article together:
+
+**Title:** ${article.title}
+
+**Content:**
+${article.content}
+
+**Key Vocabulary:** ${vocabList}
+
+**Discussion Points:** ${discussionPoints}
+
+---
+
+**Article Mode Behavior:**
+- Discuss the article naturally - not like a quiz
+- Start with comprehension questions, then move to opinions
+- Share your own thoughts and experiences related to the topic
+- Naturally incorporate the key vocabulary into conversation
+- Ask about the user's thoughts and related experiences
+- Keep it conversational, not like an interview or test`;
 }
 
 // === TEST FUNCTION ===

@@ -20,9 +20,118 @@ app.use((req, res, next) => {
 });
 
 const API_KEYS = (process.env.GEMINI_API_KEYS || '').split(',').filter(Boolean);
+const MOCK_API = process.env.MOCK_API === 'true';
 
 let currentKeyIndex = 0;
 const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
+
+// Mock responses for testing
+function getMockResponse(character, level, isGreeting, article, language = 'en') {
+  const mockHints = language === 'ja' ? [
+    { word: 'なるほど', description: '理解した時に使う', example: 'なるほど、そういうことか。' },
+    { word: 'ちなみに', description: '追加情報を言う時', example: 'ちなみに、私も同じ経験があるよ。' },
+    { word: '確かに', description: '同意する時', example: '確かに、それは大変だったね。' }
+  ] : [
+    { word: 'definitely', description: 'strong agreement', example: 'I definitely agree with that.' },
+    { word: 'actually', description: 'adding new info', example: 'Actually, I tried that too.' },
+    { word: 'honestly', description: 'being sincere', example: 'Honestly, I feel the same way.' }
+  ];
+
+  if (article) {
+    const articleMessages = language === 'ja' ? {
+      emma: {
+        greeting: `ねえ、この「${article.title}」の記事読んだ？結構面白いなって思ったんだけど。どう思った？`,
+        response: 'うんうん、その部分いいよね。私もそう思った。この記事読んでて、なんか自分の生活も見直したくなったかも。'
+      },
+      marcus: {
+        greeting: `お、「${article.title}」の記事読んだ？なかなか考えさせられる内容だったよね。君はどう思う？`,
+        response: 'あー、なるほどね。確かにその視点は面白い。僕も最近この話題についてよく考えてたんだよね。'
+      }
+    } : {
+      emma: {
+        greeting: `Hey! So I just read this article about "${article.title}" - it's pretty interesting actually. What did you think of it?`,
+        response: "Yeah, I totally get that. That part really stood out to me too. It kinda made me think about my own habits, you know?"
+      },
+      marcus: {
+        greeting: `Yo, did you check out that "${article.title}" article? Pretty thought-provoking stuff. What's your take on it?`,
+        response: "Hmm, interesting perspective. I was actually thinking something similar. The whole topic is pretty relevant these days, isn't it?"
+      }
+    };
+    const charMessages = articleMessages[character] || articleMessages.emma;
+    return {
+      message: isGreeting ? charMessages.greeting : charMessages.response,
+      hints: mockHints
+    };
+  }
+
+  const messages = language === 'ja' ? {
+    emma: {
+      beginner: {
+        greeting: 'ねえ！エマだよ。今日はどう？',
+        response: 'いいね！私も今日カフェに行ったよ。コーヒーおいしかった。'
+      },
+      intermediate: {
+        greeting: 'やっほー！コーヒー飲みながらリラックス中。調子どう？',
+        response: 'あー、わかるわかる。そういえば最近新しいカフェ見つけたんだけど、めっちゃよかったよ。'
+      },
+      advanced: {
+        greeting: 'うわー、今日モチにコーヒーこぼされてさ、まだ立ち直れてない笑。まあいいや、そっちはどう？',
+        response: 'あはは、それな。最近みんなが推してたあのカフェついに行ってみたんだけど、正直期待以上だった。'
+      }
+    },
+    marcus: {
+      beginner: {
+        greeting: 'やあ！マーカスだよ。元気？',
+        response: '面白いね。今日ラーメン食べたよ。おいしかった！'
+      },
+      intermediate: {
+        greeting: 'よお！コード書くの休憩中。最近どう？',
+        response: 'へー、そうなんだ。実は今日すごい穴場のラーメン屋見つけてさ、マジでうまかった。'
+      },
+      advanced: {
+        greeting: '東京相変わらずカオスだけど楽しいよ。ちょっとサボり中。そっちは？',
+        response: 'あー、わかるわ。そういえばさ、今日渋谷で迷子になってたら、偶然すごいラーメン屋見つけたんだよね。'
+      }
+    }
+  } : {
+    emma: {
+      beginner: {
+        greeting: "Hey! I'm Emma. How are you today?",
+        response: "That's nice! I went to a cafe today. The coffee was good."
+      },
+      intermediate: {
+        greeting: "Hey there! Just grabbed my coffee. I'm Emma by the way - how's your day going?",
+        response: "Oh nice! That reminds me - I've been meaning to try this new place near my office. Have you been anywhere good lately?"
+      },
+      advanced: {
+        greeting: "Hey! Ugh, Mochi knocked over my coffee this morning - still recovering honestly. Anyway, I'm Emma! What's up with you?",
+        response: "Ha, I feel that. Speaking of which, I finally dragged myself to that cafe everyone's been hyping up. Gotta say, it lowkey lived up to the hype."
+      }
+    },
+    marcus: {
+      beginner: {
+        greeting: "Hey! I'm Marcus. Nice to meet you. How are you?",
+        response: "That is interesting. Today I ate ramen. It was delicious."
+      },
+      intermediate: {
+        greeting: "Yo! Taking a break from staring at code. I'm Marcus - what's going on?",
+        response: "Oh yeah, I get that. Stumbled upon this hole-in-the-wall ramen place today actually. Honestly blew my mind."
+      },
+      advanced: {
+        greeting: "Hey there. Tokyo's being Tokyo - chaotic but fun. I'm Marcus by the way. Just procrastinating a bit, you know how it is. What about you?",
+        response: "Right, so funny story - I was properly lost in Shibuya earlier, classic me, and somehow ended up at this dodgy-looking ramen spot. Absolute scenes. Best accidental discovery in ages."
+      }
+    }
+  };
+
+  const charMessages = messages[character] || messages.emma;
+  const levelMessages = charMessages[level] || charMessages.intermediate;
+
+  return {
+    message: isGreeting ? levelMessages.greeting : levelMessages.response,
+    hints: mockHints
+  };
+}
 
 async function callGeminiWithFallback(body) {
   console.log(`Total API keys loaded: ${API_KEYS.length}`);
@@ -63,10 +172,18 @@ async function callGeminiWithFallback(body) {
 
 app.post('/chat', async (req, res) => {
   try {
-    const { messages = [], character = 'emma', level = 'intermediate', language = 'en', isGreeting } = req.body;
+    const { messages = [], character = 'emma', level = 'intermediate', language = 'en', isGreeting, article } = req.body;
 
-    const systemPrompt = buildSystemPrompt(character, level, language);
-    const geminiMessages = buildGeminiMessages(systemPrompt, messages, isGreeting);
+    // Use mock API if enabled
+    if (MOCK_API) {
+      console.log('[MOCK] Generating mock response...');
+      await new Promise(r => setTimeout(r, 500)); // Simulate network delay
+      const mockData = getMockResponse(character, level, isGreeting, article, language);
+      return res.json({ success: true, reply: mockData.message, hints: mockData.hints });
+    }
+
+    const systemPrompt = buildSystemPrompt(character, level, language, article);
+    const geminiMessages = buildGeminiMessages(systemPrompt, messages, isGreeting, article);
 
     const data = await callGeminiWithFallback({
       contents: geminiMessages,
@@ -142,17 +259,24 @@ function parseReplyWithHints(rawReply) {
   return { reply, hints };
 }
 
-function buildGeminiMessages(systemPrompt, messages, isGreeting) {
+function buildGeminiMessages(systemPrompt, messages, isGreeting, article) {
   const geminiMessages = [
     { role: 'user', parts: [{ text: systemPrompt + '\n\n---\nStart the conversation now.' }] },
     { role: 'model', parts: [{ text: "Got it! I'll stay in character." }] },
   ];
 
   if (isGreeting) {
-    geminiMessages.push({
-      role: 'user',
-      parts: [{ text: '[System: The user just started a conversation. Send a natural greeting based on your character and today\'s context.]' }]
-    });
+    if (article) {
+      geminiMessages.push({
+        role: 'user',
+        parts: [{ text: `[System: The user just selected an article to discuss: "${article.title}". Start a conversation about this article. You've both read it. Begin with a casual greeting and share your initial reaction to the article, then ask what they thought.]` }]
+      });
+    } else {
+      geminiMessages.push({
+        role: 'user',
+        parts: [{ text: '[System: The user just started a conversation. Send a natural greeting based on your character and today\'s context.]' }]
+      });
+    }
   } else {
     for (const msg of messages) {
       if (msg.content && msg.content.trim()) {
@@ -167,10 +291,11 @@ function buildGeminiMessages(systemPrompt, messages, isGreeting) {
   return geminiMessages;
 }
 
-function buildSystemPrompt(character, level, language = 'en') {
+function buildSystemPrompt(character, level, language = 'en', article = null) {
   const characterPrompt = getCharacterPrompt(character, language);
   const levelInstructions = getLevelInstructions(level, language);
-  const dailyContext = generateDailyContext(character, language);
+  const dailyContext = article ? null : generateDailyContext(character, language);
+  const articleContext = article ? buildArticleContext(article, language) : null;
 
   const languageName = language === 'ja' ? 'Japanese' : 'English';
   const languageExamples = language === 'ja' ? {
@@ -191,12 +316,18 @@ function buildSystemPrompt(character, level, language = 'en') {
     ? '「そういえば...」「それで思い出したんだけど...」「ところで...」'
     : '"That reminds me...", "Speaking of...", "Oh by the way..."';
 
+  const contextSection = articleContext
+    ? `## Article Discussion
+
+${articleContext}`
+    : `## Today's Context
+${dailyContext}`;
+
   return `${characterPrompt}
 
 ---
 
-## Today's Context
-${dailyContext}
+${contextSection}
 
 ---
 
@@ -458,6 +589,57 @@ function generateDailyContext(character, language = 'en') {
 
   const characterContexts = contexts[character] || contexts.emma;
   return characterContexts[Math.floor(Math.random() * characterContexts.length)];
+}
+
+function buildArticleContext(article, language = 'en') {
+  if (!article) return null;
+
+  const vocabList = article.vocabulary ? article.vocabulary.join(', ') : '';
+  const discussionPoints = article.discussionPoints ? article.discussionPoints.join(', ') : '';
+
+  if (language === 'ja') {
+    return `あなたたちは一緒にこの記事について話しています：
+
+**タイトル:** ${article.title}
+
+**内容:**
+${article.content}
+
+**キーワード:** ${vocabList}
+
+**ディスカッションポイント:** ${discussionPoints}
+
+---
+
+**記事モードの行動ルール:**
+- 記事について自然に話し合う - テスト形式にしない
+- 最初に理解度の質問をして、その後意見を聞く
+- 自分の考えや経験も共有する
+- キーワードを自然に会話に取り入れる
+- ユーザーの考えや関連した経験について聞く
+- 議論を押し付けず、自然な流れで進める`;
+  }
+
+  return `You are both discussing this article together:
+
+**Title:** ${article.title}
+
+**Content:**
+${article.content}
+
+**Key Vocabulary:** ${vocabList}
+
+**Discussion Points:** ${discussionPoints}
+
+---
+
+**Article Mode Behavior:**
+- Discuss the article naturally - not like a quiz
+- Start with comprehension questions, then move to opinions
+- Share your own thoughts and experiences related to the topic
+- Naturally incorporate the key vocabulary into conversation
+- Ask about the user's thoughts and related experiences
+- Keep it conversational, not like an interview or test`;
 }
 
 const PORT = 3000;

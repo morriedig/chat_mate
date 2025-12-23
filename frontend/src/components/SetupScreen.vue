@@ -8,6 +8,7 @@ const emit = defineEmits(['start'])
 
 const selectedCharacter = ref(null)
 const selectedLevel = ref(null)
+const selectedMode = ref('free') // 'free' or 'article'
 
 function toggleLanguage() {
   locale.value = locale.value === 'en' ? 'ja' : 'en'
@@ -20,6 +21,7 @@ function startChat() {
       character: selectedCharacter.value,
       level: selectedLevel.value,
       language: locale.value,
+      mode: selectedMode.value,
     })
   }
 }
@@ -67,6 +69,30 @@ function startChat() {
           <div class="icon">{{ level.icon }}</div>
           <h3>{{ t(`levels.${level.id}.name`) }}</h3>
           <p>{{ t(`levels.${level.id}.description`) }}</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="selection-section">
+      <h2>{{ t('setup.chooseMode') }}</h2>
+      <div class="cards mode-cards">
+        <div
+          class="card mode-card"
+          :class="{ selected: selectedMode === 'free' }"
+          @click="selectedMode = 'free'"
+        >
+          <div class="icon">💬</div>
+          <h3>{{ t('setup.modes.free.name') }}</h3>
+          <p>{{ t('setup.modes.free.description') }}</p>
+        </div>
+        <div
+          class="card mode-card"
+          :class="{ selected: selectedMode === 'article' }"
+          @click="selectedMode = 'article'"
+        >
+          <div class="icon">📖</div>
+          <h3>{{ t('setup.modes.article.name') }}</h3>
+          <p>{{ t('setup.modes.article.description') }}</p>
         </div>
       </div>
     </section>
@@ -133,7 +159,8 @@ h1 {
   gap: 0.75rem;
 }
 
-.level-cards {
+.level-cards,
+.mode-cards {
   flex-direction: row;
 }
 
@@ -181,22 +208,26 @@ h1 {
   margin: 0;
 }
 
-.level-card {
+.level-card,
+.mode-card {
   flex: 1;
   text-align: center;
 }
 
-.level-card .icon {
+.level-card .icon,
+.mode-card .icon {
   font-size: 1.5rem;
   margin-bottom: 0.5rem;
 }
 
-.level-card h3 {
+.level-card h3,
+.mode-card h3 {
   margin: 0 0 0.25rem 0;
   font-size: 0.95rem;
 }
 
-.level-card p {
+.level-card p,
+.mode-card p {
   margin: 0;
   font-size: 0.75rem;
   color: #666;

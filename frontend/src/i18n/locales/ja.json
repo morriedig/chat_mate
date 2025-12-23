@@ -6,14 +6,38 @@
   "setup": {
     "choosePartner": "チャット相手を選ぶ",
     "yourLevel": "あなたの日本語レベル",
-    "startChatting": "チャットを始める"
+    "chooseMode": "チャットモード",
+    "startChatting": "チャットを始める",
+    "modes": {
+      "free": {
+        "name": "フリートーク",
+        "description": "自由に会話"
+      },
+      "article": {
+        "name": "記事",
+        "description": "読んで話す"
+      }
+    }
   },
   "chat": {
     "typeMessage": "メッセージを入力...",
     "send": "送信",
     "tryUsing": "使ってみよう:",
+    "articleMode": "記事",
     "rateLimitError": "ちょっと休憩が必要！メッセージが多すぎました。少し待ってからもう一度試してください。",
     "genericError": "うーん、何か問題が起きました。もう一度試してみましょう？"
+  },
+  "articles": {
+    "title": "記事を選ぶ",
+    "keyWords": "キーワード",
+    "noArticles": "このレベルの記事が見つかりません",
+    "categories": {
+      "all": "すべて",
+      "lifestyle": "ライフスタイル",
+      "work": "仕事",
+      "technology": "テクノロジー",
+      "environment": "環境"
+    }
   },
   "levels": {
     "beginner": {

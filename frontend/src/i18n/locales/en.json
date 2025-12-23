@@ -6,14 +6,38 @@
   "setup": {
     "choosePartner": "Choose your chat partner",
     "yourLevel": "Your English level",
-    "startChatting": "Start Chatting"
+    "chooseMode": "Chat mode",
+    "startChatting": "Start Chatting",
+    "modes": {
+      "free": {
+        "name": "Free Chat",
+        "description": "Casual conversation"
+      },
+      "article": {
+        "name": "Article",
+        "description": "Read & discuss"
+      }
+    }
   },
   "chat": {
     "typeMessage": "Type a message...",
     "send": "Send",
     "tryUsing": "Try using:",
+    "articleMode": "Article",
     "rateLimitError": "I need a quick breather! Too many messages at once. Wait a few seconds and try again.",
     "genericError": "Hmm, something went wrong. Let's try that again?"
+  },
+  "articles": {
+    "title": "Choose an Article",
+    "keyWords": "Key words",
+    "noArticles": "No articles found for this level",
+    "categories": {
+      "all": "All",
+      "lifestyle": "Lifestyle",
+      "work": "Work",
+      "technology": "Technology",
+      "environment": "Environment"
+    }
   },
   "levels": {
     "beginner": {

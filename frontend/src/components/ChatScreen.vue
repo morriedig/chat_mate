@@ -1,5 +1,5 @@
 <script setup>
-import { ref, nextTick, onMounted, watch } from 'vue'
+import { ref, nextTick, onMounted, watch, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
@@ -10,10 +10,20 @@ const props = defineProps({
   language: {
     type: String,
     default: 'en'
+  },
+  article: {
+    type: Object,
+    default: null
+  },
+  mode: {
+    type: String,
+    default: 'free'
   }
 })
 
-// Compression utilities using LZW-like encoding
+const isArticleMode = computed(() => props.mode === 'article' && props.article)
+const showArticle = ref(true)
+
 function compress(str) {
   if (!str) return ''
   return btoa(encodeURIComponent(str))
@@ -29,7 +39,11 @@ function decompress(str) {
 }
 
 function getStorageKey() {
-  return `chatmate_${props.language}_${props.character.id}_${props.level.id}`
+  const base = `chatmate_${props.language}_${props.character.id}_${props.level.id}`
+  if (isArticleMode.value) {
+    return `${base}_article_${props.article.id}`
+  }
+  return base
 }
 
 function saveChat() {
@@ -48,7 +62,6 @@ function loadChat() {
     try {
       const data = decompress(stored)
       const parsed = JSON.parse(data)
-      // Handle old format (just messages array) and new format (object with messages and hints)
       if (Array.isArray(parsed)) {
         return { messages: parsed, hints: [] }
       }
@@ -69,23 +82,19 @@ const messagesContainer = ref(null)
 const currentHints = ref([])
 const errorMessage = ref('')
 
-// Backend URL - will be set after deploying Google Apps Script
 const API_URL = import.meta.env.VITE_API_URL || ''
 
 onMounted(() => {
-  // Load saved chat data
   const saved = loadChat()
   if (saved.messages.length > 0) {
     messages.value = saved.messages
     currentHints.value = saved.hints
     scrollToBottom()
   } else {
-    // Send initial greeting from AI only if no saved messages
     getAIResponse(true)
   }
 })
 
-// Save chat whenever messages or hints change
 watch([messages, currentHints], () => {
   saveChat()
 }, { deep: true })
@@ -101,16 +110,14 @@ async function sendMessage() {
   const text = inputText.value.trim()
   if (!text || isLoading.value) return
 
-  // Add user message
   messages.value.push({
     role: 'user',
     content: text,
   })
   inputText.value = ''
-  currentHints.value = [] // Clear hints when user sends
+  currentHints.value = []
   scrollToBottom()
 
-  // Get AI response
   await getAIResponse()
 }
 
@@ -120,7 +127,6 @@ async function getAIResponse(isGreeting = false) {
 
   try {
     if (!API_URL) {
-      // Demo mode - simulate response
       await new Promise((r) => setTimeout(r, 1000))
       const demoResponses = getDemoResponse(isGreeting)
       messages.value.push({
@@ -128,18 +134,30 @@ async function getAIResponse(isGreeting = false) {
         content: demoResponses,
       })
     } else {
+      const requestBody = {
+        messages: messages.value,
+        character: props.character.id,
+        level: props.level.id,
+        language: props.language,
+        isGreeting,
+      }
+
+      // Add article data for article mode
+      if (isArticleMode.value) {
+        requestBody.article = {
+          title: props.article.title,
+          content: props.article.content,
+          vocabulary: props.article.vocabulary,
+          discussionPoints: props.article.discussionPoints
+        }
+      }
+
       const response = await fetch(API_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'text/plain;charset=utf-8',
         },
-        body: JSON.stringify({
-          messages: messages.value,
-          character: props.character.id,
-          level: props.level.id,
-          language: props.language,
-          isGreeting,
-        }),
+        body: JSON.stringify(requestBody),
         redirect: 'follow',
       })
       const data = await response.json()
@@ -152,7 +170,6 @@ async function getAIResponse(isGreeting = false) {
         role: 'assistant',
         content: data.reply,
       })
-      // Store hints for display
       if (data.hints && data.hints.length > 0) {
         currentHints.value = data.hints
       }
@@ -169,37 +186,33 @@ async function getAIResponse(isGreeting = false) {
 }
 
 function getDemoResponse(isGreeting) {
+  if (isArticleMode.value && isGreeting) {
+    return `Hey! I just read this article about "${props.article.title}" - it's pretty interesting! What did you think about it?`
+  }
+
   const greetings = {
     emma: {
       beginner: "Hey! I'm Emma. How are you today?",
-      intermediate:
-        "Hey there! Just grabbed my coffee. I'm Emma by the way - how's your day going?",
-      advanced:
-        "Hey! Ugh, Mochi knocked over my coffee this morning - still recovering honestly. Anyway, I'm Emma! What's up with you?",
+      intermediate: "Hey there! Just grabbed my coffee. I'm Emma by the way - how's your day going?",
+      advanced: "Hey! Ugh, Mochi knocked over my coffee this morning - still recovering honestly. Anyway, I'm Emma! What's up with you?",
     },
     marcus: {
       beginner: "Hey! I'm Marcus. Nice to meet you. How are you?",
-      intermediate:
-        "Yo! Taking a break from staring at code. I'm Marcus - what's going on?",
-      advanced:
-        "Hey there. Tokyo's being Tokyo - chaotic but fun. I'm Marcus by the way. Just procrastinating a bit, you know how it is. What about you?",
+      intermediate: "Yo! Taking a break from staring at code. I'm Marcus - what's going on?",
+      advanced: "Hey there. Tokyo's being Tokyo - chaotic but fun. I'm Marcus by the way. Just procrastinating a bit, you know how it is. What about you?",
     },
   }
 
   const responses = {
     emma: {
       beginner: 'That is nice! I like that. Today I went to a cafe. The coffee was good.',
-      intermediate:
-        "Oh nice! That reminds me - I've been meaning to try this new place near my office. Have you been anywhere good lately?",
-      advanced:
-        "Ha, I feel that. Speaking of which, I finally dragged myself to that cafe everyone's been hyping up. Gotta say, it lowkey lived up to the hype.",
+      intermediate: "Oh nice! That reminds me - I've been meaning to try this new place near my office. Have you been anywhere good lately?",
+      advanced: "Ha, I feel that. Speaking of which, I finally dragged myself to that cafe everyone's been hyping up. Gotta say, it lowkey lived up to the hype.",
     },
     marcus: {
       beginner: 'That is interesting. Today I ate ramen. It was delicious.',
-      intermediate:
-        'Oh yeah, I get that. Stumbled upon this hole-in-the-wall ramen place today actually. Honestly blew my mind.',
-      advanced:
-        "Right, so funny story - I was properly lost in Shibuya earlier, classic me, and somehow ended up at this dodgy-looking ramen spot. Absolute scenes. Best accidental discovery in ages.",
+      intermediate: 'Oh yeah, I get that. Stumbled upon this hole-in-the-wall ramen place today actually. Honestly blew my mind.',
+      advanced: "Right, so funny story - I was properly lost in Shibuya earlier, classic me, and somehow ended up at this dodgy-looking ramen spot. Absolute scenes. Best accidental discovery in ages.",
     },
   }
 
@@ -233,6 +246,10 @@ function renewChat() {
   localStorage.removeItem(getStorageKey())
   getAIResponse(true)
 }
+
+function toggleArticle() {
+  showArticle.value = !showArticle.value
+}
 </script>
 
 <template>
@@ -243,9 +260,30 @@ function renewChat() {
         <span class="avatar">{{ character.avatar }}</span>
         <span class="name">{{ character.name }}</span>
         <span class="level-badge">{{ t(`levels.${level.id}.name`) }}</span>
+        <span v-if="isArticleMode" class="mode-badge">{{ t('chat.articleMode') }}</span>
       </div>
       <button class="renew-btn" @click="renewChat" :disabled="isLoading">↻</button>
     </header>
+
+    <!-- Article panel for article mode -->
+    <div v-if="isArticleMode" class="article-panel" :class="{ collapsed: !showArticle }">
+      <div class="article-toggle" @click="toggleArticle">
+        <span class="toggle-icon">{{ showArticle ? '▼' : '▶' }}</span>
+        <span class="article-title-small">{{ article.title }}</span>
+      </div>
+      <div v-if="showArticle" class="article-content">
+        <p>{{ article.content }}</p>
+        <div class="article-vocab">
+          <span class="vocab-label">{{ t('articles.keyWords') }}:</span>
+          <div class="vocab-list">
+            <div v-for="item in article.vocabulary" :key="item.word" class="vocab-item">
+              <span class="vocab-word">{{ item.word }}</span>
+              <span class="vocab-def">{{ item.definition }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <div class="messages" ref="messagesContainer">
       <div
@@ -329,6 +367,7 @@ function renewChat() {
   align-items: center;
   gap: 0.5rem;
   flex: 1;
+  flex-wrap: wrap;
 }
 
 .renew-btn {
@@ -366,6 +405,110 @@ function renewChat() {
   background: #e8f4e8;
   border-radius: 1rem;
   color: #2d5a2d;
+}
+
+.mode-badge {
+  font-size: 0.75rem;
+  padding: 0.2rem 0.5rem;
+  background: #e8f0f4;
+  border-radius: 1rem;
+  color: #2d4a5a;
+}
+
+/* Article panel */
+.article-panel {
+  background: #f8f9fa;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.article-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.article-toggle:hover {
+  background: #eee;
+}
+
+.toggle-icon {
+  font-size: 0.75rem;
+  color: #666;
+}
+
+.article-title-small {
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.article-content {
+  padding: 0 1rem 1rem 1rem;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #444;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.article-content p {
+  margin: 0 0 0.75rem 0;
+  white-space: pre-line;
+}
+
+.article-vocab {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+.vocab-label {
+  font-size: 0.75rem;
+  color: #888;
+}
+
+.vocab-tag {
+  font-size: 0.75rem;
+  padding: 0.2rem 0.5rem;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  color: #555;
+}
+
+.vocab-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.vocab-item {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+}
+
+.vocab-word {
+  font-weight: 600;
+  color: #333;
+  font-size: 0.85rem;
+}
+
+.vocab-def {
+  font-size: 0.75rem;
+  color: #666;
+  margin-top: 0.2rem;
+  line-height: 1.3;
 }
 
 .messages {
