@@ -11,7 +11,7 @@
 // Set your Gemini API keys in Script Properties:
 // File > Project Settings > Script Properties > Add: GEMINI_API_KEYS = key1,key2
 const GEMINI_API_KEYS = (PropertiesService.getScriptProperties().getProperty('GEMINI_API_KEYS') || '').split(',').filter(k => k.trim());
-const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
+const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
 let currentKeyIndex = 0;
 
 // === MAIN ENDPOINT ===
@@ -44,7 +44,8 @@ function doPost(e) {
     return createResponse({ success: true, reply });
 
   } catch (error) {
-    return createResponse({ success: false, error: error.message });
+    const isRateLimit = error.message.includes('quota') || error.message.includes('rate') || error.message.includes('429');
+    return createResponse({ success: false, error: error.message, isRateLimit });
   }
 }
 
@@ -59,7 +60,7 @@ function callGemini(messages) {
     contents: messages,
     generationConfig: {
       temperature: 0.9,
-      maxOutputTokens: 256,
+      maxOutputTokens: 4096,
       topP: 0.95,
     },
     safetySettings: [

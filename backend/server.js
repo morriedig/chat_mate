@@ -22,13 +22,15 @@ app.use((req, res, next) => {
 const API_KEYS = (process.env.GEMINI_API_KEYS || '').split(',').filter(Boolean);
 
 let currentKeyIndex = 0;
-const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
+const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
 
 async function callGeminiWithFallback(body) {
+  console.log(`Total API keys loaded: ${API_KEYS.length}`);
 
   for (let attempt = 0; attempt < API_KEYS.length; attempt++) {
     const keyIndex = (currentKeyIndex + attempt) % API_KEYS.length;
     const apiKey = API_KEYS[keyIndex];
+    console.log(`Trying key ${keyIndex + 1}/${API_KEYS.length}: ...${apiKey.slice(-6)}`);
 
     try {
       const response = await fetch(`${GEMINI_URL}?key=${apiKey}`, {
