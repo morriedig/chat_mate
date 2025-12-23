@@ -2,8 +2,10 @@
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { characters, levels } from '../data/characters.js'
+import { useDarkMode } from '../composables/useDarkMode'
 
 const { t, locale } = useI18n()
+const { isDark, toggle: toggleDark } = useDarkMode()
 const emit = defineEmits(['start'])
 
 const selectedCharacter = ref(null)
@@ -33,13 +35,21 @@ function startChat() {
       <!-- Header with language toggle -->
       <div class="flex justify-between items-center mb-8">
         <div></div>
-        <button
-          @click="toggleLanguage"
-          class="flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark hover:bg-slate-50 dark:hover:bg-slate-800 text-text-main dark:text-slate-200 text-sm font-medium transition-colors"
-        >
-          <span class="material-symbols-outlined text-[18px]">translate</span>
-          {{ locale === 'en' ? '日本語' : 'English' }}
-        </button>
+        <div class="flex items-center gap-2">
+          <button
+            @click="toggleDark"
+            class="flex items-center justify-center size-10 rounded-lg border border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark hover:bg-slate-50 dark:hover:bg-slate-800 text-text-main dark:text-slate-200 transition-colors"
+          >
+            <span class="material-symbols-outlined text-[20px]">{{ isDark ? 'light_mode' : 'dark_mode' }}</span>
+          </button>
+          <button
+            @click="toggleLanguage"
+            class="flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark hover:bg-slate-50 dark:hover:bg-slate-800 text-text-main dark:text-slate-200 text-sm font-medium transition-colors"
+          >
+            <span class="material-symbols-outlined text-[18px]">translate</span>
+            {{ locale === 'en' ? '日本語' : 'English' }}
+          </button>
+        </div>
       </div>
 
       <!-- Title -->
