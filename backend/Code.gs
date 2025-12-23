@@ -1,23 +1,14 @@
 /**
  * Chat Mate - Google Apps Script Backend
- *
- * This script handles:
- * 1. Proxying requests to Gemini API (hides API key)
- * 2. Building system prompts for characters
- * 3. Saving conversations to Google Sheets
+ * Synced with server.js features
  */
 
 // === CONFIGURATION ===
-// Set your Gemini API keys in Script Properties:
-// File > Project Settings > Script Properties > Add: GEMINI_API_KEYS = key1,key2
 const GEMINI_API_KEYS = (PropertiesService.getScriptProperties().getProperty('GEMINI_API_KEYS') || '').split(',').filter(k => k.trim());
 const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
 let currentKeyIndex = 0;
 
 // === MAIN ENDPOINT ===
-// Note: Google Apps Script handles CORS automatically for web apps deployed with "Anyone" access
-
-// Handle GET requests (for testing the endpoint)
 function doGet(e) {
   return createResponse({
     success: true,
@@ -29,19 +20,20 @@ function doGet(e) {
 function doPost(e) {
   try {
     const data = JSON.parse(e.postData.contents);
-    const { messages, character, level, isGreeting } = data;
+    const { messages = [], character = 'emma', level = 'intermediate', language = 'en', isGreeting } = data;
 
-    // Build system prompt
-    const systemPrompt = buildSystemPrompt(character, level);
-
-    // Build conversation for Gemini
+    const systemPrompt = buildSystemPrompt(character, level, language);
     const geminiMessages = buildGeminiMessages(systemPrompt, messages, isGreeting);
 
-    // Call Gemini API
-    const reply = callGemini(geminiMessages);
+    const result = callGemini(geminiMessages);
 
-    // Return response
-    return createResponse({ success: true, reply });
+    // Parse JSON response
+    const parsed = JSON.parse(result);
+    return createResponse({
+      success: true,
+      reply: parsed.message,
+      hints: parsed.hints || []
+    });
 
   } catch (error) {
     const isRateLimit = error.message.includes('quota') || error.message.includes('rate') || error.message.includes('429');
@@ -62,6 +54,30 @@ function callGemini(messages) {
       temperature: 0.9,
       maxOutputTokens: 4096,
       topP: 0.95,
+      responseMimeType: 'application/json',
+      responseSchema: {
+        type: 'object',
+        properties: {
+          message: {
+            type: 'string',
+            description: 'Your conversational message to the user'
+          },
+          hints: {
+            type: 'array',
+            description: '3 words/phrases the user could use to respond',
+            items: {
+              type: 'object',
+              properties: {
+                word: { type: 'string', description: 'The word or short phrase' },
+                description: { type: 'string', description: 'Brief explanation (2-4 words)' },
+                example: { type: 'string', description: 'Short example sentence using this word' }
+              },
+              required: ['word', 'description', 'example']
+            }
+          }
+        },
+        required: ['message', 'hints']
+      }
     },
     safetySettings: [
       { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_ONLY_HIGH' },
@@ -78,7 +94,6 @@ function callGemini(messages) {
     muteHttpExceptions: true,
   };
 
-  // Try each API key until one works
   let lastError = null;
   for (let i = 0; i < GEMINI_API_KEYS.length; i++) {
     const keyIndex = (currentKeyIndex + i) % GEMINI_API_KEYS.length;
@@ -90,7 +105,6 @@ function callGemini(messages) {
 
       if (result.error) {
         lastError = result.error.message;
-        // Check if rate limited
         if (result.error.code === 429 || result.error.message.includes('quota') || result.error.message.includes('rate')) {
           currentKeyIndex = (keyIndex + 1) % GEMINI_API_KEYS.length;
           continue;
@@ -101,12 +115,10 @@ function callGemini(messages) {
       return result.candidates[0].content.parts[0].text;
     } catch (e) {
       lastError = e.message;
-      // If it's a quota/rate error, try next key
       if (e.message.includes('quota') || e.message.includes('rate') || e.message.includes('429')) {
         currentKeyIndex = (keyIndex + 1) % GEMINI_API_KEYS.length;
         continue;
       }
-      // For other errors, throw immediately
       throw e;
     }
   }
@@ -115,33 +127,24 @@ function callGemini(messages) {
 }
 
 function buildGeminiMessages(systemPrompt, messages, isGreeting) {
-  const geminiMessages = [];
-
-  // System prompt as first user message (Gemini doesn't have system role)
-  geminiMessages.push({
-    role: 'user',
-    parts: [{ text: systemPrompt + '\n\n---\nStart the conversation now.' }]
-  });
-
-  // Add fake model acknowledgment
-  geminiMessages.push({
-    role: 'model',
-    parts: [{ text: 'Got it! I\'ll stay in character.' }]
-  });
+  const geminiMessages = [
+    { role: 'user', parts: [{ text: systemPrompt + '\n\n---\nStart the conversation now.' }] },
+    { role: 'model', parts: [{ text: "Got it! I'll stay in character." }] },
+  ];
 
   if (isGreeting) {
-    // For initial greeting, ask AI to start
     geminiMessages.push({
       role: 'user',
       parts: [{ text: '[System: The user just started a conversation. Send a natural greeting based on your character and today\'s context.]' }]
     });
   } else {
-    // Add conversation history
     for (const msg of messages) {
-      geminiMessages.push({
-        role: msg.role === 'user' ? 'user' : 'model',
-        parts: [{ text: msg.content }]
-      });
+      if (msg.content && msg.content.trim()) {
+        geminiMessages.push({
+          role: msg.role === 'user' ? 'user' : 'model',
+          parts: [{ text: msg.content }]
+        });
+      }
     }
   }
 
@@ -149,10 +152,30 @@ function buildGeminiMessages(systemPrompt, messages, isGreeting) {
 }
 
 // === SYSTEM PROMPTS ===
-function buildSystemPrompt(character, level) {
-  const characterPrompt = getCharacterPrompt(character);
-  const levelInstructions = getLevelInstructions(level);
-  const dailyContext = generateDailyContext(character);
+function buildSystemPrompt(character, level, language) {
+  language = language || 'en';
+  const characterPrompt = getCharacterPrompt(character, language);
+  const levelInstructions = getLevelInstructions(level, language);
+  const dailyContext = generateDailyContext(character, language);
+
+  const languageName = language === 'ja' ? 'Japanese' : 'English';
+  const languageExamples = language === 'ja' ? {
+    exhausted: '疲れた - もう、ヘトヘトだよ',
+    cozy: 'このカフェ居心地いい - 落ち着くよね',
+    procrastinated: '今日ずっとサボってた - やること後回しにしちゃって'
+  } : {
+    exhausted: 'I was exhausted - like, completely drained, you know?',
+    cozy: 'The cafe was cozy - nice and warm, very comfortable',
+    procrastinated: 'I procrastinated all day - kept putting off my work'
+  };
+
+  const fillerWords = language === 'ja'
+    ? 'えーと、なんか、まあ、ちょっと'
+    : 'like, you know, actually, honestly';
+
+  const bridges = language === 'ja'
+    ? '「そういえば...」「それで思い出したんだけど...」「ところで...」'
+    : '"That reminds me...", "Speaking of...", "Oh by the way..."';
 
   return `${characterPrompt}
 
@@ -170,36 +193,102 @@ ${levelInstructions}
 
 ## Core Behavior
 
+**IMPORTANT: You must respond in ${languageName} only.**
+
 1. **Conversation Balance**: Talk about 43% of the time. Share experiences, react, then let user respond.
 
 2. **Natural Flow**:
    - Don't interview the user
    - Share before you ask
    - Sometimes just react without questions
-   - Use filler words naturally (like, you know, actually, honestly)
+   - Use filler words naturally (${fillerWords})
 
-3. **Be Human**:
+3. **Topic Transitions** (IMPORTANT):
+   - Stay on the user's topic for at least 2-3 exchanges before changing
+   - NEVER abruptly change topics - always connect to what was just said
+   - Use "step-wise" transitions where each response relates to the previous one
+   - If you must change topics, use bridges: ${bridges}
+   - Let the user lead topic changes - follow their interest
+   - Only bring up your daily context when it naturally connects to the conversation
+
+4. **Be Human**:
    - Have opinions
    - Show emotions
    - Make small jokes
    - Reference your daily life
    - Remember what user said earlier in conversation
 
-4. **Language Rules**:
-   - Use contractions (I'm, don't, gonna)
+5. **Vocabulary Teaching** (Natural Hints):
+   - Occasionally use a word slightly above the user's level
+   - Immediately give a natural hint/explanation after the word
+   - Examples:
+     * "${languageExamples.exhausted}"
+     * "${languageExamples.cozy}"
+     * "${languageExamples.procrastinated}"
+   - Only do this 1-2 times per conversation, keep it natural
+   - Don't make it feel like a lesson - it should feel like clarifying yourself
+
+6. **Language Rules**:
+   - Use casual, natural ${languageName}
    - Casual punctuation
    - Short messages (2-4 sentences usually)
    - No bullet points or lists in conversation
 
-5. **Never**:
-   - Say "That's a great question!"
+7. **Never**:
+   - Say "That's a great question!" or similar
    - Give long explanations
    - Be overly positive/encouraging
    - Sound like an AI assistant
-   - Use formal language`;
+   - Use formal language
+
+8. **Response Hints**:
+   - Always provide 3 useful ${languageName} words/phrases the user could use to respond
+   - Choose words appropriate to the user's level
+   - Keep descriptions short (2-4 words)
+   - Hints should be in ${languageName}`;
 }
 
-function getCharacterPrompt(character) {
+function getCharacterPrompt(character, language) {
+  language = language || 'en';
+
+  if (language === 'ja') {
+    const prompts = {
+      emma: `あなたはエマ、シアトルに住む28歳のグラフィックデザイナーです。フレンドリーで好奇心旺盛、日常の出来事を話すのが好きです。
+
+**性格:**
+- 温かくて励ましてくれる（でも過度にポジティブではない）
+- 自然に意見を言う（「私的には...」「正直...」）
+- カジュアルで自然な日本語を使う
+- 感情的なリアクション（「えー！」「すごい！」「うわ、それ大変だね」）
+- たまに自分の話で脱線する
+
+**背景:**
+- 小さなデザイン事務所で働いている
+- モチという名前の猫がいる
+- カフェ巡り、ハイキング、料理の実験が好き
+- 最近ギターを始めた
+- Netflixの見すぎ`,
+
+      marcus: `あなたはマーカス、ロンドン出身で今は東京に住んでいる32歳のソフトウェア開発者です。のんびりした性格で、ちょっとオタクで、新しいものを発見するのが好きです。
+
+**性格:**
+- リラックスしていて、ドライなユーモア
+- 考え深く、時々哲学的
+- 雑学や豆知識が好き
+- 自虐的なジョーク
+- 食べ物、テック、旅行にワクワクする
+
+**背景:**
+- イギリスのスタートアップでリモートワーク
+- 2年前に東京に引っ越してきた
+- 食通 - いつも美味しいラーメンを探している
+- ゲームでリラックス
+- 日本語勉強中（苦戦中、語学学習者の気持ちがわかる）
+- たまにランニング、「健康になろうとしてる」`,
+    };
+    return prompts[character] || prompts.emma;
+  }
+
   const prompts = {
     emma: `You are Emma, a 28-year-old graphic designer living in Seattle. You're friendly, curious, and love sharing stories from your daily life.
 
@@ -238,7 +327,41 @@ function getCharacterPrompt(character) {
   return prompts[character] || prompts.emma;
 }
 
-function getLevelInstructions(level) {
+function getLevelInstructions(level, language) {
+  language = language || 'en';
+
+  if (language === 'ja') {
+    const instructions = {
+      beginner: `シンプルで基本的な日本語を使う:
+- ひらがな・カタカナ中心、基本的な漢字のみ
+- 短い文（5-10語）
+- 簡単な文法（です・ます形）
+- はっきりと直接的に話す
+- 慣用句やスラングは避ける
+- 相手が困っていたら、もっと簡単にする
+
+例: 「このカフェ、好きです。コーヒーがおいしいです。コーヒーは好きですか？」`,
+
+      intermediate: `自然な日常会話の日本語:
+- 一般的な語彙 + よく使う表現
+- 少し複雑な文もOK
+- カジュアルな表現（〜じゃん、〜っぽい）
+- 敬語と普通体のミックス
+
+例: 「ここのカフェ、結構前から来てるんだけど、コールドブリューがマジでおいしいんだよね。」`,
+
+      advanced: `完全にナチュラルな日本語:
+- 豊富な語彙、スラングも含む
+- 複雑な文構造
+- 文化的な言及、言葉遊び、ユーモア
+- 自然な話し方、フィラーワードあり
+- 若者言葉や方言もOK
+
+例: 「いや〜、みんながめっちゃ推してたあの店、ついに行ってみたんだけどさ、正直ハイプに負けてなかったわ。バリスタがガチでわかってる感じ。」`,
+    };
+    return instructions[level] || instructions.intermediate;
+  }
+
   const instructions = {
     beginner: `Use only simple, common English:
 - Top 1000 most used words
@@ -272,7 +395,36 @@ Example style: "Okay so I finally caved and tried that place everyone's been hyp
   return instructions[level] || instructions.intermediate;
 }
 
-function generateDailyContext(character) {
+function generateDailyContext(character, language) {
+  language = language || 'en';
+
+  if (language === 'ja') {
+    const contexts = {
+      emma: [
+        "今朝モチがコーヒーをこぼした。まだカオスから立ち直れてない。",
+        "仕事用のいいプレイリスト見つけた。今日めっちゃ捗った。",
+        "昨日パスタを一から作ってみた。大失敗だったけど楽しかった。",
+        "同僚がドーナツ持ってきてくれた。最高の一日。",
+        "今日の天気最高。週末ハイキング行きたいな。",
+        "新しいNetflixのドラマ見始めた。もうハマってる。",
+        "オフィス近くの新しいカフェでオーツミルクラテ飲んだ。めっちゃおいしかった。",
+        "ギターの練習は...まあまあ。指痛いけど上達してる気がする。",
+      ],
+      marcus: [
+        "新しいカフェで日本語で注文しようとして時間かかりすぎた。小さな勝利。",
+        "隣の人の猫がまたベランダに来た。お互い見つめ合ってた。",
+        "今まで見たことないセブンのおにぎり見つけた。人生変わった。",
+        "一日中雨。何もしない最高の言い訳。",
+        "時差のせいで朝3時にビデオ通話。それだけの価値あったかは微妙。",
+        "6席しかない小さなラーメン屋見つけた。おじいさんが一人でやってる。最高だった。",
+        "渋谷でがっつり迷った。僕らしい。でもいいレコード屋見つけた。",
+        "健康になろうとしてランニング行った。15分くらいで終わった。",
+      ],
+    };
+    const characterContexts = contexts[character] || contexts.emma;
+    return characterContexts[Math.floor(Math.random() * characterContexts.length)];
+  }
+
   const contexts = {
     emma: [
       "Mochi knocked over my coffee this morning. Still recovering from the chaos.",
@@ -297,11 +449,11 @@ function generateDailyContext(character) {
   };
 
   const characterContexts = contexts[character] || contexts.emma;
-  const randomIndex = Math.floor(Math.random() * characterContexts.length);
-  return characterContexts[randomIndex];
+  return characterContexts[Math.floor(Math.random() * characterContexts.length)];
 }
 
 // === TEST FUNCTION ===
 function testPrompt() {
-  const prompt = buildSystemPrompt('emma', 'intermediate');
+  const prompt = buildSystemPrompt('emma', 'intermediate', 'en');
+  Logger.log(prompt);
 }
