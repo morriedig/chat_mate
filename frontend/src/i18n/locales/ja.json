@@ -69,5 +69,31 @@
     "yuki": {
       "tagline": "大阪の大学生、アニメと食べ物が好き"
     }
+  },
+  "rank": {
+    "totalXP": "合計 {xp} XP",
+    "nextLevel": "次のレベル",
+    "maxLevel": "最高レベル達成！",
+    "messagesSent": "{count} メッセージ送信",
+    "streak": "{count} 日連続",
+    "days": "日",
+    "currentStreak": "{count} 日連続",
+    "longestStreak": "最高: {count} 日",
+    "levelUp": "レベルアップ！",
+    "continue": "学習を続ける！",
+    "streakBonus": "連続ボーナス！",
+    "streakMilestone": "{days} 日連続達成！"
+  },
+  "ranks": {
+    "novice": "初心者",
+    "beginner": "ビギナー",
+    "learner": "学習者",
+    "speaker": "話者",
+    "conversationalist": "会話上手",
+    "fluent": "流暢",
+    "advanced": "上級者",
+    "expert": "エキスパート",
+    "master": "マスター",
+    "legend": "レジェンド"
   }
 }

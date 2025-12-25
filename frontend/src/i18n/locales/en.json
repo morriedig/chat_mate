@@ -69,5 +69,31 @@
     "yuki": {
       "tagline": "Osaka student, anime & food enthusiast"
     }
+  },
+  "rank": {
+    "totalXP": "{xp} XP total",
+    "nextLevel": "Next level",
+    "maxLevel": "Max level reached!",
+    "messagesSent": "{count} messages sent",
+    "streak": "{count} day streak",
+    "days": "days",
+    "currentStreak": "{count} day streak",
+    "longestStreak": "Best: {count} days",
+    "levelUp": "Level Up!",
+    "continue": "Keep Learning!",
+    "streakBonus": "Streak Bonus!",
+    "streakMilestone": "{days} Day Streak!"
+  },
+  "ranks": {
+    "novice": "Novice",
+    "beginner": "Beginner",
+    "learner": "Learner",
+    "speaker": "Speaker",
+    "conversationalist": "Conversationalist",
+    "fluent": "Fluent",
+    "advanced": "Advanced",
+    "expert": "Expert",
+    "master": "Master",
+    "legend": "Legend"
   }
 }

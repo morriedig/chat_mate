@@ -3,12 +3,15 @@ import { ref, nextTick, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useChatStorage } from '../composables/useChatStorage'
 import { useChatApi } from '../composables/useChatApi'
+import { useUserProgress } from '../composables/useUserProgress'
 import ChatHeader from './chat/ChatHeader.vue'
 import ChatMessage from './chat/ChatMessage.vue'
 import ChatInput from './chat/ChatInput.vue'
 import VocabularyHints from './chat/VocabularyHints.vue'
 import ArticlePanel from './chat/ArticlePanel.vue'
 import TypingIndicator from './chat/TypingIndicator.vue'
+import LevelUpModal from './chat/LevelUpModal.vue'
+import StreakMilestoneModal from './chat/StreakMilestoneModal.vue'
 
 const { t } = useI18n()
 
@@ -46,6 +49,12 @@ const storageConfig = computed(() => ({
 // Composables
 const storage = useChatStorage(storageConfig)
 const { isLoading, error, sendMessage: apiSendMessage } = useChatApi()
+const {
+  onMessageSent,
+  onMessageReceived,
+  onArticleStarted,
+  trackCharacterInteraction
+} = useUserProgress()
 
 // State
 const messages = ref([])
@@ -67,6 +76,11 @@ onMounted(() => {
     scrollToBottom()
   } else {
     getAIResponse(true)
+  }
+
+  // Track article started if in article mode
+  if (isArticleMode.value && props.article) {
+    onArticleStarted(props.article.id)
   }
 
   // Auto-save on changes
@@ -99,6 +113,10 @@ async function handleSendMessage() {
   currentHints.value = []
   scrollToBottom()
 
+  // Track XP for sending message
+  onMessageSent()
+  trackCharacterInteraction(props.character.id)
+
   await getAIResponse()
 }
 
@@ -120,6 +138,9 @@ async function getAIResponse(isGreeting = false) {
       content: result.reply,
     })
 
+    // Track XP for receiving response
+    onMessageReceived()
+
     if (result.hints.length > 0) {
       currentHints.value = result.hints
     }
@@ -134,13 +155,6 @@ async function getAIResponse(isGreeting = false) {
   focusInput()
 }
 
-function handleUseHint(word) {
-  if (inputText.value) {
-    inputText.value += ' ' + word
-  } else {
-    inputText.value = word
-  }
-}
 
 function handleRenewChat() {
   messages.value = []
@@ -209,7 +223,6 @@ function handleToggleArticle() {
             <VocabularyHints
               v-if="!isArticleMode"
               :hints="currentHints"
-              @use-hint="handleUseHint"
             />
 
             <!-- Spacer -->
@@ -226,5 +239,11 @@ function handleToggleArticle() {
         </div>
       </div>
     </div>
+
+    <!-- Level Up Modal -->
+    <LevelUpModal />
+
+    <!-- Streak Milestone Modal -->
+    <StreakMilestoneModal />
   </div>
 </template>

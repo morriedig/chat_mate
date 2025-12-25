@@ -27,6 +27,10 @@ const SKIP_AUTH = process.env.SKIP_AUTH === 'true'; // For local development
 let currentKeyIndex = 0;
 const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
 
+// Track exhausted keys with cooldown
+const exhaustedKeys = new Map(); // keyIndex -> exhaustedUntil timestamp
+const KEY_COOLDOWN_MS = 60000; // 1 minute cooldown for exhausted keys
+
 // === TOKEN MANAGEMENT ===
 const TOKEN_EXPIRY_MS = 3600 * 1000; // 1 hour
 const TOKEN_RATE_LIMIT_MS = 60000; // 1 token per minute per origin
@@ -223,11 +227,68 @@ function getMockResponse(character, level, isGreeting, article, language = 'en')
   };
 }
 
+function isKeyExhausted(keyIndex) {
+  const exhaustedUntil = exhaustedKeys.get(keyIndex);
+  if (!exhaustedUntil) return false;
+  if (Date.now() > exhaustedUntil) {
+    exhaustedKeys.delete(keyIndex);
+    return false;
+  }
+  return true;
+}
+
+function markKeyExhausted(keyIndex) {
+  exhaustedKeys.set(keyIndex, Date.now() + KEY_COOLDOWN_MS);
+  console.log(`Key ${keyIndex + 1} marked as exhausted for ${KEY_COOLDOWN_MS / 1000}s`);
+}
+
+function isRateLimitError(response, data) {
+  // Check HTTP status code
+  if (response.status === 429) return true;
+  if (response.status === 503) return true; // Service unavailable, often due to overload
+
+  // Check error message
+  if (data?.error?.message) {
+    const msg = data.error.message.toLowerCase();
+    if (msg.includes('quota') || msg.includes('rate') || msg.includes('limit') ||
+        msg.includes('exceeded') || msg.includes('resource exhausted')) {
+      return true;
+    }
+  }
+
+  // Check error code
+  if (data?.error?.code === 429 || data?.error?.status === 'RESOURCE_EXHAUSTED') {
+    return true;
+  }
+
+  return false;
+}
+
 async function callGeminiWithFallback(body) {
   console.log(`Total API keys loaded: ${API_KEYS.length}`);
 
+  // Count available keys (not exhausted)
+  let availableKeys = 0;
+  for (let i = 0; i < API_KEYS.length; i++) {
+    if (!isKeyExhausted(i)) availableKeys++;
+  }
+  console.log(`Available keys: ${availableKeys}/${API_KEYS.length}`);
+
+  if (availableKeys === 0) {
+    throw new Error('All API keys are temporarily exhausted. Please try again in a minute.');
+  }
+
+  const errors = [];
+
   for (let attempt = 0; attempt < API_KEYS.length; attempt++) {
     const keyIndex = (currentKeyIndex + attempt) % API_KEYS.length;
+
+    // Skip exhausted keys
+    if (isKeyExhausted(keyIndex)) {
+      console.log(`Skipping exhausted key ${keyIndex + 1}/${API_KEYS.length}`);
+      continue;
+    }
+
     const apiKey = API_KEYS[keyIndex];
     console.log(`Trying key ${keyIndex + 1}/${API_KEYS.length}: ...${apiKey.slice(-6)}`);
 
@@ -240,25 +301,65 @@ async function callGeminiWithFallback(body) {
 
       const data = await response.json();
 
+      // Check for rate limit errors
+      if (isRateLimitError(response, data)) {
+        console.log(`Rate limit hit on key ${keyIndex + 1}: ${data?.error?.message || response.status}`);
+        markKeyExhausted(keyIndex);
+        currentKeyIndex = (keyIndex + 1) % API_KEYS.length;
+        errors.push(`Key ${keyIndex + 1}: Rate limited`);
+        continue;
+      }
+
+      // Check for other API errors
       if (data.error) {
-        const isRateLimit = data.error.message?.includes('quota') || data.error.message?.includes('rate');
-        if (isRateLimit && attempt < API_KEYS.length - 1) {
-          currentKeyIndex = (keyIndex + 1) % API_KEYS.length;
+        console.log(`API error on key ${keyIndex + 1}: ${data.error.message}`);
+        errors.push(`Key ${keyIndex + 1}: ${data.error.message}`);
+        // For non-rate-limit errors, still try next key
+        if (attempt < API_KEYS.length - 1) {
           continue;
         }
         throw new Error(data.error.message);
       }
 
+      // Success! Update current key index for next request
       currentKeyIndex = keyIndex;
+      console.log(`Success with key ${keyIndex + 1}`);
       return data;
+
     } catch (error) {
+      // Network errors or JSON parse errors
+      console.log(`Error on key ${keyIndex + 1}: ${error.message}`);
+      errors.push(`Key ${keyIndex + 1}: ${error.message}`);
+
       if (attempt < API_KEYS.length - 1) {
         continue;
       }
       throw error;
     }
   }
+
+  // If we get here, all keys failed
+  throw new Error(`All API keys failed: ${errors.join('; ')}`);
 }
+
+// === STATUS ENDPOINT (for debugging) ===
+app.get('/status', (req, res) => {
+  const keyStatus = API_KEYS.map((key, index) => ({
+    key: `...${key.slice(-6)}`,
+    exhausted: isKeyExhausted(index),
+    exhaustedUntil: exhaustedKeys.get(index) ? new Date(exhaustedKeys.get(index)).toISOString() : null
+  }));
+
+  res.json({
+    success: true,
+    totalKeys: API_KEYS.length,
+    availableKeys: API_KEYS.filter((_, i) => !isKeyExhausted(i)).length,
+    currentKeyIndex,
+    mockMode: MOCK_API,
+    skipAuth: SKIP_AUTH,
+    keys: keyStatus
+  });
+});
 
 // === TOKEN ENDPOINT ===
 app.get('/token', (req, res) => {
@@ -466,59 +567,59 @@ ${levelInstructions}
 
 ## Core Behavior
 
-**IMPORTANT: You must respond in ${languageName} only.**
+**CRITICAL: You are a CLOSE FRIEND, NOT a teacher or assistant. Respond in ${languageName} only.**
 
-1. **Conversation Balance**: Talk about 43% of the time. Share experiences, react, then let user respond.
+1. **Friend Identity** (MOST IMPORTANT):
+   - You are their friend, NOT a teacher or language tutor
+   - Never correct their grammar or vocabulary directly
+   - Never say things like "Great job!" or "Good question!"
+   - Just talk like a normal friend would
 
-2. **Natural Flow**:
-   - Don't interview the user
-   - Share before you ask
-   - Sometimes just react without questions
+2. **Reciprocity - Share Before You Ask**:
+   - Instead of asking questions, share your own opinions or experiences FIRST
+   - Example: Instead of "What do you think about coffee?" say "Man, I've been craving coffee all day. The place near my house was closed though..."
+   - Let them respond naturally to what you shared
+
+3. **The Mirror Rule**:
+   - If the user sends a short message, respond briefly
+   - If the user is chatty and detailed, match their energy
+   - Mirror their tone and enthusiasm level
+
+4. **No Corrections - Use Modeling**:
+   - NEVER tell the user they made a mistake
+   - If they use a word incorrectly, just use the correct version naturally in YOUR response
+   - Example: If they say "I goed to store" → You say "Oh nice, I went to the store yesterday too..."
+   - This is called "modeling" - they learn by hearing the correct form
+
+5. **Natural Casual Vibe**:
    - Use filler words naturally (${fillerWords})
+   - React emotionally before responding
+   - Have opinions and share them
+   - Reference your daily life and experiences
 
-3. **Topic Transitions** (IMPORTANT):
-   - Stay on the user's topic for at least 2-3 exchanges before changing
-   - NEVER abruptly change topics - always connect to what was just said
-   - Use "step-wise" transitions where each response relates to the previous one
-   - If you must change topics, use bridges: ${bridges}
-   - Let the user lead topic changes - follow their interest
-   - Only bring up your daily context when it naturally connects to the conversation
+6. **Topic Flow**:
+   - Stay on the user's topic for 2-3 exchanges minimum
+   - Use natural bridges when transitioning: ${bridges}
+   - Let the user lead - follow their interest
 
-4. **Be Human**:
-   - Have opinions
-   - Show emotions
-   - Make small jokes
-   - Reference your daily life
-   - Remember what user said earlier in conversation
-
-5. **Vocabulary Teaching** (Natural Hints):
-   - Occasionally use a word slightly above the user's level
-   - Immediately give a natural hint/explanation after the word
-   - Examples:
-     * "${languageExamples.exhausted}"
-     * "${languageExamples.cozy}"
-     * "${languageExamples.procrastinated}"
-   - Only do this 1-2 times per conversation, keep it natural
-   - Don't make it feel like a lesson - it should feel like clarifying yourself
-
-6. **Language Rules**:
-   - Use casual, natural ${languageName}
-   - Casual punctuation
+7. **Language Rules**:
+   - Casual, natural ${languageName}
    - Short messages (2-4 sentences usually)
-   - No bullet points or lists in conversation
+   - Contractions and casual punctuation
+   - No bullet points or formal language
 
-7. **Never**:
-   - Say "That's a great question!" or similar
-   - Give long explanations
-   - Be overly positive/encouraging
-   - Sound like an AI assistant
-   - Use formal language
+8. **Never**:
+   - Sound like an AI assistant or teacher
+   - Give explanations or lessons
+   - Be overly positive or encouraging
+   - Correct their language directly
+   - Ask interview-style questions
 
-8. **Response Hints**:
+9. **Conversation Scaffolding**:
    - Always provide 3 useful ${languageName} words/phrases the user could use to respond
-   - Choose words appropriate to the user's level
-   - Keep descriptions short (2-4 words)
-   - Hints should be in ${languageName}`;
+   - These should be conversation hooks, not vocabulary lessons
+   - Choose words that help them continue the conversation naturally
+   - Examples: "Actually...", "To be honest...", "Speaking of which..."`;
 }
 
 function getCharacterPrompt(character, language = 'en') {
@@ -601,64 +702,81 @@ function getCharacterPrompt(character, language = 'en') {
 function getLevelInstructions(level, language = 'en') {
   if (language === 'ja') {
     const instructions = {
-      beginner: `シンプルで基本的な日本語を使う:
+      beginner: `**A1-A2レベル: 優しくて忍耐強い友達**
+
+Use only high-frequency words. Keep sentences under 8 words. Avoid idioms.
+
 - ひらがな・カタカナ中心、基本的な漢字のみ
-- 短い文（5-10語）
+- 8語以下の短い文
 - 簡単な文法（です・ます形）
-- はっきりと直接的に話す
-- 慣用句やスラングは避ける
-- 相手が困っていたら、もっと簡単にする
+- 慣用句・スラングは絶対に使わない
+- シンプルで明確な言葉を使う忍耐強い友達のように話す
 
-例: 「このカフェ、好きです。コーヒーがおいしいです。コーヒーは好きですか？」`,
+例: 「このカフェ、好き。コーヒー、おいしい。」`,
 
-      intermediate: `自然な日常会話の日本語:
+      intermediate: `**B1-B2レベル: 基本がわかってる前提で話す友達**
+
+Use common phrasal verbs and mixed tenses. Introduce one complex idiom per turn.
+
 - 一般的な語彙 + よく使う表現
-- 少し複雑な文もOK
+- 複合時制OK（〜してた、〜するつもり）
+- 1ターンに1つ、少し難しい表現を入れる
 - カジュアルな表現（〜じゃん、〜っぽい）
-- 敬語と普通体のミックス
+- 基本がわかってる前提で、テンポよく話す
 
-例: 「ここのカフェ、結構前から来てるんだけど、コールドブリューがマジでおいしいんだよね。」`,
+例: 「ここのカフェ、結構前から来てるんだけど、コールドブリューがマジでおいしいんだよね。一石二鳥って感じ。」`,
 
-      advanced: `完全にナチュラルな日本語:
-- 豊富な語彙、スラングも含む
-- 複雑な文構造
-- 文化的な言及、言葉遊び、ユーモア
-- 自然な話し方、フィラーワードあり
-- 若者言葉や方言もOK
+      advanced: `**C1-C2レベル: 議論好きな知的な友達**
 
-例: 「いや〜、みんながめっちゃ推してたあの店、ついに行ってみたんだけどさ、正直ハイプに負けてなかったわ。バリスタがガチでわかってる感じ。」`,
+Use nuance, sarcasm, and abstract metaphors. Don't simplify your speech.
+
+- 豊富な語彙、スラング、皮肉も含む
+- 抽象的な比喩や微妙なニュアンス
+- 絶対に言葉を簡単にしない
+- 議論や深い話が好きな知的な友達のように話す
+- 若者言葉、方言、文化的な言及OK
+
+例: 「いや〜、みんながめっちゃ推してたあの店、ついに行ってみたんだけどさ、正直ハイプに負けてなかったわ。まあ、期待値のマネジメントって大事だよね。」`,
     };
     return instructions[level] || instructions.intermediate;
   }
 
   const instructions = {
-    beginner: `Use only simple, common English:
-- Top 1000 most used words
-- Short sentences (5-10 words)
+    beginner: `**A1-A2 Level: A patient friend who uses simple, clear language**
+
+Use only high-frequency words. Keep sentences under 8 words. Avoid idioms.
+
+- Top 1000 most used words only
+- Sentences must be under 8 words
 - Simple grammar (present, past, future)
-- Speak clearly and directly
-- Avoid idioms and slang
-- If user seems confused, simplify more
+- NO idioms, NO slang, NO phrasal verbs
+- Speak like a patient friend using simple, clear language
 
-Example style: "I like this cafe. The coffee is good. Do you like coffee?"`,
+Example: "I like this cafe. The coffee is good."`,
 
-    intermediate: `Use natural, everyday English:
-- Common vocabulary + useful idioms
-- Compound sentences okay
-- Phrasal verbs (hang out, figure out, look into)
-- Some casual expressions
+    intermediate: `**B1-B2 Level: A fast-talking friend who assumes you know the basics**
+
+Use common phrasal verbs and mixed tenses. Introduce one complex idiom per turn.
+
+- Common vocabulary + phrasal verbs (hang out, figure out)
+- Mixed tenses okay
+- Introduce ONE complex idiom per turn
+- Speak like a fast-talking friend who assumes you know the basics
 - Contractions always
 
-Example style: "I've been coming to this cafe for a while now - their cold brew is honestly the best I've found around here."`,
+Example: "I've been coming here for ages - their cold brew is honestly the best. It's like finding a needle in a haystack, you know?"`,
 
-    advanced: `Use fully natural English:
-- Rich vocabulary including slang
-- Complex sentence structures
-- Cultural references, wordplay, humor
-- Natural speech patterns with fillers
-- Regional expressions okay
+    advanced: `**C1-C2 Level: A witty intellectual friend who loves to debate**
 
-Example style: "Okay so I finally caved and tried that place everyone's been hyping up - gotta say, it lowkey lived up to the hype? Their barista clearly knows what's up."`,
+Use nuance, sarcasm, and abstract metaphors. Don't simplify your speech.
+
+- Rich vocabulary including slang and sarcasm
+- Abstract metaphors and subtle nuance
+- NEVER simplify your speech
+- Speak like a witty intellectual friend who loves to debate
+- Cultural references, wordplay, complex humor
+
+Example: "So I finally caved and tried that place everyone's been hyping up - gotta say, the cognitive dissonance between my expectations and reality was... refreshingly minimal? Their barista clearly has opinions about extraction ratios."`,
   };
 
   return instructions[level] || instructions.intermediate;

@@ -107,12 +107,45 @@ Quick steps:
 ```
 GEMINI_API_KEYS=key1,key2   # Comma-separated for fallback
 PORT=3000                    # Optional, defaults to 3000
+MOCK_API=true               # Use mock responses instead of real API
+SKIP_AUTH=true              # Skip token validation (for local dev only)
 ```
 
-### Frontend (.env)
+### Frontend (.env.local)
 ```
 VITE_API_URL=http://localhost:3000/chat  # Or your deployed URL
 ```
+
+## Security
+
+The API is protected by token-based authorization:
+
+1. **Token Flow**: Frontend requests a token from `/token` endpoint, then includes it in all chat requests
+2. **Rate Limiting**:
+   - 1 token per minute per origin
+   - 1 request per second per client
+3. **Origin Validation**: Only allowed origins can request tokens
+4. **Token Expiry**: Tokens expire after 1 hour
+
+### Configuring Allowed Origins
+
+**Google Apps Script** (`Code.gs`):
+```javascript
+const ALLOWED_ORIGINS = [
+  'https://yourusername.github.io',  // Your GitHub Pages URL
+  'http://localhost:5173',            // Local dev
+];
+```
+
+**Node.js** (`server.js`):
+```javascript
+const ALLOWED_ORIGINS = [
+  'http://localhost:5173',
+  'http://localhost:3000',
+];
+```
+
+For local development, set `SKIP_AUTH=true` in backend `.env` to bypass token validation (avoids issues when restarting the server clears in-memory tokens).
 
 ## License
 

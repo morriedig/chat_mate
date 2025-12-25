@@ -1,6 +1,7 @@
 <script setup>
 import { useI18n } from 'vue-i18n'
 import { useDarkMode } from '../../composables/useDarkMode'
+import RankBadge from './RankBadge.vue'
 
 const { t } = useI18n()
 const { isDark, toggle: toggleDark } = useDarkMode()
@@ -47,7 +48,8 @@ const emit = defineEmits(['back', 'toggle-article', 'renew-chat'])
       <span class="px-2 py-0.5 rounded-full bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 text-xs font-semibold">Online</span>
       <span v-if="isArticleMode" class="px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 text-xs font-semibold">{{ t('chat.articleMode') }}</span>
     </div>
-    <div class="flex items-center gap-2">
+    <div class="flex items-center gap-2 relative">
+      <RankBadge />
       <button
         @click="toggleDark"
         class="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-text-main dark:text-slate-200 transition-colors"

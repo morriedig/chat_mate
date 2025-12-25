@@ -172,3 +172,11 @@ Language learning product disguised as AI companion. Solves: no conversation par
 - Frontend frameworks (React/Vue) also expose keys (run in browser)
 - Solution: Google Apps Script as free backend proxy
 - All storage in Google Sheets (free, simple)
+
+**Security Implementation** (Added 2025-12-24):
+- Token-based authorization to protect API from abuse
+- Flow: Frontend requests token → Backend validates origin → Issues token → Frontend includes token in requests
+- Rate limiting: 1 token/minute per origin, 1 request/second per client
+- Token expiry: 1 hour
+- Origin whitelist: Only allowed domains can request tokens
+- For local dev: `SKIP_AUTH=true` bypasses token validation (in-memory tokens clear on server restart)
