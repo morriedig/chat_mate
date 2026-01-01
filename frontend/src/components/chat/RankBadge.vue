@@ -1,6 +1,8 @@
 <script setup>
+import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useUserProgress } from '../../composables/useUserProgress'
+import AchievementsPanel from './AchievementsPanel.vue'
 
 const { t } = useI18n()
 const {
@@ -9,14 +11,27 @@ const {
   nextRank,
   progressToNextRank,
   xpToNextRank,
-  recentXPGain
+  recentXPGain,
+  unlockedAchievements,
+  ACHIEVEMENTS
 } = useUserProgress()
+
+const showAchievements = ref(false)
 </script>
 
 <template>
   <div class="flex items-center gap-2">
+    <!-- Achievements Button -->
+    <button
+      @click="showAchievements = !showAchievements"
+      class="flex items-center gap-1 px-2 py-1 rounded-lg bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/30 dark:to-amber-900/30 border border-yellow-200 dark:border-yellow-700 hover:border-yellow-400 dark:hover:border-yellow-500 transition-colors"
+    >
+      <span class="text-base">🏆</span>
+      <span class="text-xs font-bold text-yellow-600 dark:text-yellow-400">{{ unlockedAchievements.length }}/{{ ACHIEVEMENTS.length }}</span>
+    </button>
+
     <!-- Streak Badge -->
-    <div v-if="progress.currentStreak > 0" class="flex items-center gap-1 px-2 py-1 rounded-lg bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-900/30 dark:to-orange-900/30 border border-red-200 dark:border-red-700">
+    <div v-if="progress.currentStreak > 0" class="flex items-center justify-center gap-1 px-2 py-1 rounded-lg bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-900/30 dark:to-orange-900/30 border border-red-200 dark:border-red-700">
       <span class="text-base animate-pulse">🔥</span>
       <span class="text-xs font-bold text-red-600 dark:text-red-400">{{ progress.currentStreak }}</span>
       <span class="hidden sm:inline text-[10px] text-red-500 dark:text-red-400">{{ t('rank.days') }}</span>
@@ -92,6 +107,23 @@ const {
         +{{ recentXPGain.amount }} XP
       </div>
     </transition>
+
+    <!-- Achievements Panel Popup -->
+    <Teleport to="body">
+      <Transition name="panel">
+        <div v-if="showAchievements" class="achievements-overlay" @click.self="showAchievements = false">
+          <div class="achievements-popup">
+            <div class="popup-header">
+              <h2 class="popup-title">🏆 {{ $t('achievements.unlocked') }}</h2>
+              <button @click="showAchievements = false" class="close-btn">
+                <span class="material-symbols-outlined">close</span>
+              </button>
+            </div>
+            <AchievementsPanel />
+          </div>
+        </div>
+      </Transition>
+    </Teleport>
   </div>
 </template>
 
@@ -123,5 +155,89 @@ const {
     opacity: 0;
     transform: translateY(-10px);
   }
+}
+
+/* Achievements Panel */
+.achievements-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  backdrop-filter: blur(4px);
+}
+
+.achievements-popup {
+  background: white;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 400px;
+  max-height: 80vh;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.dark .achievements-popup {
+  background: #1f2937;
+}
+
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.dark .popup-header {
+  border-bottom-color: #374151;
+}
+
+.popup-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.dark .popup-title {
+  color: #f3f4f6;
+}
+
+.close-btn {
+  padding: 4px;
+  border-radius: 8px;
+  color: #6b7280;
+  transition: background 0.2s;
+}
+
+.close-btn:hover {
+  background: #f3f4f6;
+}
+
+.dark .close-btn:hover {
+  background: #374151;
+}
+
+.achievements-popup :deep(.achievements-panel) {
+  max-height: calc(80vh - 60px);
+  overflow-y: auto;
+}
+
+/* Panel transitions */
+.panel-enter-active,
+.panel-leave-active {
+  transition: all 0.3s ease;
+}
+
+.panel-enter-from,
+.panel-leave-to {
+  opacity: 0;
+}
+
+.panel-enter-from .achievements-popup,
+.panel-leave-to .achievements-popup {
+  transform: scale(0.95);
 }
 </style>

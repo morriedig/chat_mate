@@ -35,6 +35,26 @@ const STREAK_MILESTONES = [
   { days: 365, bonus: 1825, icon: '👑' },
 ]
 
+// Achievement definitions
+const ACHIEVEMENTS = [
+  // First Steps
+  { id: 'first_chat', category: 'first_steps', icon: '💬', condition: (p) => p.messagesSent >= 1 },
+  { id: 'ice_breaker', category: 'first_steps', icon: '🧊', condition: (p) => p.messagesSent >= 10 },
+  { id: 'chatterbox', category: 'first_steps', icon: '🗣️', condition: (p) => p.messagesSent >= 100 },
+  // Consistency
+  { id: 'streak_3', category: 'consistency', icon: '🔥', condition: (p) => p.longestStreak >= 3 },
+  { id: 'streak_7', category: 'consistency', icon: '⚡', condition: (p) => p.longestStreak >= 7 },
+  { id: 'streak_30', category: 'consistency', icon: '🌟', condition: (p) => p.longestStreak >= 30 },
+  // Learning
+  { id: 'word_collector', category: 'learning', icon: '📝', condition: (p) => p.wordsLearned.length >= 10 },
+  { id: 'bookworm', category: 'learning', icon: '📚', condition: (p) => p.articlesCompleted.length >= 5 },
+  { id: 'polyglot', category: 'learning', icon: '🌍', condition: (p) => Object.keys(p.characterStats).length >= 3 },
+  // Mastery (rank-based)
+  { id: 'level_beginner', category: 'mastery', icon: '🌿', condition: (p) => p.totalXP >= 100 },
+  { id: 'level_speaker', category: 'mastery', icon: '💬', condition: (p) => p.totalXP >= 600 },
+  { id: 'level_legend', category: 'mastery', icon: '👑', condition: (p) => p.totalXP >= 5500 },
+]
+
 function getDefaultProgress() {
   return {
     totalXP: 0,
@@ -49,6 +69,7 @@ function getDefaultProgress() {
     wordsLearned: [],
     characterStats: {},
     claimedMilestones: [], // Track which streak milestones have been claimed
+    unlockedAchievements: [], // Track unlocked achievements
   }
 }
 
@@ -75,6 +96,8 @@ const showLevelUp = ref(false)
 const newRank = ref(null)
 const showStreakMilestone = ref(false)
 const currentMilestone = ref(null)
+const showAchievementUnlock = ref(false)
+const newAchievement = ref(null)
 
 export function useUserProgress() {
   // Computed properties
@@ -109,6 +132,33 @@ export function useUserProgress() {
     const xpNeededForNext = next.minXP - current.minXP
     return Math.min(100, Math.round((xpInCurrentRank / xpNeededForNext) * 100))
   })
+
+  // Computed: Get all unlocked achievements
+  const unlockedAchievements = computed(() => {
+    return ACHIEVEMENTS.filter(a => progress.value.unlockedAchievements.includes(a.id))
+  })
+
+  // Computed: Get locked achievements
+  const lockedAchievements = computed(() => {
+    return ACHIEVEMENTS.filter(a => !progress.value.unlockedAchievements.includes(a.id))
+  })
+
+  // Check for new achievements
+  function checkAchievements() {
+    for (const achievement of ACHIEVEMENTS) {
+      if (!progress.value.unlockedAchievements.includes(achievement.id)) {
+        if (achievement.condition(progress.value)) {
+          // Unlock this achievement
+          progress.value.unlockedAchievements.push(achievement.id)
+          newAchievement.value = achievement
+          showAchievementUnlock.value = true
+          saveProgress(progress.value)
+          return true // Only show one at a time
+        }
+      }
+    }
+    return false
+  }
 
   // Check for streak milestones
   function checkStreakMilestone(streakDays) {
@@ -187,6 +237,7 @@ export function useUserProgress() {
     progress.value.messagesSent += 1
     addXP(XP_REWARDS.userMessage, 'userMessage')
     saveProgress(progress.value)
+    checkAchievements()
   }
 
   // Track system/AI message received: +2 XP
@@ -194,6 +245,7 @@ export function useUserProgress() {
     progress.value.messagesReceived += 1
     addXP(XP_REWARDS.systemMessage, 'systemMessage')
     saveProgress(progress.value)
+    checkAchievements()
   }
 
   // Track article started (no XP, just tracking)
@@ -233,6 +285,14 @@ export function useUserProgress() {
     currentMilestone.value = null
   }
 
+  // Dismiss achievement unlock notification
+  function dismissAchievementUnlock() {
+    showAchievementUnlock.value = false
+    newAchievement.value = null
+    // Check if there are more achievements to show
+    setTimeout(() => checkAchievements(), 300)
+  }
+
   // Get all ranks
   function getAllRanks() {
     return RANKS
@@ -257,12 +317,16 @@ export function useUserProgress() {
     newRank,
     showStreakMilestone,
     currentMilestone,
+    showAchievementUnlock,
+    newAchievement,
 
     // Computed
     currentRank,
     nextRank,
     xpToNextRank,
     progressToNextRank,
+    unlockedAchievements,
+    lockedAchievements,
 
     // Actions
     addXP,
@@ -273,6 +337,8 @@ export function useUserProgress() {
     trackCharacterInteraction,
     dismissLevelUp,
     dismissStreakMilestone,
+    dismissAchievementUnlock,
+    checkAchievements,
     getAllRanks,
     resetProgress,
 
@@ -280,5 +346,6 @@ export function useUserProgress() {
     RANKS,
     XP_REWARDS,
     STREAK_MILESTONES,
+    ACHIEVEMENTS,
   }
 }

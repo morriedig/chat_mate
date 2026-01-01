@@ -16,25 +16,46 @@ chat_mate/
 ├── frontend/
 │   ├── src/
 │   │   ├── components/
-│   │   │   ├── SetupScreen.vue      # Language/character/level selection
+│   │   │   ├── SetupScreen.vue      # Mode/character/level selection (Chat vs Learning)
 │   │   │   ├── ChatScreen.vue       # Main chat interface
 │   │   │   ├── ArticleScreen.vue    # Article-based learning mode
-│   │   │   └── chat/
-│   │   │       ├── ChatHeader.vue
-│   │   │       ├── ChatInput.vue
-│   │   │       ├── ChatMessage.vue
-│   │   │       ├── VocabularyHints.vue
-│   │   │       ├── RankBadge.vue         # XP/rank display
-│   │   │       ├── LevelUpModal.vue      # Level-up celebration
-│   │   │       └── StreakMilestoneModal.vue
+│   │   │   ├── LearningScreen.vue   # Vocabulary learning mode
+│   │   │   ├── chat/                # Chat-related components
+│   │   │   │   ├── ChatHeader.vue
+│   │   │   │   ├── ChatInput.vue
+│   │   │   │   ├── ChatMessage.vue
+│   │   │   │   ├── VocabularyHints.vue
+│   │   │   │   ├── VocabularyWord.vue    # Highlighted word with hover popup
+│   │   │   │   ├── RankBadge.vue         # XP/rank display + achievements button
+│   │   │   │   ├── LevelUpModal.vue      # Level-up celebration
+│   │   │   │   ├── StreakMilestoneModal.vue
+│   │   │   │   ├── AchievementBadge.vue      # Individual achievement badge
+│   │   │   │   ├── AchievementUnlockModal.vue # Achievement unlock celebration
+│   │   │   │   └── AchievementsPanel.vue     # All achievements grid view
+│   │   │   └── learning/            # Learning mode components
+│   │   │       ├── VocabularyCard.vue   # Word card with 3 audio buttons
+│   │   │       ├── FlashcardMode.vue    # Flip card with 3 audio buttons
+│   │   │       ├── QuizMode.vue         # Multiple choice quiz
+│   │   │       └── ConversationPractice.vue  # Fixed dialogue with Play All
 │   │   ├── composables/
+│   │   │   ├── useArticleParser.js  # Parse [[word]] markers (SRP)
 │   │   │   ├── useChatApi.js        # API communication
 │   │   │   ├── useChatStorage.js    # Chat history persistence
 │   │   │   ├── useDarkMode.js       # Theme toggle
+│   │   │   ├── useLearningProgress.js # Chapter completion state (SRP)
+│   │   │   ├── useLearningStorage.js  # Learning data persistence (DIP)
 │   │   │   └── useUserProgress.js   # XP, ranks, streaks (gamification)
 │   │   ├── data/
 │   │   │   ├── characters.js        # AI character definitions
-│   │   │   └── articles.js          # Reading materials
+│   │   │   ├── articles.js          # Reading materials
+│   │   │   ├── chapterLoader.js     # YAML chapter loader (supports **/*.yml)
+│   │   │   └── chapters/            # YAML vocabulary chapters (flat or by level)
+│   │   │       ├── *.yml            # Flat structure OR
+│   │   │       ├── beginner/*.yml   # Level-based subfolders
+│   │   │       ├── intermediate/*.yml
+│   │   │       └── advanced/*.yml
+│   │   ├── utils/
+│   │   │   └── tts.js               # Web Speech API for audio
 │   │   └── i18n/locales/            # en.json, ja.json
 │   └── package.json
 ├── backend/
@@ -43,6 +64,7 @@ chat_mate/
 │   └── .env                         # GEMINI_API_KEYS, MOCK_API, SKIP_AUTH
 └── docs/                            # Feature documentation
     ├── README.md
+    ├── learning-mode.md             # Learning mode & chapters
     ├── xp-system.md
     ├── rank-system.md
     └── streak-system.md
@@ -59,11 +81,26 @@ chat_mate/
 - **XP System**: User message +5 XP, AI response +2 XP
 - **Ranks**: 10 levels from Novice (0 XP) to Legend (5500 XP)
 - **Streaks**: Daily consecutive login tracking with milestone bonuses
+- **Achievements**: 12 badges across 4 categories (First Steps, Consistency, Learning, Mastery)
 - See `docs/` folder for detailed documentation
 
 ### 3. Article Mode
 - Users can practice by discussing pre-loaded articles
 - Character stays in role while discussing content
+
+### 4. Learning Mode (Default)
+- **YAML-based chapters**: Add `.yml` files to `src/data/chapters/` (flat or in level subfolders)
+- **Folder organization**: Supports `chapters/*.yml` or `chapters/{beginner,intermediate,advanced}/*.yml`
+- **Four learning modes**: List, Flashcard, Quiz, Conversation Practice
+- **Audio**: Web Speech API with 3 buttons (word, meaning, sentence)
+- **Play All**: Play entire conversation sequentially
+- **Bilingual mode**: Toggle to show both target + native language
+- **Voice speed**: Dropdown with 3 modes:
+  - Normal (0.9x) - Regular speed
+  - Slow (0.3x) - Very slow for careful listening
+  - Word by Word (0.5x) - Each word played separately with highlighting
+- **Progress tracking**: Quiz and conversation completion saved to localStorage
+- See `docs/learning-mode.md` for detailed documentation
 
 ## Development Commands
 

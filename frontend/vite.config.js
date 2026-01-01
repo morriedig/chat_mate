@@ -7,4 +7,14 @@ export default defineConfig({
   // For GitHub Pages: set base to repo name (e.g., '/chat_mate/')
   // Leave empty for custom domain or root deployment
   base: process.env.GITHUB_PAGES ? '/chat_mate/' : '/',
+  test: {
+    globals: true,
+    environment: 'happy-dom',
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'json', 'html'],
+      include: ['src/**/*.{js,vue}'],
+      exclude: ['src/main.js', 'src/data/**']
+    }
+  }
 })

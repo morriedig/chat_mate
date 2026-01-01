@@ -12,6 +12,7 @@ import ArticlePanel from './chat/ArticlePanel.vue'
 import TypingIndicator from './chat/TypingIndicator.vue'
 import LevelUpModal from './chat/LevelUpModal.vue'
 import StreakMilestoneModal from './chat/StreakMilestoneModal.vue'
+import AchievementUnlockModal from './chat/AchievementUnlockModal.vue'
 
 const { t } = useI18n()
 
@@ -245,5 +246,8 @@ function handleToggleArticle() {
 
     <!-- Streak Milestone Modal -->
     <StreakMilestoneModal />
+
+    <!-- Achievement Unlock Modal -->
+    <AchievementUnlockModal />
   </div>
 </template>

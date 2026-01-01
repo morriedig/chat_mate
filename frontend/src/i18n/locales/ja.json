@@ -6,8 +6,26 @@
   "setup": {
     "choosePartner": "チャット相手を選ぶ",
     "yourLevel": "あなたの日本語レベル",
-    "chooseMode": "チャットモード",
+    "chooseMode": "チャットタイプ",
     "startChatting": "チャットを始める",
+    "startLearning": "学習を始める",
+    "learningLevel": "レベルを選ぶ",
+    "primaryModes": {
+      "chat": {
+        "name": "チャットモード",
+        "description": "AI友達と会話を練習"
+      },
+      "learning": {
+        "name": "学習モード",
+        "description": "単語帳とクイズで語彙を学ぶ"
+      }
+    },
+    "learningModeInfo": {
+      "title": "含まれる機能",
+      "flashcards": "単語を覚えるフラッシュカード",
+      "audio": "各単語の発音音声",
+      "quiz": "知識をテストするクイズ"
+    },
     "modes": {
       "free": {
         "name": "フリートーク",
@@ -29,6 +47,7 @@
   },
   "articles": {
     "title": "記事を選ぶ",
+    "levelLabel": "レベル",
     "keyWords": "キーワード",
     "noArticles": "このレベルの記事が見つかりません",
     "categories": {
@@ -84,6 +103,76 @@
     "streakBonus": "連続ボーナス！",
     "streakMilestone": "{days} 日連続達成！"
   },
+  "achievements": {
+    "unlocked": "実績解除!",
+    "continue": "すごい!",
+    "categories": {
+      "first_steps": "はじめの一歩",
+      "consistency": "継続",
+      "learning": "学習",
+      "mastery": "マスタリー"
+    },
+    "first_chat": {
+      "title": "初めてのチャット",
+      "description": "最初のメッセージを送信",
+      "hint": "会話を始めて解除"
+    },
+    "ice_breaker": {
+      "title": "アイスブレイカー",
+      "description": "10通のメッセージを送信",
+      "hint": "10通のメッセージを送って解除"
+    },
+    "chatterbox": {
+      "title": "おしゃべり",
+      "description": "100通のメッセージを送信",
+      "hint": "100通のメッセージを送って解除"
+    },
+    "streak_3": {
+      "title": "スタート",
+      "description": "3日連続達成",
+      "hint": "3日連続で練習"
+    },
+    "streak_7": {
+      "title": "ウィークウォリアー",
+      "description": "7日連続達成",
+      "hint": "7日連続で練習"
+    },
+    "streak_30": {
+      "title": "マンスマスター",
+      "description": "30日連続達成",
+      "hint": "30日連続で練習"
+    },
+    "word_collector": {
+      "title": "単語コレクター",
+      "description": "10個の単語を学習",
+      "hint": "10個の新しい単語を学ぶ"
+    },
+    "bookworm": {
+      "title": "読書家",
+      "description": "5つの記事を完了",
+      "hint": "5つの記事を読み終える"
+    },
+    "polyglot": {
+      "title": "ポリグロット",
+      "description": "3人のキャラクターとチャット",
+      "hint": "違うAI友達と話してみて"
+    },
+    "level_beginner": {
+      "title": "ライジングスター",
+      "description": "ビギナーランクに到達",
+      "hint": "100 XPを獲得して解除"
+    },
+    "level_speaker": {
+      "title": "流暢な話者",
+      "description": "話者ランクに到達",
+      "hint": "600 XPを獲得して解除"
+    },
+    "level_legend": {
+      "title": "レジェンド",
+      "description": "レジェンドランクに到達",
+      "hint": "5500 XPを獲得して解除"
+    }
+  },
   "ranks": {
     "novice": "初心者",
     "beginner": "ビギナー",
@@ -95,5 +184,81 @@
     "expert": "エキスパート",
     "master": "マスター",
     "legend": "レジェンド"
+  },
+  "learning": {
+    "backToChapters": "チャプター",
+    "backToSetup": "戻る",
+    "bilingual": "2言語表示",
+    "voiceSpeed": {
+      "normal": "普通",
+      "slow": "ゆっくり",
+      "word": "単語ごと"
+    },
+    "chooseChapter": "チャプターを選ぶ",
+    "chapterDescription": "学習したいチャプターを選んでください",
+    "noChapters": "チャプターがありません",
+    "noChaptersDescription": "chaptersフォルダにYAMLファイルを追加してチャプターを作成してください",
+    "words": "単語",
+    "categories": {
+      "travel": "旅行",
+      "food": "食べ物",
+      "work": "仕事",
+      "daily": "日常生活",
+      "shopping": "買い物"
+    },
+    "modes": {
+      "list": "リスト",
+      "flashcard": "単語帳",
+      "quiz": "クイズ",
+      "conversation": "会話"
+    },
+    "progress": {
+      "quiz": "クイズ",
+      "conversation": "会話"
+    },
+    "audioNotAvailable": "音声がありません",
+    "listen": "聴く",
+    "tapToFlip": "タップで裏返す",
+    "shuffle": "シャッフル",
+    "keyboardHints": "矢印キーで移動、スペースで裏返す",
+    "question": "問題",
+    "whatMeans": "この単語の意味は？",
+    "correct": "正解！",
+    "incorrect": "残念...",
+    "nextQuestion": "次の問題",
+    "finishQuiz": "結果を見る",
+    "quizComplete": "クイズ完了！",
+    "yourScore": "あなたの結果：",
+    "earned": "獲得",
+    "reviewAnswers": "答えを確認",
+    "tryAgain": "もう一度",
+    "conversation": {
+      "title": "会話練習",
+      "description": "{name}と{category}について話して、覚えた単語を使ってみよう！",
+      "practiceWith": "語彙練習",
+      "practiceDialogue": "対話を聞いて練習しましょう",
+      "selectDialogue": "練習する対話を選んでください",
+      "noConversations": "このチャプターには会話がありません",
+      "messages": "メッセージ",
+      "partner": "相手",
+      "you": "あなた",
+      "playAudio": "音声を再生",
+      "playAll": "全て再生",
+      "stop": "停止",
+      "practiceTip": "練習のコツ",
+      "practiceTipText": "各セリフを聞いて、声に出して言ってみましょう。発音に慣れるまで繰り返し練習してください。",
+      "wordsToUse": "使える単語",
+      "more": "他にも",
+      "start": "チャットを始める",
+      "finish": "終了",
+      "contextHint": "トピック: {category}",
+      "progress": "{current}/{min} メッセージ - 続けてみよう！",
+      "prompt": {
+        "title": "会話で練習する？",
+        "description": "覚えた単語を実際の会話で使ってみませんか？",
+        "start": "話してみる！",
+        "skip": "また今度"
+      }
+    }
   }
 }

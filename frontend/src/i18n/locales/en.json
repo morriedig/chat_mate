@@ -6,8 +6,26 @@
   "setup": {
     "choosePartner": "Choose your chat partner",
     "yourLevel": "Your English level",
-    "chooseMode": "Chat mode",
+    "chooseMode": "Chat type",
     "startChatting": "Start Chatting",
+    "startLearning": "Start Learning",
+    "learningLevel": "Choose your level",
+    "primaryModes": {
+      "chat": {
+        "name": "Chat Mode",
+        "description": "Practice conversation with AI friends"
+      },
+      "learning": {
+        "name": "Learning Mode",
+        "description": "Study vocabulary with flashcards & quizzes"
+      }
+    },
+    "learningModeInfo": {
+      "title": "What's included?",
+      "flashcards": "Flashcards to memorize words",
+      "audio": "Audio pronunciation for each word",
+      "quiz": "Quiz mode to test your knowledge"
+    },
     "modes": {
       "free": {
         "name": "Free Chat",
@@ -29,6 +47,7 @@
   },
   "articles": {
     "title": "Choose an Article",
+    "levelLabel": "Level",
     "keyWords": "Key words",
     "noArticles": "No articles found for this level",
     "categories": {
@@ -84,6 +103,76 @@
     "streakBonus": "Streak Bonus!",
     "streakMilestone": "{days} Day Streak!"
   },
+  "achievements": {
+    "unlocked": "Achievement Unlocked!",
+    "continue": "Awesome!",
+    "categories": {
+      "first_steps": "First Steps",
+      "consistency": "Consistency",
+      "learning": "Learning",
+      "mastery": "Mastery"
+    },
+    "first_chat": {
+      "title": "First Chat",
+      "description": "Send your first message",
+      "hint": "Start a conversation to unlock"
+    },
+    "ice_breaker": {
+      "title": "Ice Breaker",
+      "description": "Send 10 messages",
+      "hint": "Send 10 messages to unlock"
+    },
+    "chatterbox": {
+      "title": "Chatterbox",
+      "description": "Send 100 messages",
+      "hint": "Send 100 messages to unlock"
+    },
+    "streak_3": {
+      "title": "Getting Started",
+      "description": "Achieve a 3-day streak",
+      "hint": "Practice 3 days in a row"
+    },
+    "streak_7": {
+      "title": "Week Warrior",
+      "description": "Achieve a 7-day streak",
+      "hint": "Practice 7 days in a row"
+    },
+    "streak_30": {
+      "title": "Month Master",
+      "description": "Achieve a 30-day streak",
+      "hint": "Practice 30 days in a row"
+    },
+    "word_collector": {
+      "title": "Word Collector",
+      "description": "Learn 10 vocabulary words",
+      "hint": "Learn 10 new words"
+    },
+    "bookworm": {
+      "title": "Bookworm",
+      "description": "Complete 5 articles",
+      "hint": "Finish reading 5 articles"
+    },
+    "polyglot": {
+      "title": "Polyglot",
+      "description": "Chat with 3 different characters",
+      "hint": "Try talking to different AI friends"
+    },
+    "level_beginner": {
+      "title": "Rising Star",
+      "description": "Reach Beginner rank",
+      "hint": "Earn 100 XP to unlock"
+    },
+    "level_speaker": {
+      "title": "Fluent Speaker",
+      "description": "Reach Speaker rank",
+      "hint": "Earn 600 XP to unlock"
+    },
+    "level_legend": {
+      "title": "Legend",
+      "description": "Reach Legend rank",
+      "hint": "Earn 5500 XP to unlock"
+    }
+  },
   "ranks": {
     "novice": "Novice",
     "beginner": "Beginner",
@@ -95,5 +184,81 @@
     "expert": "Expert",
     "master": "Master",
     "legend": "Legend"
+  },
+  "learning": {
+    "backToChapters": "Chapters",
+    "backToSetup": "Back",
+    "bilingual": "Bilingual",
+    "voiceSpeed": {
+      "normal": "Normal",
+      "slow": "Slow",
+      "word": "Word by Word"
+    },
+    "chooseChapter": "Choose a Chapter",
+    "chapterDescription": "Select a chapter to start learning vocabulary",
+    "noChapters": "No Chapters Available",
+    "noChaptersDescription": "Add YAML files to the chapters folder to create new chapters",
+    "words": "words",
+    "categories": {
+      "travel": "Travel",
+      "food": "Food & Dining",
+      "work": "Work & Business",
+      "daily": "Daily Life",
+      "shopping": "Shopping"
+    },
+    "modes": {
+      "list": "List",
+      "flashcard": "Flashcard",
+      "quiz": "Quiz",
+      "conversation": "Chat"
+    },
+    "progress": {
+      "quiz": "Quiz",
+      "conversation": "Conversation"
+    },
+    "audioNotAvailable": "Audio not available",
+    "listen": "Listen",
+    "tapToFlip": "Tap to flip",
+    "shuffle": "Shuffle",
+    "keyboardHints": "Use arrow keys to navigate, space to flip",
+    "question": "Question",
+    "whatMeans": "What does this word mean?",
+    "correct": "Correct!",
+    "incorrect": "Not quite...",
+    "nextQuestion": "Next Question",
+    "finishQuiz": "See Results",
+    "quizComplete": "Quiz Complete!",
+    "yourScore": "Here's how you did:",
+    "earned": "earned",
+    "reviewAnswers": "Review Answers",
+    "tryAgain": "Try Again",
+    "conversation": {
+      "title": "Practice Conversation",
+      "description": "Chat with {name} about {category} to practice using your new vocabulary!",
+      "practiceWith": "Vocabulary Practice",
+      "practiceDialogue": "Listen and practice the dialogue",
+      "selectDialogue": "Select a dialogue to practice",
+      "noConversations": "No conversations available for this chapter",
+      "messages": "messages",
+      "partner": "Partner",
+      "you": "You",
+      "playAudio": "Play audio",
+      "playAll": "Play All",
+      "stop": "Stop",
+      "practiceTip": "Practice Tip",
+      "practiceTipText": "Listen to each line, then try speaking it out loud. Repeat until you feel comfortable with the pronunciation.",
+      "wordsToUse": "Words you can use",
+      "more": "more",
+      "start": "Start Chatting",
+      "finish": "Finish",
+      "contextHint": "Topic: {category}",
+      "progress": "{current}/{min} messages - keep chatting!",
+      "prompt": {
+        "title": "Practice with Conversation?",
+        "description": "Want to practice using the words you just learned in a real conversation?",
+        "start": "Let's Chat!",
+        "skip": "Maybe Later"
+      }
+    }
   }
 }
