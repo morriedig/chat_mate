@@ -1,0 +1,173 @@
+# Chapter: Apologies
+meta:
+  id: apologies-excuse-me
+  title:
+    en: "Excuse Me & Sorry"
+    ja: "すみませんとごめんなさい"
+  description:
+    en: "Learn to apologize and ask for attention."
+    ja: "謝る方法と注意を引く方法を学びましょう。"
+  icon: "🙇"
+  order: 4
+  level: beginner
+
+words:
+  - id: excuse-me
+    word:
+      en: Excuse me
+      ja: すみません
+    reading: Sumimasen
+    phonetic: "/ˌɛkˈskjuːz miː/"
+    description:
+      en: "Used to get someone's attention."
+      ja: "誰かの注意を引くために使います。"
+    sentence:
+      en: "Excuse me, where is the station?"
+      ja: "すみません、駅はどこですか？"
+
+  - id: sorry
+    word:
+      en: Sorry
+      ja: ごめんなさい
+    reading: Gomenasai
+    phonetic: "/ˈsɒri/"
+    description:
+      en: "Used when you make a mistake."
+      ja: "間違いをした時に使います。"
+    sentence:
+      en: "I am sorry for being late."
+      ja: "遅れてごめんなさい。"
+
+  - id: late
+    word:
+      en: Late
+      ja: 遅い
+    reading: Osoi
+    phonetic: "/leɪt/"
+    description:
+      en: "Happening after the expected time."
+      ja: "予定された時間より遅れること。"
+    sentence:
+      en: "The bus is late today."
+      ja: "今日はバスが遅いです。"
+
+  - id: okay
+    word:
+      en: Okay
+      ja: 大丈夫
+    reading: Daijoubu
+    phonetic: "/ˌoʊˈkeɪ/"
+    description:
+      en: "Fine or no problem."
+      ja: "問題ない、または平気であること。"
+    sentence:
+      en: "Is everything okay?"
+      ja: "すべて大丈夫ですか？"
+
+  - id: mistake
+    word:
+      en: Mistake
+      ja: 間違い
+    reading: Machigai
+    phonetic: "/mɪˈsteɪk/"
+    description:
+      en: "Something that is not correct."
+      ja: "正しくないこと。"
+    sentence:
+      en: "This is a small mistake."
+      ja: "これは小さな間違いです。"
+
+  - id: wait
+    word:
+      en: Wait
+      ja: 待つ
+    reading: Matsu
+    phonetic: "/weɪt/"
+    description:
+      en: "To stay until something happens."
+      ja: "何かが起こるまでその場にいること。"
+    sentence:
+      en: "Please wait here."
+      ja: "ここで待ってください。"
+
+chat:
+  conversations:
+    - id: scenario-1-being-late
+      title:
+        en: "Being Late"
+        ja: "遅刻する"
+      messages:
+        - role: partner
+          text:
+            en: "You are late."
+            ja: "遅いですね。"
+        - role: user
+          text:
+            en: "I am sorry."
+            ja: "ごめんなさい。"
+        - role: partner
+          text:
+            en: "Did you wait for the bus?"
+            ja: "バスを待ちましたか？"
+        - role: user
+          text:
+            en: "Yes, I waited a long time."
+            ja: "はい、長い間待ちました。"
+        - role: partner
+          text:
+            en: "Is everything okay?"
+            ja: "すべて大丈夫ですか？"
+        - role: user
+          text:
+            en: "Yes, I am fine now."
+            ja: "はい、今は元気です。"
+        - role: partner
+          text:
+            en: "Please sit down."
+            ja: "座ってください。"
+        - role: user
+          text:
+            en: "Thank you."
+            ja: "ありがとう。"
+
+    - id: scenario-2-small-mistake
+      title:
+        en: "A Small Mistake"
+        ja: "小さな間違い"
+      messages:
+        - role: user
+          text:
+            en: "Excuse me."
+            ja: "すみません。"
+        - role: partner
+          text:
+            en: "Yes? Can I help?"
+            ja: "はい？何か用ですか？"
+        - role: user
+          text:
+            en: "Is this my coffee?"
+            ja: "これは私のコーヒーですか？"
+        - role: partner
+          text:
+            en: "No, that is a mistake."
+            ja: "いいえ、それは間違いです。"
+        - role: user
+          text:
+            en: "Oh, I am very sorry."
+            ja: "ああ、本当にごめんなさい。"
+        - role: partner
+          text:
+            en: "It is okay."
+            ja: "大丈夫ですよ。"
+        - role: user
+          text:
+            en: "Yours is over there."
+            ja: "あなたのはあそこにあります。"
+        - role: partner
+          text:
+            en: "Ah, I see it."
+            ja: "ああ、見えました。"
+
+quiz:
+  questionsPerRound: 5
+  xpReward: 20
