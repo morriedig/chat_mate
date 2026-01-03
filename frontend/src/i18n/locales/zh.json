@@ -1,0 +1,264 @@
+{
+  "app": {
+    "title": "Chat Mate",
+    "subtitle": "和AI朋友一起練習中文"
+  },
+  "setup": {
+    "choosePartner": "選擇聊天夥伴",
+    "yourLevel": "你的中文程度",
+    "chooseMode": "聊天類型",
+    "startChatting": "開始聊天",
+    "startLearning": "開始學習",
+    "learningLevel": "選擇等級",
+    "primaryModes": {
+      "chat": {
+        "name": "聊天模式",
+        "description": "和AI朋友練習對話"
+      },
+      "learning": {
+        "name": "學習模式",
+        "description": "用單字卡和測驗學習詞彙"
+      }
+    },
+    "learningModeInfo": {
+      "title": "包含功能",
+      "flashcards": "記憶單字的閃卡",
+      "audio": "每個單字的發音音檔",
+      "quiz": "測試知識的測驗"
+    },
+    "modes": {
+      "free": {
+        "name": "自由聊天",
+        "description": "隨意交談"
+      },
+      "article": {
+        "name": "文章",
+        "description": "閱讀討論"
+      }
+    }
+  },
+  "chat": {
+    "typeMessage": "輸入訊息...",
+    "send": "發送",
+    "tryUsing": "試試用：",
+    "articleMode": "文章",
+    "rateLimitError": "我需要休息一下！訊息太多了。請等幾秒鐘再試。",
+    "genericError": "嗯，出了點問題。我們再試一次？"
+  },
+  "articles": {
+    "title": "選擇文章",
+    "levelLabel": "等級",
+    "keyWords": "關鍵字",
+    "noArticles": "找不到該等級的文章",
+    "categories": {
+      "all": "全部",
+      "lifestyle": "生活方式",
+      "work": "工作",
+      "technology": "科技",
+      "environment": "環境"
+    }
+  },
+  "levels": {
+    "beginner": {
+      "name": "初級",
+      "description": "簡單詞彙"
+    },
+    "intermediate": {
+      "name": "中級",
+      "description": "日常對話"
+    },
+    "advanced": {
+      "name": "高級",
+      "description": "自然表達"
+    }
+  },
+  "characters": {
+    "emma": {
+      "tagline": "喜歡咖啡、貓和創意"
+    },
+    "marcus": {
+      "tagline": "探索東京的科技迷"
+    },
+    "sophia": {
+      "tagline": "有巴黎風情的糕點師"
+    },
+    "james": {
+      "tagline": "紐約記者，愛爵士和咖啡"
+    },
+    "yuki": {
+      "tagline": "大阪學生，動漫美食愛好者"
+    }
+  },
+  "rank": {
+    "totalXP": "共 {xp} XP",
+    "nextLevel": "下一等級",
+    "maxLevel": "已達最高等級！",
+    "messagesSent": "已發送 {count} 則訊息",
+    "streak": "連續 {count} 天",
+    "days": "天",
+    "currentStreak": "連續 {count} 天",
+    "longestStreak": "最高：{count} 天",
+    "levelUp": "升級了！",
+    "continue": "繼續學習！",
+    "streakBonus": "連續獎勵！",
+    "streakMilestone": "連續 {days} 天！"
+  },
+  "achievements": {
+    "unlocked": "成就解鎖！",
+    "continue": "太棒了！",
+    "categories": {
+      "first_steps": "第一步",
+      "consistency": "堅持",
+      "learning": "學習",
+      "mastery": "精通"
+    },
+    "first_chat": {
+      "title": "第一次聊天",
+      "description": "發送第一則訊息",
+      "hint": "開始對話解鎖"
+    },
+    "ice_breaker": {
+      "title": "破冰者",
+      "description": "發送10則訊息",
+      "hint": "發送10則訊息解鎖"
+    },
+    "chatterbox": {
+      "title": "話匣子",
+      "description": "發送100則訊息",
+      "hint": "發送100則訊息解鎖"
+    },
+    "streak_3": {
+      "title": "良好開端",
+      "description": "達成3天連續",
+      "hint": "連續練習3天"
+    },
+    "streak_7": {
+      "title": "一週戰士",
+      "description": "達成7天連續",
+      "hint": "連續練習7天"
+    },
+    "streak_30": {
+      "title": "月度大師",
+      "description": "達成30天連續",
+      "hint": "連續練習30天"
+    },
+    "word_collector": {
+      "title": "單字收集者",
+      "description": "學習10個詞彙",
+      "hint": "學習10個新單字"
+    },
+    "bookworm": {
+      "title": "書蟲",
+      "description": "完成5篇文章",
+      "hint": "閱讀完成5篇文章"
+    },
+    "polyglot": {
+      "title": "多語達人",
+      "description": "與3個不同角色聊天",
+      "hint": "嘗試和不同的AI朋友交流"
+    },
+    "level_beginner": {
+      "title": "新星",
+      "description": "達到初學者等級",
+      "hint": "獲得100 XP解鎖"
+    },
+    "level_speaker": {
+      "title": "流利說者",
+      "description": "達到說者等級",
+      "hint": "獲得600 XP解鎖"
+    },
+    "level_legend": {
+      "title": "傳奇",
+      "description": "達到傳奇等級",
+      "hint": "獲得5500 XP解鎖"
+    }
+  },
+  "ranks": {
+    "novice": "新手",
+    "beginner": "初學者",
+    "learner": "學習者",
+    "speaker": "說者",
+    "conversationalist": "健談者",
+    "fluent": "流利",
+    "advanced": "進階者",
+    "expert": "專家",
+    "master": "大師",
+    "legend": "傳奇"
+  },
+  "learning": {
+    "backToChapters": "章節",
+    "backToSetup": "返回",
+    "bilingual": "雙語",
+    "voiceSpeed": {
+      "normal": "正常",
+      "slow": "慢速",
+      "word": "逐字"
+    },
+    "chooseChapter": "選擇章節",
+    "chapterDescription": "選擇一個章節開始學習詞彙",
+    "noChapters": "沒有章節",
+    "noChaptersDescription": "在chapters資料夾中新增YAML檔案來建立新章節",
+    "words": "個單字",
+    "categories": {
+      "travel": "旅行",
+      "food": "美食",
+      "work": "工作",
+      "daily": "日常生活",
+      "shopping": "購物"
+    },
+    "modes": {
+      "list": "列表",
+      "flashcard": "閃卡",
+      "quiz": "測驗",
+      "conversation": "對話"
+    },
+    "progress": {
+      "quiz": "測驗",
+      "conversation": "對話"
+    },
+    "audioNotAvailable": "音檔不可用",
+    "listen": "聽",
+    "tapToFlip": "點擊翻轉",
+    "shuffle": "打亂",
+    "keyboardHints": "使用方向鍵導航，空白鍵翻轉",
+    "question": "問題",
+    "whatMeans": "這個字是什麼意思？",
+    "correct": "正確！",
+    "incorrect": "不太對...",
+    "nextQuestion": "下一題",
+    "finishQuiz": "查看結果",
+    "quizComplete": "測驗完成！",
+    "yourScore": "你的成績：",
+    "earned": "獲得",
+    "reviewAnswers": "查看答案",
+    "tryAgain": "再試一次",
+    "conversation": {
+      "title": "對話練習",
+      "description": "和{name}聊聊{category}，練習使用你學過的詞彙！",
+      "practiceWith": "詞彙練習",
+      "practiceDialogue": "聽對話並練習",
+      "selectDialogue": "選擇一個對話來練習",
+      "noConversations": "這個章節沒有對話",
+      "messages": "則訊息",
+      "partner": "夥伴",
+      "you": "你",
+      "playAudio": "播放音檔",
+      "playAll": "全部播放",
+      "stop": "停止",
+      "practiceTip": "練習提示",
+      "practiceTipText": "聽每一句，然後大聲朗讀。反覆練習直到發音流利。",
+      "wordsToUse": "可用的詞彙",
+      "more": "更多",
+      "start": "開始聊天",
+      "finish": "完成",
+      "contextHint": "話題：{category}",
+      "progress": "{current}/{min} 則訊息 - 繼續聊！",
+      "prompt": {
+        "title": "用對話練習？",
+        "description": "想在真實對話中使用你剛學的詞彙嗎？",
+        "start": "開始聊！",
+        "skip": "下次再說"
+      }
+    }
+  }
+}
