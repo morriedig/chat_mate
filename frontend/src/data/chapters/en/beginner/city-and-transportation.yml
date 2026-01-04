@@ -1,0 +1,408 @@
+# Chapter: Week 7 - City & Transportation
+meta:
+  id: city-and-transportation
+  title:
+    en: "City & Transportation"
+    ja: "街と交通"
+    zh: "城市與交通"
+  description:
+    en: "Getting around town and asking for directions."
+    ja: "街を歩いて道を尋ねましょう。"
+    zh: "學習在城市中移動和問路。"
+  icon: "🚌"
+  order: 7
+  level: beginner
+
+words:
+  # Day 1: Core Nouns (City Objects)
+  - id: city
+    word:
+      en: City
+      ja: 都市
+      zh: 城市
+    reading: "SIT-ee"
+    phonetic: "/ˈsɪti/"
+    description:
+      en: "Large town with many buildings."
+      ja: "多くの建物がある大きな町。"
+      zh: "有很多建築物的大城鎮。"
+    sentence:
+      en: "I am new in this city."
+      ja: "この街に来たばかりです。"
+      zh: "我剛來這座城市。"
+
+  - id: street
+    word:
+      en: Street
+      ja: 通り
+      zh: 街道
+    reading: "STREET"
+    phonetic: "/striːt/"
+    description:
+      en: "Where cars drive."
+      ja: "車が走る場所。"
+      zh: "車子行駛的地方。"
+    sentence:
+      en: "I walk down the street."
+      ja: "通りを歩きます。"
+      zh: "我沿著街道走。"
+
+  - id: station
+    word:
+      en: Station
+      ja: 駅
+      zh: 車站
+    reading: "STAY-shun"
+    phonetic: "/ˈsteɪʃən/"
+    description:
+      en: "Train or bus stop building."
+      ja: "電車やバスの停留所の建物。"
+      zh: "火車或公車站的建築物。"
+    sentence:
+      en: "The station is near the bank."
+      ja: "駅は銀行の近くにあります。"
+      zh: "車站在銀行附近。"
+
+  - id: ticket
+    word:
+      en: Ticket
+      ja: 切符
+      zh: 車票
+    reading: "TIK-it"
+    phonetic: "/ˈtɪkɪt/"
+    description:
+      en: "Paper to pay for ride."
+      ja: "乗車料金を支払うための紙。"
+      zh: "付錢搭乘的紙張。"
+    sentence:
+      en: "I need to buy a ticket for the train."
+      ja: "電車の切符を買う必要があります。"
+      zh: "我需要買火車票。"
+
+  - id: traffic-light
+    word:
+      en: Traffic Light
+      ja: 信号機
+      zh: 紅綠燈
+    reading: "TRAF-ik lyt"
+    phonetic: "/ˈtræfɪk laɪt/"
+    description:
+      en: "Red, Yellow, Green signal."
+      ja: "赤、黄、緑の信号。"
+      zh: "紅、黃、綠的號誌。"
+    sentence:
+      en: "We wait for the green traffic light."
+      ja: "緑の信号を待ちます。"
+      zh: "我們等綠燈。"
+
+  - id: map
+    word:
+      en: Map
+      ja: 地図
+      zh: 地圖
+    reading: "MAP"
+    phonetic: "/mæp/"
+    description:
+      en: "Drawing of the area."
+      ja: "地域の図。"
+      zh: "區域的圖畫。"
+    sentence:
+      en: "I have a map on my phone."
+      ja: "スマホに地図があります。"
+      zh: "我手機上有地圖。"
+
+  - id: corner
+    word:
+      en: Corner
+      ja: 角
+      zh: 轉角
+    reading: "KOR-ner"
+    phonetic: "/ˈkɔːrnər/"
+    description:
+      en: "Where two streets meet."
+      ja: "二つの通りが交わる場所。"
+      zh: "兩條街道交會的地方。"
+    sentence:
+      en: "Please turn left at the corner."
+      ja: "角を左に曲がってください。"
+      zh: "請在轉角左轉。"
+
+  # Day 2: Core Verbs (Movement)
+  - id: drive
+    word:
+      en: Drive
+      ja: 運転する
+      zh: 開車
+    reading: "DRYV"
+    phonetic: "/draɪv/"
+    description:
+      en: "Control a car."
+      ja: "車を運転する。"
+      zh: "駕駛汽車。"
+    sentence:
+      en: "Drive carefully on this road."
+      ja: "この道は注意して運転してください。"
+      zh: "在這條路上小心開車。"
+
+  - id: ride
+    word:
+      en: Ride
+      ja: 乗る
+      zh: 搭乘
+    reading: "RYD"
+    phonetic: "/raɪd/"
+    description:
+      en: "Travel on a bike/bus/train."
+      ja: "自転車/バス/電車に乗る。"
+      zh: "搭乘腳踏車/公車/火車。"
+    sentence:
+      en: "I ride for ten minutes."
+      ja: "10分間乗ります。"
+      zh: "我搭乘十分鐘。"
+
+  - id: walk
+    word:
+      en: Walk
+      ja: 歩く
+      zh: 走路
+    reading: "WAWK"
+    phonetic: "/wɔːk/"
+    description:
+      en: "Go on foot."
+      ja: "歩いて行く。"
+      zh: "步行。"
+    sentence:
+      en: "It is a 5-minute walk."
+      ja: "歩いて5分です。"
+      zh: "走路5分鐘。"
+
+  - id: turn
+    word:
+      en: Turn
+      ja: 曲がる
+      zh: 轉彎
+    reading: "TURN"
+    phonetic: "/tɜːrn/"
+    description:
+      en: "Change direction - Left/Right."
+      ja: "方向を変える - 左/右。"
+      zh: "改變方向 - 左/右。"
+    sentence:
+      en: "Turn right at the traffic light."
+      ja: "信号を右に曲がってください。"
+      zh: "在紅綠燈右轉。"
+
+  - id: stop
+    word:
+      en: Stop
+      ja: 止まる
+      zh: 停止
+    reading: "STOP"
+    phonetic: "/stɑːp/"
+    description:
+      en: "Do not move."
+      ja: "動かない。"
+      zh: "不要移動。"
+    sentence:
+      en: "Get off at the next stop."
+      ja: "次の停留所で降りてください。"
+      zh: "在下一站下車。"
+
+  - id: cross
+    word:
+      en: Cross
+      ja: 渡る
+      zh: 穿越
+    reading: "KROSS"
+    phonetic: "/krɔːs/"
+    description:
+      en: "Go to the other side of the street."
+      ja: "通りの反対側に行く。"
+      zh: "走到街道的另一邊。"
+    sentence:
+      en: "Let's cross the street here."
+      ja: "ここで通りを渡りましょう。"
+      zh: "我們在這裡過馬路吧。"
+
+  - id: get-off
+    word:
+      en: Get off
+      ja: 降りる
+      zh: 下車
+    reading: "GET off"
+    phonetic: "/ɡet ɔːf/"
+    description:
+      en: "Leave a bus/train."
+      ja: "バス/電車から降りる。"
+      zh: "離開公車/火車。"
+    sentence:
+      en: "I get off at the big corner."
+      ja: "大きな角で降ります。"
+      zh: "我在大轉角下車。"
+
+chat:
+  conversations:
+    - id: scenario-1-new-in-city
+      title:
+        en: "New in the City"
+        ja: "街に来たばかり"
+        zh: "初來城市"
+      messages:
+        - role: partner
+          text:
+            en: "How do you get around in this city?"
+            ja: "この街ではどうやって移動しますか？"
+            zh: "你在這座城市怎麼移動？"
+        - role: user
+          text:
+            en: "I am new in this city. I have a map on my phone."
+            ja: "この街に来たばかりです。スマホに地図があります。"
+            zh: "我剛來這座城市。我手機上有地圖。"
+        - role: partner
+          text:
+            en: "Where do you want to go?"
+            ja: "どこに行きたいですか？"
+            zh: "你想去哪裡？"
+        - role: user
+          text:
+            en: "I want to go to the museum."
+            ja: "博物館に行きたいです。"
+            zh: "我想去博物館。"
+        - role: partner
+          text:
+            en: "How will you get there?"
+            ja: "どうやって行きますか？"
+            zh: "你怎麼去那裡？"
+        - role: user
+          text:
+            en: "I walk to the bus stop and wait. When the bus comes, I pay for a ticket."
+            ja: "バス停まで歩いて待ちます。バスが来たら、切符を買います。"
+            zh: "我走到公車站等待。公車來了，我買票。"
+        - role: partner
+          text:
+            en: "How long is the ride?"
+            ja: "どのくらい乗りますか？"
+            zh: "要搭多久？"
+        - role: user
+          text:
+            en: "I ride for ten minutes. I get off at the big corner."
+            ja: "10分間乗ります。大きな角で降ります。"
+            zh: "我搭十分鐘。我在大轉角下車。"
+        - role: partner
+          text:
+            en: "And then?"
+            ja: "それから？"
+            zh: "然後呢？"
+        - role: user
+          text:
+            en: "I cross the street and I see the building."
+            ja: "通りを渡ると、建物が見えます。"
+            zh: "我過馬路，就看到那棟建築物。"
+
+    - id: scenario-2-asking-directions
+      title:
+        en: "Asking for Directions"
+        ja: "道を尋ねる"
+        zh: "問路"
+      messages:
+        - role: partner
+          text:
+            en: "Excuse me. I am lost."
+            ja: "すみません。道に迷いました。"
+            zh: "不好意思。我迷路了。"
+        - role: user
+          text:
+            en: "Where do you want to go?"
+            ja: "どこに行きたいですか？"
+            zh: "你想去哪裡？"
+        - role: partner
+          text:
+            en: "I am looking for the Central Station."
+            ja: "中央駅を探しています。"
+            zh: "我在找中央車站。"
+        - role: user
+          text:
+            en: "It is very close. Go straight on this street."
+            ja: "とても近いですよ。この通りをまっすぐ行ってください。"
+            zh: "很近。沿著這條街直走。"
+        - role: partner
+          text:
+            en: "Do I turn anywhere?"
+            ja: "どこかで曲がりますか？"
+            zh: "我需要轉彎嗎？"
+        - role: user
+          text:
+            en: "Yes, turn right at the traffic light. You will see it."
+            ja: "はい、信号を右に曲がってください。見えますよ。"
+            zh: "是的，在紅綠燈右轉。你就會看到了。"
+        - role: partner
+          text:
+            en: "Is it far?"
+            ja: "遠いですか？"
+            zh: "遠嗎？"
+        - role: user
+          text:
+            en: "No, it is a 5-minute walk."
+            ja: "いいえ、歩いて5分です。"
+            zh: "不遠，走路5分鐘。"
+
+    - id: scenario-3-questions-answers
+      title:
+        en: "Direction Questions"
+        ja: "道案内の質問"
+        zh: "方向問答"
+      messages:
+        - role: partner
+          text:
+            en: "Where is the station?"
+            ja: "駅はどこですか？"
+            zh: "車站在哪裡？"
+        - role: user
+          text:
+            en: "Go straight and turn right."
+            ja: "まっすぐ行って右に曲がってください。"
+            zh: "直走然後右轉。"
+        - role: partner
+          text:
+            en: "How do I get to the park?"
+            ja: "公園にはどうやって行きますか？"
+            zh: "我怎麼去公園？"
+        - role: user
+          text:
+            en: "You can take the number 5 bus."
+            ja: "5番のバスに乗れます。"
+            zh: "你可以搭5號公車。"
+        - role: partner
+          text:
+            en: "Where do I get off?"
+            ja: "どこで降りますか？"
+            zh: "我在哪裡下車？"
+        - role: user
+          text:
+            en: "Get off at the next stop."
+            ja: "次の停留所で降りてください。"
+            zh: "在下一站下車。"
+        - role: partner
+          text:
+            en: "Should I take the bus or the train?"
+            ja: "バスと電車、どちらに乗ればいいですか？"
+            zh: "我該搭公車還是火車？"
+        - role: user
+          text:
+            en: "Take the subway. It is faster."
+            ja: "地下鉄に乗ってください。そっちの方が速いです。"
+            zh: "搭地鐵。比較快。"
+        - role: partner
+          text:
+            en: "Thank you! Go straight, right?"
+            ja: "ありがとうございます！まっすぐですね？"
+            zh: "謝謝！直走對嗎？"
+        - role: user
+          text:
+            en: "Yes, go straight, then go left at the corner."
+            ja: "はい、まっすぐ行って、角を左に曲がってください。"
+            zh: "是的，直走，然後在轉角左轉。"
+
+quiz:
+  questionsPerRound: 5
+  xpReward: 20

@@ -1,0 +1,212 @@
+# Chapter: Yes / No Questions
+# Focus: Notice the "ka" sound at the end makes it a question.
+meta:
+  id: yes-no-questions
+  title:
+    en: "Yes / No Questions"
+    ja: "「はい」か「いいえ」の質問"
+    zh: "是非問句"
+  description:
+    en: "Learn how to ask questions using 'ka'."
+    ja: "「か」を使って質問する方法を学びましょう。"
+    zh: "學習如何使用「ka」來提問。"
+  icon: "❓"
+  order: 4
+  level: beginner
+
+words:
+  - id: yes
+    word:
+      en: Yes
+      ja: はい
+      zh: 是
+    reading: Hai
+    phonetic: "/haɪ/"
+    description:
+      en: "Used to agree or answer positively."
+      ja: "同意したり、肯定的に答える時に使います。"
+      zh: "用於同意或肯定回答。"
+    sentence:
+      en: "Yes, that is correct."
+      ja: "はい、それは正しいです。"
+      zh: "是的，那是對的。"
+
+  - id: no
+    word:
+      en: No
+      ja: いいえ
+      zh: 不
+    reading: Iie
+    phonetic: "/iːe/"
+    description:
+      en: "Used to disagree or answer negatively."
+      ja: "同意しない、または否定的に答える時に使います。"
+      zh: "用於不同意或否定回答。"
+    sentence:
+      en: "No, I am not a student."
+      ja: "いいえ、私は学生ではありません。"
+      zh: "不，我不是學生。"
+
+  - id: understand
+    word:
+      en: Understand
+      ja: 分かります
+      zh: 明白
+    reading: Wakarimasu
+    phonetic: "/wɑːkɑːriːmɑːsuː/"
+    description:
+      en: "To know the meaning of something."
+      ja: "何かの意味を知ること。"
+      zh: "知道某事的含义。"
+    sentence:
+      en: "Do you understand Japanese?"
+      ja: "日本語が分かりますか？"
+      zh: "你懂日語嗎？"
+
+  - id: like
+    word:
+      en: Like
+      ja: 好き
+      zh: 喜歡
+    reading: Suki
+    phonetic: "/skiː/"
+    description:
+      en: "To find something agreeable or enjoyable."
+      ja: "何かを好ましい、楽しいと感じること。"
+      zh: "覺得某事物令人愉快或喜愛。"
+    sentence:
+      en: "I like sushi."
+      ja: "私は寿司が好きです。"
+      zh: "我喜歡壽司。"
+
+  - id: eat
+    word:
+      en: Eat
+      ja: 食べます
+      zh: 吃
+    reading: Tabemasu
+    phonetic: "/tɑːbeɪmɑːsuː/"
+    description:
+      en: "To consume food."
+      ja: "食べ物を摂取すること。"
+      zh: "食用食物。"
+    sentence:
+      en: "I eat breakfast everyday."
+      ja: "私は毎日朝食を食べます。"
+      zh: "我每天吃早餐。"
+
+  - id: book
+    word:
+      en: Book
+      ja: 本
+      zh: 書
+    reading: Hon
+    phonetic: "/hɒn/"
+    description:
+      en: "A set of pages with writing."
+      ja: "文字が書かれたページの集まり。"
+      zh: "有文字的頁面集合。"
+    sentence:
+      en: "Is this a book?"
+      ja: "これは本ですか？"
+      zh: "這是一本書嗎？"
+
+chat:
+  conversations:
+    - id: scenario-1-asking-preferences
+      title:
+        en: "Asking Preferences"
+        ja: "好みを尋ねる"
+        zh: "詢問喜好"
+      messages:
+        - role: partner
+          text:
+            en: "Do you like sushi?"
+            ja: "寿司が好きですか？"
+            zh: "你喜歡壽司嗎？"
+        - role: user
+          text:
+            en: "Yes, I like it."
+            ja: "はい、好きです。"
+            zh: "是的，我喜歡。"
+        - role: partner
+          text:
+            en: "Do you eat fish?"
+            ja: "魚を食べますか？"
+            zh: "你吃魚嗎？"
+        - role: user
+          text:
+            en: "No, I do not eat it."
+            ja: "いいえ、食べません。"
+            zh: "不，我不吃。"
+        - role: partner
+          text:
+            en: "Do you eat meat?"
+            ja: "肉を食べますか？"
+            zh: "你吃肉嗎？"
+        - role: user
+          text:
+            en: "Yes, I eat meat."
+            ja: "はい、肉を食べます。"
+            zh: "是的，我吃肉。"
+        - role: partner
+          text:
+            en: "Is it delicious?"
+            ja: "おいしいですか？"
+            zh: "好吃嗎？"
+        - role: user
+          text:
+            en: "Yes, it is delicious."
+            ja: "はい、おいしいです。"
+            zh: "是的，很好吃。"
+
+    - id: scenario-2-understanding-objects
+      title:
+        en: "Checking Understanding"
+        ja: "理解を確認する"
+        zh: "確認理解"
+      messages:
+        - role: partner
+          text:
+            en: "Do you understand Japanese?"
+            ja: "日本語が分かりますか？"
+            zh: "你懂日語嗎？"
+        - role: user
+          text:
+            en: "No, I do not understand."
+            ja: "いいえ、分かりません。"
+            zh: "不，我不懂。"
+        - role: partner
+          text:
+            en: "Is this a book?"
+            ja: "これは本ですか？"
+            zh: "這是一本書嗎？"
+        - role: user
+          text:
+            en: "Yes, that is a book."
+            ja: "はい、それは本です。"
+            zh: "是的，那是一本書。"
+        - role: partner
+          text:
+            en: "Do you like books?"
+            ja: "本が好きですか？"
+            zh: "你喜歡書嗎？"
+        - role: user
+          text:
+            en: "Yes, I like books."
+            ja: "はい、本が好きです。"
+            zh: "是的，我喜歡書。"
+        - role: partner
+          text:
+            en: "Do you read everyday?"
+            ja: "毎日読みますか？"
+            zh: "你每天讀書嗎？"
+        - role: user
+          text:
+            en: "No, not everyday."
+            ja: "いいえ、毎日ではありません。"
+            zh: "不，不是每天。"
+
+quiz:
+  questionsPerRound: 5
+  xpReward: 20

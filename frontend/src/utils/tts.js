@@ -37,12 +37,12 @@ export function stopTTS() {
 /**
  * Speed modes for TTS
  * - normal: Regular speed (0.9x)
- * - slow: Very slow speed (0.3x) for careful listening
+ * - slow: Very slow speed (0.15x) for careful listening
  * - word: Word by word with pauses
  */
 export const TTS_SPEEDS = {
   normal: { rate: 0.9, label: 'Normal' },
-  slow: { rate: 0.3, label: 'Slow' },
+  slow: { rate: 0.15, label: 'Slow' },
   word: { rate: 0.5, label: 'Word by Word' }
 }
 

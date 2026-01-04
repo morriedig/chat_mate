@@ -1,0 +1,398 @@
+# Chapter: Week 9 - Weather & Seasons
+meta:
+  id: weather-and-seasons
+  title:
+    en: "Weather & Seasons"
+    ja: "天気と季節"
+    zh: "天氣與季節"
+  description:
+    en: "Describing the outside world and temperature."
+    ja: "外の世界と気温を説明しましょう。"
+    zh: "學習描述戶外環境和溫度。"
+  icon: "🌤️"
+  order: 9
+  level: beginner
+
+words:
+  # Day 1: Core Nouns (Nature)
+  - id: sun
+    word:
+      en: Sun
+      ja: 太陽
+      zh: 太陽
+    reading: "SUHN"
+    phonetic: "/sʌn/"
+    description:
+      en: "Bright star in sky."
+      ja: "空にある明るい星。"
+      zh: "天空中明亮的星星。"
+    sentence:
+      en: "The sun is very bright today."
+      ja: "今日は太陽がとても明るいです。"
+      zh: "今天太陽很亮。"
+
+  - id: rain
+    word:
+      en: Rain
+      ja: 雨
+      zh: 雨
+    reading: "RAYN"
+    phonetic: "/reɪn/"
+    description:
+      en: "Water falling from sky."
+      ja: "空から落ちてくる水。"
+      zh: "從天空落下的水。"
+    sentence:
+      en: "Take your umbrella, it is raining."
+      ja: "傘を持って、雨が降っています。"
+      zh: "帶上雨傘，正在下雨。"
+
+  - id: snow
+    word:
+      en: Snow
+      ja: 雪
+      zh: 雪
+    reading: "SNOH"
+    phonetic: "/snoʊ/"
+    description:
+      en: "White ice falling from sky."
+      ja: "空から落ちてくる白い氷。"
+      zh: "從天空落下的白色冰晶。"
+    sentence:
+      en: "Look at the white snow on the ground."
+      ja: "地面の白い雪を見てください。"
+      zh: "看地上的白雪。"
+
+  - id: wind
+    word:
+      en: Wind
+      ja: 風
+      zh: 風
+    reading: "WIND"
+    phonetic: "/wɪnd/"
+    description:
+      en: "Moving air."
+      ja: "動いている空気。"
+      zh: "移動的空氣。"
+    sentence:
+      en: "It is cold and windy outside."
+      ja: "外は寒くて風が強いです。"
+      zh: "外面又冷又有風。"
+
+  - id: cloud
+    word:
+      en: Cloud
+      ja: 雲
+      zh: 雲
+    reading: "KLOWD"
+    phonetic: "/klaʊd/"
+    description:
+      en: "White fluff in sky."
+      ja: "空にある白いふわふわ。"
+      zh: "天空中白色的棉絮。"
+    sentence:
+      en: "The clouds cover the sky."
+      ja: "雲が空を覆っています。"
+      zh: "雲遮住了天空。"
+
+  - id: umbrella
+    word:
+      en: Umbrella
+      ja: 傘
+      zh: 雨傘
+    reading: "uhm-BREL-uh"
+    phonetic: "/ʌmˈbrelə/"
+    description:
+      en: "Tool to stay dry."
+      ja: "濡れないための道具。"
+      zh: "保持乾燥的工具。"
+    sentence:
+      en: "I used my umbrella, but my shoes got wet."
+      ja: "傘を使いましたが、靴が濡れました。"
+      zh: "我用了雨傘，但鞋子還是濕了。"
+
+  - id: temperature
+    word:
+      en: Temperature
+      ja: 温度
+      zh: 溫度
+    reading: "TEM-per-uh-chur"
+    phonetic: "/ˈtemprətʃər/"
+    description:
+      en: "Hot or Cold degree."
+      ja: "暑さや寒さの度合い。"
+      zh: "熱或冷的程度。"
+    sentence:
+      en: "The temperature is high, it is hot."
+      ja: "気温が高くて、暑いです。"
+      zh: "溫度很高，很熱。"
+
+  # Day 2: Adjectives & Verbs (Conditions)
+  - id: hot
+    word:
+      en: Hot
+      ja: 暑い
+      zh: 熱
+    reading: "HOT"
+    phonetic: "/hɑːt/"
+    description:
+      en: "High temperature, like fire."
+      ja: "火のように高い温度。"
+      zh: "像火一樣的高溫。"
+    sentence:
+      en: "It is so hot today!"
+      ja: "今日はとても暑いです！"
+      zh: "今天好熱！"
+
+  - id: cold
+    word:
+      en: Cold
+      ja: 寒い
+      zh: 冷
+    reading: "KOHLD"
+    phonetic: "/koʊld/"
+    description:
+      en: "Low temperature, like ice."
+      ja: "氷のように低い温度。"
+      zh: "像冰一樣的低溫。"
+    sentence:
+      en: "Yes, you need a coat. It is cold outside."
+      ja: "はい、コートが必要です。外は寒いです。"
+      zh: "是的，你需要外套。外面很冷。"
+
+  - id: sunny
+    word:
+      en: Sunny
+      ja: 晴れ
+      zh: 晴天
+    reading: "SUHN-ee"
+    phonetic: "/ˈsʌni/"
+    description:
+      en: "Sun is shining."
+      ja: "太陽が輝いている。"
+      zh: "太陽正在照耀。"
+    sentence:
+      en: "I like dry and sunny days."
+      ja: "乾燥した晴れた日が好きです。"
+      zh: "我喜歡乾燥晴朗的日子。"
+
+  - id: wet
+    word:
+      en: Wet
+      ja: 濡れた
+      zh: 濕
+    reading: "WET"
+    phonetic: "/wet/"
+    description:
+      en: "Covered in water."
+      ja: "水で覆われている。"
+      zh: "被水覆蓋。"
+    sentence:
+      en: "My shoes got wet."
+      ja: "靴が濡れました。"
+      zh: "我的鞋子濕了。"
+
+  - id: dry
+    word:
+      en: Dry
+      ja: 乾いた
+      zh: 乾
+    reading: "DRY"
+    phonetic: "/draɪ/"
+    description:
+      en: "No water."
+      ja: "水がない。"
+      zh: "沒有水。"
+    sentence:
+      en: "I like dry and sunny days."
+      ja: "乾燥した晴れた日が好きです。"
+      zh: "我喜歡乾燥晴朗的日子。"
+
+  - id: shine
+    word:
+      en: Shine
+      ja: 輝く
+      zh: 照耀
+    reading: "SHYN"
+    phonetic: "/ʃaɪn/"
+    description:
+      en: "Give light."
+      ja: "光を放つ。"
+      zh: "發出光芒。"
+    sentence:
+      en: "The sun is shining."
+      ja: "太陽が輝いています。"
+      zh: "太陽正在照耀。"
+
+  - id: blow
+    word:
+      en: Blow
+      ja: 吹く
+      zh: 吹
+    reading: "BLOH"
+    phonetic: "/bloʊ/"
+    description:
+      en: "Air moving hard."
+      ja: "空気が強く動く。"
+      zh: "空氣用力移動。"
+    sentence:
+      en: "The wind is blowing hard."
+      ja: "風が強く吹いています。"
+      zh: "風吹得很大。"
+
+chat:
+  conversations:
+    - id: scenario-1-weather-story
+      title:
+        en: "Yesterday and Today"
+        ja: "昨日と今日"
+        zh: "昨天和今天"
+      messages:
+        - role: partner
+          text:
+            en: "How was the weather yesterday?"
+            ja: "昨日の天気はどうでしたか？"
+            zh: "昨天天氣怎麼樣？"
+        - role: user
+          text:
+            en: "Yesterday the weather was bad. It was very windy and cold."
+            ja: "昨日は天気が悪かったです。とても風が強くて寒かったです。"
+            zh: "昨天天氣很差。又風又冷。"
+        - role: partner
+          text:
+            en: "Did it rain?"
+            ja: "雨は降りましたか？"
+            zh: "有下雨嗎？"
+        - role: user
+          text:
+            en: "Yes, dark clouds filled the sky. Then, the rain started."
+            ja: "はい、暗い雲が空を覆いました。そして、雨が降り始めました。"
+            zh: "是的，烏雲佈滿天空。然後開始下雨。"
+        - role: partner
+          text:
+            en: "Did you get wet?"
+            ja: "濡れましたか？"
+            zh: "你有淋濕嗎？"
+        - role: user
+          text:
+            en: "I used my umbrella, but my shoes got wet."
+            ja: "傘を使いましたが、靴が濡れました。"
+            zh: "我用了雨傘，但鞋子還是濕了。"
+        - role: partner
+          text:
+            en: "How is the weather today?"
+            ja: "今日の天気はどうですか？"
+            zh: "今天天氣怎麼樣？"
+        - role: user
+          text:
+            en: "Today is different. The sun is out and it is warm. It is a beautiful sunny day."
+            ja: "今日は違います。太陽が出ていて暖かいです。美しい晴れた日です。"
+            zh: "今天不一樣。太陽出來了，很暖和。是美麗的晴天。"
+
+    - id: scenario-2-hot-day
+      title:
+        en: "A Hot Day"
+        ja: "暑い日"
+        zh: "炎熱的一天"
+      messages:
+        - role: partner
+          text:
+            en: "It is so hot today!"
+            ja: "今日はとても暑いですね！"
+            zh: "今天好熱！"
+        - role: user
+          text:
+            en: "Yes, the temperature is 35 degrees."
+            ja: "はい、気温は35度です。"
+            zh: "是啊，溫度35度。"
+        - role: partner
+          text:
+            en: "I want to go swimming."
+            ja: "泳ぎに行きたいです。"
+            zh: "我想去游泳。"
+        - role: user
+          text:
+            en: "Good idea. The sun is shining."
+            ja: "いいですね。太陽が輝いています。"
+            zh: "好主意。太陽正在照耀。"
+        - role: partner
+          text:
+            en: "Wait, look at that cloud."
+            ja: "待って、あの雲を見て。"
+            zh: "等等，看那朵雲。"
+        - role: user
+          text:
+            en: "Oh no. I think it will rain soon."
+            ja: "ああ。すぐ雨が降りそうです。"
+            zh: "糟糕。我想快要下雨了。"
+        - role: partner
+          text:
+            en: "Should we bring an umbrella?"
+            ja: "傘を持って行きましょうか？"
+            zh: "我們要帶雨傘嗎？"
+        - role: user
+          text:
+            en: "Yes, just in case."
+            ja: "はい、念のため。"
+            zh: "是的，以防萬一。"
+
+    - id: scenario-3-questions-answers
+      title:
+        en: "Weather Questions"
+        ja: "天気の質問"
+        zh: "天氣問答"
+      messages:
+        - role: partner
+          text:
+            en: "How is the weather?"
+            ja: "天気はどうですか？"
+            zh: "天氣怎麼樣？"
+        - role: user
+          text:
+            en: "It is raining hard."
+            ja: "激しく雨が降っています。"
+            zh: "雨下得很大。"
+        - role: partner
+          text:
+            en: "Is it cold outside?"
+            ja: "外は寒いですか？"
+            zh: "外面冷嗎？"
+        - role: user
+          text:
+            en: "Yes, you need a coat."
+            ja: "はい、コートが必要です。"
+            zh: "是的，你需要外套。"
+        - role: partner
+          text:
+            en: "Do you like snow?"
+            ja: "雪は好きですか？"
+            zh: "你喜歡雪嗎？"
+        - role: user
+          text:
+            en: "Yes, it is beautiful."
+            ja: "はい、きれいです。"
+            zh: "是的，很美。"
+        - role: partner
+          text:
+            en: "Is it sunny?"
+            ja: "晴れていますか？"
+            zh: "是晴天嗎？"
+        - role: user
+          text:
+            en: "No, it is cloudy."
+            ja: "いいえ、曇っています。"
+            zh: "不，是陰天。"
+        - role: partner
+          text:
+            en: "How do you feel?"
+            ja: "どう感じますか？"
+            zh: "你感覺怎麼樣？"
+        - role: user
+          text:
+            en: "I feel warm. It is a nice day."
+            ja: "暖かいです。いい日ですね。"
+            zh: "我覺得很暖和。天氣很好。"
+
+quiz:
+  questionsPerRound: 5
+  xpReward: 20

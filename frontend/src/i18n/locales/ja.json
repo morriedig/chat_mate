@@ -9,6 +9,8 @@
     "chooseMode": "チャットタイプ",
     "startChatting": "チャットを始める",
     "startLearning": "学習を始める",
+    "motherTongue": "母国語",
+    "targetLanguage": "学びたい言語",
     "learningLevel": "レベルを選ぶ",
     "primaryModes": {
       "chat": {

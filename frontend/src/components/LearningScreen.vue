@@ -20,7 +20,15 @@ const props = defineProps({
     type: Object,
     required: true
   },
-  language: {
+  targetLanguage: {
+    type: String,
+    required: true
+  },
+  motherTongue: {
+    type: String,
+    default: 'en'
+  },
+  uiLanguage: {
     type: String,
     default: 'en'
   }
@@ -37,16 +45,16 @@ const showConversationPrompt = ref(false)
 const isBilingual = ref(true) // Default to bilingual for beginners
 const voiceSpeed = ref('normal') // 'normal', 'slow', 'word'
 
-// Computed - Get chapters for current level from YAML files
+// Computed - Get chapters for current target language and level from YAML files
 const availableChapters = computed(() => {
-  return getChaptersByLevel(props.language, props.level.id)
+  return getChaptersByLevel(props.targetLanguage, props.level.id, props.uiLanguage)
 })
 
 // Methods
 function selectChapter(chapter) {
   selectedChapter.value = chapter
-  currentWords.value = getChapterWords(chapter.id, props.language)
-  currentConversations.value = getChapterConversations(chapter.id, props.language)
+  currentWords.value = getChapterWords(chapter.id, props.targetLanguage, props.motherTongue)
+  currentConversations.value = getChapterConversations(chapter.id, props.targetLanguage, props.motherTongue)
   learningMode.value = 'list'
 }
 
@@ -297,7 +305,7 @@ onMounted(() => {
             v-for="word in currentWords"
             :key="word.id"
             :word="word"
-            :language="language"
+            :language="targetLanguage"
             :bilingual="isBilingual"
             :voice-speed="voiceSpeed"
           />
@@ -307,7 +315,7 @@ onMounted(() => {
         <FlashcardMode
           v-else-if="learningMode === 'flashcard'"
           :words="currentWords"
-          :language="language"
+          :language="targetLanguage"
           :bilingual="isBilingual"
           :voice-speed="voiceSpeed"
         />
@@ -316,7 +324,7 @@ onMounted(() => {
         <QuizMode
           v-else-if="learningMode === 'quiz'"
           :words="currentWords"
-          :language="language"
+          :language="targetLanguage"
           :chapter-id="selectedChapter.id"
           @complete="handleQuizComplete"
         />
@@ -325,7 +333,7 @@ onMounted(() => {
         <ConversationPractice
           v-else-if="learningMode === 'conversation'"
           :conversations="currentConversations"
-          :language="language"
+          :language="targetLanguage"
           :bilingual="isBilingual"
           :voice-speed="voiceSpeed"
           :chapter-id="selectedChapter.id"

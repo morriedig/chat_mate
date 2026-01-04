@@ -1,0 +1,398 @@
+# Chapter: Week 10 - Health & Body
+meta:
+  id: health-and-body
+  title:
+    en: "Health & Body"
+    ja: "健康と体"
+    zh: "健康與身體"
+  description:
+    en: "Talking about your body and feeling unwell."
+    ja: "体のことや体調不良について話しましょう。"
+    zh: "學習談論身體和身體不適。"
+  icon: "🏥"
+  order: 10
+  level: beginner
+
+words:
+  # Day 1: Core Nouns (Body Parts)
+  - id: head
+    word:
+      en: Head
+      ja: 頭
+      zh: 頭
+    reading: "HED"
+    phonetic: "/hed/"
+    description:
+      en: "Top of body."
+      ja: "体の一番上。"
+      zh: "身體的最上方。"
+    sentence:
+      en: "My head hurts."
+      ja: "頭が痛いです。"
+      zh: "我頭痛。"
+
+  - id: stomach
+    word:
+      en: Stomach
+      ja: お腹
+      zh: 肚子
+    reading: "STUHM-uhk"
+    phonetic: "/ˈstʌmək/"
+    description:
+      en: "Belly, where food goes."
+      ja: "お腹、食べ物が行く場所。"
+      zh: "腹部，食物去的地方。"
+    sentence:
+      en: "I have a pain in my stomach."
+      ja: "お腹が痛いです。"
+      zh: "我肚子痛。"
+
+  - id: hand
+    word:
+      en: Hand
+      ja: 手
+      zh: 手
+    reading: "HAND"
+    phonetic: "/hænd/"
+    description:
+      en: "End of arm."
+      ja: "腕の先。"
+      zh: "手臂的末端。"
+    sentence:
+      en: "I use my hand to write."
+      ja: "手を使って書きます。"
+      zh: "我用手寫字。"
+
+  - id: leg
+    word:
+      en: Leg
+      ja: 脚
+      zh: 腿
+    reading: "LEG"
+    phonetic: "/leɡ/"
+    description:
+      en: "Part for walking."
+      ja: "歩くための部分。"
+      zh: "用來走路的部位。"
+    sentence:
+      en: "He broke his leg playing soccer."
+      ja: "彼はサッカーをして脚を骨折しました。"
+      zh: "他踢足球時摔斷了腿。"
+
+  - id: eye
+    word:
+      en: Eye
+      ja: 目
+      zh: 眼睛
+    reading: "AY"
+    phonetic: "/aɪ/"
+    description:
+      en: "Part for seeing."
+      ja: "見るための部分。"
+      zh: "用來看東西的部位。"
+    sentence:
+      en: "My eyes are tired from the computer."
+      ja: "コンピューターで目が疲れました。"
+      zh: "我的眼睛因為看電腦很累。"
+
+  - id: medicine
+    word:
+      en: Medicine
+      ja: 薬
+      zh: 藥
+    reading: "MED-uh-sin"
+    phonetic: "/ˈmedɪsɪn/"
+    description:
+      en: "Drug to fix sickness."
+      ja: "病気を治すための薬。"
+      zh: "治療疾病的藥物。"
+    sentence:
+      en: "The doctor gave me medicine."
+      ja: "医者が薬をくれました。"
+      zh: "醫生給了我藥。"
+
+  - id: doctor
+    word:
+      en: Doctor
+      ja: 医者
+      zh: 醫生
+    reading: "DOK-ter"
+    phonetic: "/ˈdɑːktər/"
+    description:
+      en: "Person who fixes health."
+      ja: "健康を治す人。"
+      zh: "治療健康的人。"
+    sentence:
+      en: "I called the doctor."
+      ja: "医者に電話しました。"
+      zh: "我打電話給醫生。"
+
+  # Day 2: Verbs & Adjectives (Feeling)
+  - id: sick
+    word:
+      en: Sick
+      ja: 病気
+      zh: 生病
+    reading: "SIK"
+    phonetic: "/sɪk/"
+    description:
+      en: "Not healthy, feeling bad."
+      ja: "健康でない、気分が悪い。"
+      zh: "不健康，感覺不舒服。"
+    sentence:
+      en: "I feel sick today."
+      ja: "今日は気分が悪いです。"
+      zh: "我今天感覺不舒服。"
+
+  - id: hurt
+    word:
+      en: Hurt
+      ja: 痛い
+      zh: 痛
+    reading: "HURT"
+    phonetic: "/hɜːrt/"
+    description:
+      en: "Feel pain."
+      ja: "痛みを感じる。"
+      zh: "感到疼痛。"
+    sentence:
+      en: "My stomach hurts."
+      ja: "お腹が痛いです。"
+      zh: "我肚子痛。"
+
+  - id: tired
+    word:
+      en: Tired
+      ja: 疲れた
+      zh: 累
+    reading: "TY-erd"
+    phonetic: "/ˈtaɪərd/"
+    description:
+      en: "No energy."
+      ja: "エネルギーがない。"
+      zh: "沒有精力。"
+    sentence:
+      en: "You look tired, go to sleep."
+      ja: "疲れているようです、寝てください。"
+      zh: "你看起來很累，去睡覺吧。"
+
+  - id: healthy
+    word:
+      en: Healthy
+      ja: 健康な
+      zh: 健康
+    reading: "HEL-thee"
+    phonetic: "/ˈhelθi/"
+    description:
+      en: "Body is good."
+      ja: "体が良い状態。"
+      zh: "身體狀況良好。"
+    sentence:
+      en: "Now I feel a little more healthy."
+      ja: "今は少し健康になりました。"
+      zh: "現在我感覺健康多了。"
+
+  - id: pain
+    word:
+      en: Pain
+      ja: 痛み
+      zh: 疼痛
+    reading: "PAYN"
+    phonetic: "/peɪn/"
+    description:
+      en: "Bad feeling."
+      ja: "悪い感覚。"
+      zh: "不好的感覺。"
+    sentence:
+      en: "I have a bad pain in my leg."
+      ja: "脚がひどく痛いです。"
+      zh: "我的腿很痛。"
+
+  - id: rest
+    word:
+      en: Rest
+      ja: 休む
+      zh: 休息
+    reading: "REST"
+    phonetic: "/rest/"
+    description:
+      en: "Sleep or relax to get better."
+      ja: "良くなるために寝たりリラックスする。"
+      zh: "睡覺或放鬆來恢復。"
+    sentence:
+      en: "I stayed in bed all day to rest."
+      ja: "休むために一日中ベッドにいました。"
+      zh: "我整天都躺在床上休息。"
+
+  - id: broken
+    word:
+      en: Broken
+      ja: 骨折した
+      zh: 斷掉
+    reading: "BROH-ken"
+    phonetic: "/ˈbroʊkən/"
+    description:
+      en: "Bone is snapped."
+      ja: "骨が折れている。"
+      zh: "骨頭斷裂。"
+    sentence:
+      en: "It is not broken, but it is hurt."
+      ja: "骨折はしていませんが、痛いです。"
+      zh: "沒有斷，但是很痛。"
+
+chat:
+  conversations:
+    - id: scenario-1-feeling-sick
+      title:
+        en: "Feeling Sick"
+        ja: "気分が悪い"
+        zh: "感覺不舒服"
+      messages:
+        - role: partner
+          text:
+            en: "Good morning. How are you feeling?"
+            ja: "おはようございます。気分はどうですか？"
+            zh: "早安。你感覺怎麼樣？"
+        - role: user
+          text:
+            en: "I woke up feeling terrible. My head was hot and my body was tired."
+            ja: "ひどい気分で起きました。頭が熱くて体が疲れています。"
+            zh: "我醒來感覺很糟。頭很熱，身體很累。"
+        - role: partner
+          text:
+            en: "Did you go to work?"
+            ja: "仕事に行きましたか？"
+            zh: "你去上班了嗎？"
+        - role: user
+          text:
+            en: "No, I did not go to work. I called the doctor."
+            ja: "いいえ、仕事に行きませんでした。医者に電話しました。"
+            zh: "不，我沒去上班。我打電話給醫生。"
+        - role: partner
+          text:
+            en: "What did the doctor say?"
+            ja: "医者は何と言いましたか？"
+            zh: "醫生怎麼說？"
+        - role: user
+          text:
+            en: "She said, 'You are sick. Take this medicine and rest.'"
+            ja: "「病気です。この薬を飲んで休んでください」と言いました。"
+            zh: "她說：「你生病了。吃這個藥然後休息。」"
+        - role: partner
+          text:
+            en: "Are you feeling better now?"
+            ja: "今は良くなりましたか？"
+            zh: "你現在好點了嗎？"
+        - role: user
+          text:
+            en: "I stayed in bed all day. Now I feel a little more healthy."
+            ja: "一日中ベッドにいました。今は少し健康になりました。"
+            zh: "我整天都躺在床上。現在我感覺健康多了。"
+
+    - id: scenario-2-at-doctor
+      title:
+        en: "At the Doctor"
+        ja: "医者で"
+        zh: "看醫生"
+      messages:
+        - role: partner
+          text:
+            en: "Good morning. What is the problem?"
+            ja: "おはようございます。どうされましたか？"
+            zh: "早安。有什麼問題？"
+        - role: user
+          text:
+            en: "I have a bad pain in my leg."
+            ja: "脚がひどく痛いです。"
+            zh: "我的腿很痛。"
+        - role: partner
+          text:
+            en: "Did you fall?"
+            ja: "転びましたか？"
+            zh: "你摔倒了嗎？"
+        - role: user
+          text:
+            en: "Yes, I fell yesterday."
+            ja: "はい、昨日転びました。"
+            zh: "是的，我昨天摔倒了。"
+        - role: partner
+          text:
+            en: "Let me look. It is not broken, but it is hurt."
+            ja: "見せてください。骨折はしていませんが、痛いですね。"
+            zh: "讓我看看。沒有斷，但是有受傷。"
+        - role: user
+          text:
+            en: "Do I need medicine?"
+            ja: "薬が必要ですか？"
+            zh: "我需要吃藥嗎？"
+        - role: partner
+          text:
+            en: "No, just rest your leg."
+            ja: "いいえ、脚を休めてください。"
+            zh: "不用，只要讓腿休息。"
+        - role: user
+          text:
+            en: "Thank you, doctor."
+            ja: "ありがとうございます、先生。"
+            zh: "謝謝醫生。"
+
+    - id: scenario-3-questions-answers
+      title:
+        en: "Health Questions"
+        ja: "健康の質問"
+        zh: "健康問答"
+      messages:
+        - role: partner
+          text:
+            en: "Are you okay?"
+            ja: "大丈夫ですか？"
+            zh: "你還好嗎？"
+        - role: user
+          text:
+            en: "No, I feel sick."
+            ja: "いいえ、気分が悪いです。"
+            zh: "不好，我感覺不舒服。"
+        - role: partner
+          text:
+            en: "What is wrong?"
+            ja: "どうしましたか？"
+            zh: "怎麼了？"
+        - role: user
+          text:
+            en: "My stomach hurts."
+            ja: "お腹が痛いです。"
+            zh: "我肚子痛。"
+        - role: partner
+          text:
+            en: "Do you need a doctor?"
+            ja: "医者が必要ですか？"
+            zh: "你需要看醫生嗎？"
+        - role: user
+          text:
+            en: "No, I just need rest."
+            ja: "いいえ、休むだけで大丈夫です。"
+            zh: "不用，我只需要休息。"
+        - role: partner
+          text:
+            en: "Where is the pain?"
+            ja: "どこが痛いですか？"
+            zh: "哪裡痛？"
+        - role: user
+          text:
+            en: "It is in my back."
+            ja: "背中です。"
+            zh: "在我的背。"
+        - role: partner
+          text:
+            en: "Do you have a fever?"
+            ja: "熱はありますか？"
+            zh: "你有發燒嗎？"
+        - role: user
+          text:
+            en: "Yes, I have a fever and a headache."
+            ja: "はい、熱と頭痛があります。"
+            zh: "是的，我發燒還頭痛。"
+
+quiz:
+  questionsPerRound: 5
+  xpReward: 20

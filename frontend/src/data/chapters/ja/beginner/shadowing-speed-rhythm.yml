@@ -1,0 +1,212 @@
+# Chapter: Shadowing (Speed & Rhythm)
+# Focus: Repeat these rapidly without pausing.
+meta:
+  id: shadowing-speed-rhythm
+  title:
+    en: "Shadowing: Speed & Rhythm"
+    ja: "シャドーイング：スピードとリズム"
+    zh: "跟讀練習：速度與節奏"
+  description:
+    en: "Practice speaking quickly and smoothly."
+    ja: "速く、スムーズに話す練習をしましょう。"
+    zh: "練習快速且流暢地說話。"
+  icon: "⚡"
+  order: 7
+  level: beginner
+
+words:
+  - id: hurry
+    word:
+      en: Hurry
+      ja: 急ぐ
+      zh: 快點
+    reading: Isogu
+    phonetic: "/ˈhʌri/"
+    description:
+      en: "To move or act quickly."
+      ja: "速く動いたり行動したりすること。"
+      zh: "迅速移動或行動。"
+    sentence:
+      en: "Please hurry up."
+      ja: "急いでください。"
+      zh: "請快一點。"
+
+  - id: fast
+    word:
+      en: Fast
+      ja: 速い
+      zh: 快
+    reading: Hayai
+    phonetic: "/fæst/"
+    description:
+      en: "Moving with high speed."
+      ja: "スピードが速いこと。"
+      zh: "速度很快。"
+    sentence:
+      en: "He runs very fast."
+      ja: "彼はとても速く走ります。"
+      zh: "他跑得很快。"
+
+  - id: late
+    word:
+      en: Late
+      ja: 遅刻
+      zh: 遲到
+    reading: Chikoku
+    phonetic: "/leɪt/"
+    description:
+      en: "Not on time."
+      ja: "時間通りではないこと。"
+      zh: "沒有準時。"
+    sentence:
+      en: "We are late for school."
+      ja: "私たちは学校に遅刻です。"
+      zh: "我們上學遲到了。"
+
+  - id: ready
+    word:
+      en: Ready
+      ja: 準備完了
+      zh: 準備好
+    reading: Junbi kanryou
+    phonetic: "/ˈrɛdi/"
+    description:
+      en: "Prepared to do something."
+      ja: "何かをする準備ができていること。"
+      zh: "準備好做某事。"
+    sentence:
+      en: "Are you ready to go?"
+      ja: "行く準備はできましたか？"
+      zh: "你準備好要走了嗎？"
+
+  - id: wait
+    word:
+      en: Wait
+      ja: 待つ
+      zh: 等
+    reading: Matsu
+    phonetic: "/weɪt/"
+    description:
+      en: "To stay in one place."
+      ja: "一箇所に留まること。"
+      zh: "留在一個地方。"
+    sentence:
+      en: "Wait for me here."
+      ja: "ここで私を待ってください。"
+      zh: "在這裡等我。"
+
+  - id: go
+    word:
+      en: Go
+      ja: 行く
+      zh: 走
+    reading: Iku
+    phonetic: "/ɡoʊ/"
+    description:
+      en: "To move to another place."
+      ja: "別の場所に移動すること。"
+      zh: "移動到另一個地方。"
+    sentence:
+      en: "Let's go now."
+      ja: "今行きましょう。"
+      zh: "我們現在走吧。"
+
+chat:
+  conversations:
+    - id: scenario-1-rushing
+      title:
+        en: "Rushing to the Bus"
+        ja: "バスに急ぐ"
+        zh: "趕公車"
+      messages:
+        - role: partner
+          text:
+            en: "Hurry up! We are late."
+            ja: "急いで！遅刻しちゃうよ。"
+            zh: "快一點！我們要遲到了。"
+        - role: user
+          text:
+            en: "I am coming fast."
+            ja: "急いで行きます。"
+            zh: "我很快就來。"
+        - role: partner
+          text:
+            en: "The bus leaves now."
+            ja: "バスがもう出るよ。"
+            zh: "公車現在要開了。"
+        - role: user
+          text:
+            en: "Wait! Do not go."
+            ja: "待って！行かないで。"
+            zh: "等一下！別走。"
+        - role: partner
+          text:
+            en: "Run fast! It is here."
+            ja: "速く走って！ここだよ。"
+            zh: "快跑！在這裡。"
+        - role: user
+          text:
+            en: "I run very fast."
+            ja: "私はとても速く走っています。"
+            zh: "我跑得很快。"
+        - role: partner
+          text:
+            en: "Good. Let's go in."
+            ja: "よし。入ろう。"
+            zh: "好，我們進去吧。"
+        - role: user
+          text:
+            en: "Okay, I am safe."
+            ja: "よし、セーフだ。"
+            zh: "好了，我趕上了。"
+
+    - id: scenario-2-getting-ready
+      title:
+        en: "Are You Ready?"
+        ja: "準備はいい？"
+        zh: "你準備好了嗎？"
+      messages:
+        - role: partner
+          text:
+            en: "Are you ready?"
+            ja: "準備はいい？"
+            zh: "你準備好了嗎？"
+        - role: user
+          text:
+            en: "No, please wait."
+            ja: "いいえ、待ってください。"
+            zh: "還沒，請等一下。"
+        - role: partner
+          text:
+            en: "Why? We are late."
+            ja: "なんで？遅れちゃうよ。"
+            zh: "為什麼？我們要遲到了。"
+        - role: user
+          text:
+            en: "I cannot find my bag."
+            ja: "鞄が見つかりません。"
+            zh: "我找不到我的包包。"
+        - role: partner
+          text:
+            en: "Hurry, please."
+            ja: "急いで、お願い。"
+            zh: "拜託快一點。"
+        - role: user
+          text:
+            en: "Okay, I am ready now."
+            ja: "よし、準備できました。"
+            zh: "好了，我準備好了。"
+        - role: partner
+          text:
+            en: "Let's go fast."
+            ja: "速く行こう。"
+            zh: "我們快走吧。"
+        - role: user
+          text:
+            en: "Yes, let's go."
+            ja: "はい、行きましょう。"
+            zh: "好，走吧。"
+
+quiz:
+  questionsPerRound: 5
+  xpReward: 20

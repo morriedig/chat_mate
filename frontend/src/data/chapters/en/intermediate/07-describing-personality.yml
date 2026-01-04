@@ -1,0 +1,517 @@
+# Chapter: Week 7 - Describing Personality
+meta:
+  id: describing-personality
+  title:
+    en: "Describing Personality"
+    ja: "性格を描写する"
+    zh: "描述個性"
+  description:
+    en: "Go beyond 'He is nice.' Learn to describe character, habits, and relationships using relative clauses (who/which/that) and precise personality vocabulary."
+    ja: "「彼は優しい」を超えて。関係代名詞（who/which/that）と正確な性格語彙を使って、性格、習慣、人間関係を描写する方法を学びましょう。"
+    zh: "超越「他很好」。學習使用關係子句（who/which/that）和精確的個性詞彙來描述性格、習慣和人際關係。"
+  icon: "🎭"
+  order: 7
+  level: intermediate
+
+words:
+  # Positive Personality Adjectives (Day 1 & 4)
+  - id: punctual
+    word:
+      en: Punctual
+      ja: 時間厳守の
+      zh: 準時的
+    reading: "PUHNK-choo-uhl"
+    phonetic: "/ˈpʌŋktʃuəl/"
+    description:
+      en: "Always arriving or doing things at the expected time."
+      ja: "常に予定通りの時間に到着したり物事を行う。"
+      zh: "總是準時到達或做事。"
+    sentence:
+      en: "She's very punctual - she never arrives late to meetings."
+      ja: "彼女はとても時間厳守で、会議に遅刻することは決してありません。"
+      zh: "她非常準時——從不遲到開會。"
+
+  - id: reliable
+    word:
+      en: Reliable
+      ja: 信頼できる
+      zh: 可靠的
+    reading: "ri-LY-uh-buhl"
+    phonetic: "/rɪˈlaɪəbəl/"
+    description:
+      en: "Someone you can trust and depend on."
+      ja: "信頼して頼りにできる人。"
+      zh: "你可以信任和依賴的人。"
+    sentence:
+      en: "He's the most reliable person I know - he always keeps his promises."
+      ja: "彼は私が知っている中で最も信頼できる人です。いつも約束を守ります。"
+      zh: "他是我認識的最可靠的人——總是信守承諾。"
+
+  - id: ambitious
+    word:
+      en: Ambitious
+      ja: 野心的な
+      zh: 有野心的
+    reading: "am-BISH-uhs"
+    phonetic: "/æmˈbɪʃəs/"
+    description:
+      en: "Having a strong desire to succeed or achieve goals."
+      ja: "成功したり目標を達成したりする強い願望を持っている。"
+      zh: "有強烈的成功或實現目標的願望。"
+    sentence:
+      en: "She's incredibly ambitious - she wants to become CEO before 40."
+      ja: "彼女は非常に野心的で、40歳前にCEOになりたいと思っています。"
+      zh: "她非常有野心——想在40歲前成為CEO。"
+
+  - id: easy-going
+    word:
+      en: Easy-going
+      ja: のんびりした
+      zh: 隨和的
+    reading: "EE-zee-GOH-ing"
+    phonetic: "/ˈiːzi ˈɡoʊɪŋ/"
+    description:
+      en: "Relaxed, not easily worried or stressed."
+      ja: "リラックスしていて、心配やストレスを感じにくい。"
+      zh: "放鬆的，不容易擔心或緊張。"
+    sentence:
+      en: "He's quite easy-going - he doesn't stress about small things."
+      ja: "彼はかなりのんびりしていて、小さなことでストレスを感じません。"
+      zh: "他很隨和——不會為小事煩惱。"
+
+  - id: outgoing
+    word:
+      en: Outgoing
+      ja: 社交的な
+      zh: 外向的
+    reading: "OWT-goh-ing"
+    phonetic: "/ˈaʊtˌɡoʊɪŋ/"
+    description:
+      en: "Friendly and enjoys meeting new people."
+      ja: "フレンドリーで新しい人に会うのを楽しむ。"
+      zh: "友善且喜歡認識新朋友。"
+    sentence:
+      en: "My sister is very outgoing - she can make friends anywhere."
+      ja: "私の妹はとても社交的で、どこでも友達を作れます。"
+      zh: "我妹妹很外向——她在哪裡都能交到朋友。"
+
+  - id: thoughtful
+    word:
+      en: Thoughtful
+      ja: 思いやりのある
+      zh: 體貼的
+    reading: "THAWT-fuhl"
+    phonetic: "/ˈθɔːtfəl/"
+    description:
+      en: "Considerate of others' feelings and needs."
+      ja: "他人の気持ちやニーズに配慮する。"
+      zh: "考慮他人的感受和需求。"
+    sentence:
+      en: "She's the type of person who remembers everyone's birthday."
+      ja: "彼女は皆の誕生日を覚えているタイプの人です。"
+      zh: "她是那種記得每個人生日的人。"
+
+  - id: organized
+    word:
+      en: Organized
+      ja: 整理整頓された
+      zh: 有條理的
+    reading: "OR-guh-nyzd"
+    phonetic: "/ˈɔːrɡənaɪzd/"
+    description:
+      en: "Keeping things in order, planning well."
+      ja: "物事を整理し、上手に計画する。"
+      zh: "保持事物井井有條，善於規劃。"
+    sentence:
+      en: "He's extremely organized - his desk is always perfectly tidy."
+      ja: "彼は非常に整理整頓されていて、机はいつも完璧に整頓されています。"
+      zh: "他非常有條理——他的桌子總是完美整齊。"
+
+  # Negative Personality Adjectives (Day 4)
+  - id: messy
+    word:
+      en: Messy
+      ja: だらしない
+      zh: 凌亂的
+    reading: "MES-ee"
+    phonetic: "/ˈmesi/"
+    description:
+      en: "Untidy, not keeping things in order."
+      ja: "散らかっていて、物を整理しない。"
+      zh: "不整潔，不保持東西井然有序。"
+    sentence:
+      en: "I have a friend who is incredibly messy - you can't see his floor!"
+      ja: "私には信じられないほどだらしない友達がいます。床が見えないんです！"
+      zh: "我有個朋友非常凌亂——你看不到他的地板！"
+
+  - id: moody
+    word:
+      en: Moody
+      ja: 気分屋の
+      zh: 喜怒無常的
+    reading: "MOO-dee"
+    phonetic: "/ˈmuːdi/"
+    description:
+      en: "Having unpredictable changes in emotions."
+      ja: "感情の変化が予測できない。"
+      zh: "情緒變化難以預測。"
+    sentence:
+      en: "He can be quite moody - happy one minute, angry the next."
+      ja: "彼はかなり気分屋になることがある。1分前は幸せで、次の瞬間は怒っている。"
+      zh: "他有時很喜怒無常——前一分鐘開心，下一分鐘就生氣。"
+
+  - id: stubborn
+    word:
+      en: Stubborn
+      ja: 頑固な
+      zh: 固執的
+    reading: "STUHB-urn"
+    phonetic: "/ˈstʌbərn/"
+    description:
+      en: "Unwilling to change opinion or behavior."
+      ja: "意見や行動を変えたがらない。"
+      zh: "不願改變意見或行為。"
+    sentence:
+      en: "She's so stubborn - once she decides something, you can't change her mind."
+      ja: "彼女はとても頑固で、一度決めたら考えを変えられません。"
+      zh: "她很固執——一旦她決定了什麼，你就無法改變她的想法。"
+
+  - id: strict
+    word:
+      en: Strict
+      ja: 厳格な
+      zh: 嚴格的
+    reading: "strikt"
+    phonetic: "/strɪkt/"
+    description:
+      en: "Demanding that rules be followed exactly."
+      ja: "ルールを正確に守ることを要求する。"
+      zh: "要求嚴格遵守規則。"
+    sentence:
+      en: "My boss is strict about deadlines - no extensions allowed."
+      ja: "私の上司は締め切りに厳格で、延長は認められません。"
+      zh: "我的老闆對截止日期很嚴格——不允許延期。"
+
+  # Neutral Personality Adjectives
+  - id: introverted
+    word:
+      en: Introverted
+      ja: 内向的な
+      zh: 內向的
+    reading: "IN-troh-vur-tid"
+    phonetic: "/ˈɪntrəvɜːrtɪd/"
+    description:
+      en: "Preferring quiet time alone rather than social activities."
+      ja: "社交活動よりも一人の静かな時間を好む。"
+      zh: "喜歡獨處的安靜時間而不是社交活動。"
+    sentence:
+      en: "I'm quite introverted - I need alone time to recharge."
+      ja: "私はかなり内向的で、エネルギーを充電するには一人の時間が必要です。"
+      zh: "我很內向——我需要獨處時間來充電。"
+
+  - id: reserved
+    word:
+      en: Reserved
+      ja: 控えめな
+      zh: 矜持的
+    reading: "ri-ZURVD"
+    phonetic: "/rɪˈzɜːrvd/"
+    description:
+      en: "Quiet and not showing feelings openly."
+      ja: "静かで感情をオープンに表さない。"
+      zh: "安靜且不公開表露感情。"
+    sentence:
+      en: "He seems reserved at first, but he opens up once you know him."
+      ja: "彼は最初は控えめに見えますが、知り合うと打ち解けます。"
+      zh: "他一開始看起來很矜持，但熟了就會敞開心扉。"
+
+  # Personality Idioms (Day 5)
+  - id: social-butterfly
+    word:
+      en: Social butterfly
+      ja: 社交的な人
+      zh: 社交達人
+    reading: "SOH-shuhl BUHT-er-fly"
+    phonetic: "/ˈsoʊʃəl ˈbʌtərflaɪ/"
+    description:
+      en: "Someone who loves parties and is very sociable."
+      ja: "パーティーが大好きでとても社交的な人。"
+      zh: "喜歡派對且非常善於社交的人。"
+    sentence:
+      en: "My sister is a total social butterfly - she knows everyone in town."
+      ja: "私の妹は完全に社交的な人で、町の誰もが知っています。"
+      zh: "我妹妹是個徹底的社交達人——她認識鎮上的每個人。"
+
+  - id: couch-potato
+    word:
+      en: Couch potato
+      ja: カウチポテト
+      zh: 沙發馬鈴薯
+    reading: "KOWCH puh-TAY-toh"
+    phonetic: "/kaʊtʃ pəˈteɪtoʊ/"
+    description:
+      en: "Someone lazy who watches TV all day."
+      ja: "一日中テレビを見ている怠け者。"
+      zh: "整天看電視的懶人。"
+    sentence:
+      en: "My brother is a bit of a couch potato - he binge-watches shows all weekend."
+      ja: "私の兄はちょっとしたカウチポテトで、週末中ずっとドラマを一気見します。"
+      zh: "我哥哥有點像沙發馬鈴薯——他整個週末都在追劇。"
+
+  - id: down-to-earth
+    word:
+      en: Down to earth
+      ja: 現実的な
+      zh: 腳踏實地的
+    reading: "down too urth"
+    phonetic: "/daʊn tuː ɜːrθ/"
+    description:
+      en: "Practical, humble, and realistic."
+      ja: "実用的で謙虚で現実的。"
+      zh: "務實、謙遜、實際。"
+    sentence:
+      en: "She's really down to earth despite being successful and famous."
+      ja: "彼女は成功して有名にもかかわらず、本当に現実的です。"
+      zh: "儘管她成功又出名，她真的很腳踏實地。"
+
+  - id: people-person
+    word:
+      en: People person
+      ja: 人付き合いが上手な人
+      zh: 善於交際的人
+    reading: "PEE-puhl PUR-suhn"
+    phonetic: "/ˈpiːpəl ˈpɜːrsən/"
+    description:
+      en: "Someone who enjoys being around others."
+      ja: "他の人と一緒にいることを楽しむ人。"
+      zh: "喜歡與他人相處的人。"
+    sentence:
+      en: "He's a people person - he can talk to anyone about anything."
+      ja: "彼は人付き合いが上手な人で、誰とでも何でも話せます。"
+      zh: "他善於交際——他可以和任何人聊任何事。"
+
+  - id: old-soul
+    word:
+      en: Old soul
+      ja: 大人びた人
+      zh: 老靈魂
+    reading: "ohld sohl"
+    phonetic: "/oʊld soʊl/"
+    description:
+      en: "Someone wise beyond their years."
+      ja: "年齢以上に賢い人。"
+      zh: "智慧超越年齡的人。"
+    sentence:
+      en: "Even as a child, she was an old soul who preferred reading to playing."
+      ja: "子供の頃から、彼女は遊ぶより読書を好む大人びた子でした。"
+      zh: "即使是孩子時，她也是個老靈魂，喜歡閱讀勝過玩耍。"
+
+  # Relative Clause Patterns (Day 2 & 3)
+  - id: the-kind-of-person-who
+    word:
+      en: The kind of person who...
+      ja: ～するタイプの人
+      zh: 那種...的人
+    reading: "thuh kynd uhv PUR-suhn hoo"
+    phonetic: "/ðə kaɪnd əv ˈpɜːrsən huː/"
+    description:
+      en: "Pattern to describe someone's typical behavior."
+      ja: "誰かの典型的な行動を説明するパターン。"
+      zh: "用於描述某人典型行為的句型。"
+    sentence:
+      en: "He is the kind of person who always wakes up early."
+      ja: "彼はいつも早起きするタイプの人です。"
+      zh: "他是那種總是早起的人。"
+
+  - id: the-type-of-person-who
+    word:
+      en: The type of person who...
+      ja: ～するような人
+      zh: 那類...的人
+    reading: "thuh typ uhv PUR-suhn hoo"
+    phonetic: "/ðə taɪp əv ˈpɜːrsən huː/"
+    description:
+      en: "Alternative pattern to describe typical behavior."
+      ja: "典型的な行動を説明する別のパターン。"
+      zh: "描述典型行為的另一種句型。"
+    sentence:
+      en: "She's the type of person who always brings homemade cookies to work."
+      ja: "彼女は職場にいつも手作りクッキーを持ってくるような人です。"
+      zh: "她是那類總是帶自製餅乾去上班的人。"
+
+chat:
+  conversations:
+    - id: scenario-1-describing-a-friend
+      title:
+        en: "Describing a Friend"
+        ja: "友達を描写する"
+        zh: "描述朋友"
+      messages:
+        - role: partner
+          text:
+            en: "I heard you're meeting my friend Sarah this weekend. What kind of people do you usually get along with?"
+            ja: "今週末、私の友達のサラに会うって聞いたよ。普段どんな人とうまくいくの？"
+            zh: "聽說你這週末要見我朋友 Sarah。你通常跟什麼樣的人合得來？"
+        - role: user
+          text:
+            en: "I tend to get along with people who are easy-going and don't take themselves too seriously."
+            ja: "私はのんびりしていて、自分をあまり深刻に考えない人とうまくいく傾向があります。"
+            zh: "我通常和隨和、不把自己看得太重的人合得來。"
+        - role: partner
+          text:
+            en: "Oh, you'll love Sarah then! She's the kind of person who can laugh at anything."
+            ja: "じゃあサラのこと気に入るよ！彼女は何でも笑えるタイプの人なんだ。"
+            zh: "那你會喜歡 Sarah 的！她是那種什麼都能笑的人。"
+        - role: user
+          text:
+            en: "That sounds great! I have a friend who loves coffee - does Sarah like cafes?"
+            ja: "それはいいね！私にはコーヒー好きの友達がいるんだけど、サラはカフェが好き？"
+            zh: "聽起來很棒！我有個喜歡咖啡的朋友——Sarah 喜歡咖啡廳嗎？"
+        - role: partner
+          text:
+            en: "Absolutely! She's a total social butterfly. She knows the best cafes in town."
+            ja: "もちろん！彼女は完全に社交的な人で、町で一番いいカフェを知ってるよ。"
+            zh: "當然！她是個徹底的社交達人。她知道鎮上最棒的咖啡廳。"
+        - role: user
+          text:
+            en: "Is she outgoing then? I'm quite introverted, so I hope we balance each other out."
+            ja: "じゃあ彼女は社交的なの？私はかなり内向的だから、お互いにバランスが取れるといいな。"
+            zh: "那她是外向的嗎？我很內向，希望我們能互相平衡。"
+        - role: partner
+          text:
+            en: "Don't worry! She's also very thoughtful. She's the type of person who notices when someone needs space."
+            ja: "心配しないで！彼女はとても思いやりもあるよ。誰かがスペースを必要としている時に気づくタイプの人なんだ。"
+            zh: "別擔心！她也很體貼。她是那種會注意到別人需要空間的人。"
+        - role: user
+          text:
+            en: "She sounds really down to earth. I bought a gift which I hope she'll like."
+            ja: "彼女は本当に現実的そうだね。彼女が気に入ってくれるといいなと思うプレゼントを買ったんだ。"
+            zh: "她聽起來很腳踏實地。我買了個禮物希望她會喜歡。"
+        - role: partner
+          text:
+            en: "That's so sweet! She's definitely not the type who cares about expensive things. It's the thought that counts."
+            ja: "優しいね！彼女は絶対に高価なものを気にするタイプじゃないよ。気持ちが大切だから。"
+            zh: "真貼心！她絕對不是那種在意貴重東西的人。重要的是心意。"
+
+    - id: scenario-2-the-new-colleague
+      title:
+        en: "The New Colleague"
+        ja: "新しい同僚"
+        zh: "新同事"
+      messages:
+        - role: partner
+          text:
+            en: "Did you meet the new colleague who joined our team last week? What's your impression?"
+            ja: "先週チームに加わった新しい同僚に会った？どんな印象？"
+            zh: "你見到上週加入我們團隊的新同事了嗎？你的印象如何？"
+        - role: user
+          text:
+            en: "Yes! That's the colleague who sits next to me now. She seems very organized."
+            ja: "うん！今私の隣に座っている同僚だよ。彼女はとても整理整頓されているみたい。"
+            zh: "見到了！就是現在坐我旁邊的同事。她看起來很有條理。"
+        - role: partner
+          text:
+            en: "Really? How can you tell? I only talked to her briefly."
+            ja: "本当？どうしてわかるの？私は少ししか話してないんだ。"
+            zh: "真的嗎？你怎麼看出來的？我只跟她簡短聊過。"
+        - role: user
+          text:
+            en: "She's very punctual - she arrives exactly at 9 every day. And her desk is immaculate."
+            ja: "彼女はとても時間厳守で、毎日ちょうど9時に到着する。そして机がピカピカなんだ。"
+            zh: "她很準時——每天剛好9點到。而且她的桌子一塵不染。"
+        - role: partner
+          text:
+            en: "Sounds like the opposite of Tom! He's so messy - you can never find anything on his desk."
+            ja: "トムの正反対みたいだね！彼はすごくだらしなくて、机の上で何も見つからないんだ。"
+            zh: "聽起來跟 Tom 完全相反！他很凌亂——你永遠在他桌上找不到東西。"
+        - role: user
+          text:
+            en: "Ha! Tom is reliable though - he's the kind of person who always meets deadlines."
+            ja: "はは！でもトムは信頼できるよ。彼はいつも締め切りを守るタイプの人なんだ。"
+            zh: "哈！不過 Tom 很可靠——他是那種總是趕上截止日期的人。"
+        - role: partner
+          text:
+            en: "True. What about the new colleague's personality? Is she easy-going or more strict?"
+            ja: "確かに。新しい同僚の性格はどう？のんびりしてる、それとも厳格？"
+            zh: "對。那新同事的個性呢？她是隨和還是比較嚴格？"
+        - role: user
+          text:
+            en: "She seems ambitious but also down to earth. She mentioned wanting to lead a project someday."
+            ja: "彼女は野心的だけど現実的にも見える。いつかプロジェクトをリードしたいって言ってたよ。"
+            zh: "她看起來有野心但也很腳踏實地。她提到有一天想帶領一個專案。"
+        - role: partner
+          text:
+            en: "That's great! We need more people who are ambitious. Is she a people person?"
+            ja: "いいね！野心的な人がもっと必要だよ。彼女は人付き合いが上手なタイプ？"
+            zh: "太好了！我們需要更多有野心的人。她善於交際嗎？"
+        - role: user
+          text:
+            en: "I think she's a bit reserved at first, but she opens up quickly. She's not moody at all."
+            ja: "最初は少し控えめだと思うけど、すぐに打ち解けるよ。全然気分屋じゃない。"
+            zh: "我覺得她一開始有點矜持，但很快就會敞開心扉。她一點都不喜怒無常。"
+
+    - id: scenario-3-personality-quiz
+      title:
+        en: "Personality Quiz"
+        ja: "性格クイズ"
+        zh: "個性測驗"
+      messages:
+        - role: partner
+          text:
+            en: "Let's do a fun personality quiz! First question: Would you call yourself a social butterfly or a couch potato?"
+            ja: "楽しい性格クイズをしよう！最初の質問：自分のことを社交的な人とカウチポテト、どっちだと思う？"
+            zh: "我們來做個有趣的個性測驗！第一題：你會說自己是社交達人還是沙發馬鈴薯？"
+        - role: user
+          text:
+            en: "Honestly, I'm probably more of a couch potato on weekends, but I can be outgoing when I need to be."
+            ja: "正直、週末はカウチポテト寄りだと思うけど、必要な時は社交的になれるよ。"
+            zh: "老實說，我週末可能比較像沙發馬鈴薯，但需要的時候我也可以很外向。"
+        - role: partner
+          text:
+            en: "Interesting! Next: Are you the kind of person who plans everything, or do you prefer being spontaneous?"
+            ja: "面白い！次：あなたは全部計画するタイプの人？それとも自然に任せる方が好き？"
+            zh: "有趣！下一題：你是那種計劃好一切的人，還是比較喜歡隨興？"
+        - role: user
+          text:
+            en: "I'm quite organized when it comes to work, but with friends, I'm pretty easy-going."
+            ja: "仕事に関してはかなり整理整頓されてるけど、友達といる時はかなりのんびりしてるよ。"
+            zh: "工作上我很有條理，但和朋友在一起時我很隨和。"
+        - role: partner
+          text:
+            en: "What about being stubborn? Do people ever say you're the type of person who never changes their mind?"
+            ja: "頑固さについては？考えを絶対変えないタイプの人だって言われたことある？"
+            zh: "固執呢？有人說過你是那種永遠不改變想法的人嗎？"
+        - role: user
+          text:
+            en: "Ha! My family says I can be stubborn about small things, but I'm open to new ideas at work."
+            ja: "はは！家族は小さいことには頑固になれるって言うけど、仕事では新しいアイデアに開かれてるよ。"
+            zh: "哈！我家人說我對小事可能會固執，但在工作上我對新想法很開放。"
+        - role: partner
+          text:
+            en: "Would you describe yourself as an old soul? Someone who is wise beyond their years?"
+            ja: "自分のことを大人びた人だと思う？年齢以上に賢い人？"
+            zh: "你會形容自己是老靈魂嗎？就是智慧超越年齡的人？"
+        - role: user
+          text:
+            en: "Not really. I'm more of a people person who enjoys being around others and having fun."
+            ja: "あまりそうじゃないかな。私はむしろ人付き合いが好きで、楽しむことが好きな人だよ。"
+            zh: "不太算。我比較是善於交際的人，喜歡和別人在一起玩樂。"
+        - role: partner
+          text:
+            en: "Last question: Are you reliable? The type who always keeps promises?"
+            ja: "最後の質問：あなたは信頼できる？いつも約束を守るタイプ？"
+            zh: "最後一題：你可靠嗎？那種總是信守承諾的人？"
+        - role: user
+          text:
+            en: "I try to be! I'm the kind of person who hates being late or breaking commitments."
+            ja: "そうなるよう努力してる！私は遅刻したり約束を破ったりするのが嫌いなタイプの人なんだ。"
+            zh: "我努力做到！我是那種討厭遲到或違背承諾的人。"
+        - role: partner
+          text:
+            en: "Perfect! Based on your answers, you seem like a reliable, easy-going people person with some couch potato tendencies!"
+            ja: "完璧！回答から見ると、あなたはちょっとカウチポテト傾向のある、信頼できる、のんびりした、人付き合いが上手な人みたいだね！"
+            zh: "完美！根據你的回答，你似乎是個可靠、隨和、善於交際的人，帶有一點沙發馬鈴薯傾向！"
+
+quiz:
+  questionsPerRound: 5
+  xpReward: 25

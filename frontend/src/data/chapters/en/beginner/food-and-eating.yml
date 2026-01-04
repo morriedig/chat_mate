@@ -1,0 +1,408 @@
+# Chapter: Week 2 - Food & Eating
+meta:
+  id: food-and-eating
+  title:
+    en: "Food & Eating"
+    ja: "食べ物と食事"
+    zh: "食物與用餐"
+  description:
+    en: "Satisfying hunger and ordering at restaurants."
+    ja: "空腹を満たし、レストランで注文する方法を学びましょう。"
+    zh: "學習如何滿足飢餓感和在餐廳點餐。"
+  icon: "🍽️"
+  order: 2
+  level: beginner
+
+words:
+  # Day 1: Core Nouns (Food & Places)
+  - id: menu
+    word:
+      en: Menu
+      ja: メニュー
+      zh: 菜單
+    reading: "MEN-yoo"
+    phonetic: "/ˈmenjuː/"
+    description:
+      en: "List of food options."
+      ja: "食べ物の選択肢のリスト。"
+      zh: "食物選項的列表。"
+    sentence:
+      en: "Let's look at the menu."
+      ja: "メニューを見ましょう。"
+      zh: "我們看一下菜單吧。"
+
+  - id: waiter
+    word:
+      en: Waiter
+      ja: ウェイター
+      zh: 服務生
+    reading: "WAY-ter"
+    phonetic: "/ˈweɪtər/"
+    description:
+      en: "Person serving food."
+      ja: "食べ物を運ぶ人。"
+      zh: "提供食物的人。"
+    sentence:
+      en: "The waiter brings the food."
+      ja: "ウェイターが食べ物を運んできます。"
+      zh: "服務生送來食物。"
+
+  - id: water
+    word:
+      en: Water
+      ja: 水
+      zh: 水
+    reading: "WAW-ter"
+    phonetic: "/ˈwɔːtər/"
+    description:
+      en: "Clear drink."
+      ja: "透明な飲み物。"
+      zh: "透明的飲料。"
+    sentence:
+      en: "I am thirsty, I need water."
+      ja: "喉が渇いています、水が必要です。"
+      zh: "我很渴，我需要水。"
+
+  - id: bread
+    word:
+      en: Bread
+      ja: パン
+      zh: 麵包
+    reading: "BRED"
+    phonetic: "/bred/"
+    description:
+      en: "Basic food made of flour."
+      ja: "小麦粉で作った基本的な食べ物。"
+      zh: "用麵粉做的基本食物。"
+    sentence:
+      en: "I eat bread with butter."
+      ja: "私はバターをつけてパンを食べます。"
+      zh: "我吃麵包配奶油。"
+
+  - id: meat
+    word:
+      en: Meat
+      ja: 肉
+      zh: 肉
+    reading: "MEET"
+    phonetic: "/miːt/"
+    description:
+      en: "Chicken, beef, pork."
+      ja: "鶏肉、牛肉、豚肉。"
+      zh: "雞肉、牛肉、豬肉。"
+    sentence:
+      en: "This meat tastes delicious."
+      ja: "この肉はとても美味しいです。"
+      zh: "這肉嚐起來很美味。"
+
+  - id: vegetables
+    word:
+      en: Vegetables
+      ja: 野菜
+      zh: 蔬菜
+    reading: "VEJ-tuh-buhlz"
+    phonetic: "/ˈvedʒtəbəlz/"
+    description:
+      en: "Salad, carrots, greens."
+      ja: "サラダ、人参、葉物野菜。"
+      zh: "沙拉、胡蘿蔔、蔬菜。"
+    sentence:
+      en: "I order chicken and vegetables."
+      ja: "私は鶏肉と野菜を注文します。"
+      zh: "我點雞肉和蔬菜。"
+
+  - id: bill
+    word:
+      en: Bill
+      ja: 請求書
+      zh: 帳單
+    reading: "BIL"
+    phonetic: "/bɪl/"
+    description:
+      en: "Paper saying the price."
+      ja: "値段が書かれた紙。"
+      zh: "寫著價格的紙。"
+    sentence:
+      en: "I will pay the bill."
+      ja: "私が請求書を払います。"
+      zh: "我來付帳單。"
+
+  # Day 2: Core Verbs (Eating Actions)
+  - id: hungry
+    word:
+      en: Hungry
+      ja: お腹が空いた
+      zh: 餓
+    reading: "HUHNG-gree"
+    phonetic: "/ˈhʌŋɡri/"
+    description:
+      en: "Feeling: need food."
+      ja: "食べ物が必要な感覚。"
+      zh: "感覺：需要食物。"
+    sentence:
+      en: "I am very hungry right now."
+      ja: "今とてもお腹が空いています。"
+      zh: "我現在很餓。"
+
+  - id: thirsty
+    word:
+      en: Thirsty
+      ja: 喉が渇いた
+      zh: 渴
+    reading: "THUR-stee"
+    phonetic: "/ˈθɜːrsti/"
+    description:
+      en: "Feeling: need drink."
+      ja: "飲み物が必要な感覚。"
+      zh: "感覺：需要喝水。"
+    sentence:
+      en: "I am thirsty, I need water."
+      ja: "喉が渇いています、水が必要です。"
+      zh: "我很渴，我需要水。"
+
+  - id: order
+    word:
+      en: Order
+      ja: 注文する
+      zh: 點餐
+    reading: "OR-der"
+    phonetic: "/ˈɔːrdər/"
+    description:
+      en: "Ask for food."
+      ja: "食べ物を頼む。"
+      zh: "要求食物。"
+    sentence:
+      en: "I want to order chicken and vegetables."
+      ja: "鶏肉と野菜を注文したいです。"
+      zh: "我想點雞肉和蔬菜。"
+
+  - id: cook
+    word:
+      en: Cook
+      ja: 料理する
+      zh: 烹飪
+    reading: "KOOK"
+    phonetic: "/kʊk/"
+    description:
+      en: "Make food."
+      ja: "食べ物を作る。"
+      zh: "做食物。"
+    sentence:
+      en: "The chef cooks the steak."
+      ja: "シェフがステーキを料理します。"
+      zh: "主廚烹調牛排。"
+
+  - id: taste
+    word:
+      en: Taste
+      ja: 味わう
+      zh: 品嚐
+    reading: "TAYST"
+    phonetic: "/teɪst/"
+    description:
+      en: "Sense flavor."
+      ja: "味を感じる。"
+      zh: "感受味道。"
+    sentence:
+      en: "This meat tastes delicious."
+      ja: "この肉はとても美味しいです。"
+      zh: "這肉嚐起來很美味。"
+
+  - id: pay
+    word:
+      en: Pay
+      ja: 払う
+      zh: 付錢
+    reading: "PAY"
+    phonetic: "/peɪ/"
+    description:
+      en: "Give money."
+      ja: "お金を渡す。"
+      zh: "給錢。"
+    sentence:
+      en: "I ask for the bill and pay."
+      ja: "請求書をもらって払います。"
+      zh: "我要帳單然後付錢。"
+
+  - id: enjoy
+    word:
+      en: Enjoy
+      ja: 楽しむ
+      zh: 享受
+    reading: "en-JOY"
+    phonetic: "/ɪnˈdʒɔɪ/"
+    description:
+      en: "Like the experience."
+      ja: "経験を楽しむ。"
+      zh: "喜歡這個體驗。"
+    sentence:
+      en: "We enjoy the food very much."
+      ja: "私たちは食事をとても楽しんでいます。"
+      zh: "我們非常享受這頓飯。"
+
+chat:
+  conversations:
+    - id: scenario-1-restaurant-story
+      title:
+        en: "Lunchtime at Restaurant"
+        ja: "レストランでのランチタイム"
+        zh: "餐廳午餐時間"
+      messages:
+        - role: partner
+          text:
+            en: "It is lunchtime. Are you hungry?"
+            ja: "ランチタイムです。お腹空いていますか？"
+            zh: "午餐時間到了。你餓嗎？"
+        - role: user
+          text:
+            en: "Yes, I am starving. Let's go to a restaurant."
+            ja: "はい、とてもお腹が空いています。レストランに行きましょう。"
+            zh: "是的，我餓壞了。我們去餐廳吧。"
+        - role: partner
+          text:
+            en: "Good idea. We sit down and the waiter gives us the menu."
+            ja: "いいですね。座って、ウェイターがメニューをくれます。"
+            zh: "好主意。我們坐下，服務生給我們菜單。"
+        - role: user
+          text:
+            en: "I order a steak and a salad."
+            ja: "私はステーキとサラダを注文します。"
+            zh: "我點一份牛排和沙拉。"
+        - role: partner
+          text:
+            en: "I will order fish. What do you want to drink?"
+            ja: "私は魚を注文します。何を飲みたいですか？"
+            zh: "我點魚。你想喝什麼？"
+        - role: user
+          text:
+            en: "I am thirsty, I need cold water."
+            ja: "喉が渇いています、冷たい水が必要です。"
+            zh: "我很渴，我需要冰水。"
+        - role: partner
+          text:
+            en: "The food is here. How does it taste?"
+            ja: "食べ物が来ました。味はどうですか？"
+            zh: "食物來了。味道怎麼樣？"
+        - role: user
+          text:
+            en: "It is very good. I enjoy it very much."
+            ja: "とても美味しいです。とても楽しんでいます。"
+            zh: "非常好吃。我很享受。"
+        - role: partner
+          text:
+            en: "After eating, let's ask for the bill."
+            ja: "食べ終わったら、請求書をもらいましょう。"
+            zh: "吃完後，我們要帳單吧。"
+        - role: user
+          text:
+            en: "Yes, I will pay the bill."
+            ja: "はい、私が請求書を払います。"
+            zh: "好的，我來付帳。"
+
+    - id: scenario-2-ordering-food
+      title:
+        en: "Ordering at a Restaurant"
+        ja: "レストランで注文する"
+        zh: "在餐廳點餐"
+      messages:
+        - role: partner
+          text:
+            en: "Hello, are you ready to order?"
+            ja: "こんにちは、ご注文はお決まりですか？"
+            zh: "你好，準備好點餐了嗎？"
+        - role: user
+          text:
+            en: "Yes. I will have the burger, please."
+            ja: "はい。バーガーをお願いします。"
+            zh: "是的。我要漢堡，謝謝。"
+        - role: partner
+          text:
+            en: "Anything to drink?"
+            ja: "お飲み物はいかがですか？"
+            zh: "要喝什麼嗎？"
+        - role: user
+          text:
+            en: "Just water, please."
+            ja: "水だけでお願いします。"
+            zh: "請給我水就好。"
+        - role: partner
+          text:
+            en: "Here is your food. Enjoy your meal."
+            ja: "こちらがお料理です。ごゆっくりどうぞ。"
+            zh: "這是您的餐點。請慢用。"
+        - role: user
+          text:
+            en: "Thank you. This tastes delicious!"
+            ja: "ありがとうございます。とても美味しいです！"
+            zh: "謝謝。這很好吃！"
+        - role: partner
+          text:
+            en: "I'm glad you like it. Anything else?"
+            ja: "気に入っていただけて嬉しいです。他にご注文は？"
+            zh: "很高興你喜歡。還需要什麼嗎？"
+        - role: user
+          text:
+            en: "Can I have the bill now?"
+            ja: "今、請求書をいただけますか？"
+            zh: "可以給我帳單嗎？"
+
+    - id: scenario-3-questions-answers
+      title:
+        en: "Food Questions"
+        ja: "食べ物の質問"
+        zh: "食物問答"
+      messages:
+        - role: partner
+          text:
+            en: "Are you hungry?"
+            ja: "お腹空いていますか？"
+            zh: "你餓嗎？"
+        - role: user
+          text:
+            en: "Yes, I am starving."
+            ja: "はい、とてもお腹が空いています。"
+            zh: "是的，我餓壞了。"
+        - role: partner
+          text:
+            en: "What do you want to eat?"
+            ja: "何を食べたいですか？"
+            zh: "你想吃什麼？"
+        - role: user
+          text:
+            en: "I want to eat pasta."
+            ja: "パスタを食べたいです。"
+            zh: "我想吃義大利麵。"
+        - role: partner
+          text:
+            en: "Can I have the menu, please?"
+            ja: "メニューをいただけますか？"
+            zh: "可以給我菜單嗎？"
+        - role: user
+          text:
+            en: "Here you go."
+            ja: "はい、どうぞ。"
+            zh: "給你。"
+        - role: partner
+          text:
+            en: "How is the food?"
+            ja: "料理はどうですか？"
+            zh: "食物怎麼樣？"
+        - role: user
+          text:
+            en: "It is very good."
+            ja: "とても美味しいです。"
+            zh: "非常好吃。"
+        - role: partner
+          text:
+            en: "Can I have a fork, please?"
+            ja: "フォークをいただけますか？"
+            zh: "可以給我一支叉子嗎？"
+        - role: user
+          text:
+            en: "Of course, here you go."
+            ja: "もちろん、どうぞ。"
+            zh: "當然，給你。"
+
+quiz:
+  questionsPerRound: 5
+  xpReward: 20

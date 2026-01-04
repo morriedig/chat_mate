@@ -1,0 +1,398 @@
+# Chapter: Week 5 - Clothes & Shopping
+meta:
+  id: clothes-and-shopping
+  title:
+    en: "Clothes & Shopping"
+    ja: "服とショッピング"
+    zh: "服裝與購物"
+  description:
+    en: "Describing what you wear and buying new things."
+    ja: "着ているものを説明し、新しいものを買いましょう。"
+    zh: "學習描述你穿什麼以及購買新東西。"
+  icon: "👕"
+  order: 5
+  level: beginner
+
+words:
+  # Day 1: Core Nouns (Clothing & Money)
+  - id: shirt
+    word:
+      en: Shirt
+      ja: シャツ
+      zh: 襯衫
+    reading: "SHURT"
+    phonetic: "/ʃɜːrt/"
+    description:
+      en: "Top clothing."
+      ja: "上半身の服。"
+      zh: "上衣。"
+    sentence:
+      en: "I wear a blue shirt to work."
+      ja: "私は仕事に青いシャツを着ていきます。"
+      zh: "我穿藍色襯衫去上班。"
+
+  - id: pants
+    word:
+      en: Pants
+      ja: ズボン
+      zh: 褲子
+    reading: "PANTS"
+    phonetic: "/pænts/"
+    description:
+      en: "Leg clothing."
+      ja: "脚を覆う服。"
+      zh: "腿部的衣服。"
+    sentence:
+      en: "Can I try on these pants?"
+      ja: "このズボンを試着してもいいですか？"
+      zh: "我可以試穿這條褲子嗎？"
+
+  - id: shoes
+    word:
+      en: Shoes
+      ja: 靴
+      zh: 鞋子
+    reading: "SHOOZ"
+    phonetic: "/ʃuːz/"
+    description:
+      en: "Footwear."
+      ja: "足に履くもの。"
+      zh: "穿在腳上的。"
+    sentence:
+      en: "I need new shoes."
+      ja: "新しい靴が必要です。"
+      zh: "我需要新鞋子。"
+
+  - id: jacket
+    word:
+      en: Jacket
+      ja: ジャケット
+      zh: 夾克
+    reading: "JAK-it"
+    phonetic: "/ˈdʒækɪt/"
+    description:
+      en: "Outerwear for cold."
+      ja: "寒い時の上着。"
+      zh: "寒冷時穿的外套。"
+    sentence:
+      en: "I want to buy this jacket."
+      ja: "このジャケットを買いたいです。"
+      zh: "我想買這件夾克。"
+
+  - id: size
+    word:
+      en: Size
+      ja: サイズ
+      zh: 尺寸
+    reading: "SYZ"
+    phonetic: "/saɪz/"
+    description:
+      en: "Small, Medium, Large."
+      ja: "S、M、L。"
+      zh: "小、中、大。"
+    sentence:
+      en: "What size do you have?"
+      ja: "どのサイズがありますか？"
+      zh: "你們有什麼尺寸？"
+
+  - id: price
+    word:
+      en: Price
+      ja: 価格
+      zh: 價格
+    reading: "PRYS"
+    phonetic: "/praɪs/"
+    description:
+      en: "How much money."
+      ja: "いくらか。"
+      zh: "多少錢。"
+    sentence:
+      en: "I look at the tag, the price is good."
+      ja: "タグを見ると、価格がいいです。"
+      zh: "我看了標籤，價格不錯。"
+
+  - id: cash
+    word:
+      en: Cash
+      ja: 現金
+      zh: 現金
+    reading: "KASH"
+    phonetic: "/kæʃ/"
+    description:
+      en: "Paper money and coins."
+      ja: "紙幣と硬貨。"
+      zh: "紙鈔和硬幣。"
+    sentence:
+      en: "I pay with cash."
+      ja: "現金で払います。"
+      zh: "我用現金付款。"
+
+  # Day 2: Core Verbs (Shopping Actions)
+  - id: wear
+    word:
+      en: Wear
+      ja: 着る
+      zh: 穿
+    reading: "WAIR"
+    phonetic: "/wer/"
+    description:
+      en: "Have clothes on body."
+      ja: "体に服をつける。"
+      zh: "把衣服穿在身上。"
+    sentence:
+      en: "I am wearing a white T-shirt and jeans."
+      ja: "白いTシャツとジーンズを着ています。"
+      zh: "我穿著白色T恤和牛仔褲。"
+
+  - id: buy
+    word:
+      en: Buy
+      ja: 買う
+      zh: 買
+    reading: "BY"
+    phonetic: "/baɪ/"
+    description:
+      en: "Exchange money for item."
+      ja: "お金と品物を交換する。"
+      zh: "用錢換取物品。"
+    sentence:
+      en: "I will buy them."
+      ja: "それらを買います。"
+      zh: "我要買它們。"
+
+  - id: try-on
+    word:
+      en: Try on
+      ja: 試着する
+      zh: 試穿
+    reading: "TRY on"
+    phonetic: "/traɪ ɒn/"
+    description:
+      en: "Test if clothes fit."
+      ja: "服が合うか試す。"
+      zh: "試試衣服合不合身。"
+    sentence:
+      en: "I take it to the fitting room to try on."
+      ja: "試着室に持っていって試着します。"
+      zh: "我拿到試衣間試穿。"
+
+  - id: look-for
+    word:
+      en: Look for
+      ja: 探す
+      zh: 尋找
+    reading: "LOOK for"
+    phonetic: "/lʊk fɔːr/"
+    description:
+      en: "Search."
+      ja: "探す。"
+      zh: "搜尋。"
+    sentence:
+      en: "I am looking for a new jacket."
+      ja: "新しいジャケットを探しています。"
+      zh: "我在找一件新夾克。"
+
+  - id: cost
+    word:
+      en: Cost
+      ja: 値段がする
+      zh: 花費
+    reading: "KAWST"
+    phonetic: "/kɔːst/"
+    description:
+      en: "Have a price."
+      ja: "値段がある。"
+      zh: "有價格。"
+    sentence:
+      en: "It costs fifty dollars."
+      ja: "50ドルします。"
+      zh: "它要五十美元。"
+
+  - id: fit
+    word:
+      en: Fit
+      ja: 合う
+      zh: 合身
+    reading: "FIT"
+    phonetic: "/fɪt/"
+    description:
+      en: "Is the right size."
+      ja: "サイズが合う。"
+      zh: "尺寸剛好。"
+    sentence:
+      en: "It fits perfectly."
+      ja: "ぴったり合います。"
+      zh: "非常合身。"
+
+  - id: need
+    word:
+      en: Need
+      ja: 必要とする
+      zh: 需要
+    reading: "NEED"
+    phonetic: "/niːd/"
+    description:
+      en: "Must have."
+      ja: "必要がある。"
+      zh: "必須有。"
+    sentence:
+      en: "I need new shoes."
+      ja: "新しい靴が必要です。"
+      zh: "我需要新鞋子。"
+
+chat:
+  conversations:
+    - id: scenario-1-shopping-story
+      title:
+        en: "Going Shopping"
+        ja: "買い物に行く"
+        zh: "去購物"
+      messages:
+        - role: partner
+          text:
+            en: "What are you doing today?"
+            ja: "今日は何をしますか？"
+            zh: "你今天要做什麼？"
+        - role: user
+          text:
+            en: "Today I go shopping. I am looking for a new jacket."
+            ja: "今日は買い物に行きます。新しいジャケットを探しています。"
+            zh: "今天我去購物。我在找一件新夾克。"
+        - role: partner
+          text:
+            en: "Did you find something you like?"
+            ja: "気に入ったものは見つかりましたか？"
+            zh: "你找到喜歡的東西了嗎？"
+        - role: user
+          text:
+            en: "Yes, I enter a store and see a nice one. It is blue."
+            ja: "はい、お店に入って素敵なのを見つけました。青いです。"
+            zh: "是的，我進了一家店，看到一件不錯的。是藍色的。"
+        - role: partner
+          text:
+            en: "Did you try it on?"
+            ja: "試着しましたか？"
+            zh: "你試穿了嗎？"
+        - role: user
+          text:
+            en: "Yes, I take it to the fitting room to try on. It fits perfectly."
+            ja: "はい、試着室で試着しました。ぴったり合います。"
+            zh: "是的，我拿到試衣間試穿。非常合身。"
+        - role: partner
+          text:
+            en: "How much does it cost?"
+            ja: "いくらですか？"
+            zh: "多少錢？"
+        - role: user
+          text:
+            en: "I look at the tag, the price is good. I go to the cashier and pay with cash."
+            ja: "タグを見ると、価格がいいです。レジに行って現金で払います。"
+            zh: "我看了標籤，價格不錯。我去收銀台用現金付款。"
+
+    - id: scenario-2-at-shoe-store
+      title:
+        en: "At the Shoe Store"
+        ja: "靴屋で"
+        zh: "在鞋店"
+      messages:
+        - role: partner
+          text:
+            en: "Can I help you?"
+            ja: "何かお探しですか？"
+            zh: "需要幫忙嗎？"
+        - role: user
+          text:
+            en: "Yes, I am looking for shoes."
+            ja: "はい、靴を探しています。"
+            zh: "是的，我在找鞋子。"
+        - role: partner
+          text:
+            en: "What size are you?"
+            ja: "サイズはいくつですか？"
+            zh: "你穿幾號？"
+        - role: user
+          text:
+            en: "I am size 42."
+            ja: "42です。"
+            zh: "我穿42號。"
+        - role: partner
+          text:
+            en: "Here, try on these."
+            ja: "こちら、試着してみてください。"
+            zh: "這裡，試試這雙。"
+        - role: user
+          text:
+            en: "They are comfortable. How much do they cost?"
+            ja: "履き心地がいいです。いくらですか？"
+            zh: "很舒適。多少錢？"
+        - role: partner
+          text:
+            en: "They cost $80."
+            ja: "80ドルです。"
+            zh: "80美元。"
+        - role: user
+          text:
+            en: "I will buy them. Can I pay with card?"
+            ja: "買います。カードで払えますか？"
+            zh: "我要買。可以刷卡嗎？"
+
+    - id: scenario-3-questions-answers
+      title:
+        en: "Shopping Questions"
+        ja: "買い物の質問"
+        zh: "購物問答"
+      messages:
+        - role: partner
+          text:
+            en: "What are you wearing?"
+            ja: "何を着ていますか？"
+            zh: "你穿什麼？"
+        - role: user
+          text:
+            en: "I am wearing a white T-shirt and jeans."
+            ja: "白いTシャツとジーンズを着ています。"
+            zh: "我穿著白色T恤和牛仔褲。"
+        - role: partner
+          text:
+            en: "How much is this?"
+            ja: "これはいくらですか？"
+            zh: "這個多少錢？"
+        - role: user
+          text:
+            en: "It is $20."
+            ja: "20ドルです。"
+            zh: "20美元。"
+        - role: partner
+          text:
+            en: "Do you like this color?"
+            ja: "この色は好きですか？"
+            zh: "你喜歡這個顏色嗎？"
+        - role: user
+          text:
+            en: "No, I prefer black."
+            ja: "いいえ、黒の方が好きです。"
+            zh: "不，我比較喜歡黑色。"
+        - role: partner
+          text:
+            en: "Does it fit?"
+            ja: "サイズは合いますか？"
+            zh: "合身嗎？"
+        - role: user
+          text:
+            en: "No, it is too small."
+            ja: "いいえ、小さすぎます。"
+            zh: "不，太小了。"
+        - role: partner
+          text:
+            en: "How about this one? Is it too big?"
+            ja: "これはどうですか？大きすぎますか？"
+            zh: "這件呢？太大了嗎？"
+        - role: user
+          text:
+            en: "No, it fits perfectly!"
+            ja: "いいえ、ぴったりです！"
+            zh: "不，非常合身！"
+
+quiz:
+  questionsPerRound: 5
+  xpReward: 20

@@ -1,0 +1,398 @@
+# Chapter: Week 8 - Hobbies & Free Time
+meta:
+  id: hobbies-and-free-time
+  title:
+    en: "Hobbies & Free Time"
+    ja: "趣味と自由時間"
+    zh: "嗜好與休閒"
+  description:
+    en: "What you do for fun when you are not working."
+    ja: "仕事以外の楽しみを学びましょう。"
+    zh: "學習工作之外你做什麼來娛樂。"
+  icon: "🎮"
+  order: 8
+  level: beginner
+
+words:
+  # Day 1: Core Nouns (Activities)
+  - id: music
+    word:
+      en: Music
+      ja: 音楽
+      zh: 音樂
+    reading: "MYOO-zik"
+    phonetic: "/ˈmjuːzɪk/"
+    description:
+      en: "Songs, instruments."
+      ja: "歌、楽器。"
+      zh: "歌曲、樂器。"
+    sentence:
+      en: "I like to listen to music."
+      ja: "私は音楽を聴くのが好きです。"
+      zh: "我喜歡聽音樂。"
+
+  - id: movie
+    word:
+      en: Movie
+      ja: 映画
+      zh: 電影
+    reading: "MOO-vee"
+    phonetic: "/ˈmuːvi/"
+    description:
+      en: "Film at cinema or TV."
+      ja: "映画館やテレビで見る映像作品。"
+      zh: "在電影院或電視上看的影片。"
+    sentence:
+      en: "They watch a movie every Friday."
+      ja: "彼らは毎週金曜日に映画を見ます。"
+      zh: "他們每個星期五看電影。"
+
+  - id: book
+    word:
+      en: Book
+      ja: 本
+      zh: 書
+    reading: "BOOK"
+    phonetic: "/bʊk/"
+    description:
+      en: "Reading material."
+      ja: "読み物。"
+      zh: "閱讀材料。"
+    sentence:
+      en: "I read a good book before bed."
+      ja: "寝る前に良い本を読みます。"
+      zh: "我睡前讀一本好書。"
+
+  - id: game
+    word:
+      en: Game
+      ja: ゲーム
+      zh: 遊戲
+    reading: "GAYM"
+    phonetic: "/ɡeɪm/"
+    description:
+      en: "Video game, board game."
+      ja: "ビデオゲーム、ボードゲーム。"
+      zh: "電子遊戲、桌遊。"
+    sentence:
+      en: "I play video games for fun."
+      ja: "楽しみにビデオゲームをします。"
+      zh: "我玩電子遊戲來娛樂。"
+
+  - id: sport
+    word:
+      en: Sport
+      ja: スポーツ
+      zh: 運動
+    reading: "SPORT"
+    phonetic: "/spɔːrt/"
+    description:
+      en: "Physical exercise game."
+      ja: "体を動かす競技。"
+      zh: "身體運動的比賽。"
+    sentence:
+      en: "My favorite sport is basketball."
+      ja: "私の好きなスポーツはバスケットボールです。"
+      zh: "我最喜歡的運動是籃球。"
+
+  - id: park
+    word:
+      en: Park
+      ja: 公園
+      zh: 公園
+    reading: "PARK"
+    phonetic: "/pɑːrk/"
+    description:
+      en: "Green place outside."
+      ja: "外にある緑の場所。"
+      zh: "戶外有草木的地方。"
+    sentence:
+      en: "Let's go to the park to run."
+      ja: "公園に走りに行きましょう。"
+      zh: "我們去公園跑步吧。"
+
+  - id: hobby
+    word:
+      en: Hobby
+      ja: 趣味
+      zh: 嗜好
+    reading: "HOB-ee"
+    phonetic: "/ˈhɑːbi/"
+    description:
+      en: "Activity you like."
+      ja: "好きな活動。"
+      zh: "你喜歡的活動。"
+    sentence:
+      en: "My favorite hobby is cooking."
+      ja: "私の好きな趣味は料理です。"
+      zh: "我最喜歡的嗜好是烹飪。"
+
+  # Day 2: Core Verbs (Doing things)
+  - id: play
+    word:
+      en: Play
+      ja: 遊ぶ
+      zh: 玩
+    reading: "PLAY"
+    phonetic: "/pleɪ/"
+    description:
+      en: "Do a sport or game."
+      ja: "スポーツやゲームをする。"
+      zh: "做運動或玩遊戲。"
+    sentence:
+      en: "We play soccer on Saturdays."
+      ja: "土曜日にサッカーをします。"
+      zh: "我們星期六踢足球。"
+
+  - id: watch
+    word:
+      en: Watch
+      ja: 見る
+      zh: 觀看
+    reading: "WOCH"
+    phonetic: "/wɑːtʃ/"
+    description:
+      en: "Look at a screen/show."
+      ja: "画面やショーを見る。"
+      zh: "看螢幕或表演。"
+    sentence:
+      en: "I usually watch a movie with my friends."
+      ja: "普段は友達と映画を見ます。"
+      zh: "我通常和朋友一起看電影。"
+
+  - id: listen
+    word:
+      en: Listen
+      ja: 聴く
+      zh: 聽
+    reading: "LIS-en"
+    phonetic: "/ˈlɪsən/"
+    description:
+      en: "Hear music."
+      ja: "音楽を聴く。"
+      zh: "聽音樂。"
+    sentence:
+      en: "I listen to loud music while I clean."
+      ja: "掃除をしながら大きな音楽を聴きます。"
+      zh: "我打掃時聽大聲的音樂。"
+
+  - id: read
+    word:
+      en: Read
+      ja: 読む
+      zh: 閱讀
+    reading: "REED"
+    phonetic: "/riːd/"
+    description:
+      en: "Look at words."
+      ja: "文字を見る。"
+      zh: "看文字。"
+    sentence:
+      en: "I prefer reading books."
+      ja: "私は本を読むのが好きです。"
+      zh: "我比較喜歡看書。"
+
+  - id: run
+    word:
+      en: Run
+      ja: 走る
+      zh: 跑步
+    reading: "RUHN"
+    phonetic: "/rʌn/"
+    description:
+      en: "Move fast on feet."
+      ja: "足で速く動く。"
+      zh: "用腳快速移動。"
+    sentence:
+      en: "On Saturday morning, I go to the park to run."
+      ja: "土曜日の朝、公園に走りに行きます。"
+      zh: "星期六早上，我去公園跑步。"
+
+  - id: swim
+    word:
+      en: Swim
+      ja: 泳ぐ
+      zh: 游泳
+    reading: "SWIM"
+    phonetic: "/swɪm/"
+    description:
+      en: "Move in water."
+      ja: "水の中で動く。"
+      zh: "在水中移動。"
+    sentence:
+      en: "I like to swim in the summer."
+      ja: "夏に泳ぐのが好きです。"
+      zh: "我喜歡在夏天游泳。"
+
+  - id: relax
+    word:
+      en: Relax
+      ja: リラックスする
+      zh: 放鬆
+    reading: "ri-LAKS"
+    phonetic: "/rɪˈlæks/"
+    description:
+      en: "Rest."
+      ja: "休む。"
+      zh: "休息。"
+    sentence:
+      en: "I want to relax this weekend."
+      ja: "今週末はリラックスしたいです。"
+      zh: "這個週末我想放鬆。"
+
+chat:
+  conversations:
+    - id: scenario-1-weekend-story
+      title:
+        en: "My Weekend"
+        ja: "私の週末"
+        zh: "我的週末"
+      messages:
+        - role: partner
+          text:
+            en: "What do you do on weekends?"
+            ja: "週末は何をしますか？"
+            zh: "你週末做什麼？"
+        - role: user
+          text:
+            en: "On weekends, I have free time."
+            ja: "週末は自由な時間があります。"
+            zh: "週末我有空閒時間。"
+        - role: partner
+          text:
+            en: "What do you do on Saturday morning?"
+            ja: "土曜日の朝は何をしますか？"
+            zh: "星期六早上你做什麼？"
+        - role: user
+          text:
+            en: "On Saturday morning, I go to the park to run. It is good exercise."
+            ja: "土曜日の朝、公園に走りに行きます。いい運動です。"
+            zh: "星期六早上，我去公園跑步。這是很好的運動。"
+        - role: partner
+          text:
+            en: "And in the afternoon?"
+            ja: "午後はどうですか？"
+            zh: "下午呢？"
+        - role: user
+          text:
+            en: "In the afternoon, I relax at home. I listen to loud music while I clean."
+            ja: "午後は家でリラックスします。掃除をしながら大きな音楽を聴きます。"
+            zh: "下午我在家放鬆。我打掃時聽大聲的音樂。"
+        - role: partner
+          text:
+            en: "What about Sunday?"
+            ja: "日曜日はどうですか？"
+            zh: "星期天呢？"
+        - role: user
+          text:
+            en: "On Sunday, I usually watch a movie with my friends. We eat popcorn and laugh."
+            ja: "日曜日は普段、友達と映画を見ます。ポップコーンを食べて笑います。"
+            zh: "星期天，我通常和朋友一起看電影。我們吃爆米花和大笑。"
+
+    - id: scenario-2-hobbies-talk
+      title:
+        en: "Talking About Hobbies"
+        ja: "趣味について話す"
+        zh: "談論嗜好"
+      messages:
+        - role: partner
+          text:
+            en: "Do you like sports?"
+            ja: "スポーツは好きですか？"
+            zh: "你喜歡運動嗎？"
+        - role: user
+          text:
+            en: "Not really. I prefer reading books."
+            ja: "あまり。本を読む方が好きです。"
+            zh: "不太喜歡。我比較喜歡看書。"
+        - role: partner
+          text:
+            en: "I love soccer. I play every week."
+            ja: "私はサッカーが大好きです。毎週やります。"
+            zh: "我喜歡足球。我每週都踢。"
+        - role: user
+          text:
+            en: "That is good. I like to swim in the summer."
+            ja: "いいですね。私は夏に泳ぐのが好きです。"
+            zh: "很好。我喜歡在夏天游泳。"
+        - role: partner
+          text:
+            en: "We should go to the pool together."
+            ja: "一緒にプールに行きましょう。"
+            zh: "我們應該一起去游泳池。"
+        - role: user
+          text:
+            en: "Yes, let's do that."
+            ja: "はい、そうしましょう。"
+            zh: "好，我們這樣做吧。"
+        - role: partner
+          text:
+            en: "What is your favorite movie?"
+            ja: "好きな映画は何ですか？"
+            zh: "你最喜歡的電影是什麼？"
+        - role: user
+          text:
+            en: "My favorite movie is Star Wars."
+            ja: "私の好きな映画はスターウォーズです。"
+            zh: "我最喜歡的電影是星際大戰。"
+
+    - id: scenario-3-questions-answers
+      title:
+        en: "Hobby Questions"
+        ja: "趣味の質問"
+        zh: "嗜好問答"
+      messages:
+        - role: partner
+          text:
+            en: "What is your hobby?"
+            ja: "趣味は何ですか？"
+            zh: "你的嗜好是什麼？"
+        - role: user
+          text:
+            en: "I like painting."
+            ja: "絵を描くのが好きです。"
+            zh: "我喜歡畫畫。"
+        - role: partner
+          text:
+            en: "Do you play sports?"
+            ja: "スポーツをしますか？"
+            zh: "你做運動嗎？"
+        - role: user
+          text:
+            en: "Yes, I play tennis."
+            ja: "はい、テニスをします。"
+            zh: "是的，我打網球。"
+        - role: partner
+          text:
+            en: "Do you want to watch a movie?"
+            ja: "映画を見ませんか？"
+            zh: "你想看電影嗎？"
+        - role: user
+          text:
+            en: "Sure, I love movies."
+            ja: "もちろん、映画が大好きです。"
+            zh: "當然，我喜歡電影。"
+        - role: partner
+          text:
+            en: "What do you do for fun?"
+            ja: "楽しみに何をしますか？"
+            zh: "你做什麼來娛樂？"
+        - role: user
+          text:
+            en: "I play video games."
+            ja: "ビデオゲームをします。"
+            zh: "我玩電子遊戲。"
+        - role: partner
+          text:
+            en: "What do you like to do?"
+            ja: "何をするのが好きですか？"
+            zh: "你喜歡做什麼？"
+        - role: user
+          text:
+            en: "I like to dance and sing."
+            ja: "踊ったり歌ったりするのが好きです。"
+            zh: "我喜歡跳舞和唱歌。"
+
+quiz:
+  questionsPerRound: 5
+  xpReward: 20

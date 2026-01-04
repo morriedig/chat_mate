@@ -1,0 +1,404 @@
+# Chapter: Week 1 - The Morning Routine
+meta:
+  id: morning-routine
+  title:
+    en: "The Morning Routine"
+    ja: "朝のルーティン"
+    zh: "早晨日常"
+  description:
+    en: "Things you do every day when you start the day."
+    ja: "毎日朝にすることを学びましょう。"
+    zh: "學習每天早上起床後做的事情。"
+  icon: "☀️"
+  order: 1
+  level: beginner
+
+words:
+  # Day 1: Core Nouns (Things)
+  - id: alarm
+    word:
+      en: Alarm
+      ja: 目覚まし時計
+      zh: 鬧鐘
+    reading: "uh-LARM"
+    phonetic: "/əˈlɑːrm/"
+    description:
+      en: "Clock that makes noise to wake you."
+      ja: "あなたを起こすために音を鳴らす時計。"
+      zh: "發出聲音叫醒你的時鐘。"
+    sentence:
+      en: "The alarm rings at 7 AM."
+      ja: "目覚まし時計は朝7時に鳴ります。"
+      zh: "鬧鐘在早上7點響。"
+
+  - id: coffee
+    word:
+      en: Coffee
+      ja: コーヒー
+      zh: 咖啡
+    reading: "KAW-fee"
+    phonetic: "/ˈkɔːfi/"
+    description:
+      en: "Hot black drink."
+      ja: "熱い黒い飲み物。"
+      zh: "熱的黑色飲料。"
+    sentence:
+      en: "I drink a cup of coffee."
+      ja: "私はコーヒーを一杯飲みます。"
+      zh: "我喝一杯咖啡。"
+
+  - id: breakfast
+    word:
+      en: Breakfast
+      ja: 朝食
+      zh: 早餐
+    reading: "BREK-fuhst"
+    phonetic: "/ˈbrekfəst/"
+    description:
+      en: "First meal of the day."
+      ja: "一日の最初の食事。"
+      zh: "一天的第一餐。"
+    sentence:
+      en: "I eat breakfast every morning."
+      ja: "私は毎朝朝食を食べます。"
+      zh: "我每天早上吃早餐。"
+
+  - id: shower
+    word:
+      en: Shower
+      ja: シャワー
+      zh: 淋浴
+    reading: "SHOW-er"
+    phonetic: "/ˈʃaʊər/"
+    description:
+      en: "Washing body with water."
+      ja: "水で体を洗うこと。"
+      zh: "用水沖洗身體。"
+    sentence:
+      en: "I take a hot shower to feel fresh."
+      ja: "私は爽快になるために熱いシャワーを浴びます。"
+      zh: "我洗個熱水澡讓自己清爽。"
+
+  - id: clothes
+    word:
+      en: Clothes
+      ja: 服
+      zh: 衣服
+    reading: "KLOHZ"
+    phonetic: "/kloʊðz/"
+    description:
+      en: "What you wear."
+      ja: "着るもの。"
+      zh: "你穿的東西。"
+    sentence:
+      en: "I put on my clothes."
+      ja: "私は服を着ます。"
+      zh: "我穿上衣服。"
+
+  - id: bus
+    word:
+      en: Bus
+      ja: バス
+      zh: 公車
+    reading: "BUHS"
+    phonetic: "/bʌs/"
+    description:
+      en: "Public transport vehicle."
+      ja: "公共交通機関の車両。"
+      zh: "公共交通工具。"
+    sentence:
+      en: "I go to work by bus."
+      ja: "私はバスで仕事に行きます。"
+      zh: "我搭公車去上班。"
+
+  - id: train
+    word:
+      en: Train
+      ja: 電車
+      zh: 火車
+    reading: "TRAYN"
+    phonetic: "/treɪn/"
+    description:
+      en: "Public transport on rails."
+      ja: "線路を走る公共交通機関。"
+      zh: "在軌道上行駛的交通工具。"
+    sentence:
+      en: "I take the train to my office."
+      ja: "私は電車でオフィスに行きます。"
+      zh: "我搭火車去辦公室。"
+
+  - id: office
+    word:
+      en: Office
+      ja: オフィス
+      zh: 辦公室
+    reading: "AW-fis"
+    phonetic: "/ˈɔːfɪs/"
+    description:
+      en: "Place of work."
+      ja: "仕事をする場所。"
+      zh: "工作的地方。"
+    sentence:
+      en: "I arrive at the office at 9 AM."
+      ja: "私は朝9時にオフィスに着きます。"
+      zh: "我早上9點到達辦公室。"
+
+  # Day 2: Core Verbs (Actions)
+  - id: wake-up
+    word:
+      en: Wake up
+      ja: 起きる
+      zh: 醒來
+    reading: "WAYK uhp"
+    phonetic: "/weɪk ʌp/"
+    description:
+      en: "Stop sleeping."
+      ja: "眠りから覚める。"
+      zh: "停止睡眠。"
+    sentence:
+      en: "I wake up at 7 AM."
+      ja: "私は朝7時に起きます。"
+      zh: "我早上7點醒來。"
+
+  - id: get-up
+    word:
+      en: Get up
+      ja: 起き上がる
+      zh: 起床
+    reading: "GET uhp"
+    phonetic: "/ɡet ʌp/"
+    description:
+      en: "Leave the bed."
+      ja: "ベッドから出る。"
+      zh: "離開床鋪。"
+    sentence:
+      en: "I get up at 7:30."
+      ja: "私は7時半に起き上がります。"
+      zh: "我7點半起床。"
+
+  - id: brush
+    word:
+      en: Brush
+      ja: 磨く
+      zh: 刷
+    reading: "BRUHSH"
+    phonetic: "/brʌʃ/"
+    description:
+      en: "Clean teeth."
+      ja: "歯を磨く。"
+      zh: "刷牙。"
+    sentence:
+      en: "I brush my teeth in the bathroom."
+      ja: "私は浴室で歯を磨きます。"
+      zh: "我在浴室刷牙。"
+
+  - id: drink
+    word:
+      en: Drink
+      ja: 飲む
+      zh: 喝
+    reading: "DRINGK"
+    phonetic: "/drɪŋk/"
+    description:
+      en: "Swallow liquid."
+      ja: "液体を飲み込む。"
+      zh: "吞嚥液體。"
+    sentence:
+      en: "I drink tea every morning."
+      ja: "私は毎朝お茶を飲みます。"
+      zh: "我每天早上喝茶。"
+
+  - id: eat
+    word:
+      en: Eat
+      ja: 食べる
+      zh: 吃
+    reading: "EET"
+    phonetic: "/iːt/"
+    description:
+      en: "Consume food."
+      ja: "食べ物を食べる。"
+      zh: "吃食物。"
+    sentence:
+      en: "I eat toast and eggs."
+      ja: "私はトーストと卵を食べます。"
+      zh: "我吃吐司和蛋。"
+
+  - id: go
+    word:
+      en: Go
+      ja: 行く
+      zh: 去
+    reading: "GOH"
+    phonetic: "/ɡoʊ/"
+    description:
+      en: "Move to a place."
+      ja: "場所に移動する。"
+      zh: "移動到某個地方。"
+    sentence:
+      en: "I go to work at 8 AM."
+      ja: "私は朝8時に仕事に行きます。"
+      zh: "我早上8點去上班。"
+
+  - id: work
+    word:
+      en: Work
+      ja: 働く
+      zh: 工作
+    reading: "WURK"
+    phonetic: "/wɜːrk/"
+    description:
+      en: "Do your job."
+      ja: "仕事をする。"
+      zh: "做你的工作。"
+    sentence:
+      en: "I start to work at 9 AM."
+      ja: "私は朝9時に仕事を始めます。"
+      zh: "我早上9點開始工作。"
+
+chat:
+  conversations:
+    - id: scenario-1-morning-story
+      title:
+        en: "My Morning Routine"
+        ja: "私の朝のルーティン"
+        zh: "我的早晨日常"
+      messages:
+        - role: partner
+          text:
+            en: "Good morning! What time do you wake up?"
+            ja: "おはようございます！何時に起きますか？"
+            zh: "早安！你幾點起床？"
+        - role: user
+          text:
+            en: "I wake up at 7 AM. The alarm rings every day."
+            ja: "朝7時に起きます。毎日目覚ましが鳴ります。"
+            zh: "我早上7點起床。鬧鐘每天都會響。"
+        - role: partner
+          text:
+            en: "What do you do first in the morning?"
+            ja: "朝一番に何をしますか？"
+            zh: "你早上第一件事做什麼？"
+        - role: user
+          text:
+            en: "First, I take a hot shower to feel fresh."
+            ja: "まず、爽快になるために熱いシャワーを浴びます。"
+            zh: "首先，我洗個熱水澡讓自己清爽。"
+        - role: partner
+          text:
+            en: "Do you eat breakfast?"
+            ja: "朝食を食べますか？"
+            zh: "你吃早餐嗎？"
+        - role: user
+          text:
+            en: "Yes, I eat toast and eggs. I also drink coffee."
+            ja: "はい、トーストと卵を食べます。コーヒーも飲みます。"
+            zh: "是的，我吃吐司和蛋。我也喝咖啡。"
+        - role: partner
+          text:
+            en: "How do you go to work?"
+            ja: "どうやって仕事に行きますか？"
+            zh: "你怎麼去上班？"
+        - role: user
+          text:
+            en: "I go by train. I arrive at the office at 9 AM."
+            ja: "電車で行きます。朝9時にオフィスに着きます。"
+            zh: "我搭火車去。我早上9點到達辦公室。"
+
+    - id: scenario-2-questions-answers
+      title:
+        en: "Morning Questions"
+        ja: "朝の質問"
+        zh: "早晨問答"
+      messages:
+        - role: partner
+          text:
+            en: "What time do you get up?"
+            ja: "何時に起き上がりますか？"
+            zh: "你幾點起床？"
+        - role: user
+          text:
+            en: "I get up at 7:30."
+            ja: "7時半に起き上がります。"
+            zh: "我7點半起床。"
+        - role: partner
+          text:
+            en: "Do you drink coffee?"
+            ja: "コーヒーを飲みますか？"
+            zh: "你喝咖啡嗎？"
+        - role: user
+          text:
+            en: "No, I drink tea."
+            ja: "いいえ、お茶を飲みます。"
+            zh: "不，我喝茶。"
+        - role: partner
+          text:
+            en: "Do you brush your teeth before breakfast?"
+            ja: "朝食前に歯を磨きますか？"
+            zh: "你在早餐前刷牙嗎？"
+        - role: user
+          text:
+            en: "Yes, I brush my teeth in the bathroom."
+            ja: "はい、浴室で歯を磨きます。"
+            zh: "是的，我在浴室刷牙。"
+        - role: partner
+          text:
+            en: "What clothes do you wear to work?"
+            ja: "仕事に何の服を着ますか？"
+            zh: "你穿什麼衣服去上班？"
+        - role: user
+          text:
+            en: "I put on a shirt and pants."
+            ja: "シャツとズボンを着ます。"
+            zh: "我穿襯衫和褲子。"
+
+    - id: scenario-3-tired-morning
+      title:
+        en: "Tired Morning"
+        ja: "疲れた朝"
+        zh: "疲憊的早晨"
+      messages:
+        - role: partner
+          text:
+            en: "Good morning! You look tired."
+            ja: "おはよう！疲れているように見えるね。"
+            zh: "早安！你看起來很累。"
+        - role: user
+          text:
+            en: "Yes, I woke up very early today."
+            ja: "はい、今日はとても早く起きました。"
+            zh: "是的，我今天很早就醒了。"
+        - role: partner
+          text:
+            en: "Did you have coffee?"
+            ja: "コーヒーは飲みましたか？"
+            zh: "你喝咖啡了嗎？"
+        - role: user
+          text:
+            en: "Not yet. I need a cup right now."
+            ja: "まだです。今すぐ一杯必要です。"
+            zh: "還沒。我現在需要一杯。"
+        - role: partner
+          text:
+            en: "Let's go to the cafe before we work."
+            ja: "仕事の前にカフェに行こう。"
+            zh: "我們上班前去咖啡廳吧。"
+        - role: user
+          text:
+            en: "Good idea. I also want some breakfast."
+            ja: "いいね。朝食も食べたいです。"
+            zh: "好主意。我也想吃點早餐。"
+        - role: partner
+          text:
+            en: "Every morning is the same for you?"
+            ja: "毎朝同じですか？"
+            zh: "你每天早上都一樣嗎？"
+        - role: user
+          text:
+            en: "Yes, it is a busy morning every day."
+            ja: "はい、毎日忙しい朝です。"
+            zh: "是的，每天都是忙碌的早晨。"
+
+quiz:
+  questionsPerRound: 5
+  xpReward: 20

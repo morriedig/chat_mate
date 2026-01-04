@@ -1,0 +1,380 @@
+# Chapter: Week 1 - Identity & Background
+meta:
+  id: identity-and-background
+  title:
+    en: "Identity & Background"
+    ja: "アイデンティティと経歴"
+    zh: "身份與背景"
+  description:
+    en: "Introduce yourself professionally and personally without sounding like a textbook."
+    ja: "教科書のようにならずに、プロフェッショナルかつ個人的に自己紹介しましょう。"
+    zh: "學習專業且自然地介紹自己，不要像教科書一樣生硬。"
+  icon: "🪪"
+  order: 1
+  level: intermediate
+
+words:
+  # Personality Adjectives
+  - id: innovative
+    word:
+      en: Innovative
+      ja: 革新的な
+      zh: 創新的
+    reading: "IN-oh-vay-tiv"
+    phonetic: "/ˈɪnəveɪtɪv/"
+    description:
+      en: "Introducing new ideas or methods."
+      ja: "新しいアイデアや方法を導入する。"
+      zh: "引進新想法或方法。"
+    sentence:
+      en: "Steve Jobs was known for his innovative approach to technology."
+      ja: "スティーブ・ジョブズはテクノロジーへの革新的なアプローチで知られていました。"
+      zh: "史蒂夫·賈伯斯以他對科技的創新方法而聞名。"
+
+  - id: resilient
+    word:
+      en: Resilient
+      ja: 回復力のある
+      zh: 有韌性的
+    reading: "ri-ZIL-ee-uhnt"
+    phonetic: "/rɪˈzɪliənt/"
+    description:
+      en: "Able to recover quickly from difficulties."
+      ja: "困難から素早く回復できる。"
+      zh: "能夠從困難中快速恢復。"
+    sentence:
+      en: "She is resilient and never gives up when facing challenges."
+      ja: "彼女は回復力があり、困難に直面しても決して諦めません。"
+      zh: "她很有韌性，面對挑戰時從不放棄。"
+
+  - id: ambitious
+    word:
+      en: Ambitious
+      ja: 野心的な
+      zh: 有抱負的
+    reading: "am-BISH-uhs"
+    phonetic: "/æmˈbɪʃəs/"
+    description:
+      en: "Having a strong desire to succeed."
+      ja: "成功への強い意欲がある。"
+      zh: "有強烈成功慾望的。"
+    sentence:
+      en: "He is ambitious and always sets high goals for himself."
+      ja: "彼は野心的で、常に高い目標を設定しています。"
+      zh: "他很有抱負，總是為自己設定高目標。"
+
+  - id: resourceful
+    word:
+      en: Resourceful
+      ja: 機知に富んだ
+      zh: 足智多謀的
+    reading: "ri-SORS-fuhl"
+    phonetic: "/rɪˈsɔːrsfəl/"
+    description:
+      en: "Good at finding ways to solve problems."
+      ja: "問題を解決する方法を見つけるのが得意。"
+      zh: "善於找到解決問題的方法。"
+    sentence:
+      en: "A resourceful person can adapt to any situation."
+      ja: "機知に富んだ人はどんな状況にも適応できます。"
+      zh: "足智多謀的人能適應任何情況。"
+
+  # Grammar: Used to vs. Usually
+  - id: used-to
+    word:
+      en: Used to
+      ja: 以前は〜していた
+      zh: 曾經
+    reading: "YOOST too"
+    phonetic: "/juːst tuː/"
+    description:
+      en: "Past habit that stopped. Not anymore."
+      ja: "もうしなくなった過去の習慣。"
+      zh: "過去的習慣，現在不再做了。"
+    sentence:
+      en: "I used to play piano as a child, but I stopped in high school."
+      ja: "子供の頃はピアノを弾いていましたが、高校でやめました。"
+      zh: "我小時候曾經彈鋼琴，但高中就停了。"
+
+  - id: usually
+    word:
+      en: Usually
+      ja: 普段は
+      zh: 通常
+    reading: "YOO-zhoo-uh-lee"
+    phonetic: "/ˈjuːʒuəli/"
+    description:
+      en: "Present habit. What you do regularly now."
+      ja: "現在の習慣。今定期的にすること。"
+      zh: "現在的習慣。你現在經常做的事。"
+    sentence:
+      en: "I usually go to the gym on weekends."
+      ja: "週末は普段ジムに行きます。"
+      zh: "我通常週末去健身房。"
+
+  # Phrasal Verbs (Life Stages)
+  - id: grow-up
+    word:
+      en: Grow up
+      ja: 成長する
+      zh: 長大
+    reading: "GROH uhp"
+    phonetic: "/ɡroʊ ʌp/"
+    description:
+      en: "Mature, become an adult."
+      ja: "成熟する、大人になる。"
+      zh: "成熟，變成大人。"
+    sentence:
+      en: "I grew up in a small town near the mountains."
+      ja: "私は山の近くの小さな町で育ちました。"
+      zh: "我在山附近的小鎮長大。"
+
+  - id: settle-down
+    word:
+      en: Settle down
+      ja: 落ち着く
+      zh: 定居
+    reading: "SET-uhl down"
+    phonetic: "/ˈsetl daʊn/"
+    description:
+      en: "Buy a house, get married, stay in one place."
+      ja: "家を買う、結婚する、一か所に住む。"
+      zh: "買房子、結婚、在一個地方定居。"
+    sentence:
+      en: "After traveling for years, she decided to settle down in Tokyo."
+      ja: "何年も旅行した後、彼女は東京に落ち着くことにしました。"
+      zh: "旅行多年後，她決定在東京定居。"
+
+  - id: take-up
+    word:
+      en: Take up
+      ja: 始める
+      zh: 開始從事
+    reading: "TAYK uhp"
+    phonetic: "/teɪk ʌp/"
+    description:
+      en: "Start a new hobby or activity."
+      ja: "新しい趣味や活動を始める。"
+      zh: "開始一個新的嗜好或活動。"
+    sentence:
+      en: "I took up photography during the pandemic."
+      ja: "パンデミック中に写真を始めました。"
+      zh: "我在疫情期間開始學攝影。"
+
+  # Professional Verbs (avoid "do")
+  - id: manage
+    word:
+      en: Manage
+      ja: 管理する
+      zh: 管理
+    reading: "MAN-ij"
+    phonetic: "/ˈmænɪdʒ/"
+    description:
+      en: "Be in charge of people or projects."
+      ja: "人やプロジェクトを担当する。"
+      zh: "負責人員或專案。"
+    sentence:
+      en: "I manage a team of five software developers."
+      ja: "私は5人のソフトウェア開発者のチームを管理しています。"
+      zh: "我管理一個五人的軟體開發團隊。"
+
+  - id: design
+    word:
+      en: Design
+      ja: 設計する
+      zh: 設計
+    reading: "di-ZYN"
+    phonetic: "/dɪˈzaɪn/"
+    description:
+      en: "Create plans or drawings for something."
+      ja: "何かの計画や図面を作成する。"
+      zh: "為某事物創建計劃或圖紙。"
+    sentence:
+      en: "She designs user interfaces for mobile apps."
+      ja: "彼女はモバイルアプリのユーザーインターフェースを設計しています。"
+      zh: "她為手機應用程式設計使用者介面。"
+
+  - id: analyze
+    word:
+      en: Analyze
+      ja: 分析する
+      zh: 分析
+    reading: "AN-uh-lyz"
+    phonetic: "/ˈænəlaɪz/"
+    description:
+      en: "Examine something in detail."
+      ja: "何かを詳細に調べる。"
+      zh: "詳細檢查某事物。"
+    sentence:
+      en: "My job is to analyze market trends and write reports."
+      ja: "私の仕事は市場動向を分析してレポートを書くことです。"
+      zh: "我的工作是分析市場趨勢並撰寫報告。"
+
+  - id: support
+    word:
+      en: Support
+      ja: サポートする
+      zh: 支援
+    reading: "suh-PORT"
+    phonetic: "/səˈpɔːrt/"
+    description:
+      en: "Help or assist someone or something."
+      ja: "誰かや何かを助ける。"
+      zh: "幫助或協助某人或某事。"
+    sentence:
+      en: "I support clients with technical issues every day."
+      ja: "私は毎日クライアントの技術的な問題をサポートしています。"
+      zh: "我每天協助客戶處理技術問題。"
+
+  - id: coordinate
+    word:
+      en: Coordinate
+      ja: 調整する
+      zh: 協調
+    reading: "koh-OR-di-nayt"
+    phonetic: "/koʊˈɔːrdɪneɪt/"
+    description:
+      en: "Organize different elements to work together."
+      ja: "異なる要素を組織して一緒に機能させる。"
+      zh: "組織不同元素使其一起運作。"
+    sentence:
+      en: "He coordinates between the design and engineering teams."
+      ja: "彼はデザインチームとエンジニアリングチームの間を調整しています。"
+      zh: "他協調設計團隊和工程團隊之間的工作。"
+
+chat:
+  conversations:
+    - id: scenario-1-elevator-pitch
+      title:
+        en: "The Elevator Pitch"
+        ja: "エレベーターピッチ"
+        zh: "電梯簡報"
+      messages:
+        - role: partner
+          text:
+            en: "Hi! I don't think we've met. What do you do?"
+            ja: "こんにちは！初めましてですね。お仕事は何をされていますか？"
+            zh: "嗨！我們好像沒見過。你是做什麼的？"
+        - role: user
+          text:
+            en: "Hi! I'm a product manager. I coordinate between design and engineering teams to build mobile apps."
+            ja: "こんにちは！プロダクトマネージャーです。モバイルアプリを作るためにデザインチームとエンジニアリングチームの間を調整しています。"
+            zh: "嗨！我是產品經理。我協調設計和工程團隊來開發手機應用程式。"
+        - role: partner
+          text:
+            en: "That sounds interesting! How did you get into that field?"
+            ja: "面白そうですね！どうやってその分野に入ったんですか？"
+            zh: "聽起來很有趣！你是怎麼進入這個領域的？"
+        - role: user
+          text:
+            en: "I used to work as a software developer, but I took up project management three years ago."
+            ja: "以前はソフトウェア開発者として働いていましたが、3年前にプロジェクト管理を始めました。"
+            zh: "我曾經是軟體開發人員，但三年前開始從事專案管理。"
+        - role: partner
+          text:
+            en: "Nice career change! What do you enjoy most about it?"
+            ja: "素敵なキャリアチェンジですね！一番楽しいことは何ですか？"
+            zh: "很棒的職業轉換！你最喜歡什麼部分？"
+        - role: user
+          text:
+            en: "I enjoy working with people. You have to be resourceful and resilient in this role."
+            ja: "人と働くのが楽しいです。この役割では機知に富んで回復力がないといけません。"
+            zh: "我喜歡與人合作。這個角色需要足智多謀和有韌性。"
+
+    - id: scenario-2-past-and-present
+      title:
+        en: "Past vs. Present Habits"
+        ja: "過去と現在の習慣"
+        zh: "過去與現在的習慣"
+      messages:
+        - role: partner
+          text:
+            en: "Where did you grow up?"
+            ja: "どこで育ちましたか？"
+            zh: "你在哪裡長大的？"
+        - role: user
+          text:
+            en: "I grew up in a small town near the coast. Very different from city life."
+            ja: "海岸近くの小さな町で育ちました。都会の生活とは全然違います。"
+            zh: "我在海邊附近的小鎮長大。跟城市生活很不一樣。"
+        - role: partner
+          text:
+            en: "What did you use to do there as a kid?"
+            ja: "子供の頃はそこで何をしていましたか？"
+            zh: "你小時候在那裡都做什麼？"
+        - role: user
+          text:
+            en: "I used to spend every summer at the beach. I used to surf almost every day."
+            ja: "毎年夏はビーチで過ごしていました。ほぼ毎日サーフィンをしていました。"
+            zh: "我以前每個夏天都在海邊度過。我幾乎每天都衝浪。"
+        - role: partner
+          text:
+            en: "Do you still surf now?"
+            ja: "今でもサーフィンしますか？"
+            zh: "你現在還衝浪嗎？"
+        - role: user
+          text:
+            en: "Not really. I usually just go to the gym now. City life is different."
+            ja: "あまり。今は普段ジムに行くだけです。都会の生活は違いますね。"
+            zh: "不太衝了。我現在通常只是去健身房。城市生活不一樣。"
+        - role: partner
+          text:
+            en: "Have you taken up any new hobbies?"
+            ja: "何か新しい趣味を始めましたか？"
+            zh: "你有開始什麼新嗜好嗎？"
+        - role: user
+          text:
+            en: "Yes, I took up photography last year. It helps me explore the city."
+            ja: "はい、去年写真を始めました。街を探索するのに役立っています。"
+            zh: "有，我去年開始學攝影。這幫助我探索城市。"
+
+    - id: scenario-3-professional-intro
+      title:
+        en: "Professional Self-Description"
+        ja: "プロフェッショナルな自己紹介"
+        zh: "專業自我介紹"
+      messages:
+        - role: partner
+          text:
+            en: "Can you tell me about your current role?"
+            ja: "現在の役職について教えていただけますか？"
+            zh: "你能告訴我你目前的職位嗎？"
+        - role: user
+          text:
+            en: "Sure. I manage a team of five people. We analyze customer data and design marketing strategies."
+            ja: "もちろん。5人のチームを管理しています。顧客データを分析してマーケティング戦略を設計しています。"
+            zh: "當然。我管理一個五人團隊。我們分析客戶數據並設計行銷策略。"
+        - role: partner
+          text:
+            en: "That sounds like a lot of responsibility. What skills are important?"
+            ja: "責任が大きそうですね。どんなスキルが重要ですか？"
+            zh: "聽起來責任很大。什麼技能很重要？"
+        - role: user
+          text:
+            en: "You need to be ambitious but also resilient. Not every campaign succeeds."
+            ja: "野心的であると同時に回復力も必要です。すべてのキャンペーンが成功するわけではありません。"
+            zh: "你需要有抱負，但也要有韌性。不是每個活動都會成功。"
+        - role: partner
+          text:
+            en: "How did you develop those skills?"
+            ja: "どうやってそのスキルを身につけましたか？"
+            zh: "你是怎麼培養這些技能的？"
+        - role: user
+          text:
+            en: "I used to be afraid of failure. But working in startups taught me to be more resourceful."
+            ja: "以前は失敗を恐れていました。でもスタートアップで働いて、より機知に富むようになりました。"
+            zh: "我以前害怕失敗。但在新創公司工作教會了我更加足智多謀。"
+        - role: partner
+          text:
+            en: "Do you plan to settle down in this career?"
+            ja: "このキャリアに落ち着く予定ですか？"
+            zh: "你打算在這個職業定下來嗎？"
+        - role: user
+          text:
+            en: "For now, yes. But I'm always open to taking up new challenges."
+            ja: "今のところはい。でも常に新しい挑戦を始めることにオープンです。"
+            zh: "目前是的。但我總是願意接受新挑戰。"
+
+quiz:
+  questionsPerRound: 5
+  xpReward: 25

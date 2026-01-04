@@ -14,6 +14,9 @@ const chatMode = ref('free') // 'free' or 'article'
 
 // Learning mode state
 const learningLevel = ref(null)
+const selectedMotherTongue = ref('en')
+const selectedTargetLanguage = ref('ja')
+const uiLanguage = ref('en')
 
 function handleStart({ character, level, language, mode }) {
   selectedCharacter.value = character
@@ -28,9 +31,11 @@ function handleStart({ character, level, language, mode }) {
   }
 }
 
-function handleStartLearning({ level, language }) {
+function handleStartLearning({ level, targetLanguage, motherTongue, uiLanguage: ui }) {
   learningLevel.value = level
-  selectedLanguage.value = language
+  selectedTargetLanguage.value = targetLanguage
+  selectedMotherTongue.value = motherTongue || 'en'
+  uiLanguage.value = ui || 'en'
   currentScreen.value = 'learning'
 }
 
@@ -76,7 +81,9 @@ function handleBackToSetup() {
   <LearningScreen
     v-else-if="currentScreen === 'learning'"
     :level="learningLevel"
-    :language="selectedLanguage"
+    :target-language="selectedTargetLanguage"
+    :mother-tongue="selectedMotherTongue"
+    :ui-language="uiLanguage"
     @back="handleBack"
   />
   <ChatScreen

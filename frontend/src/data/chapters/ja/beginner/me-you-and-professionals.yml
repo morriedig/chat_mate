@@ -1,0 +1,211 @@
+# Chapter: Me, You, and Professionals
+meta:
+  id: me-you-and-professionals
+  title:
+    en: "Me, You, and Professionals"
+    ja: "私、あなた、そして仕事"
+    zh: "我、你與職業"
+  description:
+    en: "Learn to introduce yourself and discuss jobs."
+    ja: "自己紹介や仕事について話す方法を学びましょう。"
+    zh: "學習自我介紹和談論職業。"
+  icon: "🤝"
+  order: 2
+  level: beginner
+
+words:
+  - id: name
+    word:
+      en: Name
+      ja: 名前
+      zh: 名字
+    reading: Namae
+    phonetic: "/neɪm/"
+    description:
+      en: "What you call a person."
+      ja: "人を呼ぶ時の言葉。"
+      zh: "用來稱呼一個人的詞。"
+    sentence:
+      en: "My name is Tanaka."
+      ja: "私の名前は田中です。"
+      zh: "我的名字是田中。"
+
+  - id: teacher
+    word:
+      en: Teacher
+      ja: 先生
+      zh: 老師
+    reading: Sensei
+    phonetic: "/ˈtiːtʃər/"
+    description:
+      en: "A person who teaches students."
+      ja: "生徒に教える人。"
+      zh: "教導學生的人。"
+    sentence:
+      en: "Mr. Sato is a teacher."
+      ja: "佐藤さんは先生です。"
+      zh: "佐藤先生是老師。"
+
+  - id: student
+    word:
+      en: Student
+      ja: 学生
+      zh: 學生
+    reading: Gakusei
+    phonetic: "/ˈstjuːdənt/"
+    description:
+      en: "A person who studies at school."
+      ja: "学校で勉強する人。"
+      zh: "在學校學習的人。"
+    sentence:
+      en: "I am a university student."
+      ja: "私は大学生です。"
+      zh: "我是大學生。"
+
+  - id: job
+    word:
+      en: Job
+      ja: 仕事
+      zh: 工作
+    reading: Shigoto
+    phonetic: "/dʒɒb/"
+    description:
+      en: "Work you do for money."
+      ja: "お金のためにする労働。"
+      zh: "為了賺錢而做的勞動。"
+    sentence:
+      en: "Do you have a job?"
+      ja: "仕事はありますか？"
+      zh: "你有工作嗎？"
+
+  - id: doctor
+    word:
+      en: Doctor
+      ja: 医者
+      zh: 醫生
+    reading: Isha
+    phonetic: "/ˈdɒktər/"
+    description:
+      en: "A person who helps sick people."
+      ja: "病気の人を助ける人。"
+      zh: "幫助生病的人的人。"
+    sentence:
+      en: "She is a good doctor."
+      ja: "彼女は良い医者です。"
+      zh: "她是個好醫生。"
+
+  - id: company
+    word:
+      en: Company
+      ja: 会社
+      zh: 公司
+    reading: Kaisha
+    phonetic: "/ˈkʌmpəni/"
+    description:
+      en: "A business or organization."
+      ja: "ビジネスや組織。"
+      zh: "企業或組織。"
+    sentence:
+      en: "I go to the company."
+      ja: "私は会社に行きます。"
+      zh: "我去公司。"
+
+chat:
+  conversations:
+    - id: scenario-1-introduction
+      title:
+        en: "Self Introduction"
+        ja: "自己紹介"
+        zh: "自我介紹"
+      messages:
+        - role: partner
+          text:
+            en: "Hello. What is your name?"
+            ja: "こんにちは。お名前は何ですか？"
+            zh: "你好。你叫什麼名字？"
+        - role: user
+          text:
+            en: "My name is Ken."
+            ja: "私の名前はケンです。"
+            zh: "我的名字是Ken。"
+        - role: partner
+          text:
+            en: "Nice to meet you, Ken."
+            ja: "はじめまして、ケンさん。"
+            zh: "很高興認識你，Ken。"
+        - role: user
+          text:
+            en: "Are you a student?"
+            ja: "あなたは学生ですか？"
+            zh: "你是學生嗎？"
+        - role: partner
+          text:
+            en: "No, I am a teacher."
+            ja: "いいえ、私は先生です。"
+            zh: "不是，我是老師。"
+        - role: user
+          text:
+            en: "Oh, I see."
+            ja: "ああ、そうですか。"
+            zh: "喔，原來如此。"
+        - role: partner
+          text:
+            en: "Are you a student?"
+            ja: "あなたは学生ですか？"
+            zh: "你是學生嗎？"
+        - role: user
+          text:
+            en: "Yes, I study English."
+            ja: "はい、英語を勉強しています。"
+            zh: "是的，我在學英文。"
+
+    - id: scenario-2-talking-about-work
+      title:
+        en: "Talking About Work"
+        ja: "仕事について話す"
+        zh: "談論工作"
+      messages:
+        - role: partner
+          text:
+            en: "Do you have a job?"
+            ja: "仕事はしていますか？"
+            zh: "你有工作嗎？"
+        - role: user
+          text:
+            en: "Yes, I work at a company."
+            ja: "はい、会社で働いています。"
+            zh: "有，我在公司上班。"
+        - role: partner
+          text:
+            en: "Is it a big company?"
+            ja: "大きな会社ですか？"
+            zh: "是大公司嗎？"
+        - role: user
+          text:
+            en: "No, it is small."
+            ja: "いいえ、小さいです。"
+            zh: "不是，是小公司。"
+        - role: partner
+          text:
+            en: "Is your father a doctor?"
+            ja: "お父さんはお医者さんですか？"
+            zh: "你爸爸是醫生嗎？"
+        - role: user
+          text:
+            en: "Yes, he is a doctor."
+            ja: "はい、彼は医者です。"
+            zh: "是的，他是醫生。"
+        - role: partner
+          text:
+            en: "That is a hard job."
+            ja: "それは大変な仕事ですね。"
+            zh: "那是很辛苦的工作。"
+        - role: user
+          text:
+            en: "Yes, he is very busy."
+            ja: "はい、彼はとても忙しいです。"
+            zh: "是的，他非常忙。"
+
+quiz:
+  questionsPerRound: 5
+  xpReward: 20

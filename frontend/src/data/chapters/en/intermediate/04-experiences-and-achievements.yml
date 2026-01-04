@@ -1,0 +1,409 @@
+# Chapter: Week 4 - Experiences & Achievements
+meta:
+  id: experiences-and-achievements
+  title:
+    en: "Experiences & Achievements"
+    ja: "経験と達成"
+    zh: "經歷與成就"
+  description:
+    en: "Discuss life achievements and travel experiences using Present Perfect. Learn when time matters and when it doesn't."
+    ja: "現在完了形を使って人生の達成や旅行経験について話しましょう。時間が重要な場合とそうでない場合を学びます。"
+    zh: "用現在完成式討論人生成就和旅行經歷。學習何時時間重要，何時不重要。"
+  icon: "🏆"
+  order: 4
+  level: intermediate
+
+words:
+  # Present Perfect Structures (Day 1-2)
+  - id: have-done
+    word:
+      en: I have done...
+      ja: 〜したことがある
+      zh: 我做過...
+    reading: "ay hav duhn"
+    phonetic: "/aɪ hæv dʌn/"
+    description:
+      en: "Present Perfect for life experiences (time not specified)."
+      ja: "人生経験を表す現在完了形（時間は指定しない）。"
+      zh: "用現在完成式表達人生經歷（不指定時間）。"
+    sentence:
+      en: "I have seen that movie three times. It's my favorite."
+      ja: "その映画を3回見たことがあります。私のお気に入りです。"
+      zh: "那部電影我看過三次了。是我的最愛。"
+
+  - id: have-you-ever
+    word:
+      en: Have you ever...?
+      ja: 〜したことがありますか？
+      zh: 你曾經...嗎？
+    reading: "hav yoo EV-er"
+    phonetic: "/hæv juː ˈevər/"
+    description:
+      en: "Ask about someone's life experiences."
+      ja: "誰かの人生経験について尋ねる。"
+      zh: "詢問某人的人生經歷。"
+    sentence:
+      en: "Have you ever been to Japan? I'd love to visit someday."
+      ja: "日本に行ったことはありますか？いつか訪れたいです。"
+      zh: "你去過日本嗎？我很想有一天去看看。"
+
+  - id: have-never
+    word:
+      en: I have never...
+      ja: 一度も〜したことがない
+      zh: 我從未...
+    reading: "ay hav NEV-er"
+    phonetic: "/aɪ hæv ˈnevər/"
+    description:
+      en: "Express something you haven't experienced in your life."
+      ja: "人生で経験したことがないことを表す。"
+      zh: "表達你人生中從未經歷過的事。"
+    sentence:
+      en: "I have never tried skydiving. It looks terrifying!"
+      ja: "スカイダイビングをしたことがありません。恐ろしそうです！"
+      zh: "我從沒試過跳傘。看起來太可怕了！"
+
+  - id: havent-yet
+    word:
+      en: I haven't... yet
+      ja: まだ〜していない
+      zh: 我還沒...
+    reading: "ay HAV-uhnt yet"
+    phonetic: "/aɪ ˈhævənt jet/"
+    description:
+      en: "Something not done but expected or planned."
+      ja: "まだしていないが、予定していることや期待していること。"
+      zh: "尚未完成但預期或計劃要做的事。"
+    sentence:
+      en: "I haven't learned to ski yet, but it's on my bucket list."
+      ja: "まだスキーを習っていませんが、やりたいことリストに入っています。"
+      zh: "我還沒學會滑雪，但它在我的願望清單上。"
+
+  - id: already
+    word:
+      en: Already
+      ja: すでに・もう
+      zh: 已經
+    reading: "awl-RED-ee"
+    phonetic: "/ɔːlˈredi/"
+    description:
+      en: "Something completed sooner than expected."
+      ja: "予想より早く完了したこと。"
+      zh: "比預期更早完成的事。"
+    sentence:
+      en: "I've already finished the report. I can help you now."
+      ja: "すでにレポートを終えました。今あなたを手伝えます。"
+      zh: "我已經完成報告了。現在可以幫你。"
+
+  # Strong Adjectives (Day 5)
+  - id: breath-taking
+    word:
+      en: Breath-taking
+      ja: 息を呑むほど美しい
+      zh: 令人嘆為觀止的
+    reading: "BRETH-tay-king"
+    phonetic: "/ˈbreθˌteɪkɪŋ/"
+    description:
+      en: "Extremely beautiful or impressive (stronger than 'beautiful')."
+      ja: "極めて美しい、印象的（'beautiful'より強い）。"
+      zh: "極其美麗或令人印象深刻（比 'beautiful' 更強烈）。"
+    sentence:
+      en: "The view from the mountain was breath-taking. I'll never forget it."
+      ja: "山からの景色は息を呑むほど美しかったです。決して忘れません。"
+      zh: "山上的景色令人嘆為觀止。我永遠不會忘記。"
+
+  - id: exhausting
+    word:
+      en: Exhausting
+      ja: 疲れ果てる
+      zh: 令人精疲力竭的
+    reading: "ig-ZAWS-ting"
+    phonetic: "/ɪɡˈzɔːstɪŋ/"
+    description:
+      en: "Extremely tiring (stronger than 'tiring')."
+      ja: "極めて疲れる（'tiring'より強い）。"
+      zh: "極度疲累的（比 'tiring' 更強烈）。"
+    sentence:
+      en: "The hike was exhausting but totally worth it."
+      ja: "ハイキングは疲れ果てましたが、完全にその価値がありました。"
+      zh: "那次健行令人精疲力竭，但完全值得。"
+
+  - id: terrifying
+    word:
+      en: Terrifying
+      ja: 恐ろしい
+      zh: 令人恐懼的
+    reading: "TER-uh-fy-ing"
+    phonetic: "/ˈterɪfaɪɪŋ/"
+    description:
+      en: "Extremely scary (stronger than 'scary')."
+      ja: "極めて怖い（'scary'より強い）。"
+      zh: "極度可怕的（比 'scary' 更強烈）。"
+    sentence:
+      en: "The experience was terrifying. My hands were shaking the whole time."
+      ja: "その経験は恐ろしかったです。ずっと手が震えていました。"
+      zh: "那次經歷令人恐懼。我的手全程都在發抖。"
+
+  - id: overwhelming
+    word:
+      en: Overwhelming
+      ja: 圧倒的な
+      zh: 令人難以承受的
+    reading: "oh-ver-WELM-ing"
+    phonetic: "/ˌoʊvərˈwelmɪŋ/"
+    description:
+      en: "Too much emotion or information to handle."
+      ja: "処理しきれないほどの感情や情報。"
+      zh: "情緒或資訊多到難以處理。"
+    sentence:
+      en: "Starting a new job can be overwhelming at first."
+      ja: "新しい仕事を始めるのは最初は圧倒的です。"
+      zh: "剛開始新工作可能會讓人難以承受。"
+
+  - id: life-changing
+    word:
+      en: Life-changing
+      ja: 人生を変える
+      zh: 改變人生的
+    reading: "LYFE-chayn-jing"
+    phonetic: "/ˈlaɪfˌtʃeɪndʒɪŋ/"
+    description:
+      en: "Changes your perspective or life completely."
+      ja: "視点や人生を完全に変える。"
+      zh: "徹底改變你的觀點或人生。"
+    sentence:
+      en: "Traveling alone was a life-changing experience for me."
+      ja: "一人旅は私にとって人生を変える経験でした。"
+      zh: "獨自旅行對我來說是一次改變人生的經歷。"
+
+  # Achievement Vocabulary (Day 3)
+  - id: managed-to
+    word:
+      en: I have managed to...
+      ja: なんとか〜できた
+      zh: 我設法做到了...
+    reading: "ay hav MAN-ijd too"
+    phonetic: "/aɪ hæv ˈmænɪdʒd tuː/"
+    description:
+      en: "Successfully accomplished something difficult."
+      ja: "難しいことを首尾よく成し遂げた。"
+      zh: "成功完成了困難的事情。"
+    sentence:
+      en: "I have managed a team of 10 people for two years."
+      ja: "2年間10人のチームを管理してきました。"
+      zh: "我已經管理一個十人團隊兩年了。"
+
+  - id: achievement
+    word:
+      en: Achievement
+      ja: 達成・業績
+      zh: 成就
+    reading: "uh-CHEEV-muhnt"
+    phonetic: "/əˈtʃiːvmənt/"
+    description:
+      en: "Something accomplished through effort or skill."
+      ja: "努力やスキルによって達成したこと。"
+      zh: "通過努力或技能完成的事情。"
+    sentence:
+      en: "What is your biggest achievement so far?"
+      ja: "これまでで一番の達成は何ですか？"
+      zh: "到目前為止你最大的成就是什麼？"
+
+  - id: bucket-list
+    word:
+      en: Bucket list
+      ja: やりたいことリスト
+      zh: 願望清單
+    reading: "BUH-kit list"
+    phonetic: "/ˈbʌkɪt lɪst/"
+    description:
+      en: "List of things you want to do before you die."
+      ja: "死ぬまでにやりたいことのリスト。"
+      zh: "死前想做的事情清單。"
+    sentence:
+      en: "Visiting the Northern Lights is on my bucket list."
+      ja: "オーロラを見ることがやりたいことリストに入っています。"
+      zh: "看北極光在我的願望清單上。"
+
+  - id: paid-my-dues
+    word:
+      en: Paid my dues
+      ja: 苦労を重ねてきた
+      zh: 付出了代價
+    reading: "payd my dooz"
+    phonetic: "/peɪd maɪ duːz/"
+    description:
+      en: "Worked hard and earned your position through experience."
+      ja: "一生懸命働き、経験を通じて地位を得た。"
+      zh: "努力工作並通過經驗贏得了你的地位。"
+    sentence:
+      en: "I've paid my dues in this industry for over ten years."
+      ja: "この業界で10年以上苦労を重ねてきました。"
+      zh: "我在這個行業付出了十多年的代價。"
+
+chat:
+  conversations:
+    - id: scenario-1-job-interview
+      title:
+        en: "The Job Interview"
+        ja: "就職面接"
+        zh: "工作面試"
+      messages:
+        - role: partner
+          text:
+            en: "Thank you for coming in today. Let's start - what is your biggest achievement?"
+            ja: "今日はお越しいただきありがとうございます。始めましょう - あなたの一番の達成は何ですか？"
+            zh: "感謝你今天過來。我們開始吧 - 你最大的成就是什麼？"
+        - role: user
+          text:
+            en: "I have managed a team of 10 people for two years. We increased sales by 30%."
+            ja: "2年間10人のチームを管理してきました。売上を30%増加させました。"
+            zh: "我管理了一個十人團隊兩年。我們讓銷售額增加了30%。"
+        - role: partner
+          text:
+            en: "Impressive! Have you ever worked under pressure with tight deadlines?"
+            ja: "素晴らしい！厳しい締め切りのプレッシャーの下で働いたことはありますか？"
+            zh: "令人印象深刻！你曾經在緊迫的截止日期壓力下工作過嗎？"
+        - role: user
+          text:
+            en: "Yes, I have. It was overwhelming at first, but I've learned to prioritize tasks effectively."
+            ja: "はい、あります。最初は圧倒的でしたが、タスクを効果的に優先することを学びました。"
+            zh: "是的，有過。一開始讓人難以承受，但我學會了有效地排定任務優先順序。"
+        - role: partner
+          text:
+            en: "Have you ever had to deal with a difficult client?"
+            ja: "難しいクライアントに対処しなければならなかったことはありますか？"
+            zh: "你曾經處理過難搞的客戶嗎？"
+        - role: user
+          text:
+            en: "I have. Last year, I managed to turn an unhappy customer into our biggest supporter."
+            ja: "あります。去年、不満を持っていた顧客を最大のサポーターに変えることができました。"
+            zh: "有過。去年，我設法把一個不滿意的客戶變成我們最大的支持者。"
+        - role: partner
+          text:
+            en: "That's a life-changing skill in this industry. Is there anything you haven't done yet?"
+            ja: "それはこの業界で人生を変えるスキルですね。まだやっていないことはありますか？"
+            zh: "那在這個行業是改變人生的技能。有什麼你還沒做過的事嗎？"
+        - role: user
+          text:
+            en: "I haven't led an international team yet, but it's definitely on my list. I'm excited about the opportunity."
+            ja: "まだ国際チームを率いたことはありませんが、それは確実にリストにあります。この機会にワクワクしています。"
+            zh: "我還沒有領導過國際團隊，但這絕對在我的清單上。我對這個機會感到興奮。"
+
+    - id: scenario-2-travel-stories
+      title:
+        en: "Travel Stories"
+        ja: "旅行の話"
+        zh: "旅行故事"
+      messages:
+        - role: partner
+          text:
+            en: "I heard you've traveled a lot! What's the most breath-taking place you've been to?"
+            ja: "たくさん旅行したと聞きました！一番息を呑むような場所はどこでしたか？"
+            zh: "我聽說你旅行過很多地方！你去過最令人嘆為觀止的地方是哪裡？"
+        - role: user
+          text:
+            en: "I've been to the Grand Canyon. The view was absolutely breath-taking. I'll never forget it."
+            ja: "グランドキャニオンに行ったことがあります。景色は本当に息を呑むほどでした。決して忘れません。"
+            zh: "我去過大峽谷。那裡的景色絕對令人嘆為觀止。我永遠不會忘記。"
+        - role: partner
+          text:
+            en: "Have you ever had a terrifying travel experience?"
+            ja: "恐ろしい旅行経験はありましたか？"
+            zh: "你有過令人恐懼的旅行經歷嗎？"
+        - role: user
+          text:
+            en: "Yes! I've gone bungee jumping in New Zealand. It was terrifying but also life-changing."
+            ja: "はい！ニュージーランドでバンジージャンプをしたことがあります。恐ろしかったですが、人生を変える体験でした。"
+            zh: "有！我在紐西蘭跳過高空彈跳。很恐怖但也是改變人生的經歷。"
+        - role: partner
+          text:
+            en: "What about physically challenging trips? Have you done any exhausting hikes?"
+            ja: "体力的に大変な旅行はどうですか？疲れ果てるようなハイキングをしたことはありますか？"
+            zh: "那體力挑戰型的旅行呢？你有做過令人精疲力竭的健行嗎？"
+        - role: user
+          text:
+            en: "I've hiked Mount Fuji. It was exhausting but totally worth it. The sunrise was incredible."
+            ja: "富士山に登ったことがあります。疲れ果てましたが、完全にその価値がありました。日の出は信じられないほどでした。"
+            zh: "我爬過富士山。非常累人但完全值得。日出太驚人了。"
+        - role: partner
+          text:
+            en: "Is there anywhere you haven't been yet but really want to visit?"
+            ja: "まだ行ったことがないけど、本当に行きたい場所はありますか？"
+            zh: "有什麼你還沒去過但真的很想去的地方嗎？"
+        - role: user
+          text:
+            en: "I haven't visited the Northern Lights yet. It's been on my bucket list for years."
+            ja: "まだオーロラを見たことがありません。何年もやりたいことリストに入っています。"
+            zh: "我還沒看過北極光。它在我的願望清單上好幾年了。"
+        - role: partner
+          text:
+            en: "I've already been there twice! The experience was overwhelming - I actually cried."
+            ja: "私はすでに2回行きました！その経験は圧倒的で、実際に泣きました。"
+            zh: "我已經去過兩次了！那種體驗讓人難以承受 - 我真的哭了。"
+        - role: user
+          text:
+            en: "Now I want to go even more! I've paid my dues saving money. This year is the year!"
+            ja: "今はもっと行きたくなりました！お金を貯めるために苦労を重ねてきました。今年こそは！"
+            zh: "現在我更想去了！我存錢存了很久。今年就是那一年！"
+
+    - id: scenario-3-never-have-i-ever
+      title:
+        en: "Never Have I Ever"
+        ja: "やったことがないゲーム"
+        zh: "我從來沒有"
+      messages:
+        - role: partner
+          text:
+            en: "Let's play a game! Have you ever eaten something really unusual?"
+            ja: "ゲームをしよう！本当に変わったものを食べたことがありますか？"
+            zh: "來玩個遊戲吧！你曾經吃過什麼真的很特別的東西嗎？"
+        - role: user
+          text:
+            en: "Yes, I have! I've eaten sushi with raw horse meat in Japan. Have you ever tried it?"
+            ja: "はい、あります！日本で馬刺しの寿司を食べたことがあります。試したことはありますか？"
+            zh: "有啊！我在日本吃過生馬肉壽司。你試過嗎？"
+        - role: partner
+          text:
+            en: "No, I haven't tried that yet! Have you ever sung karaoke in public?"
+            ja: "いいえ、まだ試したことがありません！公衆の前でカラオケを歌ったことはありますか？"
+            zh: "沒有，我還沒試過那個！你曾經在公開場合唱過卡拉OK嗎？"
+        - role: user
+          text:
+            en: "I have never sung karaoke. The idea is terrifying to me! How about you?"
+            ja: "カラオケを歌ったことがありません。私には恐ろしいアイデアです！あなたはどうですか？"
+            zh: "我從來沒唱過卡拉OK。這個想法對我來說很可怕！你呢？"
+        - role: partner
+          text:
+            en: "I've already done it many times! It's fun. Have you ever run a marathon?"
+            ja: "すでに何度もやりました！楽しいですよ。マラソンを走ったことはありますか？"
+            zh: "我已經唱過很多次了！很好玩。你跑過馬拉松嗎？"
+        - role: user
+          text:
+            en: "I haven't run a marathon yet, but it's on my bucket list. It sounds exhausting!"
+            ja: "まだマラソンを走ったことはありませんが、やりたいことリストに入っています。疲れそうですね！"
+            zh: "我還沒跑過馬拉松，但它在我的願望清單上。聽起來超累的！"
+        - role: partner
+          text:
+            en: "Trust me, it's exhausting but life-changing. Have you ever learned a new language?"
+            ja: "信じて、疲れますが人生を変えますよ。新しい言語を学んだことはありますか？"
+            zh: "相信我，很累但會改變人生。你學過新語言嗎？"
+        - role: user
+          text:
+            en: "Yes! I've studied English for years. It was overwhelming at first but I've managed to improve a lot."
+            ja: "はい！何年も英語を勉強してきました。最初は圧倒的でしたが、かなり上達することができました。"
+            zh: "有！我學英語學了好幾年。一開始讓人難以承受，但我設法進步了很多。"
+        - role: partner
+          text:
+            en: "That's an amazing achievement! What haven't you done yet that you really want to try?"
+            ja: "それは素晴らしい達成ですね！まだやっていないけど本当にやりたいことは何ですか？"
+            zh: "那是很棒的成就！有什麼你還沒做過但真的很想嘗試的？"
+        - role: user
+          text:
+            en: "I've never tried skydiving. It looks terrifying, but maybe one day I'll be brave enough!"
+            ja: "スカイダイビングをしたことがありません。恐ろしそうですが、いつか勇気が出るかもしれません！"
+            zh: "我從沒試過跳傘。看起來很可怕，但也許有一天我會夠勇敢！"
+
+quiz:
+  questionsPerRound: 5
+  xpReward: 25

@@ -1,0 +1,408 @@
+# Chapter: Week 4 - Family & Friends
+meta:
+  id: family-and-friends
+  title:
+    en: "Family & Friends"
+    ja: "家族と友達"
+    zh: "家人與朋友"
+  description:
+    en: "Describing people around you."
+    ja: "周りの人を説明しましょう。"
+    zh: "學習描述你身邊的人。"
+  icon: "👨‍👩‍👧‍👦"
+  order: 4
+  level: beginner
+
+words:
+  # Day 1: Core Nouns (People)
+  - id: parents
+    word:
+      en: Parents
+      ja: 両親
+      zh: 父母
+    reading: "PAIR-uhnts"
+    phonetic: "/ˈperənts/"
+    description:
+      en: "Mother and Father."
+      ja: "母親と父親。"
+      zh: "母親和父親。"
+    sentence:
+      en: "I live with my parents."
+      ja: "私は両親と一緒に住んでいます。"
+      zh: "我和父母住在一起。"
+
+  - id: father
+    word:
+      en: Father
+      ja: 父
+      zh: 父親
+    reading: "FAH-ther"
+    phonetic: "/ˈfɑːðər/"
+    description:
+      en: "Male parent."
+      ja: "男性の親。"
+      zh: "男性家長。"
+    sentence:
+      en: "My father is busy at work."
+      ja: "父は仕事で忙しいです。"
+      zh: "我父親工作很忙。"
+
+  - id: mother
+    word:
+      en: Mother
+      ja: 母
+      zh: 母親
+    reading: "MUHTH-er"
+    phonetic: "/ˈmʌðər/"
+    description:
+      en: "Female parent."
+      ja: "女性の親。"
+      zh: "女性家長。"
+    sentence:
+      en: "My mother is very kind."
+      ja: "母はとても優しいです。"
+      zh: "我母親非常和藹。"
+
+  - id: sister
+    word:
+      en: Sister
+      ja: 姉妹
+      zh: 姐妹
+    reading: "SIS-ter"
+    phonetic: "/ˈsɪstər/"
+    description:
+      en: "Female sibling."
+      ja: "女性のきょうだい。"
+      zh: "女性兄弟姐妹。"
+    sentence:
+      en: "I have two sisters."
+      ja: "私には姉妹が2人います。"
+      zh: "我有兩個姐妹。"
+
+  - id: brother
+    word:
+      en: Brother
+      ja: 兄弟
+      zh: 兄弟
+    reading: "BRUHTH-er"
+    phonetic: "/ˈbrʌðər/"
+    description:
+      en: "Male sibling."
+      ja: "男性のきょうだい。"
+      zh: "男性兄弟姐妹。"
+    sentence:
+      en: "My brother is tall."
+      ja: "私の兄弟は背が高いです。"
+      zh: "我的兄弟很高。"
+
+  - id: friend
+    word:
+      en: Friend
+      ja: 友達
+      zh: 朋友
+    reading: "FREND"
+    phonetic: "/frend/"
+    description:
+      en: "Person you like, not family."
+      ja: "好きな人、家族ではない。"
+      zh: "你喜歡的人，不是家人。"
+    sentence:
+      en: "She is my best friend."
+      ja: "彼女は私の親友です。"
+      zh: "她是我最好的朋友。"
+
+  - id: family
+    word:
+      en: Family
+      ja: 家族
+      zh: 家庭
+    reading: "FAM-uh-lee"
+    phonetic: "/ˈfæməli/"
+    description:
+      en: "All your relatives group."
+      ja: "親戚全員のグループ。"
+      zh: "你所有親戚的群體。"
+    sentence:
+      en: "This is my family."
+      ja: "これが私の家族です。"
+      zh: "這是我的家人。"
+
+  # Day 2: Adjectives (Describing People)
+  - id: kind
+    word:
+      en: Kind
+      ja: 優しい
+      zh: 和藹
+    reading: "KYND"
+    phonetic: "/kaɪnd/"
+    description:
+      en: "Nice, helpful."
+      ja: "親切で、助けになる。"
+      zh: "友善、樂於助人。"
+    sentence:
+      en: "My mother is very kind."
+      ja: "母はとても優しいです。"
+      zh: "我母親非常和藹。"
+
+  - id: funny
+    word:
+      en: Funny
+      ja: 面白い
+      zh: 有趣
+    reading: "FUHN-ee"
+    phonetic: "/ˈfʌni/"
+    description:
+      en: "Makes you laugh."
+      ja: "笑わせてくれる。"
+      zh: "讓你笑。"
+    sentence:
+      en: "My sister is funny, she always makes me laugh."
+      ja: "姉妹は面白くて、いつも笑わせてくれます。"
+      zh: "我姐妹很有趣，她總是讓我笑。"
+
+  - id: tall
+    word:
+      en: Tall
+      ja: 背が高い
+      zh: 高
+    reading: "TAWL"
+    phonetic: "/tɔːl/"
+    description:
+      en: "High height."
+      ja: "身長が高い。"
+      zh: "身高很高。"
+    sentence:
+      en: "My dad is tall."
+      ja: "父は背が高いです。"
+      zh: "我爸爸很高。"
+
+  - id: short
+    word:
+      en: Short
+      ja: 背が低い
+      zh: 矮
+    reading: "SHORT"
+    phonetic: "/ʃɔːrt/"
+    description:
+      en: "Low height."
+      ja: "身長が低い。"
+      zh: "身高很矮。"
+    sentence:
+      en: "No, he is short."
+      ja: "いいえ、彼は背が低いです。"
+      zh: "不，他很矮。"
+
+  - id: old
+    word:
+      en: Old
+      ja: 年をとった
+      zh: 老
+    reading: "OHLD"
+    phonetic: "/oʊld/"
+    description:
+      en: "Many years."
+      ja: "年齢が高い。"
+      zh: "年紀大。"
+    sentence:
+      en: "My grandfather is old, but strong."
+      ja: "祖父は年をとっていますが、元気です。"
+      zh: "我爺爺年紀大了，但很強壯。"
+
+  - id: young
+    word:
+      en: Young
+      ja: 若い
+      zh: 年輕
+    reading: "YUHNG"
+    phonetic: "/jʌŋ/"
+    description:
+      en: "Few years."
+      ja: "年齢が若い。"
+      zh: "年紀小。"
+    sentence:
+      en: "My little brother is very young."
+      ja: "弟はとても若いです。"
+      zh: "我弟弟很年輕。"
+
+  - id: busy
+    word:
+      en: Busy
+      ja: 忙しい
+      zh: 忙碌
+    reading: "BIZ-ee"
+    phonetic: "/ˈbɪzi/"
+    description:
+      en: "Has lots of work."
+      ja: "たくさんの仕事がある。"
+      zh: "有很多工作。"
+    sentence:
+      en: "We are very busy during the week."
+      ja: "私たちは平日とても忙しいです。"
+      zh: "我們平日非常忙碌。"
+
+chat:
+  conversations:
+    - id: scenario-1-my-family
+      title:
+        en: "My Family"
+        ja: "私の家族"
+        zh: "我的家人"
+      messages:
+        - role: partner
+          text:
+            en: "Tell me about your family."
+            ja: "あなたの家族について教えてください。"
+            zh: "跟我說說你的家人。"
+        - role: user
+          text:
+            en: "I have a big family."
+            ja: "私は大家族です。"
+            zh: "我有一個大家庭。"
+        - role: partner
+          text:
+            en: "Who do you live with?"
+            ja: "誰と一緒に住んでいますか？"
+            zh: "你和誰住在一起？"
+        - role: user
+          text:
+            en: "I live with my parents and my sister."
+            ja: "両親と姉妹と一緒に住んでいます。"
+            zh: "我和父母還有姐妹住在一起。"
+        - role: partner
+          text:
+            en: "What does your mother do?"
+            ja: "お母さんは何をしていますか？"
+            zh: "你媽媽做什麼工作？"
+        - role: user
+          text:
+            en: "My mother is a teacher, she is very kind."
+            ja: "母は先生で、とても優しいです。"
+            zh: "我媽媽是老師，她非常和藹。"
+        - role: partner
+          text:
+            en: "What about your sister?"
+            ja: "お姉さんはどうですか？"
+            zh: "你姐妹呢？"
+        - role: user
+          text:
+            en: "My sister is funny, she always makes me laugh."
+            ja: "姉妹は面白くて、いつも笑わせてくれます。"
+            zh: "我姐妹很有趣，她總是讓我笑。"
+        - role: partner
+          text:
+            en: "Do you meet your friends on weekends?"
+            ja: "週末に友達に会いますか？"
+            zh: "你週末會見朋友嗎？"
+        - role: user
+          text:
+            en: "Yes, on weekends I meet my best friend."
+            ja: "はい、週末に親友に会います。"
+            zh: "是的，週末我會見我最好的朋友。"
+
+    - id: scenario-2-family-photo
+      title:
+        en: "Family Photo"
+        ja: "家族写真"
+        zh: "家庭照片"
+      messages:
+        - role: partner
+          text:
+            en: "Is that a photo of your family?"
+            ja: "それはあなたの家族の写真ですか？"
+            zh: "那是你的家庭照片嗎？"
+        - role: user
+          text:
+            en: "Yes. This is my father and this is my mother."
+            ja: "はい。これが父で、これが母です。"
+            zh: "是的。這是我爸爸，這是我媽媽。"
+        - role: partner
+          text:
+            en: "Who is the young boy?"
+            ja: "この若い男の子は誰ですか？"
+            zh: "那個小男孩是誰？"
+        - role: user
+          text:
+            en: "That is my little brother. He is 5 years old."
+            ja: "それは弟です。5歳です。"
+            zh: "那是我弟弟。他5歲。"
+        - role: partner
+          text:
+            en: "He looks very funny."
+            ja: "彼はとても面白そうですね。"
+            zh: "他看起來很有趣。"
+        - role: user
+          text:
+            en: "Yes, he always makes everyone laugh."
+            ja: "はい、みんなをいつも笑わせます。"
+            zh: "是的，他總是讓大家笑。"
+        - role: partner
+          text:
+            en: "Is your father tall?"
+            ja: "お父さんは背が高いですか？"
+            zh: "你爸爸高嗎？"
+        - role: user
+          text:
+            en: "No, he is short, but my brother is tall."
+            ja: "いいえ、背が低いですが、兄弟は背が高いです。"
+            zh: "不，他很矮，但我兄弟很高。"
+
+    - id: scenario-3-questions-answers
+      title:
+        en: "Family Questions"
+        ja: "家族についての質問"
+        zh: "關於家人的問答"
+      messages:
+        - role: partner
+          text:
+            en: "Do you have any brothers?"
+            ja: "兄弟はいますか？"
+            zh: "你有兄弟嗎？"
+        - role: user
+          text:
+            en: "Yes, I have one brother."
+            ja: "はい、兄弟が1人います。"
+            zh: "是的，我有一個兄弟。"
+        - role: partner
+          text:
+            en: "Who is she?"
+            ja: "彼女は誰ですか？"
+            zh: "她是誰？"
+        - role: user
+          text:
+            en: "She is my sister."
+            ja: "彼女は私の姉妹です。"
+            zh: "她是我姐妹。"
+        - role: partner
+          text:
+            en: "Is your father tall?"
+            ja: "お父さんは背が高いですか？"
+            zh: "你爸爸高嗎？"
+        - role: user
+          text:
+            en: "No, he is short."
+            ja: "いいえ、背が低いです。"
+            zh: "不，他很矮。"
+        - role: partner
+          text:
+            en: "How are your parents?"
+            ja: "ご両親はお元気ですか？"
+            zh: "你父母好嗎？"
+        - role: user
+          text:
+            en: "They are very good, thank you."
+            ja: "とても元気です、ありがとうございます。"
+            zh: "他們很好，謝謝。"
+        - role: partner
+          text:
+            en: "How many friends do you have?"
+            ja: "友達は何人いますか？"
+            zh: "你有多少朋友？"
+        - role: user
+          text:
+            en: "I have many friends."
+            ja: "たくさん友達がいます。"
+            zh: "我有很多朋友。"
+
+quiz:
+  questionsPerRound: 5
+  xpReward: 20

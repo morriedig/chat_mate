@@ -1,0 +1,174 @@
+# Chapter: Discussing Movies
+
+meta:
+  id: discussing-movies
+  title:
+    en: "Discussing Movies"
+    ja: "映画について語る"
+  description:
+    en: "Share your opinions on films, acting, and storylines."
+    ja: "映画、演技、ストーリーについての意見を共有しましょう。"
+  icon: "🎬"
+  order: 3
+  level: intermediate
+
+words:
+  - id: plot
+    word:
+      en: Plot
+      ja: あらすじ
+    reading: Arasuji
+    phonetic: "/plɒt/"
+    description:
+      en: "The main events of a play, novel, or movie."
+      ja: "劇、小説、または映画の主な出来事や筋書き。"
+    sentence:
+      en: "The plot was complex, but I understood the main idea."
+      ja: "あらすじは複雑でしたが、要点は理解できました。"
+
+  - id: performance
+    word:
+      en: Performance
+      ja: 演技
+    reading: Engi
+    phonetic: "/pəˈfɔːməns/"
+    description:
+      en: "How well an actor plays their role in the film."
+      ja: "俳優が映画の中でどれだけうまく役を演じているか。"
+    sentence:
+      en: "I thought the main actor's performance was incredibly moving."
+      ja: "主演俳優の演技は信じられないほど感動的だと思いました。"
+
+  - id: soundtrack
+    word:
+      en: Soundtrack
+      ja: サウンドトラック
+    reading: Saundotorakku
+    phonetic: "/ˈsaʊndtræk/"
+    description:
+      en: "The music that is recorded for a movie."
+      ja: "映画のために録音された音楽。"
+    sentence:
+      en: "This movie features a soundtrack that was composed by a famous artist."
+      ja: "この映画は、有名なアーティストが作曲したサウンドトラックを特徴としています。"
+
+  - id: genre
+    word:
+      en: Genre
+      ja: ジャンル
+    reading: Janru
+    phonetic: "/ˈʒɒnrə/"
+    description:
+      en: "A category of artistic composition, like comedy or horror."
+      ja: "コメディやホラーのような芸術作品のカテゴリー。"
+    sentence:
+      en: "I usually prefer action, but this romance genre is interesting."
+      ja: "私は普段アクションを好みますが、この恋愛ジャンルは面白いです。"
+
+  - id: recommend
+    word:
+      en: Recommend
+      ja: 勧める
+    reading: Susumeru
+    phonetic: "/ˌrɛkəˈmɛnd/"
+    description:
+      en: "To suggest that something is good or suitable."
+      ja: "何かが良い、または適していると提案すること。"
+    sentence:
+      en: "I have recommended this film to everyone who likes history."
+      ja: "私は歴史が好きな人全員にこの映画を勧めました。"
+
+  - id: disappointing
+    word:
+      en: Disappointing
+      ja: 残念な
+    reading: Zannen na
+    phonetic: "/ˌdɪsəˈpɔɪntɪŋ/"
+    description:
+      en: "Failing to fulfill someone's hopes or expectations."
+      ja: "誰かの希望や期待を満たせなかったこと。"
+    sentence:
+      en: "The ending was a bit disappointing because it felt unresolved."
+      ja: "結末は未解決な感じがして、少し残念でした。"
+
+chat:
+  conversations:
+    - id: scenario-1-post-movie-thoughts
+      title:
+        en: "Post-Movie Thoughts"
+        ja: "映画を見終わった後の感想"
+      messages:
+        - role: partner
+          text:
+            en: "Have you ever seen a movie with such an intense ending before?"
+            ja: "これほど強烈な結末の映画を、今までに見たことがありますか？"
+        - role: user
+          text:
+            en: "No, I haven't. The plot twists really surprised me until the very end."
+            ja: "いいえ、ありません。あらすじの展開には最後まで本当に驚かされました。"
+        - role: partner
+          text:
+            en: "I agree, although I felt the lead actor's performance was slightly exaggerated."
+            ja: "同感ですが、主演俳優の演技は少し大げさだと感じました。"
+        - role: user
+          text:
+            en: "Really? I actually thought his emotional acting was the best part."
+            ja: "そうですか？私はむしろ、彼の感情的な演技が一番良かったと思いました。"
+        - role: partner
+          text:
+            en: "Well, at least the soundtrack that played during the final scene was beautiful."
+            ja: "まあ、少なくとも最後のシーンで流れたサウンドトラックは美しかったです。"
+        - role: user
+          text:
+            en: "Yes, the music perfectly matched the mysterious mood of the scene."
+            ja: "はい、音楽はそのシーンの神秘的な雰囲気に完璧に合っていました。"
+        - role: partner
+          text:
+            en: "I am glad we decided to watch this drama genre today."
+            ja: "今日はこのドラマジャンルを見ることに決めてよかったです。"
+        - role: user
+          text:
+            en: "Me too. It has been a long time since I enjoyed a film this much."
+            ja: "私もです。これほど映画を楽しめたのは久しぶりです。"
+
+    - id: scenario-2-sharing-recommendations
+      title:
+        en: "Sharing Recommendations"
+        ja: "おすすめを共有する"
+      messages:
+        - role: partner
+          text:
+            en: "Since you liked that movie, would you recommend it to my brother?"
+            ja: "あの映画が気に入ったのなら、私の兄にも勧めますか？"
+        - role: user
+          text:
+            en: "Yes, I have already sent him a message telling him to watch it."
+            ja: "はい、もう彼に「見るように」とメッセージを送りました。"
+        - role: partner
+          text:
+            en: "He often finds slow movies disappointing, so I was worried he might get bored."
+            ja: "彼はよく遅い展開の映画を残念に思うので、退屈しないか心配でした。"
+        - role: user
+          text:
+            en: "Even if it is slow, the story is compelling enough to keep his attention."
+            ja: "たとえ展開が遅くても、物語は彼の注意を引くのに十分魅力的です。"
+        - role: partner
+          text:
+            en: "That is good to know. By the way, have you heard about the sequel?"
+            ja: "それは良かったです。ところで、続編について聞いたことはありますか？"
+        - role: user
+          text:
+            en: "I have heard rumors, but I don't know if they have started filming yet."
+            ja: "噂は聞いていますが、まだ撮影が始まったかどうかは知りません。"
+        - role: partner
+          text:
+            en: "If the original cast returns, I will definitely buy tickets immediately."
+            ja: "もしオリジナルのキャストが戻ってくるなら、私は間違いなくすぐにチケットを買います。"
+        - role: user
+          text:
+            en: "Let's hope the sequel lives up to the high standards of the first one."
+            ja: "続編が１作目の高い基準に応えてくれることを期待しましょう。"
+
+quiz:
+  questionsPerRound: 5
+  xpReward: 20

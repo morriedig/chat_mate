@@ -1,0 +1,211 @@
+# Chapter: Mixed Practice (Dialogue Flow)
+meta:
+  id: mixed-practice-dialogue-flow
+  title:
+    en: "Natural Conversation Practice"
+    ja: "自然な会話の練習"
+    zh: "自然對話練習"
+  description:
+    en: "Practice simple interactions for making plans."
+    ja: "予定を立てるための簡単なやり取りを練習します。"
+    zh: "練習制定計畫的簡單互動。"
+  icon: "🗣️"
+  order: 6
+  level: beginner
+
+words:
+  - id: time
+    word:
+      en: Time
+      ja: 時間
+      zh: 時間
+    reading: Jikan
+    phonetic: "/taɪm/"
+    description:
+      en: "A point or period in the day."
+      ja: "1日の中の時点や期間。"
+      zh: "一天中的某個時刻或時段。"
+    sentence:
+      en: "Do you have time?"
+      ja: "時間がありますか？"
+      zh: "你有時間嗎？"
+
+  - id: meet
+    word:
+      en: Meet
+      ja: 会う
+      zh: 見面
+    reading: Au
+    phonetic: "/miːt/"
+    description:
+      en: "To see and talk to someone."
+      ja: "誰かに会って話すこと。"
+      zh: "見到某人並交談。"
+    sentence:
+      en: "Let's meet today."
+      ja: "今日会いましょう。"
+      zh: "我們今天見面吧。"
+
+  - id: lunch
+    word:
+      en: Lunch
+      ja: ランチ
+      zh: 午餐
+    reading: Ranchi
+    phonetic: "/lʌntʃ/"
+    description:
+      en: "The meal eaten in the middle of the day."
+      ja: "日中に食べる食事。"
+      zh: "中午吃的飯。"
+    sentence:
+      en: "I eat lunch at noon."
+      ja: "私は正午にランチを食べます。"
+      zh: "我中午吃午餐。"
+
+  - id: where
+    word:
+      en: Where
+      ja: どこ
+      zh: 哪裡
+    reading: Doko
+    phonetic: "/wɛər/"
+    description:
+      en: "Used to ask about a place."
+      ja: "場所を尋ねるときに使います。"
+      zh: "用於詢問地點。"
+    sentence:
+      en: "Where are you?"
+      ja: "どこにいますか？"
+      zh: "你在哪裡？"
+
+  - id: station
+    word:
+      en: Station
+      ja: 駅
+      zh: 車站
+    reading: Eki
+    phonetic: "/ˈsteɪʃən/"
+    description:
+      en: "A place where trains stop."
+      ja: "電車が止まる場所。"
+      zh: "火車停靠的地方。"
+    sentence:
+      en: "The station is near."
+      ja: "駅は近いです。"
+      zh: "車站很近。"
+
+  - id: busy
+    word:
+      en: Busy
+      ja: 忙しい
+      zh: 忙
+    reading: Isogashii
+    phonetic: "/ˈbɪzi/"
+    description:
+      en: "Having a lot to do."
+      ja: "やることがたくさんあること。"
+      zh: "有很多事情要做。"
+    sentence:
+      en: "I am very busy."
+      ja: "私はとても忙しいです。"
+      zh: "我很忙。"
+
+chat:
+  conversations:
+    - id: scenario-1-making-plans
+      title:
+        en: "Making a Plan"
+        ja: "予定を立てる"
+        zh: "制定計畫"
+      messages:
+        - role: partner
+          text:
+            en: "Do you have time today?"
+            ja: "今日、時間がありますか？"
+            zh: "你今天有時間嗎？"
+        - role: user
+          text:
+            en: "Yes, I am free."
+            ja: "はい、暇です。"
+            zh: "是的，我有空。"
+        - role: partner
+          text:
+            en: "Let's meet for lunch."
+            ja: "ランチに会いましょう。"
+            zh: "我們見面吃午餐吧。"
+        - role: user
+          text:
+            en: "That sounds good."
+            ja: "それはいいですね。"
+            zh: "聽起來不錯。"
+        - role: partner
+          text:
+            en: "Where do you want to go?"
+            ja: "どこに行きたいですか？"
+            zh: "你想去哪裡？"
+        - role: user
+          text:
+            en: "I like the burger shop."
+            ja: "ハンバーガー屋が好きです。"
+            zh: "我喜歡那家漢堡店。"
+        - role: partner
+          text:
+            en: "Okay, let's go there."
+            ja: "わかりました、そこに行きましょう。"
+            zh: "好，我們去那裡。"
+        - role: user
+          text:
+            en: "See you soon."
+            ja: "またね。"
+            zh: "待會見。"
+
+    - id: scenario-2-setting-details
+      title:
+        en: "Setting Details"
+        ja: "詳細を決める"
+        zh: "決定細節"
+      messages:
+        - role: partner
+          text:
+            en: "Are you busy now?"
+            ja: "今、忙しいですか？"
+            zh: "你現在忙嗎？"
+        - role: user
+          text:
+            en: "No, I am ready."
+            ja: "いいえ、準備できました。"
+            zh: "不，我準備好了。"
+        - role: partner
+          text:
+            en: "Let's meet at the station."
+            ja: "駅で会いましょう。"
+            zh: "我們在車站見。"
+        - role: user
+          text:
+            en: "Which station?"
+            ja: "どの駅ですか？"
+            zh: "哪個車站？"
+        - role: partner
+          text:
+            en: "Tokyo Station, North Exit."
+            ja: "東京駅の北口です。"
+            zh: "東京車站北出口。"
+        - role: user
+          text:
+            en: "Okay, what time?"
+            ja: "わかりました、何時ですか？"
+            zh: "好，幾點？"
+        - role: partner
+          text:
+            en: "Is 12:00 okay?"
+            ja: "12時は大丈夫ですか？"
+            zh: "12點可以嗎？"
+        - role: user
+          text:
+            en: "Yes, 12:00 is perfect."
+            ja: "はい、12時で完璧です。"
+            zh: "可以，12點很完美。"
+
+quiz:
+  questionsPerRound: 5
+  xpReward: 20

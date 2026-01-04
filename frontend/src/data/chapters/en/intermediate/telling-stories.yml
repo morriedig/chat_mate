@@ -1,0 +1,374 @@
+# Chapter: Week 2 - Telling Stories
+meta:
+  id: telling-stories
+  title:
+    en: "Telling Stories"
+    ja: "ストーリーを語る"
+    zh: "講故事"
+  description:
+    en: "Tell a short story about a past event clearly, using the right timing."
+    ja: "適切な時制を使って、過去の出来事を明確に語りましょう。"
+    zh: "學習用正確的時態清楚地講述過去發生的事。"
+  icon: "📖"
+  order: 2
+  level: intermediate
+
+words:
+  # Story Starters
+  - id: so-one-time
+    word:
+      en: So, one time...
+      ja: それで、ある時...
+      zh: 所以，有一次...
+    reading: "soh wuhn tym"
+    phonetic: "/soʊ wʌn taɪm/"
+    description:
+      en: "Casual way to start a story."
+      ja: "カジュアルに話を始める方法。"
+      zh: "開始講故事的隨意方式。"
+    sentence:
+      en: "So, one time I was traveling in Thailand and I got completely lost."
+      ja: "それで、ある時タイを旅行していて完全に迷子になりました。"
+      zh: "所以，有一次我在泰國旅行，完全迷路了。"
+
+  - id: i-remember-when
+    word:
+      en: I remember when...
+      ja: 〜した時のことを覚えている
+      zh: 我記得有一次...
+    reading: "ay ri-MEM-ber wen"
+    phonetic: "/aɪ rɪˈmembər wen/"
+    description:
+      en: "Nostalgic way to introduce a memory."
+      ja: "懐かしく思い出を紹介する方法。"
+      zh: "帶著懷舊感介紹回憶的方式。"
+    sentence:
+      en: "I remember when we first moved to this city. Everything was so confusing."
+      ja: "この街に初めて引っ越した時のことを覚えています。全てがとても混乱していました。"
+      zh: "我記得我們剛搬到這個城市的時候。一切都很混亂。"
+
+  # Past Simple vs Past Continuous
+  - id: was-doing
+    word:
+      en: Was/Were + doing
+      ja: 〜していた
+      zh: 正在做
+    reading: "wuhz DOO-ing"
+    phonetic: "/wɒz ˈduːɪŋ/"
+    description:
+      en: "Past Continuous: Background action in progress."
+      ja: "過去進行形：進行中の背景動作。"
+      zh: "過去進行式：正在進行的背景動作。"
+    sentence:
+      en: "I was sleeping when the phone rang."
+      ja: "電話が鳴った時、私は寝ていました。"
+      zh: "電話響的時候我正在睡覺。"
+
+  - id: interrupted
+    word:
+      en: When (interruption)
+      ja: 〜した時（中断）
+      zh: 當...的時候（中斷）
+    reading: "wen"
+    phonetic: "/wen/"
+    description:
+      en: "Past Simple: The main action that interrupts."
+      ja: "過去形：中断する主要な動作。"
+      zh: "過去式：打斷的主要動作。"
+    sentence:
+      en: "I was walking down the street when I saw my ex-girlfriend."
+      ja: "通りを歩いていたら、元カノを見かけました。"
+      zh: "我正走在街上，突然看到我前女友。"
+
+  # Connectors (The Glue)
+  - id: suddenly
+    word:
+      en: Suddenly
+      ja: 突然
+      zh: 突然
+    reading: "SUHD-n-lee"
+    phonetic: "/ˈsʌdənli/"
+    description:
+      en: "Something unexpected happens quickly."
+      ja: "予期しないことが急に起こる。"
+      zh: "意外的事情快速發生。"
+    sentence:
+      en: "I was walking down the street when suddenly a dog started chasing me."
+      ja: "通りを歩いていたら、突然犬が追いかけてきました。"
+      zh: "我正走在街上，突然一隻狗開始追我。"
+
+  - id: meanwhile
+    word:
+      en: Meanwhile
+      ja: その間に
+      zh: 與此同時
+    reading: "MEEN-wyl"
+    phonetic: "/ˈmiːnwaɪl/"
+    description:
+      en: "Something happening at the same time elsewhere."
+      ja: "別の場所で同時に起きていること。"
+      zh: "在其他地方同時發生的事情。"
+    sentence:
+      en: "I was stuck in traffic. Meanwhile, my friends were already at the restaurant."
+      ja: "私は渋滞にはまっていました。その間に、友達はすでにレストランにいました。"
+      zh: "我被困在車陣裡。與此同時，我的朋友們已經在餐廳了。"
+
+  - id: eventually
+    word:
+      en: Eventually
+      ja: 最終的に
+      zh: 最後
+    reading: "i-VEN-choo-uh-lee"
+    phonetic: "/ɪˈventʃuəli/"
+    description:
+      en: "After a long time or process."
+      ja: "長い時間やプロセスの後で。"
+      zh: "經過很長時間或過程之後。"
+    sentence:
+      en: "We got lost three times, but eventually we found the hotel."
+      ja: "3回迷子になりましたが、最終的にホテルを見つけました。"
+      zh: "我們迷路了三次，但最後找到了飯店。"
+
+  # Sensory Words (for vivid stories)
+  - id: spicy
+    word:
+      en: Spicy
+      ja: 辛い
+      zh: 辣
+    reading: "SPY-see"
+    phonetic: "/ˈspaɪsi/"
+    description:
+      en: "Hot flavor, like chili."
+      ja: "唐辛子のような辛い味。"
+      zh: "像辣椒一樣的辣味。"
+    sentence:
+      en: "The curry was so spicy that my eyes started watering."
+      ja: "カレーがとても辛くて、目から涙が出ました。"
+      zh: "咖哩辣到我眼淚都流出來了。"
+
+  - id: bitter
+    word:
+      en: Bitter
+      ja: 苦い
+      zh: 苦
+    reading: "BIT-er"
+    phonetic: "/ˈbɪtər/"
+    description:
+      en: "Sharp, unpleasant taste like black coffee."
+      ja: "ブラックコーヒーのような鋭い不快な味。"
+      zh: "像黑咖啡一樣尖銳、不愉快的味道。"
+    sentence:
+      en: "The medicine was extremely bitter. I almost couldn't swallow it."
+      ja: "その薬はとても苦かったです。飲み込めないくらいでした。"
+      zh: "那藥非常苦。我幾乎嚥不下去。"
+
+  - id: crunchy
+    word:
+      en: Crunchy
+      ja: カリカリ
+      zh: 脆脆的
+    reading: "KRUHN-chee"
+    phonetic: "/ˈkrʌntʃi/"
+    description:
+      en: "Makes a crisp sound when you bite."
+      ja: "噛むとパリパリ音がする。"
+      zh: "咬下去會發出酥脆的聲音。"
+    sentence:
+      en: "The fried chicken was perfectly crunchy on the outside."
+      ja: "フライドチキンは外側が完璧にカリカリでした。"
+      zh: "炸雞外皮非常酥脆。"
+
+  - id: freezing
+    word:
+      en: Freezing
+      ja: 凍えるほど寒い
+      zh: 冷得要命
+    reading: "FREE-zing"
+    phonetic: "/ˈfriːzɪŋ/"
+    description:
+      en: "Extremely cold (stronger than 'cold')."
+      ja: "極端に寒い（'cold'より強い）。"
+      zh: "非常冷（比'cold'更強烈）。"
+    sentence:
+      en: "The restaurant was freezing. I had to keep my jacket on the whole time."
+      ja: "レストランは凍えるほど寒かったです。ずっとジャケットを着ていなければなりませんでした。"
+      zh: "餐廳冷得要命。我整餐都得穿著外套。"
+
+  - id: disgusting
+    word:
+      en: Disgusting
+      ja: まずい・気持ち悪い
+      zh: 噁心的
+    reading: "dis-GUHS-ting"
+    phonetic: "/dɪsˈɡʌstɪŋ/"
+    description:
+      en: "Extremely unpleasant, makes you feel sick."
+      ja: "とても不快で、気分が悪くなる。"
+      zh: "非常令人不快，讓你感到噁心。"
+    sentence:
+      en: "The fish smelled disgusting. I couldn't even try it."
+      ja: "その魚は気持ち悪いにおいがしました。試すことすらできませんでした。"
+      zh: "那魚聞起來很噁心。我連試都不敢試。"
+
+  - id: hilarious
+    word:
+      en: Hilarious
+      ja: 爆笑するほど面白い
+      zh: 爆笑的
+    reading: "hi-LAIR-ee-uhs"
+    phonetic: "/hɪˈleriəs/"
+    description:
+      en: "Extremely funny (stronger than 'funny')."
+      ja: "とても面白い（'funny'より強い）。"
+      zh: "非常好笑（比'funny'更強烈）。"
+    sentence:
+      en: "The whole situation was hilarious. We couldn't stop laughing."
+      ja: "状況全体が爆笑でした。笑いが止まりませんでした。"
+      zh: "整個情況太爆笑了。我們笑個不停。"
+
+chat:
+  conversations:
+    - id: scenario-1-travel-story
+      title:
+        en: "Travel Horror Story"
+        ja: "旅行のホラーストーリー"
+        zh: "旅行恐怖故事"
+      messages:
+        - role: partner
+          text:
+            en: "Have you ever had a terrible travel experience?"
+            ja: "ひどい旅行経験はありますか？"
+            zh: "你有過很糟糕的旅行經歷嗎？"
+        - role: user
+          text:
+            en: "Oh yes. So, one time I was traveling in Thailand and everything went wrong."
+            ja: "ありますよ。それで、ある時タイを旅行していて、全部うまくいかなかったんです。"
+            zh: "有啊。所以，有一次我在泰國旅行，一切都出了問題。"
+        - role: partner
+          text:
+            en: "What happened?"
+            ja: "何があったんですか？"
+            zh: "發生了什麼事？"
+        - role: user
+          text:
+            en: "I was walking to my hotel when suddenly it started pouring rain. I had no umbrella."
+            ja: "ホテルに歩いていたら、突然土砂降りになりました。傘を持っていませんでした。"
+            zh: "我正走去飯店，突然下起傾盆大雨。我沒帶傘。"
+        - role: partner
+          text:
+            en: "Oh no! What did you do?"
+            ja: "大変！どうしたんですか？"
+            zh: "糟糕！你怎麼辦？"
+        - role: user
+          text:
+            en: "I ran into a restaurant. Meanwhile, my phone got completely wet and stopped working."
+            ja: "レストランに駆け込みました。その間に、電話が完全に濡れて動かなくなりました。"
+            zh: "我跑進一家餐廳。與此同時，我的手機完全濕透，停止運作了。"
+        - role: partner
+          text:
+            en: "That's terrible! Did you find your hotel?"
+            ja: "ひどい！ホテルは見つかりましたか？"
+            zh: "太慘了！你找到飯店了嗎？"
+        - role: user
+          text:
+            en: "Eventually, yes. A kind stranger helped me. But I was freezing and exhausted."
+            ja: "最終的には、はい。親切な見知らぬ人が助けてくれました。でも凍えるほど寒くて疲れ果てていました。"
+            zh: "最後找到了。一個好心的陌生人幫了我。但我冷得要命又精疲力盡。"
+
+    - id: scenario-2-memorable-meal
+      title:
+        en: "A Memorable Meal"
+        ja: "忘れられない食事"
+        zh: "難忘的一餐"
+      messages:
+        - role: partner
+          text:
+            en: "Tell me about a meal you'll never forget."
+            ja: "忘れられない食事について教えてください。"
+            zh: "跟我說說你永遠忘不了的一餐。"
+        - role: user
+          text:
+            en: "I remember when I tried street food in Korea for the first time."
+            ja: "韓国で初めて屋台料理を食べた時のことを覚えています。"
+            zh: "我記得第一次在韓國吃街頭小吃的時候。"
+        - role: partner
+          text:
+            en: "Was it good?"
+            ja: "美味しかったですか？"
+            zh: "好吃嗎？"
+        - role: user
+          text:
+            en: "The fried chicken was amazing - perfectly crunchy on the outside and juicy inside."
+            ja: "フライドチキンは最高でした - 外はカリカリで中はジューシー。"
+            zh: "炸雞超好吃 - 外皮酥脆，裡面多汁。"
+        - role: partner
+          text:
+            en: "What about the spicy food? I heard Korean food is hot."
+            ja: "辛い食べ物はどうでしたか？韓国料理は辛いと聞きましたが。"
+            zh: "辣的食物呢？我聽說韓國菜很辣。"
+        - role: user
+          text:
+            en: "The kimchi stew was so spicy that my eyes started watering! But I loved it."
+            ja: "キムチチゲはとても辛くて目から涙が出ました！でも大好きでした。"
+            zh: "泡菜鍋辣到我眼淚都流出來了！但我超愛。"
+        - role: partner
+          text:
+            en: "Did you try anything you didn't like?"
+            ja: "嫌いなものはありましたか？"
+            zh: "有試到不喜歡的嗎？"
+        - role: user
+          text:
+            en: "Yes, one dish tasted bitter and had a disgusting texture. I couldn't finish it."
+            ja: "はい、一つの料理は苦くて気持ち悪い食感でした。食べきれませんでした。"
+            zh: "有，有一道菜嚐起來苦苦的，口感很噁心。我吃不完。"
+
+    - id: scenario-3-funny-story
+      title:
+        en: "A Hilarious Mistake"
+        ja: "爆笑の失敗"
+        zh: "爆笑的錯誤"
+      messages:
+        - role: partner
+          text:
+            en: "Do you have any funny stories from your past?"
+            ja: "過去の面白い話はありますか？"
+            zh: "你有什麼過去的有趣故事嗎？"
+        - role: user
+          text:
+            en: "So, one time I was giving a presentation at work. It was going really well."
+            ja: "それで、ある時仕事でプレゼンをしていました。とてもうまくいっていました。"
+            zh: "所以，有一次我在工作上做簡報。進行得很順利。"
+        - role: partner
+          text:
+            en: "And then what happened?"
+            ja: "それからどうなりましたか？"
+            zh: "然後呢？"
+        - role: user
+          text:
+            en: "I was explaining the data when suddenly my cat jumped onto my keyboard!"
+            ja: "データを説明していたら、突然猫がキーボードの上に飛び乗りました！"
+            zh: "我正在解釋數據，突然我的貓跳到鍵盤上！"
+        - role: partner
+          text:
+            en: "Oh no! This was a video call?"
+            ja: "大変！これはビデオ通話でしたか？"
+            zh: "糟糕！這是視訊會議嗎？"
+        - role: user
+          text:
+            en: "Yes! Meanwhile, my cat was walking across the screen. Everyone started laughing."
+            ja: "はい！その間に、猫が画面を歩いていました。みんな笑い始めました。"
+            zh: "對！與此同時，我的貓走過螢幕。大家都開始笑。"
+        - role: partner
+          text:
+            en: "That must have been embarrassing!"
+            ja: "恥ずかしかったでしょう！"
+            zh: "那一定很尷尬！"
+        - role: user
+          text:
+            en: "At first, yes. But eventually everyone said it was hilarious. Best meeting ever!"
+            ja: "最初はそうでした。でも最終的にみんな爆笑だと言いました。最高の会議でした！"
+            zh: "一開始是的。但最後大家都說太爆笑了。有史以來最棒的會議！"
+
+quiz:
+  questionsPerRound: 5
+  xpReward: 25

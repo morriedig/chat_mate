@@ -1,0 +1,221 @@
+# Chapter: The Negative (Not X)
+meta:
+  id: negative-not-x
+  title:
+    en: "The Negative (Not X)"
+    ja: "否定形（Xではありません）"
+    zh: "否定句 (不是 X)"
+  description:
+    en: "Learn how to say what something is not."
+    ja: "何かがそうではないと言う方法を学びましょう。"
+    zh: "學習如何表達「不是...」。"
+  icon: "🙅"
+  order: 5
+  level: beginner
+
+words:
+  - id: doctor
+    word:
+      en: Doctor
+      ja: 医者
+      zh: 醫生
+    reading: Isha
+    phonetic: "/ˈdɒktər/"
+    description:
+      en: "A person who helps sick people."
+      ja: "病気の人を助ける人。"
+      zh: "幫助病人的人。"
+    sentence:
+      en: "I am not a doctor."
+      ja: "私は医者ではありません。"
+      zh: "我不是醫生。"
+
+  - id: teacher
+    word:
+      en: Teacher
+      ja: 先生
+      zh: 老師
+    reading: Sensei
+    phonetic: "/ˈtiːtʃər/"
+    description:
+      en: "A person who teaches students."
+      ja: "学生に教える人。"
+      zh: "教導學生的人。"
+    sentence:
+      en: "He is not a teacher."
+      ja: "彼は先生ではありません。"
+      zh: "他不是老師。"
+
+  - id: cat
+    word:
+      en: Cat
+      ja: 猫
+      zh: 貓
+    reading: Neko
+    phonetic: "/kæt/"
+    description:
+      en: "A small animal that says meow."
+      ja: "ニャーと鳴く小さな動物。"
+      zh: "會喵喵叫的小動物。"
+    sentence:
+      en: "It is not a cat."
+      ja: "それは猫ではありません。"
+      zh: "那不是貓。"
+
+  - id: dog
+    word:
+      en: Dog
+      ja: 犬
+      zh: 狗
+    reading: Inu
+    phonetic: "/dɔːg/"
+    description:
+      en: "An animal that barks."
+      ja: "吠える動物。"
+      zh: "會吠叫的動物。"
+    sentence:
+      en: "That is not a dog."
+      ja: "あれは犬ではありません。"
+      zh: "那不是狗。"
+
+  - id: book
+    word:
+      en: Book
+      ja: 本
+      zh: 書
+    reading: Hon
+    phonetic: "/bʊk/"
+    description:
+      en: "Something you read."
+      ja: "読むもの。"
+      zh: "用來閱讀的東西。"
+    sentence:
+      en: "This is not a book."
+      ja: "これは本ではありません。"
+      zh: "這不是書。"
+
+  - id: pen
+    word:
+      en: Pen
+      ja: ペン
+      zh: 筆
+    reading: Pen
+    phonetic: "/pɛn/"
+    description:
+      en: "Something used to write."
+      ja: "書くために使うもの。"
+      zh: "用來書寫的東西。"
+    sentence:
+      en: "It is not a pen."
+      ja: "それはペンではありません。"
+      zh: "那不是筆。"
+
+chat:
+  conversations:
+    - id: scenario-1-guessing-profession
+      title:
+        en: "Guessing the Job"
+        ja: "仕事を推測する"
+        zh: "猜測職業"
+      messages:
+        - role: partner
+          text:
+            en: "Is he a doctor?"
+            ja: "彼は医者ですか？"
+            zh: "他是醫生嗎？"
+        - role: user
+          text:
+            en: "No, he is not a doctor."
+            ja: "いいえ、彼は医者ではありません。"
+            zh: "不，他不是醫生。"
+        - role: partner
+          text:
+            en: "Is he a teacher?"
+            ja: "彼は先生ですか？"
+            zh: "他是老師嗎？"
+        - role: user
+          text:
+            en: "No, he is not a teacher."
+            ja: "いいえ、彼は先生ではありません。"
+            zh: "不，他不是老師。"
+        - role: partner
+          text:
+            en: "Who is he?"
+            ja: "彼は誰ですか？"
+            zh: "他是誰？"
+        - role: user
+          text:
+            en: "He is a student."
+            ja: "彼は学生です。"
+            zh: "他是學生。"
+        - role: partner
+          text:
+            en: "Oh, I see."
+            ja: "あ、そうですか。"
+            zh: "喔，我了解了。"
+        - role: user
+          text:
+            en: "He is my friend."
+            ja: "彼は私の友達です。"
+            zh: "他是我的朋友。"
+
+    - id: scenario-2-identifying-objects
+      title:
+        en: "What is this?"
+        ja: "これは何ですか？"
+        zh: "這是什麼？"
+      messages:
+        - role: partner
+          text:
+            en: "Is this a cat?"
+            ja: "これは猫ですか？"
+            zh: "這是貓嗎？"
+        - role: user
+          text:
+            en: "No, it is not a cat."
+            ja: "いいえ、それは猫ではありません。"
+            zh: "不，那不是貓。"
+        - role: partner
+          text:
+            en: "Is it a dog?"
+            ja: "それは犬ですか？"
+            zh: "那是狗嗎？"
+        - role: user
+          text:
+            en: "No, it is not a dog."
+            ja: "いいえ、それは犬ではありません。"
+            zh: "不，那不是狗。"
+        - role: partner
+          text:
+            en: "What is it?"
+            ja: "それは何ですか？"
+            zh: "那是什麼？"
+        - role: user
+          text:
+            en: "It is a fox."
+            ja: "それはキツネです。"
+            zh: "那是狐狸。"
+        - role: partner
+          text:
+            en: "Is that a pen?"
+            ja: "あれはペンですか？"
+            zh: "那是筆嗎？"
+        - role: user
+          text:
+            en: "No, that is not a pen."
+            ja: "いいえ、あれはペンではありません。"
+            zh: "不，那不是筆。"
+        - role: partner
+          text:
+            en: "Is it a book?"
+            ja: "それは本ですか？"
+            zh: "那是書嗎？"
+        - role: user
+          text:
+            en: "Yes, it is a book."
+            ja: "はい、それは本です。"
+            zh: "是的，那是書。"
+
+quiz:
+  questionsPerRound: 5
+  xpReward: 20

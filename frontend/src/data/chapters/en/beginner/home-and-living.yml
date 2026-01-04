@@ -1,0 +1,424 @@
+# Chapter: Week 3 - Home & Living
+meta:
+  id: home-and-living
+  title:
+    en: "Home & Living"
+    ja: "家と生活"
+    zh: "家與居住"
+  description:
+    en: "Describing where you live."
+    ja: "自分の住んでいる場所を説明しましょう。"
+    zh: "學習描述你住的地方。"
+  icon: "🏠"
+  order: 3
+  level: beginner
+
+words:
+  # Day 1: Core Nouns (Objects/Rooms)
+  - id: kitchen
+    word:
+      en: Kitchen
+      ja: キッチン
+      zh: 廚房
+    reading: "KICH-en"
+    phonetic: "/ˈkɪtʃɪn/"
+    description:
+      en: "Room for cooking."
+      ja: "料理をする部屋。"
+      zh: "做飯的房間。"
+    sentence:
+      en: "I cook dinner in the kitchen."
+      ja: "私はキッチンで夕食を作ります。"
+      zh: "我在廚房做晚餐。"
+
+  - id: bedroom
+    word:
+      en: Bedroom
+      ja: 寝室
+      zh: 臥室
+    reading: "BED-room"
+    phonetic: "/ˈbedruːm/"
+    description:
+      en: "Room for sleeping."
+      ja: "寝るための部屋。"
+      zh: "睡覺的房間。"
+    sentence:
+      en: "I sleep in the bedroom."
+      ja: "私は寝室で寝ます。"
+      zh: "我在臥室睡覺。"
+
+  - id: bathroom
+    word:
+      en: Bathroom
+      ja: バスルーム
+      zh: 浴室
+    reading: "BATH-room"
+    phonetic: "/ˈbæθruːm/"
+    description:
+      en: "Room for shower/toilet."
+      ja: "シャワーやトイレのある部屋。"
+      zh: "淋浴和上廁所的房間。"
+    sentence:
+      en: "I need to clean the bathroom."
+      ja: "バスルームを掃除する必要があります。"
+      zh: "我需要打掃浴室。"
+
+  - id: living-room
+    word:
+      en: Living Room
+      ja: リビングルーム
+      zh: 客廳
+    reading: "LIV-ing room"
+    phonetic: "/ˈlɪvɪŋ ruːm/"
+    description:
+      en: "Room for relaxing."
+      ja: "くつろぐための部屋。"
+      zh: "放鬆的房間。"
+    sentence:
+      en: "We watch TV in the living room."
+      ja: "私たちはリビングルームでテレビを見ます。"
+      zh: "我們在客廳看電視。"
+
+  - id: sofa
+    word:
+      en: Sofa
+      ja: ソファ
+      zh: 沙發
+    reading: "SOH-fuh"
+    phonetic: "/ˈsoʊfə/"
+    description:
+      en: "Soft seat for multiple people."
+      ja: "複数人が座れる柔らかい椅子。"
+      zh: "可以坐多人的軟座椅。"
+    sentence:
+      en: "The sofa is very soft."
+      ja: "ソファはとても柔らかいです。"
+      zh: "沙發很軟。"
+
+  - id: bed
+    word:
+      en: Bed
+      ja: ベッド
+      zh: 床
+    reading: "BED"
+    phonetic: "/bed/"
+    description:
+      en: "Furniture for sleeping."
+      ja: "寝るための家具。"
+      zh: "睡覺用的家具。"
+    sentence:
+      en: "I sleep in my comfortable bed."
+      ja: "私は快適なベッドで寝ます。"
+      zh: "我睡在舒適的床上。"
+
+  - id: door
+    word:
+      en: Door
+      ja: ドア
+      zh: 門
+    reading: "DOR"
+    phonetic: "/dɔːr/"
+    description:
+      en: "Entrance."
+      ja: "入り口。"
+      zh: "入口。"
+    sentence:
+      en: "Please close the door."
+      ja: "ドアを閉めてください。"
+      zh: "請關門。"
+
+  - id: window
+    word:
+      en: Window
+      ja: 窓
+      zh: 窗戶
+    reading: "WIN-doh"
+    phonetic: "/ˈwɪndoʊ/"
+    description:
+      en: "Glass to see outside."
+      ja: "外を見るためのガラス。"
+      zh: "可以看到外面的玻璃。"
+    sentence:
+      en: "The living room has a bright window."
+      ja: "リビングルームには明るい窓があります。"
+      zh: "客廳有一扇明亮的窗戶。"
+
+  # Day 2: Core Verbs (Actions at Home)
+  - id: live
+    word:
+      en: Live
+      ja: 住む
+      zh: 住
+    reading: "LIV"
+    phonetic: "/lɪv/"
+    description:
+      en: "Reside/stay long term."
+      ja: "長期間住む。"
+      zh: "長期居住。"
+    sentence:
+      en: "I live in an apartment."
+      ja: "私はアパートに住んでいます。"
+      zh: "我住在公寓裡。"
+
+  - id: clean
+    word:
+      en: Clean
+      ja: 掃除する
+      zh: 打掃
+    reading: "KLEEN"
+    phonetic: "/kliːn/"
+    description:
+      en: "Make things tidy/wash."
+      ja: "整理する、洗う。"
+      zh: "整理乾淨、清洗。"
+    sentence:
+      en: "Every Saturday, I clean the whole house."
+      ja: "毎週土曜日、家全体を掃除します。"
+      zh: "每個星期六，我打掃整個房子。"
+
+  - id: sleep
+    word:
+      en: Sleep
+      ja: 寝る
+      zh: 睡覺
+    reading: "SLEEP"
+    phonetic: "/sliːp/"
+    description:
+      en: "Rest at night."
+      ja: "夜に休む。"
+      zh: "晚上休息。"
+    sentence:
+      en: "I sleep in the bedroom."
+      ja: "私は寝室で寝ます。"
+      zh: "我在臥室睡覺。"
+
+  - id: watch
+    word:
+      en: Watch
+      ja: 見る
+      zh: 看
+    reading: "WOCH"
+    phonetic: "/wɑːtʃ/"
+    description:
+      en: "Look at TV."
+      ja: "テレビを見る。"
+      zh: "看電視。"
+    sentence:
+      en: "We watch TV in the living room."
+      ja: "私たちはリビングルームでテレビを見ます。"
+      zh: "我們在客廳看電視。"
+
+  - id: open
+    word:
+      en: Open
+      ja: 開ける
+      zh: 打開
+    reading: "OH-pen"
+    phonetic: "/ˈoʊpən/"
+    description:
+      en: "Unlock door/window."
+      ja: "ドアや窓を開ける。"
+      zh: "打開門或窗戶。"
+    sentence:
+      en: "Please open the window."
+      ja: "窓を開けてください。"
+      zh: "請打開窗戶。"
+
+  - id: close
+    word:
+      en: Close
+      ja: 閉める
+      zh: 關閉
+    reading: "KLOHZ"
+    phonetic: "/kloʊz/"
+    description:
+      en: "Shut door/window."
+      ja: "ドアや窓を閉める。"
+      zh: "關上門或窗戶。"
+    sentence:
+      en: "Please close the door."
+      ja: "ドアを閉めてください。"
+      zh: "請關門。"
+
+  - id: sit
+    word:
+      en: Sit
+      ja: 座る
+      zh: 坐
+    reading: "SIT"
+    phonetic: "/sɪt/"
+    description:
+      en: "Rest on a chair/sofa."
+      ja: "椅子やソファに座る。"
+      zh: "坐在椅子或沙發上。"
+    sentence:
+      en: "Please sit on the sofa."
+      ja: "ソファに座ってください。"
+      zh: "請坐在沙發上。"
+
+chat:
+  conversations:
+    - id: scenario-1-my-house
+      title:
+        en: "My House"
+        ja: "私の家"
+        zh: "我的家"
+      messages:
+        - role: partner
+          text:
+            en: "Where do you live?"
+            ja: "どこに住んでいますか？"
+            zh: "你住在哪裡？"
+        - role: user
+          text:
+            en: "I live in a small house."
+            ja: "私は小さな家に住んでいます。"
+            zh: "我住在一間小房子裡。"
+        - role: partner
+          text:
+            en: "How many rooms does it have?"
+            ja: "いくつ部屋がありますか？"
+            zh: "有幾個房間？"
+        - role: user
+          text:
+            en: "It has two bedrooms and one bathroom."
+            ja: "寝室が2つとバスルームが1つあります。"
+            zh: "有兩間臥室和一間浴室。"
+        - role: partner
+          text:
+            en: "What is your favorite room?"
+            ja: "一番好きな部屋はどこですか？"
+            zh: "你最喜歡哪個房間？"
+        - role: user
+          text:
+            en: "My favorite room is the living room."
+            ja: "一番好きな部屋はリビングルームです。"
+            zh: "我最喜歡客廳。"
+        - role: partner
+          text:
+            en: "Why do you like it?"
+            ja: "なぜ好きですか？"
+            zh: "為什麼喜歡？"
+        - role: user
+          text:
+            en: "It has a big sofa and a bright window."
+            ja: "大きなソファと明るい窓があります。"
+            zh: "有一張大沙發和一扇明亮的窗戶。"
+        - role: partner
+          text:
+            en: "Do you clean your house often?"
+            ja: "よく家を掃除しますか？"
+            zh: "你常打掃房子嗎？"
+        - role: user
+          text:
+            en: "Yes, every Saturday I clean the whole house."
+            ja: "はい、毎週土曜日に家全体を掃除します。"
+            zh: "是的，每個星期六我打掃整個房子。"
+
+    - id: scenario-2-welcome-home
+      title:
+        en: "Welcome to My Home"
+        ja: "我が家へようこそ"
+        zh: "歡迎來我家"
+      messages:
+        - role: partner
+          text:
+            en: "Welcome! Please come in."
+            ja: "ようこそ！どうぞお入りください。"
+            zh: "歡迎！請進。"
+        - role: user
+          text:
+            en: "Thank you for inviting me."
+            ja: "招待してくれてありがとうございます。"
+            zh: "謝謝你邀請我。"
+        - role: partner
+          text:
+            en: "Your house is beautiful. The living room is so big!"
+            ja: "あなたの家は素敵ですね。リビングルームがとても広い！"
+            zh: "你的房子很漂亮。客廳好大！"
+        - role: user
+          text:
+            en: "Thank you. Please sit on the sofa."
+            ja: "ありがとうございます。ソファにどうぞ座ってください。"
+            zh: "謝謝。請坐在沙發上。"
+        - role: partner
+          text:
+            en: "Where is the bathroom?"
+            ja: "バスルームはどこですか？"
+            zh: "浴室在哪裡？"
+        - role: user
+          text:
+            en: "It is next to the kitchen, on the left."
+            ja: "キッチンの隣、左側にあります。"
+            zh: "在廚房旁邊，左邊。"
+        - role: partner
+          text:
+            en: "Is the window open? It feels nice."
+            ja: "窓は開いていますか？気持ちいいですね。"
+            zh: "窗戶開著嗎？感覺很舒服。"
+        - role: user
+          text:
+            en: "Yes, I like fresh air. Should I close it?"
+            ja: "はい、新鮮な空気が好きです。閉めましょうか？"
+            zh: "是的，我喜歡新鮮空氣。需要關上嗎？"
+
+    - id: scenario-3-questions-answers
+      title:
+        en: "Home Questions"
+        ja: "家についての質問"
+        zh: "關於家的問答"
+      messages:
+        - role: partner
+          text:
+            en: "Where do you live?"
+            ja: "どこに住んでいますか？"
+            zh: "你住在哪裡？"
+        - role: user
+          text:
+            en: "I live in a house."
+            ja: "私は家に住んでいます。"
+            zh: "我住在房子裡。"
+        - role: partner
+          text:
+            en: "Is the window open?"
+            ja: "窓は開いていますか？"
+            zh: "窗戶開著嗎？"
+        - role: user
+          text:
+            en: "No, the window is closed."
+            ja: "いいえ、窓は閉まっています。"
+            zh: "不，窗戶是關著的。"
+        - role: partner
+          text:
+            en: "Where are you now?"
+            ja: "今どこにいますか？"
+            zh: "你現在在哪裡？"
+        - role: user
+          text:
+            en: "I am in the kitchen."
+            ja: "キッチンにいます。"
+            zh: "我在廚房。"
+        - role: partner
+          text:
+            en: "Do you like your house?"
+            ja: "あなたの家は好きですか？"
+            zh: "你喜歡你的房子嗎？"
+        - role: user
+          text:
+            en: "Yes, it is very comfortable."
+            ja: "はい、とても快適です。"
+            zh: "是的，非常舒適。"
+        - role: partner
+          text:
+            en: "Please open the window."
+            ja: "窓を開けてください。"
+            zh: "請打開窗戶。"
+        - role: user
+          text:
+            en: "Okay, I will open it now."
+            ja: "わかりました、今開けます。"
+            zh: "好的，我現在打開。"
+
+quiz:
+  questionsPerRound: 5
+  xpReward: 20

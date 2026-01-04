@@ -9,6 +9,8 @@
     "chooseMode": "聊天類型",
     "startChatting": "開始聊天",
     "startLearning": "開始學習",
+    "motherTongue": "你的母語",
+    "targetLanguage": "我想學習",
     "learningLevel": "選擇等級",
     "primaryModes": {
       "chat": {

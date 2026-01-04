@@ -1,0 +1,211 @@
+# Chapter: Comprehension Check
+meta:
+  id: comprehension-check
+  title:
+    en: "Comprehension Check"
+    ja: "理解度の確認"
+    zh: "理解度確認"
+  description:
+    en: "Learn to ask for clarification and repetition."
+    ja: "説明や繰り返しを求める方法を学びましょう。"
+    zh: "學習如何請求澄清和重複說明。"
+  icon: "🤔"
+  order: 8
+  level: beginner
+
+words:
+  - id: understand
+    word:
+      en: Understand
+      ja: 理解する
+      zh: 懂/明白
+    reading: Rikai suru
+    phonetic: "/ˌʌndərˈstænd/"
+    description:
+      en: "To know the meaning of something."
+      ja: "何かの意味を知ること。"
+      zh: "了解某事的意思。"
+    sentence:
+      en: "Do you understand?"
+      ja: "わかりますか？"
+      zh: "你懂嗎？"
+
+  - id: again
+    word:
+      en: Again
+      ja: もう一度
+      zh:再一次
+    reading: Mō ichido
+    phonetic: "/əˈɡɛn/"
+    description:
+      en: "One more time."
+      ja: "もう一回。"
+      zh: "再一次。"
+    sentence:
+      en: "Please say it again."
+      ja: "もう一度言ってください。"
+      zh: "請再說一次。"
+
+  - id: slowly
+    word:
+      en: Slowly
+      ja: ゆっくり
+      zh: 慢一點
+    reading: Yukkuri
+    phonetic: "/ˈsloʊli/"
+    description:
+      en: "At a low speed."
+      ja: "遅い速度で。"
+      zh: "速度很慢地。"
+    sentence:
+      en: "Please speak slowly."
+      ja: "ゆっくり話してください。"
+      zh: "請說慢一點。"
+
+  - id: mean
+    word:
+      en: Mean
+      ja: 意味する
+      zh: 意思/意味著
+    reading: Imi suru
+    phonetic: "/miːn/"
+    description:
+      en: "To have a specific meaning."
+      ja: "特定の意味を持つこと。"
+      zh: "具有特定的含義。"
+    sentence:
+      en: "What does this mean?"
+      ja: "これはどういう意味ですか？"
+      zh: "這是什麼意思？"
+
+  - id: question
+    word:
+      en: Question
+      ja: 質問
+      zh: 問題
+    reading: Shitsumon
+    phonetic: "/ˈkwɛstʃən/"
+    description:
+      en: "A sentence that asks for information."
+      ja: "情報を求める文。"
+      zh: "用來詢問資訊的語句。"
+    sentence:
+      en: "I have a question."
+      ja: "質問があります。"
+      zh: "我有一個問題。"
+
+  - id: speak
+    word:
+      en: Speak
+      ja: 話す
+      zh: 說
+    reading: Hanasu
+    phonetic: "/spiːk/"
+    description:
+      en: "To say words."
+      ja: "言葉を言うこと。"
+      zh: "說話。"
+    sentence:
+      en: "I speak English."
+      ja: "私は英語を話します。"
+      zh: "我說英語。"
+
+chat:
+  conversations:
+    - id: scenario-1-asking-repetition
+      title:
+        en: "Asking for Repetition"
+        ja: "繰り返しをお願いする"
+        zh: "請求重複"
+      messages:
+        - role: partner
+          text:
+            en: "This is very important."
+            ja: "これはとても重要です。"
+            zh: "這非常重要。"
+        - role: user
+          text:
+            en: "Sorry, I do not understand."
+            ja: "すみません、わかりません。"
+            zh: "抱歉，我不懂。"
+        - role: partner
+          text:
+            en: "Okay, I will say it again."
+            ja: "わかりました、もう一度言います。"
+            zh: "好，我再說一次。"
+        - role: user
+          text:
+            en: "Please speak slowly."
+            ja: "ゆっくり話してください。"
+            zh: "請說慢一點。"
+        - role: partner
+          text:
+            en: "Is this speed okay?"
+            ja: "この速さで大丈夫ですか？"
+            zh: "這個速度可以嗎？"
+        - role: user
+          text:
+            en: "Yes, thank you."
+            ja: "はい、ありがとう。"
+            zh: "可以，謝謝。"
+        - role: partner
+          text:
+            en: "Do you have a question?"
+            ja: "質問はありますか？"
+            zh: "你有問題嗎？"
+        - role: user
+          text:
+            en: "No questions now."
+            ja: "今は質問ありません。"
+            zh: "現在沒有問題。"
+
+    - id: scenario-2-clarifying-meaning
+      title:
+        en: "Clarifying Meaning"
+        ja: "意味を確認する"
+        zh: "確認意思"
+      messages:
+        - role: partner
+          text:
+            en: "Do you speak Japanese?"
+            ja: "日本語を話しますか？"
+            zh: "你會說日語嗎？"
+        - role: user
+          text:
+            en: "Yes, I speak a little."
+            ja: "はい、少し話します。"
+            zh: "會，我會說一點。"
+        - role: partner
+          text:
+            en: "Look at this word."
+            ja: "この単語を見てください。"
+            zh: "看看這個字。"
+        - role: user
+          text:
+            en: "What does it mean?"
+            ja: "それはどういう意味ですか？"
+            zh: "那是什麼意思？"
+        - role: partner
+          text:
+            en: "It means 'Hello'."
+            ja: "それは「こんにちは」という意味です。"
+            zh: "它是「你好」的意思。"
+        - role: user
+          text:
+            en: "Ah, I understand now."
+            ja: "あ、今はわかります。"
+            zh: "啊，我現在懂了。"
+        - role: partner
+          text:
+            en: "That is good."
+            ja: "それはよかったです。"
+            zh: "那很好。"
+        - role: user
+          text:
+            en: "Thank you for helping."
+            ja: "助けてくれてありがとう。"
+            zh: "謝謝你的幫忙。"
+
+quiz:
+  questionsPerRound: 5
+  xpReward: 20

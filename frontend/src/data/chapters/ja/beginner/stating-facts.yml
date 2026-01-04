@@ -1,0 +1,211 @@
+# Chapter: Stating Facts
+meta:
+  id: stating-facts
+  title:
+    en: "Stating Facts"
+    ja: "事実を述べる"
+    zh: "陳述事實"
+  description:
+    en: "Learn how to describe things and state simple facts."
+    ja: "物事を説明し、簡単な事実を述べる方法を学びましょう。"
+    zh: "學習如何描述事物並陳述簡單的事實。"
+  icon: "☝️"
+  order: 3
+  level: beginner
+
+words:
+  - id: weather
+    word:
+      en: Weather
+      ja: 天気
+      zh: 天氣
+    reading: Tenki
+    phonetic: "/ˈwɛðər/"
+    description:
+      en: "The state of the atmosphere (sun, rain, wind)."
+      ja: "大気の状態（晴れ、雨、風など）。"
+      zh: "大氣的狀態（陽光、雨、風）。"
+    sentence:
+      en: "The weather is nice."
+      ja: "天気が良いです。"
+      zh: "天氣很好。"
+
+  - id: cold
+    word:
+      en: Cold
+      ja: 寒い
+      zh: 冷
+    reading: Samui
+    phonetic: "/koʊld/"
+    description:
+      en: "Having a low temperature."
+      ja: "気温が低いこと。"
+      zh: "溫度很低。"
+    sentence:
+      en: "The water is cold."
+      ja: "水が冷たいです。"
+      zh: "水很冷。"
+
+  - id: true
+    word:
+      en: True
+      ja: 本当
+      zh: 真的
+    reading: Hontou
+    phonetic: "/truː/"
+    description:
+      en: "Based on facts; not false."
+      ja: "事実に基づいていること。嘘ではないこと。"
+      zh: "基於事實；不是假的。"
+    sentence:
+      en: "That is not true."
+      ja: "それは本当ではありません。"
+      zh: "那不是真的。"
+
+  - id: time
+    word:
+      en: Time
+      ja: 時間
+      zh: 時間
+    reading: Jikan
+    phonetic: "/taɪm/"
+    description:
+      en: "What is measured in minutes and hours."
+      ja: "分や時間で測られるもの。"
+      zh: "以分和小時計算的概念。"
+    sentence:
+      en: "Do you have time?"
+      ja: "時間はありますか？"
+      zh: "你有時間嗎？"
+
+  - id: open
+    word:
+      en: Open
+      ja: 開いている
+      zh: 開著
+    reading: Aiteiru
+    phonetic: "/ˈoʊpən/"
+    description:
+      en: "Not closed; allowing entry."
+      ja: "閉まっていないこと。入れる状態。"
+      zh: "沒關；允許進入。"
+    sentence:
+      en: "The store is open."
+      ja: "店は開いています。"
+      zh: "商店開著。"
+
+  - id: expensive
+    word:
+      en: Expensive
+      ja: 高い
+      zh: 貴
+    reading: Takai
+    phonetic: "/ɪkˈspɛnsɪv/"
+    description:
+      en: "Costing a lot of money."
+      ja: "多くのお金がかかること。"
+      zh: "花費很多錢。"
+    sentence:
+      en: "This car is expensive."
+      ja: "この車は高いです。"
+      zh: "這輛車很貴。"
+
+chat:
+  conversations:
+    - id: scenario-1-outside
+      title:
+        en: "Outside Today"
+        ja: "今日の外"
+        zh: "今天的戶外"
+      messages:
+        - role: partner
+          text:
+            en: "Look at the weather."
+            ja: "天気を見てください。"
+            zh: "看看這個天氣。"
+        - role: user
+          text:
+            en: "Yes, it is very cold."
+            ja: "はい、とても寒いです。"
+            zh: "對，非常冷。"
+        - role: partner
+          text:
+            en: "What time is it now?"
+            ja: "今、何時ですか？"
+            zh: "現在幾點了？"
+        - role: user
+          text:
+            en: "It is five o'clock."
+            ja: "5時です。"
+            zh: "現在五點。"
+        - role: partner
+          text:
+            en: "It gets dark fast."
+            ja: "暗くなるのが早いです。"
+            zh: "天黑得很快。"
+        - role: user
+          text:
+            en: "That is true."
+            ja: "それは本当です。"
+            zh: "那是真的。"
+        - role: partner
+          text:
+            en: "Let's go inside."
+            ja: "中に入りましょう。"
+            zh: "我們進去吧。"
+        - role: user
+          text:
+            en: "Good idea."
+            ja: "いい考えです。"
+            zh: "好主意。"
+
+    - id: scenario-2-shopping
+      title:
+        en: "At the Shop"
+        ja: "お店で"
+        zh: "在商店"
+      messages:
+        - role: partner
+          text:
+            en: "Is the shop open?"
+            ja: "店は開いていますか？"
+            zh: "商店有開嗎？"
+        - role: user
+          text:
+            en: "Yes, the door is open."
+            ja: "はい、ドアが開いています。"
+            zh: "有，門是開著的。"
+        - role: partner
+          text:
+            en: "Look at this red bag."
+            ja: "この赤い鞄を見てください。"
+            zh: "看這個紅色的包包。"
+        - role: user
+          text:
+            en: "It is very nice."
+            ja: "とても素敵です。"
+            zh: "非常漂亮。"
+        - role: partner
+          text:
+            en: "But it is expensive."
+            ja: "でも、高いです。"
+            zh: "但是它很貴。"
+        - role: user
+          text:
+            en: "How much is it?"
+            ja: "いくらですか？"
+            zh: "多少錢？"
+        - role: partner
+          text:
+            en: "It costs 200 dollars."
+            ja: "200ドルします。"
+            zh: "它要兩百元。"
+        - role: user
+          text:
+            en: "We cannot buy it."
+            ja: "私たちは買えません。"
+            zh: "我們買不起。"
+
+quiz:
+  questionsPerRound: 5
+  xpReward: 20

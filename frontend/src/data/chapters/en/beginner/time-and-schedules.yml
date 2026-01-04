@@ -1,0 +1,408 @@
+# Chapter: Week 6 - Time & Schedules
+meta:
+  id: time-and-schedules
+  title:
+    en: "Time & Schedules"
+    ja: "時間とスケジュール"
+    zh: "時間與行程"
+  description:
+    en: "Making plans and understanding the clock."
+    ja: "予定を立てて、時計を理解しましょう。"
+    zh: "學習安排計畫和看懂時鐘。"
+  icon: "⏰"
+  order: 6
+  level: beginner
+
+words:
+  # Day 1: Core Nouns (Time Units)
+  - id: hour
+    word:
+      en: Hour
+      ja: 時間
+      zh: 小時
+    reading: "OW-er"
+    phonetic: "/ˈaʊər/"
+    description:
+      en: "60 minutes."
+      ja: "60分。"
+      zh: "60分鐘。"
+    sentence:
+      en: "We talk for two hours."
+      ja: "私たちは2時間話します。"
+      zh: "我們聊了兩個小時。"
+
+  - id: minute
+    word:
+      en: Minute
+      ja: 分
+      zh: 分鐘
+    reading: "MIN-it"
+    phonetic: "/ˈmɪnɪt/"
+    description:
+      en: "Small time unit."
+      ja: "小さな時間の単位。"
+      zh: "小的時間單位。"
+    sentence:
+      en: "We start in 10 minutes."
+      ja: "10分後に始めます。"
+      zh: "我們10分鐘後開始。"
+
+  - id: morning
+    word:
+      en: Morning
+      ja: 朝
+      zh: 早上
+    reading: "MOR-ning"
+    phonetic: "/ˈmɔːrnɪŋ/"
+    description:
+      en: "Start of day."
+      ja: "一日の始まり。"
+      zh: "一天的開始。"
+    sentence:
+      en: "On Monday morning, I start work at 9."
+      ja: "月曜日の朝、9時に仕事を始めます。"
+      zh: "星期一早上，我9點開始工作。"
+
+  - id: afternoon
+    word:
+      en: Afternoon
+      ja: 午後
+      zh: 下午
+    reading: "af-ter-NOON"
+    phonetic: "/ˌæftərˈnuːn/"
+    description:
+      en: "Middle of day."
+      ja: "一日の真ん中。"
+      zh: "一天的中間。"
+    sentence:
+      en: "I have a meeting in the afternoon."
+      ja: "午後に会議があります。"
+      zh: "我下午有個會議。"
+
+  - id: evening
+    word:
+      en: Evening
+      ja: 夕方
+      zh: 傍晚
+    reading: "EEV-ning"
+    phonetic: "/ˈiːvnɪŋ/"
+    description:
+      en: "End of day."
+      ja: "一日の終わり。"
+      zh: "一天的結束。"
+    sentence:
+      en: "I finish work in the evening."
+      ja: "夕方に仕事を終えます。"
+      zh: "我傍晚下班。"
+
+  - id: week
+    word:
+      en: Week
+      ja: 週
+      zh: 週
+    reading: "WEEK"
+    phonetic: "/wiːk/"
+    description:
+      en: "Monday to Sunday."
+      ja: "月曜日から日曜日まで。"
+      zh: "星期一到星期日。"
+    sentence:
+      en: "I have a busy week."
+      ja: "忙しい週です。"
+      zh: "我這週很忙。"
+
+  - id: weekend
+    word:
+      en: Weekend
+      ja: 週末
+      zh: 週末
+    reading: "WEEK-end"
+    phonetic: "/ˈwiːkend/"
+    description:
+      en: "Saturday and Sunday."
+      ja: "土曜日と日曜日。"
+      zh: "星期六和星期日。"
+    sentence:
+      en: "On the weekend, I sleep late."
+      ja: "週末は遅くまで寝ます。"
+      zh: "週末我睡得很晚。"
+
+  # Day 2: Core Verbs (Time Actions)
+  - id: start
+    word:
+      en: Start
+      ja: 始める
+      zh: 開始
+    reading: "START"
+    phonetic: "/stɑːrt/"
+    description:
+      en: "Begin."
+      ja: "始まる。"
+      zh: "開始。"
+    sentence:
+      en: "The movie starts at 8 PM."
+      ja: "映画は夜8時に始まります。"
+      zh: "電影晚上8點開始。"
+
+  - id: finish
+    word:
+      en: Finish
+      ja: 終わる
+      zh: 結束
+    reading: "FIN-ish"
+    phonetic: "/ˈfɪnɪʃ/"
+    description:
+      en: "Stop."
+      ja: "終わる。"
+      zh: "停止。"
+    sentence:
+      en: "I finish at 6 PM."
+      ja: "夕方6時に終わります。"
+      zh: "我下午6點結束。"
+
+  - id: meet
+    word:
+      en: Meet
+      ja: 会う
+      zh: 見面
+    reading: "MEET"
+    phonetic: "/miːt/"
+    description:
+      en: "See a person."
+      ja: "人に会う。"
+      zh: "見某個人。"
+    sentence:
+      en: "Let's meet at the cafe."
+      ja: "カフェで会いましょう。"
+      zh: "我們在咖啡廳見面吧。"
+
+  - id: wait
+    word:
+      en: Wait
+      ja: 待つ
+      zh: 等待
+    reading: "WAYT"
+    phonetic: "/weɪt/"
+    description:
+      en: "Stay until something happens."
+      ja: "何かが起きるまでいる。"
+      zh: "停留直到某事發生。"
+    sentence:
+      en: "I have to wait for the bus."
+      ja: "バスを待たなければなりません。"
+      zh: "我必須等公車。"
+
+  - id: arrive
+    word:
+      en: Arrive
+      ja: 到着する
+      zh: 到達
+    reading: "uh-RYV"
+    phonetic: "/əˈraɪv/"
+    description:
+      en: "Come to a place."
+      ja: "場所に来る。"
+      zh: "來到某個地方。"
+    sentence:
+      en: "She arrives at 10:30."
+      ja: "彼女は10時30分に到着します。"
+      zh: "她10點30分到達。"
+
+  - id: leave
+    word:
+      en: Leave
+      ja: 出発する
+      zh: 離開
+    reading: "LEEV"
+    phonetic: "/liːv/"
+    description:
+      en: "Go away."
+      ja: "去る。"
+      zh: "離開。"
+    sentence:
+      en: "We are going away for the weekend."
+      ja: "週末に出かけます。"
+      zh: "我們週末要出門。"
+
+  - id: late
+    word:
+      en: Late
+      ja: 遅い
+      zh: 遲到
+    reading: "LAYT"
+    phonetic: "/leɪt/"
+    description:
+      en: "After the correct time."
+      ja: "正しい時間の後。"
+      zh: "在正確時間之後。"
+    sentence:
+      en: "Don't be late."
+      ja: "遅れないでください。"
+      zh: "不要遲到。"
+
+chat:
+  conversations:
+    - id: scenario-1-busy-week
+      title:
+        en: "My Busy Week"
+        ja: "忙しい週"
+        zh: "我忙碌的一週"
+      messages:
+        - role: partner
+          text:
+            en: "How is your week going?"
+            ja: "今週はどうですか？"
+            zh: "這週過得怎麼樣？"
+        - role: user
+          text:
+            en: "I have a busy week."
+            ja: "忙しい週です。"
+            zh: "我這週很忙。"
+        - role: partner
+          text:
+            en: "What time do you start work on Monday?"
+            ja: "月曜日は何時に仕事を始めますか？"
+            zh: "星期一你幾點開始工作？"
+        - role: user
+          text:
+            en: "On Monday morning, I start work at 9."
+            ja: "月曜日の朝、9時に仕事を始めます。"
+            zh: "星期一早上，我9點開始工作。"
+        - role: partner
+          text:
+            en: "Do you have any meetings?"
+            ja: "会議はありますか？"
+            zh: "你有會議嗎？"
+        - role: user
+          text:
+            en: "Yes, I have a meeting in the afternoon. I finish at 6 PM."
+            ja: "はい、午後に会議があります。夕方6時に終わります。"
+            zh: "是的，我下午有個會議。我下午6點結束。"
+        - role: partner
+          text:
+            en: "What about Friday?"
+            ja: "金曜日はどうですか？"
+            zh: "星期五呢？"
+        - role: user
+          text:
+            en: "On Friday evening, I meet my friends for dinner. We talk for two hours."
+            ja: "金曜日の夕方、友達と夕食を食べます。2時間話します。"
+            zh: "星期五晚上，我和朋友吃晚餐。我們聊了兩個小時。"
+        - role: partner
+          text:
+            en: "And on the weekend?"
+            ja: "週末はどうですか？"
+            zh: "週末呢？"
+        - role: user
+          text:
+            en: "On the weekend, I sleep late."
+            ja: "週末は遅くまで寝ます。"
+            zh: "週末我睡得很晚。"
+
+    - id: scenario-2-making-plans
+      title:
+        en: "Making Lunch Plans"
+        ja: "ランチの予定を立てる"
+        zh: "安排午餐計畫"
+      messages:
+        - role: partner
+          text:
+            en: "Do you want to have lunch?"
+            ja: "ランチを食べませんか？"
+            zh: "你想吃午餐嗎？"
+        - role: user
+          text:
+            en: "Sure. What time?"
+            ja: "いいですね。何時ですか？"
+            zh: "好啊。幾點？"
+        - role: partner
+          text:
+            en: "Is 12:30 okay?"
+            ja: "12時30分でいいですか？"
+            zh: "12點30分可以嗎？"
+        - role: user
+          text:
+            en: "No, I am busy then. Can we meet at 1:00?"
+            ja: "いいえ、その時間は忙しいです。1時に会えますか？"
+            zh: "不行，我那時候在忙。我們可以1點見面嗎？"
+        - role: partner
+          text:
+            en: "That is fine. Where should we meet?"
+            ja: "いいですよ。どこで会いましょうか？"
+            zh: "可以。我們在哪裡見面？"
+        - role: user
+          text:
+            en: "Let's meet at the cafe."
+            ja: "カフェで会いましょう。"
+            zh: "我們在咖啡廳見面吧。"
+        - role: partner
+          text:
+            en: "Great! Don't be late!"
+            ja: "いいですね！遅れないでね！"
+            zh: "太好了！不要遲到！"
+        - role: user
+          text:
+            en: "I will be there on time."
+            ja: "時間通りに着きます。"
+            zh: "我會準時到。"
+
+    - id: scenario-3-questions-answers
+      title:
+        en: "Time Questions"
+        ja: "時間の質問"
+        zh: "時間問答"
+      messages:
+        - role: partner
+          text:
+            en: "What time is it?"
+            ja: "今何時ですか？"
+            zh: "現在幾點？"
+        - role: user
+          text:
+            en: "It is three o'clock."
+            ja: "3時です。"
+            zh: "3點。"
+        - role: partner
+          text:
+            en: "When do we start?"
+            ja: "いつ始めますか？"
+            zh: "我們什麼時候開始？"
+        - role: user
+          text:
+            en: "We start in 10 minutes."
+            ja: "10分後に始めます。"
+            zh: "我們10分鐘後開始。"
+        - role: partner
+          text:
+            en: "Are you busy today?"
+            ja: "今日は忙しいですか？"
+            zh: "你今天忙嗎？"
+        - role: user
+          text:
+            en: "Yes, I have no time."
+            ja: "はい、時間がありません。"
+            zh: "是的，我沒有時間。"
+        - role: partner
+          text:
+            en: "Can we meet on Monday?"
+            ja: "月曜日に会えますか？"
+            zh: "我們星期一可以見面嗎？"
+        - role: user
+          text:
+            en: "Yes, Monday is fine. See you next week."
+            ja: "はい、月曜日でいいです。来週会いましょう。"
+            zh: "好，星期一可以。下週見。"
+        - role: partner
+          text:
+            en: "See you tomorrow!"
+            ja: "また明日！"
+            zh: "明天見！"
+        - role: user
+          text:
+            en: "See you tonight!"
+            ja: "今夜会いましょう！"
+            zh: "今晚見！"
+
+quiz:
+  questionsPerRound: 5
+  xpReward: 20

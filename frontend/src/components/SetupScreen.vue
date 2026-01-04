@@ -3,9 +3,11 @@ import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { characters, levels } from '../data/characters.js'
 import { useDarkMode } from '../composables/useDarkMode'
+import { useMotherTongue, supportedLanguages } from '../composables/useMotherTongue'
 
 const { t, locale } = useI18n()
 const { isDark, toggle: toggleDark } = useDarkMode()
+const { motherTongue, setMotherTongue } = useMotherTongue()
 const emit = defineEmits(['start', 'startLearning'])
 
 // Primary mode: 'chat' or 'learning'
@@ -18,14 +20,24 @@ const selectedChatMode = ref('free') // 'free' or 'article'
 
 // Learning mode options
 const selectedLearningLevel = ref(null)
+const selectedTargetLanguage = ref(null)
 
-function toggleLanguage() {
-  locale.value = locale.value === 'en' ? 'ja' : 'en'
-  localStorage.setItem('chatmate_locale', locale.value)
+// Available target languages (exclude mother tongue)
+const availableTargetLanguages = computed(() => {
+  return supportedLanguages.filter(lang => lang.id !== motherTongue.value)
+})
+
+// Handle mother tongue change - also updates UI language
+function handleMotherTongueChange(langId) {
+  setMotherTongue(langId)
+  selectedTargetLanguage.value = null
+  // Also update UI language to match mother tongue
+  locale.value = langId
+  localStorage.setItem('chatmate_locale', langId)
 }
 
 const canStartChat = computed(() => selectedCharacter.value && selectedLevel.value)
-const canStartLearning = computed(() => selectedLearningLevel.value)
+const canStartLearning = computed(() => selectedLearningLevel.value && selectedTargetLanguage.value)
 
 function handleStart() {
   if (primaryMode.value === 'chat' && canStartChat.value) {
@@ -38,7 +50,9 @@ function handleStart() {
   } else if (primaryMode.value === 'learning' && canStartLearning.value) {
     emit('startLearning', {
       level: selectedLearningLevel.value,
-      language: locale.value,
+      targetLanguage: selectedTargetLanguage.value,
+      motherTongue: motherTongue.value,
+      uiLanguage: locale.value,
     })
   }
 }
@@ -47,22 +61,29 @@ function handleStart() {
 <template>
   <div class="min-h-screen overflow-y-auto bg-background-light dark:bg-background-dark">
     <div class="max-w-2xl mx-auto px-4 py-8 pb-12">
-      <!-- Header with language toggle -->
+      <!-- Header -->
       <div class="flex justify-between items-center mb-8">
         <div></div>
         <div class="flex items-center gap-2">
+          <!-- Mother Tongue / UI Language Selector (combined) -->
+          <div class="relative">
+            <select
+              :value="motherTongue"
+              @change="handleMotherTongueChange($event.target.value)"
+              class="appearance-none pl-3 pr-8 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark text-text-main dark:text-slate-200 text-sm font-medium cursor-pointer focus:ring-2 focus:ring-primary focus:outline-none"
+            >
+              <option v-for="lang in supportedLanguages" :key="lang.id" :value="lang.id">
+                {{ lang.flag }} {{ lang.nativeName }}
+              </option>
+            </select>
+            <span class="material-symbols-outlined text-sm absolute right-2 top-1/2 -translate-y-1/2 text-text-muted dark:text-slate-400 pointer-events-none">expand_more</span>
+          </div>
+          <!-- Dark Mode Toggle -->
           <button
             @click="toggleDark"
             class="flex items-center justify-center size-10 rounded-lg border border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark hover:bg-slate-50 dark:hover:bg-slate-800 text-text-main dark:text-slate-200 transition-colors"
           >
             <span class="material-symbols-outlined text-[20px]">{{ isDark ? 'light_mode' : 'dark_mode' }}</span>
-          </button>
-          <button
-            @click="toggleLanguage"
-            class="flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark hover:bg-slate-50 dark:hover:bg-slate-800 text-text-main dark:text-slate-200 text-sm font-medium transition-colors"
-          >
-            <span class="material-symbols-outlined text-[18px]">translate</span>
-            {{ locale === 'en' ? '日本語' : 'English' }}
           </button>
         </div>
       </div>
@@ -192,6 +213,28 @@ function handleStart() {
 
       <!-- ========== LEARNING MODE OPTIONS ========== -->
       <template v-if="primaryMode === 'learning'">
+        <!-- Target Language Section -->
+        <section class="mb-8">
+          <div class="flex items-center gap-2 mb-4">
+            <span class="material-symbols-outlined text-primary">school</span>
+            <h2 class="text-lg font-semibold text-text-main dark:text-white">{{ t('setup.targetLanguage') }}</h2>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div
+              v-for="lang in availableTargetLanguages"
+              :key="lang.id"
+              @click="selectedTargetLanguage = lang.id"
+              class="flex flex-col items-center p-4 rounded-xl border-2 transition-all cursor-pointer bg-surface-light dark:bg-surface-dark"
+              :class="selectedTargetLanguage === lang.id
+                ? 'border-primary bg-primary/5 dark:bg-primary/10'
+                : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'"
+            >
+              <span class="text-2xl mb-2">{{ lang.flag }}</span>
+              <h3 class="font-semibold text-text-main dark:text-white text-sm">{{ lang.nativeName }}</h3>
+            </div>
+          </div>
+        </section>
+
         <!-- Choose Level Section -->
         <section class="mb-10">
           <div class="flex items-center gap-2 mb-4">

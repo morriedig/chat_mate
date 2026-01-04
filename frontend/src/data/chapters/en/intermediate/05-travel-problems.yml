@@ -1,0 +1,435 @@
+# Chapter: Week 5 - Travel Problems & Complaints
+meta:
+  id: travel-problems-and-complaints
+  title:
+    en: "Travel Problems & Complaints"
+    ja: "旅行のトラブルと苦情"
+    zh: "旅行問題與投訴"
+  description:
+    en: "Handle travel problems politely using modal verbs. Learn to make complaints, describe lost items, and give balanced feedback."
+    ja: "丁寧な表現を使って旅行のトラブルに対処しましょう。苦情の伝え方、紛失物の説明、バランスの取れたフィードバックを学びます。"
+    zh: "學習用禮貌的情態動詞處理旅行問題。學會投訴、描述遺失物品，以及給予平衡的反饋。"
+  icon: "🧳"
+  order: 5
+  level: intermediate
+
+words:
+  # Complaint Adjectives (Day 1)
+  - id: filthy
+    word:
+      en: Filthy
+      ja: 不潔な
+      zh: 骯髒的
+    reading: "FIL-thee"
+    phonetic: "/ˈfɪlθi/"
+    description:
+      en: "Extremely dirty (stronger than 'dirty')."
+      ja: "極めて汚い（'dirty'より強い）。"
+      zh: "極度髒的（比 'dirty' 更強烈）。"
+    sentence:
+      en: "The bathroom was filthy. There was mold everywhere."
+      ja: "バスルームは不潔でした。至る所にカビがありました。"
+      zh: "浴室非常髒。到處都是霉菌。"
+
+  - id: rude
+    word:
+      en: Rude
+      ja: 失礼な
+      zh: 粗魯的
+    reading: "rood"
+    phonetic: "/ruːd/"
+    description:
+      en: "Not polite or respectful in behavior."
+      ja: "礼儀正しくない、無礼な行動。"
+      zh: "行為不禮貌或不尊重人的。"
+    sentence:
+      en: "The staff was rude and unhelpful when I asked for assistance."
+      ja: "スタッフは私が助けを求めた時、失礼で役に立ちませんでした。"
+      zh: "當我尋求幫助時，員工很粗魯且不願意幫忙。"
+
+  - id: unacceptable
+    word:
+      en: Unacceptable
+      ja: 受け入れられない
+      zh: 無法接受的
+    reading: "uhn-ak-SEP-tuh-buhl"
+    phonetic: "/ˌʌnəkˈseptəbl/"
+    description:
+      en: "Not good enough to be accepted or allowed."
+      ja: "受け入れたり許可したりするには不十分。"
+      zh: "不夠好，無法被接受或允許。"
+    sentence:
+      en: "The service was unacceptable. We waited two hours for our food."
+      ja: "サービスは受け入れられませんでした。食事を2時間待ちました。"
+      zh: "服務無法接受。我們等了兩個小時才上菜。"
+
+  - id: disappointing
+    word:
+      en: Disappointing
+      ja: がっかりする
+      zh: 令人失望的
+    reading: "dis-uh-POIN-ting"
+    phonetic: "/ˌdɪsəˈpɔɪntɪŋ/"
+    description:
+      en: "Not as good as you hoped or expected."
+      ja: "期待や希望ほど良くない。"
+      zh: "不如你期望或希望的那麼好。"
+    sentence:
+      en: "The view was disappointing. It was nothing like the photos online."
+      ja: "景色はがっかりでした。オンラインの写真とは全く違いました。"
+      zh: "景色令人失望。跟網上的照片完全不一樣。"
+
+  - id: overpriced
+    word:
+      en: Overpriced
+      ja: 高すぎる
+      zh: 定價過高的
+    reading: "oh-ver-PRYST"
+    phonetic: "/ˌoʊvərˈpraɪst/"
+    description:
+      en: "Costing more than it is worth."
+      ja: "価値より高い値段。"
+      zh: "價格超過其實際價值。"
+    sentence:
+      en: "The hotel was overpriced for what you get. Not worth the money."
+      ja: "そのホテルは内容に対して高すぎました。お金の価値がありません。"
+      zh: "這間飯店以提供的內容來說定價過高。不值那個錢。"
+
+  # Polite Modal Verbs (Day 2)
+  - id: would-like
+    word:
+      en: I would like...
+      ja: 〜をお願いしたいのですが
+      zh: 我想要...
+    reading: "ay wuud lyk"
+    phonetic: "/aɪ wʊd laɪk/"
+    description:
+      en: "Polite way to say 'I want' (formal requests)."
+      ja: "'I want'の丁寧な言い方（正式な依頼）。"
+      zh: "'I want' 的禮貌說法（正式請求）。"
+    sentence:
+      en: "I would like a refund, please. The product was defective."
+      ja: "返金をお願いしたいのですが。製品に欠陥がありました。"
+      zh: "我想要退款。產品有瑕疵。"
+
+  - id: could-you-please
+    word:
+      en: Could you please...?
+      ja: 〜していただけますか？
+      zh: 能否請您...？
+    reading: "kuud yoo pleez"
+    phonetic: "/kʊd juː pliːz/"
+    description:
+      en: "Very polite way to ask someone to do something."
+      ja: "誰かに何かをしてもらうとても丁寧な方法。"
+      zh: "非常禮貌地請求某人做某事的方式。"
+    sentence:
+      en: "Could you please look into this? There seems to be a mistake."
+      ja: "これを確認していただけますか？間違いがあるようです。"
+      zh: "能否請您查看一下？似乎有個錯誤。"
+
+  - id: would-you-mind
+    word:
+      en: Would you mind...?
+      ja: 〜していただいても構いませんか？
+      zh: 您介意...嗎？
+    reading: "wuud yoo mynd"
+    phonetic: "/wʊd juː maɪnd/"
+    description:
+      en: "Extremely polite way to make a request."
+      ja: "極めて丁寧な依頼の方法。"
+      zh: "極其禮貌的請求方式。"
+    sentence:
+      en: "Would you mind checking again? I'm sure I made a reservation."
+      ja: "もう一度確認していただいても構いませんか？予約したはずです。"
+      zh: "您介意再查一次嗎？我確定我有訂位。"
+
+  - id: would-appreciate
+    word:
+      en: I would appreciate it if...
+      ja: 〜していただけると幸いです
+      zh: 如果...我會很感激
+    reading: "ay wuud uh-PREE-shee-ayt"
+    phonetic: "/aɪ wʊd əˈpriːʃieɪt/"
+    description:
+      en: "Formal, polite way to express a strong request."
+      ja: "強い依頼を表す正式で丁寧な方法。"
+      zh: "表達強烈請求的正式、禮貌方式。"
+    sentence:
+      en: "I would appreciate it if you could move me to a quieter room."
+      ja: "静かな部屋に移していただけると幸いです。"
+      zh: "如果您能幫我換到安靜一點的房間，我會很感激。"
+
+  # Travel Phrasal Verbs (Day 5)
+  - id: check-in
+    word:
+      en: Check in
+      ja: チェックインする
+      zh: 辦理入住/報到
+    reading: "chek in"
+    phonetic: "/tʃek ɪn/"
+    description:
+      en: "Register arrival at a hotel or airport."
+      ja: "ホテルや空港で到着を登録する。"
+      zh: "在飯店或機場登記到達。"
+    sentence:
+      en: "What time can we check in? We arrived early."
+      ja: "何時にチェックインできますか？早く着きました。"
+      zh: "我們幾點可以辦理入住？我們提早到了。"
+
+  - id: check-out
+    word:
+      en: Check out
+      ja: チェックアウトする
+      zh: 辦理退房
+    reading: "chek out"
+    phonetic: "/tʃek aʊt/"
+    description:
+      en: "Leave a hotel and pay the bill."
+      ja: "ホテルを出て精算する。"
+      zh: "離開飯店並結帳。"
+    sentence:
+      en: "What time is check out? I need to catch an early flight."
+      ja: "チェックアウトは何時ですか？早い便に乗らなければなりません。"
+      zh: "退房時間是幾點？我需要趕早班飛機。"
+
+  - id: drop-off
+    word:
+      en: Drop off
+      ja: 降ろす・届ける
+      zh: 送達/放下
+    reading: "drop awf"
+    phonetic: "/drɑːp ɔːf/"
+    description:
+      en: "Take someone or something to a place and leave them there."
+      ja: "誰かや何かを場所に連れて行き、そこに残す。"
+      zh: "把某人或某物送到某處並離開。"
+    sentence:
+      en: "Could you drop me off at the airport, please?"
+      ja: "空港で降ろしていただけますか？"
+      zh: "能否請您送我到機場？"
+
+  - id: get-around
+    word:
+      en: Get around
+      ja: 移動する
+      zh: 四處走動
+    reading: "get uh-ROUND"
+    phonetic: "/ɡet əˈraʊnd/"
+    description:
+      en: "Move from place to place within an area."
+      ja: "ある地域内で場所から場所へ移動する。"
+      zh: "在一個區域內從一個地方移動到另一個地方。"
+    sentence:
+      en: "It's easy to get around Taipei by MRT. Very convenient!"
+      ja: "台北はMRTで移動するのが簡単です。とても便利！"
+      zh: "在台北搭捷運四處走動很方便！"
+
+  # Balanced Feedback (Day 4)
+  - id: however
+    word:
+      en: However
+      ja: しかしながら
+      zh: 然而
+    reading: "how-EV-er"
+    phonetic: "/haʊˈevər/"
+    description:
+      en: "Used to introduce a contrasting point (formal 'but')."
+      ja: "対照的なポイントを導入する（正式な'but'）。"
+      zh: "用來引入對比觀點（正式的 'but'）。"
+    sentence:
+      en: "The room was lovely. However, it was quite noisy at night."
+      ja: "部屋は素敵でした。しかしながら、夜はかなりうるさかったです。"
+      zh: "房間很漂亮。然而，晚上相當吵。"
+
+chat:
+  conversations:
+    - id: scenario-1-lost-luggage
+      title:
+        en: "Lost Luggage"
+        ja: "紛失した荷物"
+        zh: "行李遺失"
+      messages:
+        - role: partner
+          text:
+            en: "Good afternoon. Welcome to the baggage claim counter. How can I help you?"
+            ja: "こんにちは。手荷物カウンターへようこそ。どうされましたか？"
+            zh: "午安。歡迎來到行李提領櫃檯。有什麼我能幫您的嗎？"
+        - role: user
+          text:
+            en: "Hello. My luggage hasn't arrived. I've been waiting for over an hour."
+            ja: "こんにちは。荷物が届いていません。1時間以上待っています。"
+            zh: "你好。我的行李還沒到。我已經等了一個多小時了。"
+        - role: partner
+          text:
+            en: "I'm sorry to hear that. May I have your flight number and baggage tag?"
+            ja: "申し訳ございません。フライト番号と手荷物タグをいただけますか？"
+            zh: "很抱歉聽到這個消息。可以給我您的航班號和行李標籤嗎？"
+        - role: user
+          text:
+            en: "Yes, here's my tag. I was on flight BA287 from London."
+            ja: "はい、これがタグです。ロンドンからのBA287便でした。"
+            zh: "好的，這是我的標籤。我搭的是從倫敦來的BA287航班。"
+        - role: partner
+          text:
+            en: "Could you please describe your luggage for me?"
+            ja: "荷物の特徴を教えていただけますか？"
+            zh: "能否請您描述一下您的行李？"
+        - role: user
+          text:
+            en: "It's a large black suitcase with a red ribbon on the handle. The brand is Samsonite."
+            ja: "大きな黒いスーツケースで、取っ手に赤いリボンが付いています。ブランドはサムソナイトです。"
+            zh: "是一個大型黑色行李箱，把手上有紅色緞帶。品牌是新秀麗。"
+        - role: partner
+          text:
+            en: "Thank you. I can see your bag was put on the wrong connecting flight. It should arrive tomorrow morning."
+            ja: "ありがとうございます。お荷物が間違った乗り継ぎ便に載せられたようです。明日の朝届く予定です。"
+            zh: "謝謝。我看到您的行李被放到錯誤的轉機航班了。應該明天早上會到。"
+        - role: user
+          text:
+            en: "I see. I would appreciate it if you could deliver it to my hotel when it arrives."
+            ja: "わかりました。届いたらホテルに届けていただけると幸いです。"
+            zh: "我明白了。如果行李到了能送到我的飯店，我會很感激。"
+        - role: partner
+          text:
+            en: "Of course. We'll arrange delivery. Here's a toiletry kit for tonight. We apologize for the inconvenience."
+            ja: "もちろんです。配送を手配します。今夜用のアメニティキットをどうぞ。ご不便をおかけして申し訳ございません。"
+            zh: "當然可以。我們會安排送達。這是今晚用的盥洗包。造成您的不便，我們深感抱歉。"
+        - role: user
+          text:
+            en: "Thank you. What can you do if my bag doesn't arrive by tomorrow?"
+            ja: "ありがとうございます。明日までに届かなかったらどうなりますか？"
+            zh: "謝謝。如果我的行李明天還沒到，你們能怎麼處理？"
+        - role: partner
+          text:
+            en: "If it doesn't arrive within 24 hours, you can claim up to $200 for essential items. Keep your receipts."
+            ja: "24時間以内に届かない場合、必需品に対して最大200ドルまで請求できます。レシートを保管してください。"
+            zh: "如果24小時內沒到，您可以申請最高200美元的必需品補償。請保留收據。"
+
+    - id: scenario-2-hotel-complaint
+      title:
+        en: "Hotel Complaint"
+        ja: "ホテルへの苦情"
+        zh: "飯店投訴"
+      messages:
+        - role: partner
+          text:
+            en: "Front desk, how may I assist you this evening?"
+            ja: "フロントです。今夜はどのようなご用件でしょうか？"
+            zh: "這裡是櫃檯，今晚有什麼我能為您效勞的嗎？"
+        - role: user
+          text:
+            en: "Hello. I'm calling from room 412. I'm afraid there's a problem with my room."
+            ja: "もしもし。412号室から電話しています。部屋に問題があるようです。"
+            zh: "你好。我從412號房打來。恐怕我的房間有問題。"
+        - role: partner
+          text:
+            en: "I'm sorry to hear that. What seems to be the issue?"
+            ja: "申し訳ございません。どのような問題でしょうか？"
+            zh: "很抱歉聽到這個消息。請問是什麼問題？"
+        - role: user
+          text:
+            en: "The air conditioning is broken. It's been making a loud noise and the room is getting very hot."
+            ja: "エアコンが壊れています。大きな音がして、部屋がとても暑くなっています。"
+            zh: "空調壞了。一直發出很大的噪音，房間也變得很熱。"
+        - role: partner
+          text:
+            en: "I apologize for the inconvenience. Would you like me to send maintenance up right away?"
+            ja: "ご不便をおかけして申し訳ございません。すぐにメンテナンスを送りましょうか？"
+            zh: "造成您的不便，我深感抱歉。需要我立刻派維修人員上去嗎？"
+        - role: user
+          text:
+            en: "Actually, I would appreciate it if you could move me to a quieter room instead. It's already quite late."
+            ja: "実は、静かな部屋に移していただけると幸いです。もうかなり遅いので。"
+            zh: "其實，如果能幫我換到安靜一點的房間，我會很感激。已經很晚了。"
+        - role: partner
+          text:
+            en: "Let me check our availability. Yes, we have a room on the 8th floor. Would that work?"
+            ja: "空室を確認いたします。はい、8階にお部屋がございます。いかがでしょうか？"
+            zh: "讓我查看一下空房。是的，我們8樓有房間。可以嗎？"
+        - role: user
+          text:
+            en: "That would be great. Could you please send someone to help me move my things?"
+            ja: "それで結構です。荷物を運ぶのを手伝う人を送っていただけますか？"
+            zh: "那太好了。能否請您派人幫我搬東西？"
+        - role: partner
+          text:
+            en: "Of course. A bellhop will be there in five minutes. We'll also offer you a complimentary breakfast for the trouble."
+            ja: "もちろんです。5分以内にベルボーイが参ります。ご迷惑をおかけしたお詫びに、朝食を無料でご提供します。"
+            zh: "當然可以。服務生五分鐘內就到。為了補償您的困擾，我們也會提供免費早餐。"
+        - role: user
+          text:
+            en: "Thank you very much. I appreciate your help in resolving this so quickly."
+            ja: "どうもありがとうございます。迅速に対応していただき感謝します。"
+            zh: "非常感謝。感謝您這麼快速地幫我解決問題。"
+
+    - id: scenario-3-writing-review
+      title:
+        en: "Writing a Review"
+        ja: "レビューを書く"
+        zh: "撰寫評論"
+      messages:
+        - role: partner
+          text:
+            en: "How was your hotel in Tokyo? Are you going to write a review?"
+            ja: "東京のホテルはどうでしたか？レビューを書く予定ですか？"
+            zh: "你在東京的飯店怎麼樣？你打算寫評論嗎？"
+        - role: user
+          text:
+            en: "Yes, but I'm not sure how to write it. It was a mixed experience."
+            ja: "はい、でもどう書けばいいかわかりません。良いところと悪いところがありました。"
+            zh: "是的，但我不太確定怎麼寫。體驗好壞參半。"
+        - role: partner
+          text:
+            en: "Start with something positive. What did you like about it?"
+            ja: "まず良いところから始めましょう。何が良かったですか？"
+            zh: "從正面的部分開始。你喜歡什麼地方？"
+        - role: user
+          text:
+            en: "The location was excellent. It was easy to get around the city by train from there."
+            ja: "立地は最高でした。そこから電車で街中を移動するのが簡単でした。"
+            zh: "位置非常好。從那裡搭火車在市區四處走動很方便。"
+        - role: partner
+          text:
+            en: "Great! Now use 'however' to introduce the negative part."
+            ja: "いいですね！では'however'を使って否定的な部分を導入しましょう。"
+            zh: "很好！現在用 'however' 來引入負面的部分。"
+        - role: user
+          text:
+            en: "The location was excellent. However, the room was quite noisy at night due to street traffic."
+            ja: "立地は最高でした。しかしながら、夜は交通騒音で部屋がかなりうるさかったです。"
+            zh: "位置非常好。然而，由於街上的交通，房間晚上相當吵。"
+        - role: partner
+          text:
+            en: "Perfect structure! What about the staff and service?"
+            ja: "完璧な構成！スタッフやサービスはどうでしたか？"
+            zh: "結構完美！員工和服務怎麼樣？"
+        - role: user
+          text:
+            en: "The staff at check in was friendly. However, the restaurant service was disappointing and slow."
+            ja: "チェックイン時のスタッフはフレンドリーでした。しかしながら、レストランのサービスはがっかりで遅かったです。"
+            zh: "辦理入住時的員工很友善。然而，餐廳服務令人失望又慢。"
+        - role: partner
+          text:
+            en: "And what about value for money? Was it overpriced?"
+            ja: "コスパはどうでしたか？高すぎましたか？"
+            zh: "那性價比呢？定價過高嗎？"
+        - role: user
+          text:
+            en: "The breakfast was overpriced for what you get. I would recommend eating outside the hotel."
+            ja: "朝食は内容に対して高すぎました。ホテル外で食べることをお勧めします。"
+            zh: "早餐以提供的內容來說定價過高。我建議在飯店外面吃。"
+        - role: partner
+          text:
+            en: "Excellent balanced review! Would you stay there again?"
+            ja: "素晴らしいバランスの取れたレビュー！また泊まりますか？"
+            zh: "很棒的平衡評論！你會再住那裡嗎？"
+        - role: user
+          text:
+            en: "Maybe. I would appreciate it if they fixed the noise issue. Overall, three out of five stars."
+            ja: "多分。騒音の問題を解決してくれると嬉しいです。総合的には5つ星中3つです。"
+            zh: "也許吧。如果他們能解決噪音問題，我會很感激。總體來說，五顆星給三顆。"
+
+quiz:
+  questionsPerRound: 5
+  xpReward: 25

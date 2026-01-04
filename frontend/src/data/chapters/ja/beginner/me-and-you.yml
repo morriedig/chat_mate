@@ -1,0 +1,211 @@
+# Chapter: Me and You
+meta:
+  id: me-and-you
+  title:
+    en: "Me & You"
+    ja: "私とあなた"
+    zh: "我與你"
+  description:
+    en: "Learn how to introduce yourself and ask about others."
+    ja: "自己紹介や他人のことを尋ねる方法を学びましょう。"
+    zh: "學習如何自我介紹和詢問他人。"
+  icon: "🤝"
+  order: 1
+  level: beginner
+
+words:
+  - id: i-watashi
+    word:
+      en: I
+      ja: 私
+      zh: 我
+    reading: Watashi
+    phonetic: "/waˈtɑːʃi/"
+    description:
+      en: "Used to talk about yourself."
+      ja: "自分のことを話すときに使います。"
+      zh: "用來談論自己。"
+    sentence:
+      en: "I am a student."
+      ja: "私は学生です。"
+      zh: "我是學生。"
+
+  - id: you-anata
+    word:
+      en: You
+      ja: あなた
+      zh: 你
+    reading: Anata
+    phonetic: "/ɑːˈnɑːtɑː/"
+    description:
+      en: "Used to talk to the other person."
+      ja: "相手のことを話すときに使います。"
+      zh: "用來對對方說話。"
+    sentence:
+      en: "Are you Tanaka?"
+      ja: "あなたは田中さんですか？"
+      zh: "你是田中嗎？"
+
+  - id: name
+    word:
+      en: Name
+      ja: 名前
+      zh: 名字
+    reading: Namae
+    phonetic: "/nɑːˈmɑːeɪ/"
+    description:
+      en: "What people call you."
+      ja: "人があなたを呼ぶときの言葉。"
+      zh: "別人稱呼你的詞。"
+    sentence:
+      en: "My name is Ken."
+      ja: "私の名前はケンです。"
+      zh: "我的名字是Ken。"
+
+  - id: who
+    word:
+      en: Who
+      ja: 誰
+      zh: 誰
+    reading: Dare
+    phonetic: "/ˈdɑːreɪ/"
+    description:
+      en: "Used to ask about a person."
+      ja: "人について尋ねるときに使います。"
+      zh: "用來詢問某人。"
+    sentence:
+      en: "Who is that?"
+      ja: "あれは誰ですか？"
+      zh: "那是誰？"
+
+  - id: friend
+    word:
+      en: Friend
+      ja: 友達
+      zh: 朋友
+    reading: Tomodachi
+    phonetic: "/toʊmoʊˈdɑːtʃi/"
+    description:
+      en: "Someone you like and know well."
+      ja: "好きでよく知っている人。"
+      zh: "你喜歡且熟悉的人。"
+    sentence:
+      en: "He is my friend."
+      ja: "彼は私の友達です。"
+      zh: "他是我的朋友。"
+
+  - id: student
+    word:
+      en: Student
+      ja: 学生
+      zh: 學生
+    reading: Gakusei
+    phonetic: "/gɑːkˈseɪ/"
+    description:
+      en: "A person who studies at school."
+      ja: "学校で勉強している人。"
+      zh: "在學校學習的人。"
+    sentence:
+      en: "I am not a student."
+      ja: "私は学生ではありません。"
+      zh: "我不是學生。"
+
+chat:
+  conversations:
+    - id: scenario-1-introduction
+      title:
+        en: "Self Introduction"
+        ja: "自己紹介"
+        zh: "自我介紹"
+      messages:
+        - role: partner
+          text:
+            en: "Hello. I am Ken."
+            ja: "こんにちは。私はケンです。"
+            zh: "你好。我是Ken。"
+        - role: user
+          text:
+            en: "Hello. My name is John."
+            ja: "こんにちは。私の名前はジョンです。"
+            zh: "你好。我的名字是John。"
+        - role: partner
+          text:
+            en: "Are you a student?"
+            ja: "あなたは学生ですか？"
+            zh: "你是學生嗎？"
+        - role: user
+          text:
+            en: "Yes, I am a student."
+            ja: "はい、私は学生です。"
+            zh: "是的，我是學生。"
+        - role: partner
+          text:
+            en: "Me too. Nice to meet you."
+            ja: "私もです。はじめまして。"
+            zh: "我也是。很高興認識你。"
+        - role: user
+          text:
+            en: "Nice to meet you too."
+            ja: "こちらこそ、はじめまして。"
+            zh: "我也很高興認識你。"
+        - role: partner
+          text:
+            en: "Are you Japanese?"
+            ja: "あなたは日本人ですか？"
+            zh: "你是日本人嗎？"
+        - role: user
+          text:
+            en: "No, I am American."
+            ja: "いいえ、私はアメリカ人です。"
+            zh: "不是，我是美國人。"
+
+    - id: scenario-2-asking-who
+      title:
+        en: "Who is that?"
+        ja: "あの人は誰？"
+        zh: "那是誰？"
+      messages:
+        - role: partner
+          text:
+            en: "Who is that person?"
+            ja: "あの人は誰ですか？"
+            zh: "那個人是誰？"
+        - role: user
+          text:
+            en: "That is my friend."
+            ja: "あれは私の友達です。"
+            zh: "那是我的朋友。"
+        - role: partner
+          text:
+            en: "What is his name?"
+            ja: "彼の名前は何ですか？"
+            zh: "他叫什麼名字？"
+        - role: user
+          text:
+            en: "His name is Tanaka."
+            ja: "彼の名前は田中です。"
+            zh: "他的名字是田中。"
+        - role: partner
+          text:
+            en: "Is he a student too?"
+            ja: "彼も学生ですか？"
+            zh: "他也是學生嗎？"
+        - role: user
+          text:
+            en: "No, he is a teacher."
+            ja: "いいえ、彼は先生です。"
+            zh: "不是，他是老師。"
+        - role: partner
+          text:
+            en: "Oh, I see."
+            ja: "ああ、そうですか。"
+            zh: "喔，原來如此。"
+        - role: user
+          text:
+            en: "He is very kind."
+            ja: "彼はとても親切です。"
+            zh: "他非常親切。"
+
+quiz:
+  questionsPerRound: 5
+  xpReward: 20

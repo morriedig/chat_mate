@@ -9,6 +9,8 @@
     "chooseMode": "Chat type",
     "startChatting": "Start Chatting",
     "startLearning": "Start Learning",
+    "motherTongue": "Your native language",
+    "targetLanguage": "I want to learn",
     "learningLevel": "Choose your level",
     "primaryModes": {
       "chat": {

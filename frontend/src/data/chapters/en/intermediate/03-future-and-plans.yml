@@ -1,0 +1,384 @@
+# Chapter: Week 3 - Future & Plans
+meta:
+  id: future-and-plans
+  title:
+    en: "Future & Plans"
+    ja: "未来と計画"
+    zh: "未來與計劃"
+  description:
+    en: "Talk about your goals, schedule, and predictions using Will, Going to, and Present Continuous correctly."
+    ja: "Will、Going to、現在進行形を正しく使って、目標、予定、予測について話しましょう。"
+    zh: "學習正確使用 Will、Going to 和現在進行式來談論目標、行程和預測。"
+  icon: "🔮"
+  order: 3
+  level: intermediate
+
+words:
+  # Core Vocabulary (Day 1 - Technology Predictions)
+  - id: likely
+    word:
+      en: Likely
+      ja: おそらく
+      zh: 可能
+    reading: "LYK-lee"
+    phonetic: "/ˈlaɪkli/"
+    description:
+      en: "Probable, expected to happen."
+      ja: "起こる可能性が高い。"
+      zh: "有可能發生的。"
+    sentence:
+      en: "Electric cars are likely to become more affordable in the next decade."
+      ja: "電気自動車は今後10年でより手頃になる可能性が高いです。"
+      zh: "電動車在未來十年內可能會變得更實惠。"
+
+  - id: projected-to
+    word:
+      en: Projected to
+      ja: 〜と予測されている
+      zh: 預計會
+    reading: "proh-JEK-tid too"
+    phonetic: "/prəˈdʒektɪd tuː/"
+    description:
+      en: "Officially estimated or forecasted."
+      ja: "公式に推定または予測されている。"
+      zh: "正式估計或預測的。"
+    sentence:
+      en: "The global population is projected to reach 10 billion by 2050."
+      ja: "世界人口は2050年までに100億人に達すると予測されています。"
+      zh: "全球人口預計到2050年將達到100億。"
+
+  - id: trend
+    word:
+      en: Trend
+      ja: 傾向・トレンド
+      zh: 趨勢
+    reading: "trend"
+    phonetic: "/trend/"
+    description:
+      en: "A general direction of change or development."
+      ja: "変化や発展の一般的な方向性。"
+      zh: "變化或發展的大致方向。"
+    sentence:
+      en: "Remote work is a trend that will continue to grow."
+      ja: "リモートワークは成長し続けるトレンドです。"
+      zh: "遠端工作是一個將持續增長的趨勢。"
+
+  - id: prediction
+    word:
+      en: Prediction
+      ja: 予測
+      zh: 預測
+    reading: "pri-DIK-shuhn"
+    phonetic: "/prɪˈdɪkʃən/"
+    description:
+      en: "A statement about what will happen in the future."
+      ja: "将来起こることについての声明。"
+      zh: "關於未來會發生什麼的陳述。"
+    sentence:
+      en: "My prediction is that AI will change education completely."
+      ja: "私の予測は、AIが教育を完全に変えるということです。"
+      zh: "我的預測是人工智慧將徹底改變教育。"
+
+  # Grammar Patterns (Day 2 - Will vs. Going to vs. Present Continuous)
+  - id: will-instant
+    word:
+      en: Will (instant decision)
+      ja: 〜します（即座の決定）
+      zh: 會（即時決定）
+    reading: "wil"
+    phonetic: "/wɪl/"
+    description:
+      en: "Used for decisions made at the moment of speaking."
+      ja: "話す瞬間に決めたことに使う。"
+      zh: "用於說話當下做出的決定。"
+    sentence:
+      en: "Someone's at the door. I'll open it."
+      ja: "誰か玄関にいます。開けます。"
+      zh: "有人在門口。我去開門。"
+
+  - id: going-to-plan
+    word:
+      en: Going to (plan)
+      ja: 〜する予定です
+      zh: 打算要
+    reading: "GOH-ing too"
+    phonetic: "/ˈɡoʊɪŋ tuː/"
+    description:
+      en: "Used for plans decided before the moment of speaking."
+      ja: "話す前にすでに決めた計画に使う。"
+      zh: "用於說話之前已經決定好的計劃。"
+    sentence:
+      en: "I'm going to fly to Japan next month. I already bought the ticket."
+      ja: "来月日本に行く予定です。もうチケットを買いました。"
+      zh: "我下個月打算飛去日本。我已經買好機票了。"
+
+  - id: present-continuous-fixed
+    word:
+      en: Present Continuous (fixed)
+      ja: 〜する予定です（確定）
+      zh: 正在安排（確定的）
+    reading: "PREZ-uhnt kuhn-TIN-yoo-uhs"
+    phonetic: "/ˈprezənt kənˈtɪnjuəs/"
+    description:
+      en: "Used for fixed arrangements with specific time/place."
+      ja: "具体的な時間や場所が決まった予定に使う。"
+      zh: "用於有具體時間/地點的確定安排。"
+    sentence:
+      en: "I'm meeting him at 5 PM tomorrow at the coffee shop."
+      ja: "明日午後5時にコーヒーショップで彼と会います。"
+      zh: "我明天下午五點要在咖啡店跟他見面。"
+
+  # Writing Phrases (Day 4 - The 5-Year Plan)
+  - id: hope-to
+    word:
+      en: I hope to...
+      ja: 〜したいと思っています
+      zh: 我希望能...
+    reading: "ay hohp too"
+    phonetic: "/aɪ hoʊp tuː/"
+    description:
+      en: "Express a wish for the future (not certain)."
+      ja: "将来の願望を表す（確実ではない）。"
+      zh: "表達對未來的願望（不確定）。"
+    sentence:
+      en: "I hope to travel more and see different cultures."
+      ja: "もっと旅行して、様々な文化を見たいと思っています。"
+      zh: "我希望能多旅行，看看不同的文化。"
+
+  - id: plan-on
+    word:
+      en: I plan on...
+      ja: 〜するつもりです
+      zh: 我計劃要...
+    reading: "ay plan on"
+    phonetic: "/aɪ plæn ɒn/"
+    description:
+      en: "Express intention to do something."
+      ja: "何かをする意図を表す。"
+      zh: "表達做某事的意圖。"
+    sentence:
+      en: "I plan on learning a new language this year."
+      ja: "今年は新しい言語を学ぶつもりです。"
+      zh: "我計劃今年學習一門新語言。"
+
+  - id: my-goal-is
+    word:
+      en: My goal is to...
+      ja: 私の目標は〜です
+      zh: 我的目標是...
+    reading: "my gohl iz too"
+    phonetic: "/maɪ ɡoʊl ɪz tuː/"
+    description:
+      en: "State a specific objective."
+      ja: "具体的な目標を述べる。"
+      zh: "陳述一個具體的目標。"
+    sentence:
+      en: "My goal is to get promoted within two years."
+      ja: "私の目標は2年以内に昇進することです。"
+      zh: "我的目標是在兩年內升職。"
+
+  # Phrasal Verbs (Day 5 - Planning)
+  - id: look-forward-to
+    word:
+      en: Look forward to
+      ja: 〜を楽しみにする
+      zh: 期待
+    reading: "look FOR-werd too"
+    phonetic: "/lʊk ˈfɔːrwərd tuː/"
+    description:
+      en: "Feel excited about something in the future."
+      ja: "将来のことにワクワクする。"
+      zh: "對未來的事情感到興奮。"
+    sentence:
+      en: "I'm looking forward to the weekend. I need a break!"
+      ja: "週末を楽しみにしています。休憩が必要です！"
+      zh: "我很期待週末。我需要休息！"
+
+  - id: put-off
+    word:
+      en: Put off
+      ja: 延期する・先延ばしにする
+      zh: 延後、拖延
+    reading: "put awf"
+    phonetic: "/pʊt ɒf/"
+    description:
+      en: "Delay or postpone something."
+      ja: "何かを遅らせる、先延ばしにする。"
+      zh: "推遲或延後某事。"
+    sentence:
+      en: "I've been putting off going to the gym. I really need to start."
+      ja: "ジムに行くのを先延ばしにしています。本当に始めないと。"
+      zh: "我一直在拖延去健身房這件事。我真的需要開始了。"
+
+  - id: get-around-to
+    word:
+      en: Get around to
+      ja: ようやく〜する
+      zh: 終於去做
+    reading: "get uh-ROWND too"
+    phonetic: "/ɡet əˈraʊnd tuː/"
+    description:
+      en: "Finally do something after delay."
+      ja: "延期した後でようやく何かをする。"
+      zh: "拖延之後終於去做某事。"
+    sentence:
+      en: "I never get around to cleaning my room. It's always messy."
+      ja: "部屋の掃除をする暇がありません。いつも散らかっています。"
+      zh: "我總是沒時間打掃房間。它總是很亂。"
+
+chat:
+  conversations:
+    - id: scenario-1-five-year-plan
+      title:
+        en: "The 5-Year Plan"
+        ja: "5年計画"
+        zh: "五年計劃"
+      messages:
+        - role: partner
+          text:
+            en: "So, do you have any big plans for the future?"
+            ja: "それで、将来の大きな計画はありますか？"
+            zh: "那麼，你對未來有什麼大計劃嗎？"
+        - role: user
+          text:
+            en: "Yes, actually. My goal is to get promoted within two years."
+            ja: "はい、実は。私の目標は2年以内に昇進することです。"
+            zh: "有的，其實。我的目標是在兩年內升職。"
+        - role: partner
+          text:
+            en: "That's ambitious! What else do you hope to achieve?"
+            ja: "野心的ですね！他に達成したいことは何ですか？"
+            zh: "很有抱負！你還希望達成什麼？"
+        - role: user
+          text:
+            en: "I hope to travel more. I plan on visiting at least three new countries."
+            ja: "もっと旅行したいと思っています。少なくとも3つの新しい国を訪れるつもりです。"
+            zh: "我希望能多旅行。我計劃至少去三個新的國家。"
+        - role: partner
+          text:
+            en: "Nice! Any specific destinations you're looking forward to?"
+            ja: "いいですね！楽しみにしている具体的な目的地はありますか？"
+            zh: "不錯！有什麼特別期待的目的地嗎？"
+        - role: user
+          text:
+            en: "I'm looking forward to visiting Japan. I'm going to start saving money this month."
+            ja: "日本を訪れるのを楽しみにしています。今月から貯金を始める予定です。"
+            zh: "我很期待去日本。我這個月打算開始存錢。"
+        - role: partner
+          text:
+            en: "Have you been putting off any plans recently?"
+            ja: "最近先延ばしにしている計画はありますか？"
+            zh: "你最近有拖延什麼計劃嗎？"
+        - role: user
+          text:
+            en: "Honestly, yes. I've been putting off learning a new language. But I plan on starting next month."
+            ja: "正直に言うと、はい。新しい言語を学ぶのを先延ばしにしています。でも来月から始めるつもりです。"
+            zh: "老實說，有的。我一直在拖延學習新語言。但我計劃下個月開始。"
+
+    - id: scenario-2-making-weekend-plans
+      title:
+        en: "Making Weekend Plans"
+        ja: "週末の予定を立てる"
+        zh: "規劃週末"
+      messages:
+        - role: partner
+          text:
+            en: "Hey, what are you doing this weekend?"
+            ja: "ねえ、今週末は何をするの？"
+            zh: "嘿，你這週末要做什麼？"
+        - role: user
+          text:
+            en: "I'm meeting my sister at 2 PM on Saturday. We're having lunch together."
+            ja: "土曜日の午後2時に姉と会います。一緒にランチをします。"
+            zh: "我星期六下午兩點要跟我姐見面。我們要一起吃午餐。"
+        - role: partner
+          text:
+            en: "Nice! What about Sunday? Do you have any plans?"
+            ja: "いいね！日曜日は？何か予定ある？"
+            zh: "不錯！星期天呢？你有什麼計劃嗎？"
+        - role: user
+          text:
+            en: "I'm going to clean my apartment. I've been putting it off for weeks."
+            ja: "アパートを掃除する予定です。何週間も先延ばしにしていました。"
+            zh: "我打算打掃公寓。我已經拖延好幾週了。"
+        - role: partner
+          text:
+            en: "Ha! I know that feeling. Want to grab coffee after you finish?"
+            ja: "わかる！終わったらコーヒー飲まない？"
+            zh: "哈！我懂那種感覺。你忙完後要不要去喝杯咖啡？"
+        - role: user
+          text:
+            en: "Sure, I'll text you when I'm done. Oh wait, I just remembered - the weather forecast said it will be rainy on Sunday."
+            ja: "いいよ、終わったらメッセージするね。あ、待って、思い出した - 天気予報で日曜日は雨だって。"
+            zh: "好啊，我忙完傳訊息給你。哦等等，我剛想起來 - 天氣預報說星期天會下雨。"
+        - role: partner
+          text:
+            en: "Perfect weather for staying home then! What time works for you?"
+            ja: "じゃあ家にいるのにぴったりの天気だね！何時がいい？"
+            zh: "那正好是待在家的好天氣！你幾點方便？"
+        - role: user
+          text:
+            en: "I'll be free around 4 PM. I'll come to the cafe near your place."
+            ja: "4時頃には空くと思う。あなたの家の近くのカフェに行くよ。"
+            zh: "我大概下午四點會有空。我會去你家附近的咖啡廳。"
+
+    - id: scenario-3-predictions-and-schedules
+      title:
+        en: "Predictions and Schedules"
+        ja: "予測とスケジュール"
+        zh: "預測和行程"
+      messages:
+        - role: partner
+          text:
+            en: "What do you think the future of work will look like?"
+            ja: "仕事の未来はどうなると思いますか？"
+            zh: "你認為工作的未來會是什麼樣子？"
+        - role: user
+          text:
+            en: "Remote work is likely to become even more common. It's a growing trend."
+            ja: "リモートワークはさらに一般的になる可能性が高いです。成長しているトレンドです。"
+            zh: "遠端工作可能會變得更加普遍。這是一個增長中的趨勢。"
+        - role: partner
+          text:
+            en: "What's your prediction for AI and jobs?"
+            ja: "AIと仕事についての予測は何ですか？"
+            zh: "你對人工智慧和工作有什麼預測？"
+        - role: user
+          text:
+            en: "My prediction is that AI will change many industries. Some jobs are projected to disappear."
+            ja: "私の予測は、AIが多くの産業を変えるということです。いくつかの仕事は消えると予測されています。"
+            zh: "我的預測是人工智慧將改變許多產業。有些工作預計會消失。"
+        - role: partner
+          text:
+            en: "Are you doing anything to prepare for these changes?"
+            ja: "これらの変化に備えて何かしていますか？"
+            zh: "你有在為這些變化做準備嗎？"
+        - role: user
+          text:
+            en: "Yes, I'm taking an online course next month. The classes start on the 15th."
+            ja: "はい、来月オンラインコースを受講します。授業は15日に始まります。"
+            zh: "有的，我下個月要上一個線上課程。課程十五號開始。"
+        - role: partner
+          text:
+            en: "That's smart! How long is the course?"
+            ja: "賢いですね！コースはどのくらいの長さですか？"
+            zh: "很聰明！課程有多長？"
+        - role: user
+          text:
+            en: "It's three months. I'm looking forward to learning new skills. I've been putting off upgrading my skills for too long."
+            ja: "3ヶ月です。新しいスキルを学ぶのを楽しみにしています。スキルアップを長い間先延ばしにしていました。"
+            zh: "三個月。我很期待學習新技能。我拖延提升技能太久了。"
+        - role: partner
+          text:
+            en: "When do you think you'll finally get around to using those new skills?"
+            ja: "いつ頃その新しいスキルを使えるようになると思いますか？"
+            zh: "你覺得你什麼時候會終於開始使用那些新技能？"
+        - role: user
+          text:
+            en: "Hopefully by next year. My goal is to switch to a more tech-focused role."
+            ja: "来年までにはできると思います。私の目標は、より技術に特化した役職に移ることです。"
+            zh: "希望明年之前。我的目標是轉到一個更專注於科技的職位。"
+
+quiz:
+  questionsPerRound: 5
+  xpReward: 25
