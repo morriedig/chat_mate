@@ -57,12 +57,7 @@ function getAvailableKeyCount() {
 
 // === TOKEN MANAGEMENT ===
 function generateToken() {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let token = '';
-  for (let i = 0; i < 32; i++) {
-    token += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  return token;
+  return Utilities.getUuid().replace(/-/g, '') + Utilities.getUuid().replace(/-/g, '');
 }
 
 function createAuthToken(origin) {
@@ -88,39 +83,36 @@ function validateToken(token) {
 function isAllowedOrigin(origin) {
   if (!ALLOWED_ORIGINS.length) return true; // No restriction if not configured
   if (!origin) return false;
-  return ALLOWED_ORIGINS.some(allowed => origin.includes(allowed.trim()));
+  return ALLOWED_ORIGINS.some(function(allowed) {
+    var trimmed = allowed.trim();
+    if (origin === trimmed) return true;
+    // URL origin comparison fallback (matches server.js)
+    try {
+      var originUrl = new URL(origin);
+      var allowedUrl = new URL(trimmed);
+      return originUrl.origin === allowedUrl.origin;
+    } catch (e) {
+      return false;
+    }
+  });
 }
 
 // === RATE LIMITING ===
 const RATE_LIMIT_MS = 1000; // 1 request per second
-const GLOBAL_RATE_LIMIT_MS = 5000; // 5 seconds for unknown origins
 
-function checkRateLimit(clientId, isFromAllowedOrigin) {
+function checkRateLimit(clientId) {
+  if (!clientId) return false; // Reject requests without clientId
+
   const cache = CacheService.getScriptCache();
+  const key = 'ratelimit_' + clientId;
+  const lastRequest = cache.get(key);
+  const now = Date.now();
 
-  if (isFromAllowedOrigin && clientId) {
-    // Allowed origin + clientId: per-client rate limit
-    const key = 'ratelimit_' + clientId;
-    const lastRequest = cache.get(key);
-    const now = Date.now();
-
-    if (lastRequest && (now - parseInt(lastRequest)) < RATE_LIMIT_MS) {
-      return false;
-    }
-    cache.put(key, now.toString(), 60);
-    return true;
-  } else {
-    // Unknown origin: strict global rate limit
-    const key = 'ratelimit_global';
-    const lastRequest = cache.get(key);
-    const now = Date.now();
-
-    if (lastRequest && (now - parseInt(lastRequest)) < GLOBAL_RATE_LIMIT_MS) {
-      return false;
-    }
-    cache.put(key, now.toString(), 60);
-    return true;
+  if (lastRequest && (now - parseInt(lastRequest)) < RATE_LIMIT_MS) {
+    return false;
   }
+  cache.put(key, now.toString(), 60);
+  return true;
 }
 
 // === TOKEN RATE LIMITING ===
@@ -175,10 +167,53 @@ function doGet(e) {
   });
 }
 
+// Valid parameter values
+var VALID_CHARACTERS = ['emma', 'marcus', 'sophia', 'james', 'yuki'];
+var VALID_LEVELS = ['beginner', 'intermediate', 'advanced'];
+var VALID_LANGUAGES = ['en', 'ja', 'zh'];
+
 function doPost(e) {
   try {
+    if (!e || !e.postData || !e.postData.contents) {
+      return createResponse({ success: false, error: 'Missing request body' });
+    }
+
     const data = JSON.parse(e.postData.contents);
     const { messages = [], character = 'emma', level = 'intermediate', language = 'en', isGreeting, article, clientId, origin, authToken } = data;
+
+    // Input validation
+    if (VALID_CHARACTERS.indexOf(character) === -1) {
+      return createResponse({ success: false, error: 'Invalid character' });
+    }
+    if (VALID_LEVELS.indexOf(level) === -1) {
+      return createResponse({ success: false, error: 'Invalid level' });
+    }
+    if (VALID_LANGUAGES.indexOf(language) === -1) {
+      return createResponse({ success: false, error: 'Invalid language' });
+    }
+    if (!Array.isArray(messages)) {
+      return createResponse({ success: false, error: 'Messages must be an array' });
+    }
+    if (clientId !== undefined && (typeof clientId !== 'string' || clientId.length === 0 || clientId.length > 256)) {
+      return createResponse({ success: false, error: 'Invalid clientId' });
+    }
+    if (messages.length > 50) {
+      return createResponse({ success: false, error: 'Too many messages' });
+    }
+    for (var i = 0; i < messages.length; i++) {
+      var msg = messages[i];
+      if (!msg || typeof msg.content !== 'string' || msg.content.length > 5000) {
+        return createResponse({ success: false, error: 'Invalid message content' });
+      }
+    }
+    if (article) {
+      if (typeof article.title !== 'string' || article.title.length > 500) {
+        return createResponse({ success: false, error: 'Invalid article title' });
+      }
+      if (typeof article.content !== 'string' || article.content.length > 10000) {
+        return createResponse({ success: false, error: 'Invalid article content' });
+      }
+    }
 
     // Block requests from unknown origins
     if (!isAllowedOrigin(origin || '')) {
@@ -191,7 +226,7 @@ function doPost(e) {
     }
 
     // Check rate limit (1 req/sec per client)
-    if (!checkRateLimit(clientId, true)) {
+    if (!checkRateLimit(clientId)) {
       return createResponse({ success: false, error: 'Too many requests. Please wait 1 second.', isRateLimit: true });
     }
 
@@ -209,8 +244,14 @@ function doPost(e) {
     });
 
   } catch (error) {
-    const isRateLimit = error.message.includes('quota') || error.message.includes('rate') || error.message.includes('429');
-    return createResponse({ success: false, error: error.message, isRateLimit });
+    console.error('Chat error:', error);
+    const errorMsg = (error && error.message) || '';
+    const isRateLimit = errorMsg.includes('quota') || errorMsg.includes('rate') || errorMsg.includes('429');
+    return createResponse({
+      success: false,
+      error: isRateLimit ? 'Rate limit exceeded. Please try again later.' : 'An internal error occurred. Please try again.',
+      isRateLimit: isRateLimit
+    });
   }
 }
 
@@ -313,6 +354,13 @@ function callGemini(messages) {
         throw new Error(result.error.message);
       }
 
+      // Validate response structure
+      if (!result.candidates || !result.candidates[0] || !result.candidates[0].content ||
+          !result.candidates[0].content.parts || !result.candidates[0].content.parts[0] ||
+          !result.candidates[0].content.parts[0].text) {
+        throw new Error('Invalid response from AI model');
+      }
+
       // Success!
       currentKeyIndex = keyIndex;
       console.log('Success with key ' + (keyIndex + 1));
@@ -372,16 +420,7 @@ function buildSystemPrompt(character, level, language, article) {
   const dailyContext = article ? null : generateDailyContext(character, language);
   const articleContext = article ? buildArticleContext(article, language) : null;
 
-  const languageName = language === 'ja' ? 'Japanese' : 'English';
-  const languageExamples = language === 'ja' ? {
-    exhausted: '疲れた - もう、ヘトヘトだよ',
-    cozy: 'このカフェ居心地いい - 落ち着くよね',
-    procrastinated: '今日ずっとサボってた - やること後回しにしちゃって'
-  } : {
-    exhausted: 'I was exhausted - like, completely drained, you know?',
-    cozy: 'The cafe was cozy - nice and warm, very comfortable',
-    procrastinated: 'I procrastinated all day - kept putting off my work'
-  };
+  const languageName = language === 'ja' ? 'Japanese' : language === 'zh' ? 'Chinese' : 'English';
 
   const fillerWords = language === 'ja'
     ? 'えーと、なんか、まあ、ちょっと'

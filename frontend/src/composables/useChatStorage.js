@@ -1,4 +1,4 @@
-import { watch } from 'vue'
+import { watch, onBeforeUnmount, getCurrentInstance } from 'vue'
 
 function compress(str) {
   if (!str) return ''
@@ -54,9 +54,27 @@ export function useChatStorage(keyConfig) {
   }
 
   function autoSave(messagesRef, hintsRef) {
-    watch([messagesRef, hintsRef], () => {
-      save(messagesRef.value, hintsRef.value)
+    let timer = null
+    const stop = watch([messagesRef, hintsRef], () => {
+      if (timer) clearTimeout(timer)
+      timer = setTimeout(() => {
+        save(messagesRef.value, hintsRef.value)
+      }, 1000)
     }, { deep: true })
+
+    function cleanup() {
+      if (timer) {
+        clearTimeout(timer)
+        save(messagesRef.value, hintsRef.value)
+      }
+      stop()
+    }
+
+    if (getCurrentInstance()) {
+      onBeforeUnmount(cleanup)
+    }
+
+    return cleanup
   }
 
   return {

@@ -1,11 +1,23 @@
 import express from 'express';
 import cors from 'cors';
+import crypto from 'crypto';
 import 'dotenv/config';
 
 const app = express();
-app.use(cors());
-app.use(express.json());
-app.use(express.text({ type: 'text/plain' }));
+
+// Configure CORS with allowed origins
+app.use(cors({
+  origin: function(origin, callback) {
+    if (!ALLOWED_ORIGINS.length || !origin || isAllowedOrigin(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
+}));
+
+app.use(express.json({ limit: '16kb' }));
+app.use(express.text({ type: 'text/plain', limit: '16kb' }));
 
 // Middleware to parse text/plain as JSON
 app.use((req, res, next) => {
@@ -39,21 +51,39 @@ const RATE_LIMIT_MS = 1000; // 1 request per second
 const tokenStore = new Map(); // token -> { createdAt: timestamp }
 const tokenRateLimits = new Map(); // origin -> lastTokenRequest timestamp
 const clientRateLimits = new Map(); // clientId -> lastRequest timestamp
+const MAX_MAP_ENTRIES = 10000;
+
+// Periodic cleanup of stale rate limit entries (every 10 minutes)
+setInterval(() => {
+  const now = Date.now();
+  const oneHourAgo = now - 3600000;
+  for (const [key, time] of tokenRateLimits.entries()) {
+    if (time < oneHourAgo) tokenRateLimits.delete(key);
+  }
+  for (const [key, time] of clientRateLimits.entries()) {
+    if (time < oneHourAgo) clientRateLimits.delete(key);
+  }
+  cleanupExpiredTokens();
+}, 600000);
 
 function generateToken() {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let token = '';
-  for (let i = 0; i < 32; i++) {
-    token += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  return token;
+  return crypto.randomBytes(32).toString('hex');
 }
 
 function isAllowedOrigin(origin) {
   // In development, allow all origins if ALLOWED_ORIGINS is not set
   if (!ALLOWED_ORIGINS.length) return true;
   if (!origin) return false;
-  return ALLOWED_ORIGINS.some(allowed => origin.includes(allowed.trim()));
+  return ALLOWED_ORIGINS.some(allowed => {
+    const trimmed = allowed.trim();
+    // Exact match or match using URL origin comparison
+    if (origin === trimmed) return true;
+    try {
+      return new URL(origin).origin === new URL(trimmed).origin;
+    } catch {
+      return false;
+    }
+  });
 }
 
 function checkTokenRateLimit(origin) {
@@ -64,6 +94,7 @@ function checkTokenRateLimit(origin) {
   if (lastRequest && (now - lastRequest) < TOKEN_RATE_LIMIT_MS) {
     return false;
   }
+  if (tokenRateLimits.size >= MAX_MAP_ENTRIES) return false;
   tokenRateLimits.set(key, now);
   return true;
 }
@@ -73,11 +104,13 @@ function createAuthToken(origin) {
     return null;
   }
 
+  if (tokenStore.size >= MAX_MAP_ENTRIES) {
+    cleanupExpiredTokens();
+    if (tokenStore.size >= MAX_MAP_ENTRIES) return null;
+  }
+
   const token = generateToken();
   tokenStore.set(token, { createdAt: Date.now() });
-
-  // Clean up expired tokens periodically
-  cleanupExpiredTokens();
 
   return token;
 }
@@ -107,7 +140,7 @@ function cleanupExpiredTokens() {
 }
 
 function checkRateLimit(clientId) {
-  if (!clientId) return true; // No rate limit without clientId
+  if (!clientId) return false; // Reject requests without clientId
 
   const lastRequest = clientRateLimits.get(clientId);
   const now = Date.now();
@@ -115,6 +148,7 @@ function checkRateLimit(clientId) {
   if (lastRequest && (now - lastRequest) < RATE_LIMIT_MS) {
     return false;
   }
+  if (clientRateLimits.size >= MAX_MAP_ENTRIES) return false;
   clientRateLimits.set(clientId, now);
   return true;
 }
@@ -293,11 +327,20 @@ async function callGeminiWithFallback(body) {
     console.log(`Trying key ${keyIndex + 1}/${API_KEYS.length}: ...${apiKey.slice(-6)}`);
 
     try {
-      const response = await fetch(`${GEMINI_URL}?key=${apiKey}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      });
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 30000); // 30s timeout
+
+      let response;
+      try {
+        response = await fetch(`${GEMINI_URL}?key=${apiKey}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+          signal: controller.signal,
+        });
+      } finally {
+        clearTimeout(timeout);
+      }
 
       const data = await response.json();
 
@@ -384,9 +427,47 @@ app.get('/token', (req, res) => {
   }
 });
 
+// Valid parameter values
+const VALID_CHARACTERS = ['emma', 'marcus', 'sophia', 'james', 'yuki'];
+const VALID_LEVELS = ['beginner', 'intermediate', 'advanced'];
+const VALID_LANGUAGES = ['en', 'ja', 'zh'];
+
 app.post('/chat', async (req, res) => {
   try {
     const { messages = [], character = 'emma', level = 'intermediate', language = 'en', isGreeting, article, clientId, origin, authToken } = req.body;
+
+    // Input validation
+    if (!VALID_CHARACTERS.includes(character)) {
+      return res.status(400).json({ success: false, error: 'Invalid character' });
+    }
+    if (!VALID_LEVELS.includes(level)) {
+      return res.status(400).json({ success: false, error: 'Invalid level' });
+    }
+    if (!VALID_LANGUAGES.includes(language)) {
+      return res.status(400).json({ success: false, error: 'Invalid language' });
+    }
+    if (!Array.isArray(messages)) {
+      return res.status(400).json({ success: false, error: 'Messages must be an array' });
+    }
+    if (clientId !== undefined && (typeof clientId !== 'string' || clientId.length === 0 || clientId.length > 256)) {
+      return res.status(400).json({ success: false, error: 'Invalid clientId' });
+    }
+    if (messages.length > 50) {
+      return res.status(400).json({ success: false, error: 'Too many messages' });
+    }
+    for (const msg of messages) {
+      if (!msg || typeof msg.content !== 'string' || msg.content.length > 5000) {
+        return res.status(400).json({ success: false, error: 'Invalid message content' });
+      }
+    }
+    if (article) {
+      if (typeof article.title !== 'string' || article.title.length > 500) {
+        return res.status(400).json({ success: false, error: 'Invalid article title' });
+      }
+      if (typeof article.content !== 'string' || article.content.length > 10000) {
+        return res.status(400).json({ success: false, error: 'Invalid article content' });
+      }
+    }
 
     // Check origin
     if (!isAllowedOrigin(origin || '')) {
@@ -445,48 +526,43 @@ app.post('/chat', async (req, res) => {
           required: ['message', 'hints']
         }
       },
+      safetySettings: [
+        { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_ONLY_HIGH' },
+        { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_ONLY_HIGH' },
+        { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_ONLY_HIGH' },
+        { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_ONLY_HIGH' },
+      ],
     });
 
+    // Validate Gemini response structure
+    if (!data?.candidates?.[0]?.content?.parts?.[0]?.text) {
+      throw new Error('Invalid response from AI model');
+    }
+
     const rawText = data.candidates[0].content.parts[0].text;
-    const parsed = JSON.parse(rawText);
+    let parsed;
+    try {
+      parsed = JSON.parse(rawText);
+    } catch {
+      throw new Error('AI model returned invalid JSON');
+    }
+
+    if (!parsed.message) {
+      throw new Error('AI model response missing message');
+    }
+
     res.json({ success: true, reply: parsed.message, hints: parsed.hints || [] });
 
   } catch (error) {
-    const isRateLimit = error.message?.includes('quota') || error.message?.includes('rate');
+    console.error('Chat error:', error);
+    const isRateLimit = error.message?.includes('quota') || error.message?.includes('rate') || error.message?.includes('429');
     res.status(isRateLimit ? 429 : 500).json({
       success: false,
-      error: error.message,
+      error: isRateLimit ? 'Rate limit exceeded. Please try again later.' : 'An internal error occurred. Please try again.',
       isRateLimit
     });
   }
 });
-
-function parseReplyWithHints(rawReply) {
-  // Expected format:
-  // MESSAGE: Hey, how's your day going?
-  // HINTS: great (wonderful), busy (a lot to do), relaxing (calm)
-
-  const messageMatch = rawReply.match(/MESSAGE:\s*([\s\S]*?)(?=\nHINTS:|$)/i);
-  const hintsMatch = rawReply.match(/HINTS:\s*(.*)/i);
-
-  let reply = messageMatch ? messageMatch[1].trim() : rawReply.trim();
-  let hints = [];
-
-  if (hintsMatch) {
-    const hintsStr = hintsMatch[1];
-    // Parse: word (description), word2 (description2)
-    const hintPattern = /(\w+(?:\s+\w+)?)\s*\(([^)]+)\)/g;
-    let match;
-    while ((match = hintPattern.exec(hintsStr)) !== null) {
-      hints.push({
-        word: match[1].trim(),
-        description: match[2].trim()
-      });
-    }
-  }
-
-  return { reply, hints };
-}
 
 function buildGeminiMessages(systemPrompt, messages, isGreeting, article) {
   const geminiMessages = [
@@ -526,16 +602,7 @@ function buildSystemPrompt(character, level, language = 'en', article = null) {
   const dailyContext = article ? null : generateDailyContext(character, language);
   const articleContext = article ? buildArticleContext(article, language) : null;
 
-  const languageName = language === 'ja' ? 'Japanese' : 'English';
-  const languageExamples = language === 'ja' ? {
-    exhausted: '疲れた - もう、ヘトヘトだよ',
-    cozy: 'このカフェ居心地いい - 落ち着くよね',
-    procrastinated: '今日ずっとサボってた - やること後回しにしちゃって'
-  } : {
-    exhausted: 'I was exhausted - like, completely drained, you know?',
-    cozy: 'The cafe was cozy - nice and warm, very comfortable',
-    procrastinated: 'I procrastinated all day - kept putting off my work'
-  };
+  const languageName = language === 'ja' ? 'Japanese' : language === 'zh' ? 'Chinese' : 'English';
 
   const fillerWords = language === 'ja'
     ? 'えーと、なんか、まあ、ちょっと'
