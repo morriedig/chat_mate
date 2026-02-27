@@ -106,8 +106,8 @@
     "streakMilestone": "{days} 日連続達成！"
   },
   "achievements": {
-    "unlocked": "実績解除!",
-    "continue": "すごい!",
+    "unlocked": "実績解除！",
+    "continue": "すごい！",
     "categories": {
       "first_steps": "はじめの一歩",
       "consistency": "継続",
@@ -186,6 +186,12 @@
     "expert": "エキスパート",
     "master": "マスター",
     "legend": "レジェンド"
+  },
+  "pwa": {
+    "updateAvailable": "アップデートあり",
+    "updateMessage": "Chat Mateの新しいバージョンが利用可能です。最新機能をお楽しみください。",
+    "update": "更新する",
+    "later": "あとで"
   },
   "learning": {
     "backToChapters": "チャプター",

@@ -187,6 +187,12 @@
     "master": "Master",
     "legend": "Legend"
   },
+  "pwa": {
+    "updateAvailable": "Update available",
+    "updateMessage": "A new version of Chat Mate is ready. Update now for the latest features.",
+    "update": "Update",
+    "later": "Later"
+  },
   "learning": {
     "backToChapters": "Chapters",
     "backToSetup": "Back",

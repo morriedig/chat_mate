@@ -4,6 +4,7 @@ import SetupScreen from './components/SetupScreen.vue'
 import ChatScreen from './components/ChatScreen.vue'
 import ArticleScreen from './components/ArticleScreen.vue'
 import LearningScreen from './components/LearningScreen.vue'
+import PwaUpdatePrompt from './components/PwaUpdatePrompt.vue'
 
 const currentScreen = ref('setup')
 const selectedCharacter = ref(null)
@@ -95,4 +96,5 @@ function handleBackToSetup() {
     :mode="chatMode"
     @back="handleBack"
   />
+  <PwaUpdatePrompt />
 </template>
