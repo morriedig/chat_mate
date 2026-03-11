@@ -189,6 +189,10 @@
     "master": "Master",
     "legend": "Legend"
   },
+  "dailyPrompt": {
+    "label": "Today's Prompt",
+    "tryIt": "Use this prompt"
+  },
   "pwa": {
     "updateAvailable": "Update available",
     "updateMessage": "A new version of Chat Mate is ready. Update now for the latest features.",

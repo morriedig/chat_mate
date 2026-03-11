@@ -17,6 +17,7 @@ import VocabularyBankPanel from './chat/VocabularyBankPanel.vue'
 import LevelUpModal from './chat/LevelUpModal.vue'
 import StreakMilestoneModal from './chat/StreakMilestoneModal.vue'
 import AchievementUnlockModal from './chat/AchievementUnlockModal.vue'
+import DailyPromptCard from './chat/DailyPromptCard.vue'
 import MicroReward from './MicroReward.vue'
 
 const { t } = useI18n()
@@ -81,6 +82,15 @@ const errorMessage = ref('')
 const showArticle = ref(true)
 const wordPopup = ref(null)
 const showVocabBank = ref(false)
+const promptDismissed = ref(false)
+
+// Show daily prompt only for fresh chat conversations (not article/scenario mode)
+const showDailyPrompt = computed(() =>
+  !promptDismissed.value
+  && !isArticleMode.value
+  && !scenario.value
+  && messages.value.filter(m => m.role === 'user').length === 0
+)
 
 // Refs
 const messagesContainer = ref(null)
@@ -131,9 +141,17 @@ function focusInput() {
   })
 }
 
+function handleUsePrompt(promptText) {
+  inputText.value = promptText
+  promptDismissed.value = true
+  focusInput()
+}
+
 async function handleSendMessage() {
   const text = inputText.value.trim()
   if (!text || isLoading.value) return
+
+  promptDismissed.value = true
 
   messages.value.push({
     role: 'user',
@@ -323,6 +341,15 @@ function handleBack() {
             <VocabularyHints
               v-if="!isArticleMode"
               :hints="currentHints"
+            />
+
+            <!-- Daily Prompt -->
+            <DailyPromptCard
+              v-if="showDailyPrompt"
+              :level="level?.id"
+              :language="language"
+              @use-prompt="handleUsePrompt"
+              @dismiss="promptDismissed = true"
             />
 
             <!-- Spacer -->

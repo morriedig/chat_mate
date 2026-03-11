@@ -189,6 +189,10 @@
     "master": "マスター",
     "legend": "レジェンド"
   },
+  "dailyPrompt": {
+    "label": "今日のお題",
+    "tryIt": "このお題を使う"
+  },
   "pwa": {
     "updateAvailable": "アップデートあり",
     "updateMessage": "Chat Mateの新しいバージョンが利用可能です。最新機能をお楽しみください。",

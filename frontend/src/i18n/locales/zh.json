@@ -189,6 +189,10 @@
     "master": "大師",
     "legend": "傳奇"
   },
+  "dailyPrompt": {
+    "label": "今日提示",
+    "tryIt": "用這個提示"
+  },
   "pwa": {
     "updateAvailable": "有可用更新",
     "updateMessage": "Chat Mate 有新版本了。立即更新以獲得最新功能。",
