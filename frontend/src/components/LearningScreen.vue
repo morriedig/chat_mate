@@ -1,9 +1,12 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
 import { useDarkMode } from '../composables/useDarkMode'
 import { useUserProgress } from '../composables/useUserProgress'
 import { useLearningProgress } from '../composables/useLearningProgress'
+import { useSRS } from '../composables/useSRS'
+import { useNavState } from '../composables/useNavState'
 import { getChaptersByLevel, getChapterWords, getChapterConversations } from '../data/chapterLoader'
 import VocabularyCard from './learning/VocabularyCard.vue'
 import FlashcardMode from './learning/FlashcardMode.vue'
@@ -11,30 +14,30 @@ import QuizMode from './learning/QuizMode.vue'
 import ConversationPractice from './learning/ConversationPractice.vue'
 
 const { t, locale } = useI18n()
+const router = useRouter()
 const { isDark } = useDarkMode()
 const { addXP } = useUserProgress()
 const { getChapterCompletionStatus } = useLearningProgress()
+const { getDueWords, getDueCount, totalDueToday } = useSRS()
+const {
+  learningLevel,
+  selectedTargetLanguage,
+  selectedMotherTongue,
+  uiLanguage,
+} = useNavState()
 
-const props = defineProps({
-  level: {
-    type: Object,
-    required: true
-  },
-  targetLanguage: {
-    type: String,
-    required: true
-  },
-  motherTongue: {
-    type: String,
-    default: 'en'
-  },
-  uiLanguage: {
-    type: String,
-    default: 'en'
-  }
-})
+// Redirect if missing required state
+if (!learningLevel.value) {
+  router.replace('/')
+}
 
-const emit = defineEmits(['back'])
+// Create props-compatible computed values (with safe defaults)
+const props = {
+  get level() { return learningLevel.value || { id: 'intermediate' } },
+  get targetLanguage() { return selectedTargetLanguage.value || 'en' },
+  get motherTongue() { return selectedMotherTongue.value || 'en' },
+  get uiLanguage() { return uiLanguage.value || 'en' },
+}
 
 // State
 const selectedChapter = ref(null)
@@ -44,22 +47,58 @@ const currentConversations = ref([])
 const showConversationPrompt = ref(false)
 const isBilingual = ref(true) // Default to bilingual for beginners
 const voiceSpeed = ref('normal') // 'normal', 'slow', 'word'
+const isReviewMode = ref(false)
+const reviewWords = ref([])
 
 // Computed - Get chapters for current target language and level from YAML files
 const availableChapters = computed(() => {
   return getChaptersByLevel(props.targetLanguage, props.level.id, props.uiLanguage)
 })
 
+// Get all words across all available chapters (for SRS review)
+const allChapterWords = computed(() => {
+  const words = []
+  for (const chapter of availableChapters.value) {
+    words.push(...getChapterWords(chapter.id, props.targetLanguage, props.motherTongue))
+  }
+  return words
+})
+
+// Words due for review across all chapters at this level
+const dueReviewWords = computed(() => getDueWords(allChapterWords.value))
+
+// Cached due counts per chapter (avoids redundant getChapterWords calls in template)
+const chapterDueCounts = computed(() => {
+  const counts = {}
+  for (const chapter of availableChapters.value) {
+    const words = getChapterWords(chapter.id, props.targetLanguage, props.motherTongue)
+    counts[chapter.id] = getDueCount(words)
+  }
+  return counts
+})
+
 // Methods
 function selectChapter(chapter) {
   selectedChapter.value = chapter
+  isReviewMode.value = false
   currentWords.value = getChapterWords(chapter.id, props.targetLanguage, props.motherTongue)
   currentConversations.value = getChapterConversations(chapter.id, props.targetLanguage, props.motherTongue)
   learningMode.value = 'list'
 }
 
+function startDailyReview() {
+  reviewWords.value = dueReviewWords.value
+  if (reviewWords.value.length === 0) return
+  isReviewMode.value = true
+  selectedChapter.value = { id: null, title: t('srs.dailyReview'), icon: '🔄' }
+  currentWords.value = reviewWords.value
+  currentConversations.value = []
+  learningMode.value = 'quiz'
+}
+
 function backToChapters() {
   selectedChapter.value = null
+  isReviewMode.value = false
   learningMode.value = 'list'
 }
 
@@ -72,6 +111,8 @@ function handleQuizComplete(result) {
   if (result.xpEarned > 0) {
     addXP(result.xpEarned, 'quiz')
   }
+  // Skip conversation prompt in review mode (no conversations for cross-chapter review)
+  if (isReviewMode.value) return
   // Show conversation prompt after completing quiz
   showConversationPrompt.value = true
 }
@@ -115,7 +156,7 @@ onMounted(() => {
     <header class="sticky top-0 z-10 bg-surface-light dark:bg-surface-dark border-b border-slate-200 dark:border-slate-700">
       <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
         <button
-          @click="selectedChapter ? backToChapters() : emit('back')"
+          @click="selectedChapter ? backToChapters() : router.push('/')"
           class="flex items-center gap-2 text-text-muted hover:text-text-main dark:text-slate-400 dark:hover:text-white transition-colors"
         >
           <span class="material-symbols-outlined">arrow_back</span>
@@ -163,6 +204,27 @@ onMounted(() => {
       <template v-if="!selectedChapter">
         <h1 class="text-2xl font-bold text-text-main dark:text-white mb-2">{{ t('learning.chooseChapter') }}</h1>
         <p class="text-text-muted dark:text-slate-400 mb-6">{{ t('learning.chapterDescription') }}</p>
+
+        <!-- Daily Review Card -->
+        <div
+          v-if="dueReviewWords.length > 0"
+          @click="startDailyReview"
+          class="flex items-center gap-4 p-4 mb-6 rounded-2xl border-2 border-amber-400 dark:border-amber-600 bg-amber-50 dark:bg-amber-900/20 cursor-pointer transition-all hover:scale-[1.01]"
+        >
+          <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
+            <span class="text-2xl">🔄</span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h3 class="font-semibold text-text-main dark:text-white text-lg">{{ t('srs.dailyReview') }}</h3>
+            <p class="text-sm text-text-muted dark:text-slate-400">{{ t('srs.dailyReviewDescription') }}</p>
+          </div>
+          <div class="flex-shrink-0 px-3 py-1 bg-amber-200 dark:bg-amber-800 rounded-full">
+            <span class="text-sm font-bold text-amber-800 dark:text-amber-200">
+              {{ t('srs.wordsToReview', { count: dueReviewWords.length }) }}
+            </span>
+          </div>
+          <span class="material-symbols-outlined text-amber-600 dark:text-amber-400">chevron_right</span>
+        </div>
 
         <div class="space-y-4">
           <div
@@ -220,6 +282,16 @@ onMounted(() => {
                   {{ t('learning.progress.conversation') }}
                 </span>
               </div>
+            </div>
+
+            <!-- SRS Due Badge -->
+            <div
+              v-if="chapterDueCounts[chapter.id] > 0"
+              class="flex-shrink-0 px-2.5 py-1 bg-amber-100 dark:bg-amber-900/30 rounded-full"
+            >
+              <span class="text-xs font-bold text-amber-700 dark:text-amber-300">
+                {{ chapterDueCounts[chapter.id] }} {{ t('srs.dueToday') }}
+              </span>
             </div>
 
             <!-- Word Count Badge -->
@@ -287,6 +359,7 @@ onMounted(() => {
               {{ t('learning.modes.quiz') }}
             </button>
             <button
+              v-if="!isReviewMode"
               @click="setMode('conversation')"
               class="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
               :class="learningMode === 'conversation'

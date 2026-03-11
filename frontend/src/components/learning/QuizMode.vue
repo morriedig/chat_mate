@@ -3,9 +3,11 @@ import { watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useQuiz } from '../../composables/useQuiz'
 import { useLearningProgress } from '../../composables/useLearningProgress'
+import { useSRS } from '../../composables/useSRS'
 
 const { t } = useI18n()
 const { markQuizCompleted } = useLearningProgress()
+const { recordQuizResults } = useSRS()
 
 const props = defineProps({
   words: {
@@ -56,6 +58,9 @@ function handleNextQuestion() {
     if (props.chapterId) {
       markQuizCompleted(props.chapterId, result.score, result.total)
     }
+
+    // Record per-word results for SRS scheduling
+    recordQuizResults(answers.value)
 
     // DIP: Emit event instead of calling XP system directly
     emit('complete', {

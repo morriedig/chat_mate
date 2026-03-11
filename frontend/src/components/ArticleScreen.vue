@@ -1,14 +1,14 @@
 <script setup>
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
 import { articles } from '../data/articles.js'
 import { stripMarkers } from '../composables/useArticleParser'
+import { useNavState } from '../composables/useNavState'
 
 const { t, locale } = useI18n()
-const emit = defineEmits(['select', 'back'])
-const props = defineProps({
-  level: Object
-})
+const router = useRouter()
+const { selectedLevel: level, setArticle } = useNavState()
 
 // Get articles for current language
 const currentArticles = computed(() => {
@@ -18,16 +18,16 @@ const currentArticles = computed(() => {
 
 // Get articles filtered by level
 const filteredArticles = computed(() => {
-  if (!props.level) return []
+  if (!level.value) return []
 
   return currentArticles.value.map(article => {
-    const levelData = article.levels[props.level.id]
+    const levelData = article.levels[level.value.id]
     if (!levelData) return null
 
     return {
       id: article.id,
       topic_id: article.topic_id,
-      levelId: props.level.id,
+      levelId: level.value.id,
       title: levelData.title,
       content: levelData.content,
       ai_opening_line: levelData.ai_opening_line,
@@ -36,8 +36,9 @@ const filteredArticles = computed(() => {
   }).filter(Boolean)
 })
 
-function selectArticle(article) {
-  emit('select', article)
+function selectArticle(a) {
+  setArticle(a)
+  router.push('/chat')
 }
 
 // Get plain text preview (strip [[word]] markers)
@@ -50,7 +51,7 @@ function getPreviewText(content) {
   <div class="min-h-screen bg-background-light dark:bg-background-dark">
     <!-- Header -->
     <header class="sticky top-0 z-10 flex items-center gap-4 px-4 sm:px-6 py-4 bg-surface-light dark:bg-surface-dark border-b border-[#e7eff3] dark:border-slate-800 shadow-sm">
-      <button @click="emit('back')" class="flex items-center justify-center">
+      <button @click="router.push('/')" class="flex items-center justify-center">
         <span class="material-symbols-outlined text-text-main dark:text-white cursor-pointer">arrow_back</span>
       </button>
       <h1 class="text-lg font-bold text-text-main dark:text-white">{{ t('articles.title') }}</h1>

@@ -103,7 +103,9 @@
     "levelUp": "レベルアップ！",
     "continue": "学習を続ける！",
     "streakBonus": "連続ボーナス！",
-    "streakMilestone": "{days} 日連続達成！"
+    "streakMilestone": "{days} 日連続達成！",
+    "streakFreeze": "ストリークフリーズ {count} 個",
+    "streakFreezeUsed": "フリーズを使用！連続記録は守られました。"
   },
   "achievements": {
     "unlocked": "実績解除！",
@@ -192,6 +194,100 @@
     "updateMessage": "Chat Mateの新しいバージョンが利用可能です。最新機能をお楽しみください。",
     "update": "更新する",
     "later": "あとで"
+  },
+  "scenarios": {
+    "title": "ロールプレイシナリオ",
+    "description": "リアルな場面を練習しよう",
+    "start": "シナリオ開始",
+    "goal": "あなたの目標",
+    "completed": "完了",
+    "completedCount": "{count} 個完了"
+  },
+  "shareCard": {
+    "share": "進捗をシェア",
+    "title": "Chat Mateの進捗",
+    "download": "画像をダウンロード"
+  },
+  "placementTest": {
+    "title": "レベル判定テスト",
+    "description": "10問に答えてレベルを判定",
+    "start": "テスト開始",
+    "question": "問題 {current}/{total}",
+    "result": "あなたのレベル",
+    "score": "スコア: {score}%",
+    "retake": "再受験",
+    "recommended": "おすすめ: {level}"
+  },
+  "weeklyQuests": {
+    "title": "ウィークリークエスト",
+    "claimReward": "受け取る",
+    "claimed": "受取済み",
+    "allDone": "全クエスト達成！",
+    "quests": {
+      "chat5": "5回会話する",
+      "chat10": "10回会話する",
+      "vocab10": "10個の新しい単語を学ぶ",
+      "vocab20": "20個の新しい単語を学ぶ",
+      "quiz3": "3回クイズを完了",
+      "quizPerfect": "クイズで満点を取る",
+      "streak5": "5日連続を維持",
+      "streak7": "7日連続を維持",
+      "minutes30": "30分間学習する",
+      "challenge3": "デイリーチャレンジを3回達成"
+    }
+  },
+  "dailyChallenge": {
+    "title": "デイリーチャレンジ",
+    "todaysTopic": "今日のお題",
+    "startChallenge": "チャレンジ開始",
+    "progress": "{current}/5 メッセージ",
+    "completed": "チャレンジ達成！",
+    "completedMessage": "+20 XPボーナス獲得！",
+    "alreadyCompleted": "今日は達成済み"
+  },
+  "dailyGoal": {
+    "title": "毎日の目標",
+    "setGoal": "毎日の目標を設定",
+    "minutes": "{count}分/日",
+    "progress": "今日 {current}/{goal}分",
+    "goalMet": "目標達成！",
+    "goalMetMessage": "今日の目標を達成しました！続けても休憩してもOK。",
+    "keepGoing": "続ける",
+    "changeGoal": "目標を変更"
+  },
+  "vocabBank": {
+    "title": "単語帳",
+    "wordCount": "{count} 語保存済み",
+    "search": "単語を検索...",
+    "empty": "チャットの単語をタップして保存しよう",
+    "noResults": "単語が見つかりません",
+    "save": "単語帳に保存",
+    "remove": "削除",
+    "alreadySaved": "保存済み",
+    "addTranslation": "翻訳を追加（任意）"
+  },
+  "feedback": {
+    "you": "あなた",
+    "explain": "解説",
+    "analyzing": "メッセージを分析中...",
+    "grammar": "文法",
+    "vocabulary": "語彙",
+    "naturalness": "自然さ",
+    "corrections": "修正点",
+    "alternatives": "より良い言い方",
+    "tips": "アドバイス"
+  },
+  "srs": {
+    "dailyReview": "今日の復習",
+    "dailyReviewDescription": "全チャプターの復習が必要な単語をまとめて復習",
+    "wordsToReview": "{count} 語を復習",
+    "noWordsToReview": "復習する単語はありません。よくできました！",
+    "reviewComplete": "復習完了！",
+    "reviewCompleteMessage": "お疲れ様！全ての単語を復習しました。",
+    "dueToday": "復習",
+    "mastered": "習得済み",
+    "learning": "学習中",
+    "new": "新規"
   },
   "learning": {
     "backToChapters": "チャプター",

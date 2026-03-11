@@ -83,7 +83,7 @@ export function useChatApi() {
   const error = ref(null)
 
   async function sendMessage(config) {
-    const { messages, characterId, levelId, language, isGreeting, article } = config
+    const { messages, characterId, levelId, language, isGreeting, article, challengeContext } = config
 
     isLoading.value = true
     error.value = null
@@ -113,6 +113,10 @@ export function useChatApi() {
         clientId: getClientId(),
         origin: window.location.origin,
         authToken: token,
+      }
+
+      if (challengeContext) {
+        requestBody.challengeContext = challengeContext
       }
 
       if (article) {
@@ -174,6 +178,74 @@ export function useChatApi() {
     }
   }
 
+  async function sendFeedback(config) {
+    const { userMessage, context, level, language } = config
+
+    try {
+      if (!API_URL) {
+        await new Promise((r) => setTimeout(r, 800))
+        return {
+          grammar: { score: 80, corrections: [] },
+          vocabulary: { score: 75 },
+          naturalness: { score: 70, tips: ['Try using more casual expressions'] },
+          alternatives: ['Alternative phrasing example']
+        }
+      }
+
+      const token = await getAuthToken()
+      const feedbackUrl = API_URL.includes('script.google.com')
+        ? API_URL
+        : API_URL.replace(/\/chat$/, '') + '/feedback'
+
+      const requestBody = {
+        userMessage,
+        context,
+        level,
+        language,
+        clientId: getClientId(),
+        origin: window.location.origin,
+        authToken: token,
+      }
+
+      // For GAS, add action parameter
+      if (API_URL.includes('script.google.com')) {
+        requestBody.action = 'feedback'
+      }
+
+      const response = await fetch(feedbackUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(requestBody),
+        redirect: 'follow',
+      })
+
+      const data = await response.json()
+
+      if (!data.success) {
+        if (data.isTokenError) {
+          clearAuthToken()
+          const newToken = await requestAuthToken()
+          if (newToken) {
+            requestBody.authToken = newToken
+            const retryResponse = await fetch(feedbackUrl, {
+              method: 'POST',
+              headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+              body: JSON.stringify(requestBody),
+              redirect: 'follow',
+            })
+            const retryData = await retryResponse.json()
+            if (retryData.success) return retryData.feedback
+          }
+        }
+        throw { isRateLimit: data.isRateLimit, message: data.error }
+      }
+
+      return data.feedback
+    } catch (err) {
+      throw err
+    }
+  }
+
   // Initialize token on first use
   async function init() {
     if (API_URL && !authToken) {
@@ -185,6 +257,7 @@ export function useChatApi() {
     isLoading,
     error,
     sendMessage,
+    sendFeedback,
     init
   }
 }

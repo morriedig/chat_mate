@@ -2,6 +2,7 @@
 import { useI18n } from 'vue-i18n'
 import { useDarkMode } from '../../composables/useDarkMode'
 import RankBadge from './RankBadge.vue'
+import DailyGoalRing from './DailyGoalRing.vue'
 
 const { t } = useI18n()
 const { isDark, toggle: toggleDark } = useDarkMode()
@@ -29,7 +30,7 @@ defineProps({
   }
 })
 
-const emit = defineEmits(['back', 'toggle-article', 'renew-chat'])
+const emit = defineEmits(['back', 'toggle-article', 'renew-chat', 'toggle-vocab-bank'])
 </script>
 
 <template>
@@ -49,7 +50,14 @@ const emit = defineEmits(['back', 'toggle-article', 'renew-chat'])
       <span v-if="isArticleMode" class="px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 text-xs font-semibold">{{ t('chat.articleMode') }}</span>
     </div>
     <div class="flex items-center gap-2 relative">
+      <DailyGoalRing />
       <RankBadge />
+      <button
+        @click="emit('toggle-vocab-bank')"
+        class="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-text-main dark:text-slate-200 transition-colors"
+      >
+        <span class="material-symbols-outlined text-[18px]">book</span>
+      </button>
       <button
         @click="toggleDark"
         class="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-text-main dark:text-slate-200 transition-colors"

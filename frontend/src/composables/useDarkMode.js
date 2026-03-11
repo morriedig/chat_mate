@@ -9,6 +9,11 @@ export function useDarkMode() {
     } else {
       document.documentElement.classList.remove('dark')
     }
+    // Update theme-color meta tag for mobile browsers
+    const meta = document.querySelector('meta[name="theme-color"]')
+    if (meta) {
+      meta.setAttribute('content', isDark.value ? '#101c22' : '#2badee')
+    }
   }
 
   function toggle() {

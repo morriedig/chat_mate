@@ -1,26 +1,54 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
 import { characters, levels } from '../data/characters.js'
 import { useDarkMode } from '../composables/useDarkMode'
 import { useMotherTongue, supportedLanguages } from '../composables/useMotherTongue'
+import { useDailyChallenge } from '../composables/useDailyChallenge'
+import { useUserProgress } from '../composables/useUserProgress'
+import { useNavState } from '../composables/useNavState'
+import { useLastSession } from '../composables/useLastSession'
+import DailyChallengeCard from './DailyChallengeCard.vue'
+import WeeklyQuestsPanel from './WeeklyQuestsPanel.vue'
+import ScenarioSelector from './ScenarioSelector.vue'
+import ShareCardPanel from './ShareCardPanel.vue'
+import AnalyticsDashboard from './AnalyticsDashboard.vue'
 
 const { t, locale } = useI18n()
+const router = useRouter()
 const { isDark, toggle: toggleDark } = useDarkMode()
 const { motherTongue, setMotherTongue } = useMotherTongue()
-const emit = defineEmits(['start', 'startLearning'])
+const { progress } = useUserProgress()
+const { startChallenge } = useDailyChallenge()
+const { setChatState, setLearningState } = useNavState()
+const { load: loadLastSession, saveChatSession, saveLearningSession } = useLastSession()
+
+const showWeeklyQuests = ref(false)
+const showScenarios = ref(false)
+const showShareCard = ref(false)
+const showAnalytics = ref(false)
+
+// Restore last session
+const last = loadLastSession()
 
 // Primary mode: 'chat' or 'learning'
-const primaryMode = ref('learning')
+const primaryMode = ref(last?.type || 'learning')
 
 // Chat mode options
-const selectedCharacter = ref(null)
-const selectedLevel = ref(null)
-const selectedChatMode = ref('free') // 'free' or 'article'
+const selectedCharacter = ref(
+  last?.type === 'chat' ? characters.find(c => c.id === last.characterId) || null : null
+)
+const selectedLevel = ref(
+  last?.type === 'chat' ? levels.find(l => l.id === last.levelId) || null : null
+)
+const selectedChatMode = ref(last?.type === 'chat' ? last.mode || 'free' : 'free')
 
 // Learning mode options
-const selectedLearningLevel = ref(null)
-const selectedTargetLanguage = ref(null)
+const selectedLearningLevel = ref(
+  last?.type === 'learning' ? levels.find(l => l.id === last.levelId) || null : null
+)
+const selectedTargetLanguage = ref(last?.type === 'learning' ? last.targetLanguage || null : null)
 
 // Available target languages (exclude mother tongue)
 const availableTargetLanguages = computed(() => {
@@ -39,21 +67,44 @@ function handleMotherTongueChange(langId) {
 const canStartChat = computed(() => selectedCharacter.value && selectedLevel.value)
 const canStartLearning = computed(() => selectedLearningLevel.value && selectedTargetLanguage.value)
 
+function handleScenarioSelect(scenario) {
+  showScenarios.value = false
+  if (canStartChat.value) {
+    setChatState({
+      character: selectedCharacter.value,
+      level: selectedLevel.value,
+      language: locale.value,
+      mode: 'free',
+      scenario,
+    })
+    saveChatSession({ characterId: selectedCharacter.value.id, levelId: selectedLevel.value.id, language: locale.value, mode: 'free' })
+    router.push('/chat')
+  }
+}
+
 function handleStart() {
   if (primaryMode.value === 'chat' && canStartChat.value) {
-    emit('start', {
+    setChatState({
       character: selectedCharacter.value,
       level: selectedLevel.value,
       language: locale.value,
       mode: selectedChatMode.value,
     })
+    saveChatSession({ characterId: selectedCharacter.value.id, levelId: selectedLevel.value.id, language: locale.value, mode: selectedChatMode.value })
+    if (selectedChatMode.value === 'article') {
+      router.push('/articles')
+    } else {
+      router.push('/chat')
+    }
   } else if (primaryMode.value === 'learning' && canStartLearning.value) {
-    emit('startLearning', {
+    setLearningState({
       level: selectedLearningLevel.value,
       targetLanguage: selectedTargetLanguage.value,
       motherTongue: motherTongue.value,
       uiLanguage: locale.value,
     })
+    saveLearningSession({ levelId: selectedLearningLevel.value.id, targetLanguage: selectedTargetLanguage.value, motherTongue: motherTongue.value, uiLanguage: locale.value })
+    router.push('/learning')
   }
 }
 </script>
@@ -82,8 +133,17 @@ function handleStart() {
           <button
             @click="toggleDark"
             class="flex items-center justify-center size-10 rounded-lg border border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark hover:bg-slate-50 dark:hover:bg-slate-800 text-text-main dark:text-slate-200 transition-colors"
+            aria-label="Toggle dark mode"
           >
             <span class="material-symbols-outlined text-[20px]">{{ isDark ? 'light_mode' : 'dark_mode' }}</span>
+          </button>
+          <!-- Settings -->
+          <button
+            @click="router.push('/settings')"
+            class="flex items-center justify-center size-10 rounded-lg border border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark hover:bg-slate-50 dark:hover:bg-slate-800 text-text-main dark:text-slate-200 transition-colors"
+            aria-label="Settings"
+          >
+            <span class="material-symbols-outlined text-[20px]">settings</span>
           </button>
         </div>
       </div>
@@ -285,6 +345,59 @@ function handleStart() {
         </section>
       </template>
 
+      <!-- Daily Challenge Card (shown when chat mode selected) -->
+      <section v-if="primaryMode === 'chat' && canStartChat" class="mb-6">
+        <DailyChallengeCard
+          :level="selectedLevel?.id || 'intermediate'"
+          :language="locale"
+          @start="() => {
+            startChallenge(selectedLevel.id, locale)
+            handleStart()
+          }"
+        />
+      </section>
+
+      <!-- Quick Access Buttons -->
+      <section class="mb-6">
+        <div class="grid grid-cols-5 gap-2">
+          <button
+            @click="showWeeklyQuests = true"
+            class="flex flex-col items-center p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark hover:border-primary/50 transition-colors"
+          >
+            <span class="material-symbols-outlined text-2xl text-amber-500 mb-1">assignment</span>
+            <span class="text-[10px] text-text-muted dark:text-slate-400 leading-tight text-center">{{ t('weeklyQuests.title') }}</span>
+          </button>
+          <button
+            @click="showScenarios = true"
+            class="flex flex-col items-center p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark hover:border-primary/50 transition-colors"
+          >
+            <span class="material-symbols-outlined text-2xl text-purple-500 mb-1">theater_comedy</span>
+            <span class="text-[10px] text-text-muted dark:text-slate-400 leading-tight text-center">{{ t('scenarios.title') }}</span>
+          </button>
+          <button
+            @click="router.push('/placement-test')"
+            class="flex flex-col items-center p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark hover:border-primary/50 transition-colors"
+          >
+            <span class="material-symbols-outlined text-2xl text-blue-500 mb-1">quiz</span>
+            <span class="text-[10px] text-text-muted dark:text-slate-400 leading-tight text-center">{{ t('placementTest.title') }}</span>
+          </button>
+          <button
+            @click="showAnalytics = true"
+            class="flex flex-col items-center p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark hover:border-primary/50 transition-colors"
+          >
+            <span class="material-symbols-outlined text-2xl text-cyan-500 mb-1">analytics</span>
+            <span class="text-[10px] text-text-muted dark:text-slate-400 leading-tight text-center">Analytics</span>
+          </button>
+          <button
+            @click="showShareCard = true"
+            class="flex flex-col items-center p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark hover:border-primary/50 transition-colors"
+          >
+            <span class="material-symbols-outlined text-2xl text-green-500 mb-1">share</span>
+            <span class="text-[10px] text-text-muted dark:text-slate-400 leading-tight text-center">{{ t('shareCard.share') }}</span>
+          </button>
+        </div>
+      </section>
+
       <!-- Start Button -->
       <button
         @click="handleStart"
@@ -300,5 +413,22 @@ function handleStart() {
         </span>
       </button>
     </div>
+
+    <!-- Weekly Quests Panel -->
+    <WeeklyQuestsPanel v-if="showWeeklyQuests" @close="showWeeklyQuests = false" />
+
+    <!-- Scenario Selector -->
+    <ScenarioSelector
+      v-if="showScenarios"
+      :level="selectedLevel?.id || selectedLearningLevel?.id || 'intermediate'"
+      @select="handleScenarioSelect"
+      @close="showScenarios = false"
+    />
+
+    <!-- Share Card Panel -->
+    <ShareCardPanel v-if="showShareCard" @close="showShareCard = false" />
+
+    <!-- Analytics Dashboard -->
+    <AnalyticsDashboard v-if="showAnalytics" @close="showAnalytics = false" />
   </div>
 </template>

@@ -2,8 +2,10 @@
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { playTTS, isTTSAvailable, splitTextForHighlight } from '../../utils/tts'
+import { usePronunciationCheck } from '../../composables/usePronunciationCheck'
 
 const { t } = useI18n()
+const { isSupported: pronSupported, isListening, score: pronScore, checkPronunciation, stopListening } = usePronunciationCheck()
 
 const props = defineProps({
   word: {
@@ -28,6 +30,20 @@ const isPlayingWord = ref(false)
 const isPlayingMeaning = ref(false)
 const isPlayingSentence = ref(false)
 const audioError = ref(false)
+const pronError = ref(false)
+
+async function handlePronCheck() {
+  if (isListening.value) {
+    stopListening()
+    return
+  }
+  pronError.value = false
+  try {
+    await checkPronunciation(props.word.word, props.language)
+  } catch {
+    pronError.value = true
+  }
+}
 
 // Word-by-word highlight state
 const highlightMeaningIndex = ref(-1)
@@ -178,8 +194,34 @@ async function playSentence() {
       </div>
     </div>
 
+    <!-- Pronunciation Check -->
+    <div v-if="pronSupported" class="mt-3 flex items-center gap-3">
+      <button
+        @click="handlePronCheck"
+        class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all"
+        :class="isListening
+          ? 'bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 animate-pulse'
+          : 'bg-slate-100 dark:bg-slate-700 text-text-muted dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-600'"
+      >
+        <span class="material-symbols-outlined text-sm">{{ isListening ? 'mic' : 'mic_none' }}</span>
+        {{ isListening ? 'Listening...' : 'Try saying it' }}
+      </button>
+      <div v-if="pronScore !== null" class="flex items-center gap-1.5">
+        <div class="w-16 h-1.5 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden">
+          <div
+            class="h-full rounded-full transition-all"
+            :class="pronScore >= 80 ? 'bg-green-400' : pronScore >= 50 ? 'bg-amber-400' : 'bg-red-400'"
+            :style="{ width: `${pronScore}%` }"
+          />
+        </div>
+        <span class="text-xs font-bold" :class="pronScore >= 80 ? 'text-green-500' : pronScore >= 50 ? 'text-amber-500' : 'text-red-500'">
+          {{ pronScore }}%
+        </span>
+      </div>
+    </div>
+
     <!-- Audio Error -->
-    <p v-if="audioError" class="mt-2 text-xs text-amber-600 dark:text-amber-400 flex items-center gap-1">
+    <p v-if="audioError || pronError" class="mt-2 text-xs text-amber-600 dark:text-amber-400 flex items-center gap-1">
       <span class="material-symbols-outlined text-sm">warning</span>
       {{ t('learning.audioNotAvailable') }}
     </p>

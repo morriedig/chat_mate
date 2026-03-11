@@ -179,7 +179,13 @@ function doPost(e) {
     }
 
     const data = JSON.parse(e.postData.contents);
-    const { messages = [], character = 'emma', level = 'intermediate', language = 'en', isGreeting, article, clientId, origin, authToken } = data;
+
+    // Route to feedback handler if action is 'feedback'
+    if (data.action === 'feedback') {
+      return handleFeedback(data);
+    }
+
+    const { messages = [], character = 'emma', level = 'intermediate', language = 'en', isGreeting, article, challengeContext, clientId, origin, authToken } = data;
 
     // Input validation
     if (VALID_CHARACTERS.indexOf(character) === -1) {
@@ -230,13 +236,19 @@ function doPost(e) {
       return createResponse({ success: false, error: 'Too many requests. Please wait 1 second.', isRateLimit: true });
     }
 
-    const systemPrompt = buildSystemPrompt(character, level, language, article);
+    var systemPrompt = buildSystemPrompt(character, level, language, article);
+    if (challengeContext && typeof challengeContext === 'string') {
+      systemPrompt += '\n\n' + challengeContext;
+    }
     const geminiMessages = buildGeminiMessages(systemPrompt, messages, isGreeting, article);
 
     const result = callGemini(geminiMessages);
 
     // Parse JSON response
     const parsed = JSON.parse(result);
+    if (!parsed.message) {
+      throw new Error('AI model response missing message');
+    }
     return createResponse({
       success: true,
       reply: parsed.message,
@@ -777,6 +789,216 @@ ${article.content}
 - Naturally incorporate the key vocabulary into conversation
 - Ask about the user's thoughts and related experiences
 - Keep it conversational, not like an interview or test`;
+}
+
+// === FEEDBACK HANDLER ===
+function handleFeedback(data) {
+  try {
+    var userMessage = data.userMessage;
+    var context = data.context || [];
+    var level = data.level || 'intermediate';
+    var language = data.language || 'en';
+    var clientId = data.clientId;
+    var origin = data.origin;
+    var authToken = data.authToken;
+
+    // Input validation
+    if (!userMessage || typeof userMessage !== 'string' || userMessage.length > 5000) {
+      return createResponse({ success: false, error: 'Invalid user message' });
+    }
+    if (VALID_LEVELS.indexOf(level) === -1) {
+      return createResponse({ success: false, error: 'Invalid level' });
+    }
+    if (VALID_LANGUAGES.indexOf(language) === -1) {
+      return createResponse({ success: false, error: 'Invalid language' });
+    }
+    if (!Array.isArray(context) || context.length > 10) {
+      return createResponse({ success: false, error: 'Invalid context' });
+    }
+    // Validate individual context messages
+    for (var i = 0; i < context.length; i++) {
+      var msg = context[i];
+      if (!msg || typeof msg.content !== 'string' || msg.content.length > 5000) {
+        return createResponse({ success: false, error: 'Invalid context message' });
+      }
+    }
+
+    // Check origin
+    if (!isAllowedOrigin(origin || '')) {
+      return createResponse({ success: false, error: 'Unauthorized origin' });
+    }
+
+    // Validate auth token
+    if (!validateToken(authToken)) {
+      return createResponse({ success: false, error: 'Invalid or expired token.', isTokenError: true });
+    }
+
+    // Check rate limit
+    if (!checkRateLimit(clientId)) {
+      return createResponse({ success: false, error: 'Too many requests.', isRateLimit: true });
+    }
+
+    var feedbackMessages = buildFeedbackPrompt(userMessage, context, level, language);
+
+    // Call Gemini with feedback schema
+    var result = callGeminiFeedback(feedbackMessages);
+    var parsed = JSON.parse(result);
+
+    // Validate response structure
+    if (!parsed.grammar || !parsed.vocabulary || !parsed.naturalness) {
+      throw new Error('AI model returned incomplete feedback');
+    }
+
+    return createResponse({ success: true, feedback: parsed });
+  } catch (error) {
+    console.error('Feedback error:', error);
+    var errorMsg = (error && error.message) || '';
+    var isRateLimit = errorMsg.includes('quota') || errorMsg.includes('rate') || errorMsg.includes('429');
+    return createResponse({
+      success: false,
+      error: isRateLimit ? 'Rate limit exceeded.' : 'An internal error occurred.',
+      isRateLimit: isRateLimit
+    });
+  }
+}
+
+function callGeminiFeedback(messages) {
+  console.log('Total API keys: ' + GEMINI_API_KEYS.length);
+  console.log('Available keys: ' + getAvailableKeyCount() + '/' + GEMINI_API_KEYS.length);
+
+  if (getAvailableKeyCount() === 0) {
+    throw new Error('All API keys are temporarily exhausted. Please try again in a minute.');
+  }
+
+  var payload = {
+    contents: messages,
+    generationConfig: {
+      temperature: 0.3,
+      maxOutputTokens: 2048,
+      topP: 0.9,
+      responseMimeType: 'application/json',
+      responseSchema: {
+        type: 'object',
+        properties: {
+          grammar: {
+            type: 'object',
+            properties: {
+              score: { type: 'integer', description: 'Grammar score 0-100' },
+              corrections: { type: 'array', items: { type: 'string' }, description: 'Grammar corrections' }
+            },
+            required: ['score', 'corrections']
+          },
+          vocabulary: {
+            type: 'object',
+            properties: {
+              score: { type: 'integer', description: 'Vocabulary usage score 0-100' }
+            },
+            required: ['score']
+          },
+          naturalness: {
+            type: 'object',
+            properties: {
+              score: { type: 'integer', description: 'Naturalness score 0-100' },
+              tips: { type: 'array', items: { type: 'string' }, description: 'Tips for natural expression' }
+            },
+            required: ['score', 'tips']
+          },
+          alternatives: {
+            type: 'array',
+            items: { type: 'string' },
+            description: 'Alternative phrasings'
+          }
+        },
+        required: ['grammar', 'vocabulary', 'naturalness', 'alternatives']
+      }
+    },
+    safetySettings: [
+      { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_ONLY_HIGH' },
+      { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_ONLY_HIGH' },
+      { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_ONLY_HIGH' },
+      { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_ONLY_HIGH' },
+    ],
+  };
+
+  var options = {
+    method: 'POST',
+    contentType: 'application/json',
+    payload: JSON.stringify(payload),
+    muteHttpExceptions: true,
+  };
+
+  var errors = [];
+
+  for (var i = 0; i < GEMINI_API_KEYS.length; i++) {
+    var keyIndex = (currentKeyIndex + i) % GEMINI_API_KEYS.length;
+
+    if (isKeyExhausted(keyIndex)) {
+      continue;
+    }
+
+    var apiKey = GEMINI_API_KEYS[keyIndex].trim();
+
+    try {
+      var response = UrlFetchApp.fetch(GEMINI_URL + '?key=' + apiKey, options);
+      var responseCode = response.getResponseCode();
+      var result = JSON.parse(response.getContentText());
+
+      if (isRateLimitError(responseCode, result)) {
+        markKeyExhausted(keyIndex);
+        currentKeyIndex = (keyIndex + 1) % GEMINI_API_KEYS.length;
+        errors.push('Key ' + (keyIndex + 1) + ': Rate limited');
+        continue;
+      }
+
+      if (result.error) {
+        errors.push('Key ' + (keyIndex + 1) + ': ' + result.error.message);
+        if (i < GEMINI_API_KEYS.length - 1) continue;
+        throw new Error(result.error.message);
+      }
+
+      if (!result.candidates || !result.candidates[0] || !result.candidates[0].content ||
+          !result.candidates[0].content.parts || !result.candidates[0].content.parts[0] ||
+          !result.candidates[0].content.parts[0].text) {
+        throw new Error('Invalid response from AI model');
+      }
+
+      currentKeyIndex = keyIndex;
+      return result.candidates[0].content.parts[0].text;
+
+    } catch (e) {
+      errors.push('Key ' + (keyIndex + 1) + ': ' + e.message);
+      if (i < GEMINI_API_KEYS.length - 1) continue;
+      throw e;
+    }
+  }
+
+  throw new Error('All API keys failed: ' + errors.join('; '));
+}
+
+function buildFeedbackPrompt(userMessage, context, level, language) {
+  var languageName = language === 'ja' ? 'Japanese' : language === 'zh' ? 'Chinese' : 'English';
+  var levelName = level === 'beginner' ? 'A1-A2' : level === 'advanced' ? 'C1-C2' : 'B1-B2';
+
+  var contextText = '';
+  if (context && context.length > 0) {
+    contextText = '\n\nConversation context (last few messages):\n';
+    for (var i = 0; i < context.length; i++) {
+      contextText += context[i].role + ': ' + context[i].content + '\n';
+    }
+  }
+
+  var systemText = 'You are a ' + languageName + ' language analysis tool. Analyze the following ' + languageName + ' message written by a ' + levelName + ' level learner. Provide honest, constructive feedback.\n\n' +
+    'Be encouraging but accurate. Score relative to their level (' + levelName + ').\n' +
+    '- Grammar: Check for grammatical errors. Provide specific corrections in ' + languageName + ' with brief explanations.\n' +
+    '- Vocabulary: Rate the appropriateness and variety of vocabulary for their level.\n' +
+    '- Naturalness: How natural does this sound to a native speaker? Provide tips for more natural expression.\n' +
+    '- Alternatives: Suggest 1-3 alternative ways to express the same idea more naturally in ' + languageName + '.\n\n' +
+    'If the message is perfect, give high scores and minimal corrections. Keep feedback concise.' +
+    contextText + '\n\nUser\'s message to analyze: "' + userMessage + '"';
+
+  return [
+    { role: 'user', parts: [{ text: systemText }] }
+  ];
 }
 
 // === TEST FUNCTION ===

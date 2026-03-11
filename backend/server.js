@@ -434,7 +434,7 @@ const VALID_LANGUAGES = ['en', 'ja', 'zh'];
 
 app.post('/chat', async (req, res) => {
   try {
-    const { messages = [], character = 'emma', level = 'intermediate', language = 'en', isGreeting, article, clientId, origin, authToken } = req.body;
+    const { messages = [], character = 'emma', level = 'intermediate', language = 'en', isGreeting, article, challengeContext, clientId, origin, authToken } = req.body;
 
     // Input validation
     if (!VALID_CHARACTERS.includes(character)) {
@@ -492,7 +492,10 @@ app.post('/chat', async (req, res) => {
       return res.json({ success: true, reply: mockData.message, hints: mockData.hints });
     }
 
-    const systemPrompt = buildSystemPrompt(character, level, language, article);
+    let systemPrompt = buildSystemPrompt(character, level, language, article);
+    if (challengeContext && typeof challengeContext === 'string') {
+      systemPrompt += '\n\n' + challengeContext;
+    }
     const geminiMessages = buildGeminiMessages(systemPrompt, messages, isGreeting, article);
 
     const data = await callGeminiWithFallback({
@@ -953,6 +956,173 @@ ${article.content}
 - Naturally incorporate the key vocabulary into conversation
 - Ask about the user's thoughts and related experiences
 - Keep it conversational, not like an interview or test`;
+}
+
+// === FEEDBACK ENDPOINT ===
+app.post('/feedback', async (req, res) => {
+  try {
+    const { userMessage, context = [], level = 'intermediate', language = 'en', clientId, origin, authToken } = req.body;
+
+    // Input validation
+    if (!userMessage || typeof userMessage !== 'string' || userMessage.length > 5000) {
+      return res.status(400).json({ success: false, error: 'Invalid user message' });
+    }
+    if (!VALID_LEVELS.includes(level)) {
+      return res.status(400).json({ success: false, error: 'Invalid level' });
+    }
+    if (!VALID_LANGUAGES.includes(language)) {
+      return res.status(400).json({ success: false, error: 'Invalid language' });
+    }
+    if (!Array.isArray(context) || context.length > 10) {
+      return res.status(400).json({ success: false, error: 'Invalid context' });
+    }
+    for (const msg of context) {
+      if (!msg || typeof msg.content !== 'string' || msg.content.length > 5000) {
+        return res.status(400).json({ success: false, error: 'Invalid context message' });
+      }
+    }
+
+    // Check origin
+    if (!isAllowedOrigin(origin || '')) {
+      return res.status(403).json({ success: false, error: 'Unauthorized origin' });
+    }
+
+    // Validate auth token
+    if (!SKIP_AUTH && !validateToken(authToken)) {
+      return res.status(401).json({ success: false, error: 'Invalid or expired token.', isTokenError: true });
+    }
+
+    // Check rate limit
+    if (!checkRateLimit(clientId)) {
+      return res.status(429).json({ success: false, error: 'Too many requests.', isRateLimit: true });
+    }
+
+    // Mock mode
+    if (MOCK_API) {
+      await new Promise(r => setTimeout(r, 500));
+      return res.json({
+        success: true,
+        feedback: {
+          grammar: { score: 75, corrections: ['Example correction'] },
+          vocabulary: { score: 80 },
+          naturalness: { score: 70, tips: ['Try using more casual expressions'] },
+          alternatives: ['Alternative phrasing example']
+        }
+      });
+    }
+
+    const feedbackPrompt = buildFeedbackPrompt(userMessage, context, level, language);
+
+    const data = await callGeminiWithFallback({
+      contents: feedbackPrompt,
+      generationConfig: {
+        temperature: 0.3,
+        maxOutputTokens: 2048,
+        topP: 0.9,
+        responseMimeType: 'application/json',
+        responseSchema: {
+          type: 'object',
+          properties: {
+            grammar: {
+              type: 'object',
+              properties: {
+                score: { type: 'integer', description: 'Grammar score 0-100' },
+                corrections: {
+                  type: 'array',
+                  items: { type: 'string' },
+                  description: 'List of grammar corrections with explanations'
+                }
+              },
+              required: ['score', 'corrections']
+            },
+            vocabulary: {
+              type: 'object',
+              properties: {
+                score: { type: 'integer', description: 'Vocabulary usage score 0-100' }
+              },
+              required: ['score']
+            },
+            naturalness: {
+              type: 'object',
+              properties: {
+                score: { type: 'integer', description: 'How natural the expression sounds 0-100' },
+                tips: {
+                  type: 'array',
+                  items: { type: 'string' },
+                  description: 'Tips for more natural expression'
+                }
+              },
+              required: ['score', 'tips']
+            },
+            alternatives: {
+              type: 'array',
+              items: { type: 'string' },
+              description: 'Alternative ways to express the same idea more naturally'
+            }
+          },
+          required: ['grammar', 'vocabulary', 'naturalness', 'alternatives']
+        }
+      },
+      safetySettings: [
+        { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_ONLY_HIGH' },
+        { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_ONLY_HIGH' },
+        { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_ONLY_HIGH' },
+        { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_ONLY_HIGH' },
+      ],
+    });
+
+    if (!data?.candidates?.[0]?.content?.parts?.[0]?.text) {
+      throw new Error('Invalid response from AI model');
+    }
+
+    const rawText = data.candidates[0].content.parts[0].text;
+    let parsed;
+    try {
+      parsed = JSON.parse(rawText);
+    } catch {
+      throw new Error('AI model returned invalid JSON');
+    }
+
+    if (!parsed.grammar || !parsed.vocabulary || !parsed.naturalness) {
+      throw new Error('AI model returned incomplete feedback');
+    }
+
+    res.json({ success: true, feedback: parsed });
+
+  } catch (error) {
+    console.error('Feedback error:', error);
+    const isRateLimit = error.message?.includes('quota') || error.message?.includes('rate') || error.message?.includes('429');
+    res.status(isRateLimit ? 429 : 500).json({
+      success: false,
+      error: isRateLimit ? 'Rate limit exceeded.' : 'An internal error occurred.',
+      isRateLimit
+    });
+  }
+});
+
+function buildFeedbackPrompt(userMessage, context, level, language) {
+  const languageName = language === 'ja' ? 'Japanese' : language === 'zh' ? 'Chinese' : 'English';
+  const levelName = level === 'beginner' ? 'A1-A2' : level === 'advanced' ? 'C1-C2' : 'B1-B2';
+
+  const contextText = context.length > 0
+    ? '\n\nConversation context (last few messages):\n' + context.map(m => `${m.role}: ${m.content}`).join('\n')
+    : '';
+
+  const systemText = `You are a ${languageName} language analysis tool. Analyze the following ${languageName} message written by a ${levelName} level learner. Provide honest, constructive feedback.
+
+Be encouraging but accurate. Score relative to their level (${levelName}).
+- Grammar: Check for grammatical errors. Provide specific corrections in ${languageName} with brief explanations.
+- Vocabulary: Rate the appropriateness and variety of vocabulary for their level.
+- Naturalness: How natural does this sound to a native speaker? Provide tips for more natural expression.
+- Alternatives: Suggest 1-3 alternative ways to express the same idea more naturally in ${languageName}.
+
+If the message is perfect, give high scores and minimal corrections. Keep feedback concise.${contextText}
+
+User's message to analyze: "${userMessage}"`;
+
+  return [
+    { role: 'user', parts: [{ text: systemText }] }
+  ];
 }
 
 const PORT = 3000;

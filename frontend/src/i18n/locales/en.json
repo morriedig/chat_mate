@@ -103,7 +103,9 @@
     "levelUp": "Level Up!",
     "continue": "Keep Learning!",
     "streakBonus": "Streak Bonus!",
-    "streakMilestone": "{days} Day Streak!"
+    "streakMilestone": "{days} Day Streak!",
+    "streakFreeze": "{count} streak freeze(s) available",
+    "streakFreezeUsed": "Streak freeze used! Your streak is safe."
   },
   "achievements": {
     "unlocked": "Achievement Unlocked!",
@@ -192,6 +194,100 @@
     "updateMessage": "A new version of Chat Mate is ready. Update now for the latest features.",
     "update": "Update",
     "later": "Later"
+  },
+  "scenarios": {
+    "title": "Role-play Scenarios",
+    "description": "Practice real-life situations",
+    "start": "Start Scenario",
+    "goal": "Your goal",
+    "completed": "Completed",
+    "completedCount": "{count} completed"
+  },
+  "shareCard": {
+    "share": "Share Progress",
+    "title": "My Chat Mate Progress",
+    "download": "Download Image"
+  },
+  "placementTest": {
+    "title": "Placement Test",
+    "description": "Answer 10 questions to find your level",
+    "start": "Start Test",
+    "question": "Question {current}/{total}",
+    "result": "Your Level",
+    "score": "Score: {score}%",
+    "retake": "Retake Test",
+    "recommended": "Recommended: {level}"
+  },
+  "weeklyQuests": {
+    "title": "Weekly Quests",
+    "claimReward": "Claim",
+    "claimed": "Claimed",
+    "allDone": "All quests completed!",
+    "quests": {
+      "chat5": "Complete 5 conversations",
+      "chat10": "Complete 10 conversations",
+      "vocab10": "Learn 10 new words",
+      "vocab20": "Learn 20 new words",
+      "quiz3": "Complete 3 quizzes",
+      "quizPerfect": "Get a perfect quiz score",
+      "streak5": "Maintain a 5-day streak",
+      "streak7": "Maintain a 7-day streak",
+      "minutes30": "Study for 30 minutes",
+      "challenge3": "Complete 3 daily challenges"
+    }
+  },
+  "dailyChallenge": {
+    "title": "Daily Challenge",
+    "todaysTopic": "Today's Topic",
+    "startChallenge": "Start Challenge",
+    "progress": "{current}/5 messages",
+    "completed": "Challenge Complete!",
+    "completedMessage": "You earned +20 XP bonus!",
+    "alreadyCompleted": "Completed today"
+  },
+  "dailyGoal": {
+    "title": "Daily Goal",
+    "setGoal": "Set your daily goal",
+    "minutes": "{count} min/day",
+    "progress": "{current}/{goal} min today",
+    "goalMet": "Goal reached!",
+    "goalMetMessage": "You hit your daily goal! Keep going or take a break.",
+    "keepGoing": "Keep Going",
+    "changeGoal": "Change Goal"
+  },
+  "vocabBank": {
+    "title": "Vocabulary Bank",
+    "wordCount": "{count} words saved",
+    "search": "Search words...",
+    "empty": "Tap any word in chat to save it here",
+    "noResults": "No words found",
+    "save": "Save to Bank",
+    "remove": "Remove",
+    "alreadySaved": "Already in your bank",
+    "addTranslation": "Add translation (optional)"
+  },
+  "feedback": {
+    "you": "You",
+    "explain": "Explain",
+    "analyzing": "Analyzing your message...",
+    "grammar": "Grammar",
+    "vocabulary": "Vocabulary",
+    "naturalness": "Naturalness",
+    "corrections": "Corrections",
+    "alternatives": "Better ways to say it",
+    "tips": "Tips"
+  },
+  "srs": {
+    "dailyReview": "Daily Review",
+    "dailyReviewDescription": "Review words from all chapters that are due today",
+    "wordsToReview": "{count} words to review",
+    "noWordsToReview": "All caught up! No words to review right now.",
+    "reviewComplete": "Review Complete!",
+    "reviewCompleteMessage": "Great job! You've reviewed all due words.",
+    "dueToday": "due",
+    "mastered": "Mastered",
+    "learning": "Learning",
+    "new": "New"
   },
   "learning": {
     "backToChapters": "Chapters",

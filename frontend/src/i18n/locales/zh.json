@@ -103,7 +103,9 @@
     "levelUp": "升級了！",
     "continue": "繼續學習！",
     "streakBonus": "連續獎勵！",
-    "streakMilestone": "連續 {days} 天！"
+    "streakMilestone": "連續 {days} 天！",
+    "streakFreeze": "{count} 個連續保護",
+    "streakFreezeUsed": "已使用連續保護！你的連續記錄安全了。"
   },
   "achievements": {
     "unlocked": "成就解鎖！",
@@ -192,6 +194,100 @@
     "updateMessage": "Chat Mate 有新版本了。立即更新以獲得最新功能。",
     "update": "更新",
     "later": "稍後"
+  },
+  "scenarios": {
+    "title": "角色扮演情境",
+    "description": "練習真實生活情境",
+    "start": "開始情境",
+    "goal": "你的目標",
+    "completed": "已完成",
+    "completedCount": "已完成 {count} 個"
+  },
+  "shareCard": {
+    "share": "分享進度",
+    "title": "我的 Chat Mate 進度",
+    "download": "下載圖片"
+  },
+  "placementTest": {
+    "title": "等級測試",
+    "description": "回答10題來判定你的程度",
+    "start": "開始測試",
+    "question": "第 {current}/{total} 題",
+    "result": "你的程度",
+    "score": "分數：{score}%",
+    "retake": "重新測試",
+    "recommended": "建議等級：{level}"
+  },
+  "weeklyQuests": {
+    "title": "每週任務",
+    "claimReward": "領取",
+    "claimed": "已領取",
+    "allDone": "所有任務已完成！",
+    "quests": {
+      "chat5": "完成 5 次對話",
+      "chat10": "完成 10 次對話",
+      "vocab10": "學習 10 個新單字",
+      "vocab20": "學習 20 個新單字",
+      "quiz3": "完成 3 次測驗",
+      "quizPerfect": "測驗獲得滿分",
+      "streak5": "維持 5 天連續",
+      "streak7": "維持 7 天連續",
+      "minutes30": "學習 30 分鐘",
+      "challenge3": "完成 3 次每日挑戰"
+    }
+  },
+  "dailyChallenge": {
+    "title": "每日挑戰",
+    "todaysTopic": "今日話題",
+    "startChallenge": "開始挑戰",
+    "progress": "{current}/5 則訊息",
+    "completed": "挑戰完成！",
+    "completedMessage": "獲得 +20 XP 獎勵！",
+    "alreadyCompleted": "今天已完成"
+  },
+  "dailyGoal": {
+    "title": "每日目標",
+    "setGoal": "設定每日目標",
+    "minutes": "{count}分鐘/天",
+    "progress": "今天 {current}/{goal} 分鐘",
+    "goalMet": "目標達成！",
+    "goalMetMessage": "你完成了今天的目標！繼續學習或休息一下吧。",
+    "keepGoing": "繼續",
+    "changeGoal": "修改目標"
+  },
+  "vocabBank": {
+    "title": "個人單字本",
+    "wordCount": "已儲存 {count} 個單字",
+    "search": "搜尋單字...",
+    "empty": "點擊聊天中的單字來儲存",
+    "noResults": "找不到單字",
+    "save": "加入單字本",
+    "remove": "移除",
+    "alreadySaved": "已在單字本中",
+    "addTranslation": "新增翻譯（選填）"
+  },
+  "feedback": {
+    "you": "你",
+    "explain": "解析",
+    "analyzing": "正在分析你的訊息...",
+    "grammar": "文法",
+    "vocabulary": "詞彙",
+    "naturalness": "自然度",
+    "corrections": "修正建議",
+    "alternatives": "更好的表達方式",
+    "tips": "小提示"
+  },
+  "srs": {
+    "dailyReview": "每日複習",
+    "dailyReviewDescription": "複習所有章節中需要複習的單字",
+    "wordsToReview": "{count} 個單字待複習",
+    "noWordsToReview": "沒有需要複習的單字，做得好！",
+    "reviewComplete": "複習完成！",
+    "reviewCompleteMessage": "太棒了！你已經複習了所有待複習的單字。",
+    "dueToday": "待複習",
+    "mastered": "已掌握",
+    "learning": "學習中",
+    "new": "新的"
   },
   "learning": {
     "backToChapters": "章節",

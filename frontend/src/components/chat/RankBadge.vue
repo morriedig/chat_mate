@@ -35,6 +35,7 @@ const showAchievements = ref(false)
       <span class="text-base animate-pulse">🔥</span>
       <span class="text-xs font-bold text-red-600 dark:text-red-400">{{ progress.currentStreak }}</span>
       <span class="hidden sm:inline text-[10px] text-red-500 dark:text-red-400">{{ t('rank.days') }}</span>
+      <span v-if="progress.streakFreezes > 0" class="text-[10px] text-blue-500 dark:text-blue-400 ml-0.5" :title="t('rank.streakFreeze', { count: progress.streakFreezes })">🛡️{{ progress.streakFreezes }}</span>
     </div>
 
     <!-- Rank Badge -->
