@@ -34,33 +34,33 @@ const emit = defineEmits(['back', 'toggle-article', 'renew-chat', 'toggle-vocab-
 </script>
 
 <template>
-  <header class="flex items-center justify-between border-b border-[#e7eff3] dark:border-slate-800 px-4 sm:px-6 py-4 bg-surface-light dark:bg-surface-dark z-10 shadow-sm">
-    <div class="flex items-center gap-3 text-text-main dark:text-white">
-      <button @click="emit('back')" class="flex items-center justify-center">
+  <header class="flex items-center justify-between border-b border-[#e7eff3] dark:border-slate-800 px-3 sm:px-6 py-3 sm:py-4 bg-surface-light dark:bg-surface-dark z-10 shadow-sm overflow-hidden">
+    <div class="flex items-center gap-2 sm:gap-3 text-text-main dark:text-white min-w-0 shrink">
+      <button @click="emit('back')" class="flex items-center justify-center shrink-0">
         <span class="material-symbols-outlined cursor-pointer">arrow_back</span>
       </button>
-      <div class="flex items-center justify-center rounded-full size-10 shrink-0 shadow-sm border-2 border-white dark:border-slate-700 bg-slate-100 dark:bg-slate-800 text-2xl">
+      <div class="flex items-center justify-center rounded-full size-8 sm:size-10 shrink-0 shadow-sm border-2 border-white dark:border-slate-700 bg-slate-100 dark:bg-slate-800 text-xl sm:text-2xl">
         {{ character.avatar }}
       </div>
-      <div class="flex flex-col">
-        <h2 class="text-base font-bold leading-tight tracking-[-0.015em]">{{ character.name }}</h2>
-        <span class="text-xs text-text-muted dark:text-slate-400">{{ t(`levels.${level.id}.name`) }}</span>
+      <div class="flex flex-col min-w-0">
+        <h2 class="text-sm sm:text-base font-bold leading-tight tracking-[-0.015em] truncate">{{ character.name }}</h2>
+        <span class="text-xs text-text-muted dark:text-slate-400 truncate">{{ t(`levels.${level.id}.name`) }}</span>
       </div>
-      <span class="px-2 py-0.5 rounded-full bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 text-xs font-semibold">Online</span>
-      <span v-if="isArticleMode" class="px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 text-xs font-semibold">{{ t('chat.articleMode') }}</span>
+      <span class="hidden sm:inline px-2 py-0.5 rounded-full bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 text-xs font-semibold shrink-0">Online</span>
+      <span v-if="isArticleMode" class="hidden sm:inline px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 text-xs font-semibold shrink-0">{{ t('chat.articleMode') }}</span>
     </div>
-    <div class="flex items-center gap-2 relative">
+    <div class="flex items-center gap-1 sm:gap-2 relative shrink-0">
       <DailyGoalRing />
       <RankBadge />
       <button
         @click="emit('toggle-vocab-bank')"
-        class="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-text-main dark:text-slate-200 transition-colors"
+        class="hidden sm:flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-text-main dark:text-slate-200 transition-colors"
       >
         <span class="material-symbols-outlined text-[18px]">book</span>
       </button>
       <button
         @click="toggleDark"
-        class="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-text-main dark:text-slate-200 transition-colors"
+        class="hidden sm:flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-text-main dark:text-slate-200 transition-colors"
       >
         <span class="material-symbols-outlined text-[18px]">{{ isDark ? 'light_mode' : 'dark_mode' }}</span>
       </button>

@@ -20,7 +20,7 @@ const showAchievements = ref(false)
 </script>
 
 <template>
-  <div class="flex items-center gap-2">
+  <div class="flex items-center gap-1 sm:gap-2">
     <!-- Achievements Button -->
     <button
       @click="showAchievements = !showAchievements"
@@ -40,9 +40,9 @@ const showAchievements = ref(false)
 
     <!-- Rank Badge -->
     <div class="relative group">
-      <div class="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/30 dark:to-orange-900/30 border border-amber-200 dark:border-amber-700">
+      <div class="flex items-center gap-1.5 px-1.5 sm:px-2 py-1 rounded-lg bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/30 dark:to-orange-900/30 border border-amber-200 dark:border-amber-700">
         <span class="text-base">{{ currentRank.icon }}</span>
-        <div class="flex flex-col">
+        <div class="hidden sm:flex flex-col">
           <span class="text-xs font-semibold text-amber-800 dark:text-amber-200 leading-tight">
             {{ t(`ranks.${currentRank.title.toLowerCase()}`, currentRank.title) }}
           </span>
