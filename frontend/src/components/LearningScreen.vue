@@ -153,7 +153,7 @@ onMounted(() => {
 <template>
   <div class="min-h-screen bg-background-light dark:bg-background-dark">
     <!-- Header -->
-    <header class="sticky top-0 z-10 bg-surface-light dark:bg-surface-dark border-b border-slate-200 dark:border-slate-700">
+    <header class="sticky top-0 z-10 bg-surface-light dark:bg-surface-dark border-b border-slate-200 dark:border-slate-700 safe-area-top">
       <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
         <button
           @click="selectedChapter ? backToChapters() : router.push('/')"

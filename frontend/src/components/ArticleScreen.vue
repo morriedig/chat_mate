@@ -50,7 +50,7 @@ function getPreviewText(content) {
 <template>
   <div class="min-h-screen bg-background-light dark:bg-background-dark">
     <!-- Header -->
-    <header class="sticky top-0 z-10 flex items-center gap-4 px-4 sm:px-6 py-4 bg-surface-light dark:bg-surface-dark border-b border-[#e7eff3] dark:border-slate-800 shadow-sm">
+    <header class="sticky top-0 z-10 flex items-center gap-4 px-4 sm:px-6 py-4 bg-surface-light dark:bg-surface-dark border-b border-[#e7eff3] dark:border-slate-800 shadow-sm safe-area-top">
       <button @click="router.push('/')" class="flex items-center justify-center">
         <span class="material-symbols-outlined text-text-main dark:text-white cursor-pointer">arrow_back</span>
       </button>

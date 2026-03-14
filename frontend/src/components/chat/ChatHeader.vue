@@ -34,7 +34,7 @@ const emit = defineEmits(['back', 'toggle-article', 'renew-chat', 'toggle-vocab-
 </script>
 
 <template>
-  <header class="flex items-center justify-between border-b border-[#e7eff3] dark:border-slate-800 px-3 sm:px-6 py-3 sm:py-4 bg-surface-light dark:bg-surface-dark z-10 shadow-sm overflow-hidden">
+  <header class="flex items-center justify-between border-b border-[#e7eff3] dark:border-slate-800 px-3 sm:px-6 py-3 sm:py-4 bg-surface-light dark:bg-surface-dark z-10 shadow-sm overflow-hidden safe-area-top">
     <div class="flex items-center gap-2 sm:gap-3 text-text-main dark:text-white min-w-0 shrink">
       <button @click="emit('back')" class="flex items-center justify-center shrink-0">
         <span class="material-symbols-outlined cursor-pointer">arrow_back</span>

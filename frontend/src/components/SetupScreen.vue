@@ -110,7 +110,7 @@ function handleStart() {
 </script>
 
 <template>
-  <div class="min-h-screen overflow-y-auto bg-background-light dark:bg-background-dark">
+  <div class="min-h-screen overflow-y-auto bg-background-light dark:bg-background-dark safe-area-inset">
     <div class="max-w-2xl mx-auto px-4 py-8 pb-12">
       <!-- Header -->
       <div class="flex justify-between items-center mb-8">
