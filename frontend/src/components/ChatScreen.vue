@@ -284,7 +284,7 @@ function handleBack() {
 </script>
 
 <template>
-  <div class="flex h-screen w-full overflow-hidden">
+  <div class="flex h-screen w-full max-w-[100vw] overflow-hidden">
     <div class="flex flex-1 flex-col h-full relative bg-background-light dark:bg-background-dark">
       <!-- Header -->
       <ChatHeader

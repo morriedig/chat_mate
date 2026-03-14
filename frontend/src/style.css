@@ -2,6 +2,12 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Prevent horizontal overflow on mobile PWA */
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
 @theme {
   --color-primary: #2badee;
   --color-background-light: #f6f7f8;

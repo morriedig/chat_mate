@@ -49,7 +49,7 @@ const emit = defineEmits(['back', 'toggle-article', 'renew-chat', 'toggle-vocab-
       <span class="hidden sm:inline px-2 py-0.5 rounded-full bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 text-xs font-semibold shrink-0">Online</span>
       <span v-if="isArticleMode" class="hidden sm:inline px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 text-xs font-semibold shrink-0">{{ t('chat.articleMode') }}</span>
     </div>
-    <div class="flex items-center gap-1 sm:gap-2 relative shrink-0">
+    <div class="flex items-center gap-1 sm:gap-2 relative">
       <DailyGoalRing />
       <RankBadge />
       <button
@@ -75,7 +75,7 @@ const emit = defineEmits(['back', 'toggle-article', 'renew-chat', 'toggle-vocab-
       <button
         @click="emit('renew-chat')"
         :disabled="isLoading"
-        class="flex h-9 px-3 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-text-main dark:text-slate-200 text-sm font-medium transition-colors disabled:opacity-50"
+        class="flex h-9 w-9 sm:w-auto sm:px-3 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-text-main dark:text-slate-200 text-sm font-medium transition-colors disabled:opacity-50 shrink-0"
       >
         <span class="material-symbols-outlined text-[18px]">refresh</span>
         <span class="hidden sm:inline ml-1">New Chat</span>
