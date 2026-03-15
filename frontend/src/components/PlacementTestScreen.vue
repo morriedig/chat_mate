@@ -56,7 +56,7 @@ function handleDone() {
 <template>
   <div class="min-h-screen bg-background-light dark:bg-background-dark flex flex-col">
     <!-- Header -->
-    <div class="flex items-center gap-3 p-4 border-b border-slate-200 dark:border-slate-700">
+    <div class="flex items-center gap-3 p-4 border-b border-slate-200 dark:border-slate-700 safe-area-top">
       <button @click="router.push('/')" class="text-text-muted dark:text-slate-400 hover:text-text-main dark:hover:text-white">
         <span class="material-symbols-outlined">arrow_back</span>
       </button>
