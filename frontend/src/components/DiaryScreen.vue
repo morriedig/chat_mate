@@ -13,7 +13,7 @@ import DiaryFeedback from './diary/DiaryFeedback.vue'
 import DiaryEntryCard from './diary/DiaryEntryCard.vue'
 import DiaryCalendar from './diary/DiaryCalendar.vue'
 import ContributionGrid from './diary/ContributionGrid.vue'
-import { toLocalDateKey } from '../utils/dateUtils'
+import { toLocalDateKey, LOCALE_MAP } from '../utils/dateUtils'
 
 const { t } = useI18n()
 const router = useRouter()
@@ -26,10 +26,9 @@ const {
 } = useNavState()
 const { motherTongue } = useMotherTongue()
 
-// Guard: redirect if missing required state
-if (!language.value || !level.value) {
-  router.replace('/')
-}
+// Diary doesn't require character/level selection — use sensible defaults
+const diaryLanguage = computed(() => language.value || 'en')
+const diaryLevel = computed(() => level.value?.id || 'intermediate')
 
 // Daily goal timer
 const { startTimer, stopTimer } = useDailyGoal()
@@ -78,7 +77,7 @@ const feedbackCharacter = computed(() => {
 // Today's date formatted
 const todayFormatted = computed(() => {
   return new Date().toLocaleDateString(
-    language.value === 'ja' ? 'ja-JP' : language.value === 'zh' ? 'zh-TW' : 'en-US',
+    LOCALE_MAP[diaryLanguage.value] || 'en-US',
     { month: 'short', day: 'numeric', weekday: 'short' }
   )
 })
@@ -103,10 +102,10 @@ onBeforeUnmount(() => {
 // Methods
 async function handleSubmit(body) {
   const entry = await submitEntry(body, {
-    language: language.value,
-    level: level.value?.id || 'intermediate',
+    language: diaryLanguage.value,
+    level: diaryLevel.value,
     characterId: character.value?.id || 'emma',
-    nativeLanguage: motherTongue.value,
+    nativeLanguage: motherTongue.value || 'en',
     prompt: initialPrompt.value || null,
     rewriteOf: rewriteOfId.value || null,
   })
@@ -126,10 +125,10 @@ async function handleRetryFeedback() {
   if (!activeEntry.value) return
   // Retry feedback only — don't re-create entry or re-award XP
   await retryFeedback(activeEntry.value.id, {
-    language: language.value,
-    level: level.value?.id || 'intermediate',
+    language: diaryLanguage.value,
+    level: diaryLevel.value,
     characterId: character.value?.id || 'emma',
-    nativeLanguage: motherTongue.value,
+    nativeLanguage: motherTongue.value || 'en',
   })
   // Reload the entry to get updated feedback
   const updated = loadEntry(activeEntry.value.id)
@@ -300,8 +299,8 @@ function handleBack() {
           <!-- Show editor if no active entry with feedback -->
           <DiaryEditor
             v-if="!activeEntry || !activeEntry.feedback"
-            :language="language"
-            :level="level?.id || 'intermediate'"
+            :language="diaryLanguage"
+            :level="diaryLevel"
             :is-loading="isLoadingFeedback"
             :initial-prompt="rewriteInitialText || initialPrompt"
             @submit="handleSubmit"
