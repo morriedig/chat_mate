@@ -1,12 +1,42 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import ChatScreen from '../../components/ChatScreen.vue'
+
+// Mock vue-router
+const mockPush = vi.fn()
+const mockReplace = vi.fn()
+vi.mock('vue-router', () => ({
+  useRouter: () => ({
+    push: mockPush,
+    replace: mockReplace
+  })
+}))
 
 // Mock vue-i18n
 vi.mock('vue-i18n', () => ({
   useI18n: () => ({
     t: (key) => key
+  })
+}))
+
+// Mock useNavState
+const navCharacter = ref({ id: 'sakura', name: 'Sakura', avatar: '\u{1F338}' })
+const navLevel = ref({ id: 'beginner', name: 'Beginner' })
+const navLanguage = ref('en')
+const navArticle = ref(null)
+const navMode = ref('free')
+const navScenario = ref(null)
+
+vi.mock('../../composables/useNavState', () => ({
+  useNavState: () => ({
+    selectedCharacter: navCharacter,
+    selectedLevel: navLevel,
+    selectedLanguage: navLanguage,
+    selectedArticle: navArticle,
+    chatMode: navMode,
+    activeScenario: navScenario,
+    clearArticle: vi.fn()
   })
 }))
 
@@ -29,7 +59,8 @@ vi.mock('../../composables/useChatApi', () => ({
   useChatApi: () => ({
     isLoading: ref(false),
     error: ref(null),
-    sendMessage: mockSendMessage
+    sendMessage: mockSendMessage,
+    sendFeedback: vi.fn()
   })
 }))
 
@@ -46,6 +77,30 @@ vi.mock('../../composables/useUserProgress', () => ({
   })
 }))
 
+// Mock useDailyGoal
+vi.mock('../../composables/useDailyGoal', () => ({
+  useDailyGoal: () => ({
+    startTimer: vi.fn(),
+    stopTimer: vi.fn()
+  })
+}))
+
+// Mock useDailyChallenge
+vi.mock('../../composables/useDailyChallenge', () => ({
+  useDailyChallenge: () => ({
+    trackChallengeMessage: vi.fn(() => false),
+    getChallengeContext: vi.fn(() => null),
+    isChallengeCompleted: ref(false)
+  })
+}))
+
+// Mock useWeeklyQuests
+vi.mock('../../composables/useWeeklyQuests', () => ({
+  useWeeklyQuests: () => ({
+    onChatMessage: vi.fn()
+  })
+}))
+
 // Stub child components
 const ChatHeaderStub = {
   template: '<div class="chat-header-stub"></div>',
@@ -59,7 +114,7 @@ const ChatMessageStub = {
 
 const ChatInputStub = {
   template: '<div class="chat-input-stub"><input :value="modelValue" @input="$emit(\'update:modelValue\', $event.target.value)" /><button @click="$emit(\'send\')">Send</button></div>',
-  props: ['modelValue', 'disabled'],
+  props: ['modelValue', 'disabled', 'language'],
   emits: ['update:modelValue', 'send'],
   methods: {
     focus() {
@@ -84,26 +139,16 @@ const ArticlePanelStub = {
 }
 
 describe('ChatScreen', () => {
-  const mockCharacter = {
-    id: 'sakura',
-    name: 'Sakura',
-    avatar: '🌸'
-  }
+  const createWrapper = (overrides = {}) => {
+    // Set nav state for each test
+    navCharacter.value = overrides.character || { id: 'sakura', name: 'Sakura', avatar: '\u{1F338}' }
+    navLevel.value = overrides.level || { id: 'beginner', name: 'Beginner' }
+    navLanguage.value = overrides.language || 'en'
+    navMode.value = overrides.mode || 'free'
+    navArticle.value = overrides.article || null
+    navScenario.value = overrides.scenario || null
 
-  const mockLevel = {
-    id: 'beginner',
-    name: 'Beginner'
-  }
-
-  const createWrapper = (props = {}) => {
     return mount(ChatScreen, {
-      props: {
-        character: mockCharacter,
-        level: mockLevel,
-        language: 'en',
-        mode: 'free',
-        ...props
-      },
       global: {
         stubs: {
           ChatHeader: ChatHeaderStub,
@@ -115,6 +160,10 @@ describe('ChatScreen', () => {
           LevelUpModal: true,
           StreakMilestoneModal: true,
           AchievementUnlockModal: true,
+          WordSavePopup: true,
+          VocabularyBankPanel: true,
+          DailyPromptCard: true,
+          MicroReward: true,
           Teleport: true
         }
       }
@@ -123,6 +172,8 @@ describe('ChatScreen', () => {
 
   beforeEach(() => {
     mockSendMessage.mockClear()
+    mockPush.mockClear()
+    mockReplace.mockClear()
   })
 
   describe('rendering', () => {
@@ -143,7 +194,9 @@ describe('ChatScreen', () => {
 
     it('should show date separator', () => {
       const wrapper = createWrapper()
-      expect(wrapper.text()).toContain('Today')
+      // The date separator shows a formatted date (e.g., "Mar 15"), not "Today"
+      // Just verify the date separator element exists
+      expect(wrapper.find('.text-xs.font-medium.text-slate-400').exists()).toBe(true)
     })
   })
 
@@ -203,39 +256,40 @@ describe('ChatScreen', () => {
   })
 
   describe('events', () => {
-    it('should emit back event', async () => {
+    it('should navigate back when back event emitted from header', async () => {
       const wrapper = createWrapper()
 
       // Simulate back event from header
       wrapper.findComponent(ChatHeaderStub).vm.$emit('back')
 
-      expect(wrapper.emitted('back')).toBeTruthy()
+      // In free mode, handleBack calls router.push('/')
+      expect(mockPush).toHaveBeenCalledWith('/')
     })
   })
 
   describe('error handling', () => {
     it('should have error banner container', () => {
       const wrapper = createWrapper()
-      // Error banner is conditionally rendered
-      expect(wrapper.exists()).toBe(true)
+      // Error banner is conditionally rendered via v-if="errorMessage"
+      // When no error, it should not be visible
+      expect(wrapper.find('.bg-red-100').exists()).toBe(false)
     })
   })
 
   describe('modals', () => {
     it('should include level up modal', () => {
       const wrapper = createWrapper()
-      // Modal is stubbed
-      expect(wrapper.exists()).toBe(true)
+      expect(wrapper.findComponent({ name: 'LevelUpModal' }).exists()).toBe(true)
     })
 
     it('should include streak milestone modal', () => {
       const wrapper = createWrapper()
-      expect(wrapper.exists()).toBe(true)
+      expect(wrapper.findComponent({ name: 'StreakMilestoneModal' }).exists()).toBe(true)
     })
 
     it('should include achievement unlock modal', () => {
       const wrapper = createWrapper()
-      expect(wrapper.exists()).toBe(true)
+      expect(wrapper.findComponent({ name: 'AchievementUnlockModal' }).exists()).toBe(true)
     })
   })
 })

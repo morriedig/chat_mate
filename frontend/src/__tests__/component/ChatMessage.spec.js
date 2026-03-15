@@ -1,8 +1,19 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
 import ChatMessage from '../../components/chat/ChatMessage.vue'
 
+// Mock vue-i18n
+vi.mock('vue-i18n', () => ({
+  useI18n: () => ({
+    t: (key) => key
+  })
+}))
+
 describe('ChatMessage', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
   const mockCharacter = {
     id: 'sakura',
     name: 'Sakura',
@@ -15,6 +26,11 @@ describe('ChatMessage', () => {
         message: { role: 'user', content: 'Hello' },
         character: mockCharacter,
         ...props
+      },
+      global: {
+        stubs: {
+          FeedbackPanel: { template: '<div class="feedback-panel-stub"></div>' }
+        }
       }
     })
   }
@@ -26,7 +42,7 @@ describe('ChatMessage', () => {
       })
 
       expect(wrapper.text()).toContain('Hello there!')
-      expect(wrapper.text()).toContain('You')
+      expect(wrapper.text()).toContain('feedback.you')
     })
 
     it('should show user avatar', () => {

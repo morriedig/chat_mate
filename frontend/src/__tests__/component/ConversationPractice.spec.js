@@ -1,6 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
-import { ref } from 'vue'
 import ConversationPractice from '../../components/learning/ConversationPractice.vue'
 
 // Mock vue-i18n
@@ -13,99 +12,53 @@ vi.mock('vue-i18n', () => ({
   })
 }))
 
-// Mock useChatApi
-const mockSendMessage = vi.fn().mockResolvedValue({
-  reply: 'Hey! Great to chat with you about travel!',
-  hints: []
-})
+// Mock tts utilities
+vi.mock('../../utils/tts', () => ({
+  playTTS: vi.fn().mockResolvedValue(undefined),
+  stopTTS: vi.fn(),
+  splitTextForHighlight: (text) => text.split(' ')
+}))
 
-vi.mock('../../composables/useChatApi', () => ({
-  useChatApi: () => ({
-    isLoading: ref(false),
-    error: ref(null),
-    sendMessage: mockSendMessage
+// Mock useLearningProgress
+vi.mock('../../composables/useLearningProgress', () => ({
+  useLearningProgress: () => ({
+    markConversationCompleted: vi.fn()
   })
 }))
-
-// Mock useUserProgress
-vi.mock('../../composables/useUserProgress', () => ({
-  useUserProgress: () => ({
-    onMessageSent: vi.fn(),
-    onMessageReceived: vi.fn(),
-    trackCharacterInteraction: vi.fn()
-  })
-}))
-
-// Mock characters data
-vi.mock('../../data/characters', () => ({
-  characters: [
-    { id: 'emma', name: 'Emma', avatar: '👩‍🎨' },
-    { id: 'marcus', name: 'Marcus', avatar: '👨‍💻' }
-  ]
-}))
-
-// Stub child components
-const ChatMessageStub = {
-  template: '<div class="chat-message-stub">{{ message.content }}</div>',
-  props: ['message', 'character']
-}
-
-const ChatInputStub = {
-  template: '<div class="chat-input-stub"><input :value="modelValue" @input="$emit(\'update:modelValue\', $event.target.value)" /><button @click="$emit(\'send\')">Send</button></div>',
-  props: ['modelValue', 'disabled'],
-  emits: ['update:modelValue', 'send'],
-  methods: {
-    focus() {}
-  }
-}
-
-const TypingIndicatorStub = {
-  template: '<div class="typing-indicator-stub"></div>',
-  props: ['character']
-}
 
 describe('ConversationPractice', () => {
-  const mockWords = [
-    { id: 'w1', word: 'airport', meaning: 'A place for planes', example: 'I went to the airport.' },
-    { id: 'w2', word: 'ticket', meaning: 'A pass for travel', example: 'Buy a ticket.' },
-    { id: 'w3', word: 'passport', meaning: 'Travel document', example: 'Show your passport.' },
-    { id: 'w4', word: 'luggage', meaning: 'Bags for travel', example: 'Check your luggage.' },
-    { id: 'w5', word: 'flight', meaning: 'Air travel', example: 'The flight is delayed.' },
-    { id: 'w6', word: 'boarding', meaning: 'Getting on plane', example: 'Boarding starts soon.' }
+  const mockConversations = [
+    {
+      id: 'conv1',
+      title: 'At the Airport',
+      messages: [
+        { role: 'partner', text: 'Hello! Where are you flying today?', nativeText: 'こんにちは！今日はどこに飛びますか？' },
+        { role: 'user', text: 'I am going to Tokyo.', nativeText: '東京に行きます。' },
+        { role: 'partner', text: 'That sounds exciting!', nativeText: 'それはワクワクしますね！' }
+      ]
+    },
+    {
+      id: 'conv2',
+      title: 'Buying a Ticket',
+      messages: [
+        { role: 'partner', text: 'Can I help you?', nativeText: 'お手伝いしましょうか？' },
+        { role: 'user', text: 'I need a ticket to Osaka.', nativeText: '大阪への切符が必要です。' }
+      ]
+    }
   ]
-
-  const mockCategory = {
-    id: 'travel',
-    icon: '✈️'
-  }
-
-  const mockLevel = {
-    id: 'beginner',
-    name: 'Beginner',
-    icon: '🌱'
-  }
 
   const createWrapper = (props = {}) => {
     return mount(ConversationPractice, {
       props: {
-        words: mockWords,
-        category: mockCategory,
-        level: mockLevel,
+        conversations: mockConversations,
         language: 'en',
         ...props
-      },
-      global: {
-        stubs: {
-          ChatMessage: ChatMessageStub,
-          ChatInput: ChatInputStub,
-          TypingIndicator: TypingIndicatorStub
-        }
       }
     })
   }
 
   beforeEach(() => {
-    mockSendMessage.mockClear()
+    vi.clearAllMocks()
   })
 
   describe('rendering', () => {
@@ -114,33 +67,31 @@ describe('ConversationPractice', () => {
       expect(wrapper.exists()).toBe(true)
     })
 
-    it('should show intro screen before conversation starts', () => {
+    it('should show conversation list title before selecting a conversation', () => {
       const wrapper = createWrapper()
       expect(wrapper.text()).toContain('learning.conversation.title')
     })
 
-    it('should display character avatar on intro', () => {
+    it('should show select dialogue subtitle', () => {
       const wrapper = createWrapper()
-      // One of the character avatars should be shown
-      expect(wrapper.text()).toMatch(/👩‍🎨|👨‍💻/)
+      expect(wrapper.text()).toContain('learning.conversation.selectDialogue')
     })
 
-    it('should show words to practice on intro', () => {
+    it('should display all conversation titles in the list', () => {
       const wrapper = createWrapper()
-      expect(wrapper.text()).toContain('learning.conversation.wordsToUse')
-      expect(wrapper.text()).toContain('airport')
-      expect(wrapper.text()).toContain('ticket')
+      expect(wrapper.text()).toContain('At the Airport')
+      expect(wrapper.text()).toContain('Buying a Ticket')
     })
 
-    it('should show +N more when more than 5 words', () => {
+    it('should show message count for each conversation', () => {
       const wrapper = createWrapper()
-      expect(wrapper.text()).toContain('+1')
-      expect(wrapper.text()).toContain('learning.conversation.more')
+      expect(wrapper.text()).toContain('3')
+      expect(wrapper.text()).toContain('2')
     })
 
-    it('should have start button', () => {
-      const wrapper = createWrapper()
-      expect(wrapper.text()).toContain('learning.conversation.start')
+    it('should show no conversations message when list is empty', () => {
+      const wrapper = createWrapper({ conversations: [] })
+      expect(wrapper.text()).toContain('learning.conversation.noConversations')
     })
   })
 
@@ -150,134 +101,116 @@ describe('ConversationPractice', () => {
       expect(wrapper.find('.material-symbols-outlined').text()).toContain('arrow_back')
     })
 
-    it('should show category icon and name', () => {
-      const wrapper = createWrapper()
-      expect(wrapper.text()).toContain('✈️')
-      expect(wrapper.text()).toContain('learning.categories.travel')
-    })
-
-    it('should emit back event when back button clicked', async () => {
+    it('should emit back event when back button clicked from list view', async () => {
       const wrapper = createWrapper()
       const backButton = wrapper.find('button')
-
       await backButton.trigger('click')
-
       expect(wrapper.emitted('back')).toBeTruthy()
     })
   })
 
-  describe('starting conversation', () => {
-    it('should call API when start button is clicked', async () => {
+  describe('selecting a conversation', () => {
+    it('should show conversation dialogue after selecting', async () => {
       const wrapper = createWrapper()
-      const startButton = wrapper.findAll('button').find(btn => btn.text().includes('learning.conversation.start'))
-
-      await startButton.trigger('click')
+      // Click on the first conversation button in the list
+      const convButtons = wrapper.findAll('.space-y-3 button')
+      await convButtons[0].trigger('click')
       await wrapper.vm.$nextTick()
 
-      expect(mockSendMessage).toHaveBeenCalled()
+      // Should now show the messages
+      expect(wrapper.text()).toContain('Hello! Where are you flying today?')
+      expect(wrapper.text()).toContain('I am going to Tokyo.')
     })
 
-    it('should show chat interface after starting', async () => {
+    it('should show Play All button when conversation is selected', async () => {
       const wrapper = createWrapper()
-      const startButton = wrapper.findAll('button').find(btn => btn.text().includes('learning.conversation.start'))
-
-      await startButton.trigger('click')
+      const convButtons = wrapper.findAll('.space-y-3 button')
+      await convButtons[0].trigger('click')
       await wrapper.vm.$nextTick()
 
-      expect(wrapper.find('.chat-input-stub').exists()).toBe(true)
+      expect(wrapper.text()).toContain('learning.conversation.playAll')
     })
 
-    it('should pass vocabulary context to API', async () => {
+    it('should show practice dialogue subtitle when conversation is selected', async () => {
       const wrapper = createWrapper()
-      const startButton = wrapper.findAll('button').find(btn => btn.text().includes('learning.conversation.start'))
-
-      await startButton.trigger('click')
+      const convButtons = wrapper.findAll('.space-y-3 button')
+      await convButtons[0].trigger('click')
       await wrapper.vm.$nextTick()
 
-      expect(mockSendMessage).toHaveBeenCalledWith(expect.objectContaining({
-        vocabularyContext: expect.objectContaining({
-          category: 'travel',
-          words: expect.any(Array)
-        })
-      }))
+      expect(wrapper.text()).toContain('learning.conversation.practiceDialogue')
+    })
+
+    it('should show role labels for messages', async () => {
+      const wrapper = createWrapper()
+      const convButtons = wrapper.findAll('.space-y-3 button')
+      await convButtons[0].trigger('click')
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.text()).toContain('learning.conversation.partner')
+      expect(wrapper.text()).toContain('learning.conversation.you')
+    })
+
+    it('should show native text in bilingual mode', async () => {
+      const wrapper = createWrapper({ bilingual: true })
+      const convButtons = wrapper.findAll('.space-y-3 button')
+      await convButtons[0].trigger('click')
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.text()).toContain('こんにちは！今日はどこに飛びますか？')
+    })
+
+    it('should show practice tip', async () => {
+      const wrapper = createWrapper()
+      const convButtons = wrapper.findAll('.space-y-3 button')
+      await convButtons[0].trigger('click')
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.text()).toContain('learning.conversation.practiceTip')
+      expect(wrapper.text()).toContain('learning.conversation.practiceTipText')
     })
   })
 
-  describe('conversation flow', () => {
-    it('should show context hint during conversation', async () => {
+  describe('navigation within component', () => {
+    it('should go back to list when back button clicked from conversation view', async () => {
       const wrapper = createWrapper()
-      const startButton = wrapper.findAll('button').find(btn => btn.text().includes('learning.conversation.start'))
-
-      await startButton.trigger('click')
+      // Select a conversation first
+      const convButtons = wrapper.findAll('.space-y-3 button')
+      await convButtons[0].trigger('click')
       await wrapper.vm.$nextTick()
 
-      expect(wrapper.text()).toContain('learning.conversation.contextHint')
-    })
-
-    it('should show progress indicator before minimum messages', async () => {
-      const wrapper = createWrapper()
-      const startButton = wrapper.findAll('button').find(btn => btn.text().includes('learning.conversation.start'))
-
-      await startButton.trigger('click')
+      // Now click back button - should go back to list, not emit 'back'
+      const backButton = wrapper.find('button')
+      await backButton.trigger('click')
       await wrapper.vm.$nextTick()
 
-      expect(wrapper.text()).toContain('learning.conversation.progress')
+      // Should show conversation list again
+      expect(wrapper.text()).toContain('learning.conversation.selectDialogue')
+      // Should NOT have emitted back (it goes to list instead)
+      expect(wrapper.emitted('back')).toBeFalsy()
     })
   })
 
-  describe('finish button', () => {
-    it('should not show finish button before minimum messages', async () => {
+  describe('audio playback', () => {
+    it('should have volume buttons for each message', async () => {
       const wrapper = createWrapper()
-      const startButton = wrapper.findAll('button').find(btn => btn.text().includes('learning.conversation.start'))
-
-      await startButton.trigger('click')
+      const convButtons = wrapper.findAll('.space-y-3 button')
+      await convButtons[0].trigger('click')
       await wrapper.vm.$nextTick()
 
-      // Should not have finish button yet (need 4 messages)
-      const buttons = wrapper.findAll('button')
-      const finishButton = buttons.find(btn => btn.text().includes('learning.conversation.finish'))
-      expect(finishButton).toBeFalsy()
+      // Each message should have a volume_up button
+      const volumeIcons = wrapper.findAll('.material-symbols-outlined').filter(el => el.text().includes('volume_up'))
+      expect(volumeIcons.length).toBe(mockConversations[0].messages.length)
     })
   })
 
-  describe('character selection', () => {
-    it('should select a character randomly', () => {
+  describe('selected conversation title', () => {
+    it('should display the selected conversation title in the header', async () => {
       const wrapper = createWrapper()
-      // Character should be one of the mocked characters
-      expect(wrapper.vm.selectedCharacter).toBeDefined()
-      expect(['emma', 'marcus']).toContain(wrapper.vm.selectedCharacter.id)
-    })
-
-    it('should display selected character name', () => {
-      const wrapper = createWrapper()
-      const characterName = wrapper.vm.selectedCharacter.name
-      expect(wrapper.text()).toContain(characterName)
-    })
-  })
-
-  describe('events', () => {
-    it('should emit complete with message count', async () => {
-      const wrapper = createWrapper()
-
-      // Manually set message count to test complete
-      wrapper.vm.messageCount = 5
-      wrapper.vm.conversationStarted = true
+      const convButtons = wrapper.findAll('.space-y-3 button')
+      await convButtons[0].trigger('click')
       await wrapper.vm.$nextTick()
 
-      const finishButton = wrapper.findAll('button').find(btn => btn.text().includes('learning.conversation.finish'))
-      if (finishButton) {
-        await finishButton.trigger('click')
-        expect(wrapper.emitted('complete')).toBeTruthy()
-        expect(wrapper.emitted('complete')[0][0]).toHaveProperty('messagesExchanged')
-      }
-    })
-  })
-
-  describe('error handling', () => {
-    it('should not show error banner initially', () => {
-      const wrapper = createWrapper()
-      expect(wrapper.text()).not.toContain('chat.rateLimitError')
-      expect(wrapper.text()).not.toContain('chat.genericError')
+      expect(wrapper.text()).toContain('At the Airport')
     })
   })
 })

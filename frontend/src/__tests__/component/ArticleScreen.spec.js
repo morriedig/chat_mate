@@ -1,7 +1,15 @@
-import { describe, it, expect, vi } from 'vitest'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import ArticleScreen from '../../components/ArticleScreen.vue'
+
+// Mock vue-router
+const mockPush = vi.fn()
+vi.mock('vue-router', () => ({
+  useRouter: () => ({
+    push: mockPush
+  })
+}))
 
 // Mock vue-i18n
 vi.mock('vue-i18n', () => ({
@@ -53,20 +61,25 @@ vi.mock('../../composables/useArticleParser', () => ({
   stripMarkers: (text) => text.replace(/\[\[(\w+)\]\]/g, '$1')
 }))
 
-describe('ArticleScreen', () => {
-  const mockLevel = {
-    id: 'beginner',
-    name: 'Beginner',
-    icon: '🌱'
-  }
+// Mock useNavState
+const mockSelectedLevel = ref({ id: 'beginner', name: 'Beginner', icon: '🌱' })
+const mockSetArticle = vi.fn()
+vi.mock('../../composables/useNavState', () => ({
+  useNavState: () => ({
+    selectedLevel: mockSelectedLevel,
+    setArticle: mockSetArticle
+  })
+}))
 
-  const createWrapper = (props = {}) => {
-    return mount(ArticleScreen, {
-      props: {
-        level: mockLevel,
-        ...props
-      }
-    })
+describe('ArticleScreen', () => {
+  beforeEach(() => {
+    mockPush.mockClear()
+    mockSetArticle.mockClear()
+    mockSelectedLevel.value = { id: 'beginner', name: 'Beginner', icon: '🌱' }
+  })
+
+  const createWrapper = () => {
+    return mount(ArticleScreen)
   }
 
   describe('rendering', () => {
@@ -126,24 +139,23 @@ describe('ArticleScreen', () => {
   })
 
   describe('article selection', () => {
-    it('should emit select event when article is clicked', async () => {
+    it('should call setArticle and navigate to /chat when article is clicked', async () => {
       const wrapper = createWrapper()
-      // Use more specific selector for article cards (not the back button icon)
       const articleCards = wrapper.findAll('.rounded-xl.border.cursor-pointer')
 
       await articleCards[0].trigger('click')
 
-      expect(wrapper.emitted('select')).toBeTruthy()
+      expect(mockSetArticle).toHaveBeenCalledTimes(1)
+      expect(mockPush).toHaveBeenCalledWith('/chat')
     })
 
     it('should pass correct article data on select', async () => {
       const wrapper = createWrapper()
-      // Use more specific selector for article cards (not the back button icon)
       const articleCards = wrapper.findAll('.rounded-xl.border.cursor-pointer')
 
       await articleCards[0].trigger('click')
 
-      const payload = wrapper.emitted('select')[0][0]
+      const payload = mockSetArticle.mock.calls[0][0]
       expect(payload).toHaveProperty('id')
       expect(payload).toHaveProperty('title')
       expect(payload).toHaveProperty('content')
@@ -152,21 +164,20 @@ describe('ArticleScreen', () => {
   })
 
   describe('navigation', () => {
-    it('should emit back event when back button is clicked', async () => {
+    it('should navigate to / when back button is clicked', async () => {
       const wrapper = createWrapper()
       const backButton = wrapper.find('button')
 
       await backButton.trigger('click')
 
-      expect(wrapper.emitted('back')).toBeTruthy()
+      expect(mockPush).toHaveBeenCalledWith('/')
     })
   })
 
   describe('empty state', () => {
     it('should show no articles message when empty', () => {
-      const wrapper = createWrapper({
-        level: { id: 'nonexistent', name: 'None' }
-      })
+      mockSelectedLevel.value = { id: 'nonexistent', name: 'None' }
+      const wrapper = createWrapper()
 
       expect(wrapper.text()).toContain('articles.noArticles')
     })
