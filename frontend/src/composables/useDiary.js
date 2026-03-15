@@ -5,13 +5,9 @@ import { useDiaryPrompts } from './useDiaryPrompts'
 import { useUserProgress } from './useUserProgress'
 import { useVocabularyBank } from './useVocabularyBank'
 import { useWeeklyQuests } from './useWeeklyQuests'
+import { toLocalDateKey, getTodayKey } from '../utils/dateUtils'
 
 const DIARY_XP = 15
-
-function getToday() {
-  const d = new Date()
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
-}
 
 function generateId() {
   return Date.now().toString(36) + Math.random().toString(36).substring(2, 8)
@@ -27,10 +23,10 @@ export function useDiary() {
 
   // Check if an entry exists for today
   const todayEntry = computed(() => {
-    const today = getToday()
+    const today = getTodayKey()
     return storage.entryIndex.value.find(e => {
-      const entryDate = new Date(e.createdAt).toISOString().split('T')[0]
-      return entryDate === today
+      const entryDate = toLocalDateKey(e.createdAt)
+      return entryDate && entryDate === today
     }) || null
   })
 
@@ -57,7 +53,7 @@ export function useDiary() {
 
     // Get unique dates sorted descending
     const dates = [...new Set(
-      entries.map(e => new Date(e.createdAt).toISOString().split('T')[0])
+      entries.map(e => toLocalDateKey(e.createdAt)).filter(Boolean)
     )].sort().reverse()
 
     if (findLongest) {
@@ -80,10 +76,10 @@ export function useDiary() {
     }
 
     // Current streak: count consecutive days starting from today or yesterday
-    const today = getToday()
+    const today = getTodayKey()
     const yesterday = new Date()
     yesterday.setDate(yesterday.getDate() - 1)
-    const yesterdayStr = yesterday.toISOString().split('T')[0]
+    const yesterdayStr = toLocalDateKey(yesterday)
 
     // Streak must start from today or yesterday
     if (dates[0] !== today && dates[0] !== yesterdayStr) return 0

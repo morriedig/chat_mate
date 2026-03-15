@@ -1,5 +1,7 @@
 <script setup>
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { toLocalDateKey, LOCALE_MAP } from '../../utils/dateUtils'
 
 const props = defineProps({
   entries: {
@@ -8,16 +10,30 @@ const props = defineProps({
   },
 })
 
-const dayLabels = ['M', '', 'W', '', 'F', '', '']
+const { locale } = useI18n()
+
+// Show localized labels for Mon, Wed, Fri only (rows 0, 2, 4)
+const dayLabels = computed(() => {
+  const intlLocale = LOCALE_MAP[locale.value] || locale.value
+  const formatter = new Intl.DateTimeFormat(intlLocale, { weekday: 'narrow' })
+  // Jan 5 2026 is a Monday
+  return Array.from({ length: 7 }, (_, i) => {
+    // Only show Mon (0), Wed (2), Fri (4)
+    if (i === 0 || i === 2 || i === 4) {
+      const d = new Date(2026, 0, 5 + i)
+      return formatter.format(d)
+    }
+    return ''
+  })
+})
 
 // Build a map from date string to total word count
 const wordCountByDate = computed(() => {
   const map = {}
   for (const e of props.entries) {
     if (!e.createdAt) continue
-    const d = new Date(e.createdAt)
-    if (isNaN(d.getTime())) continue
-    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+    const key = toLocalDateKey(e.createdAt)
+    if (!key) continue
     map[key] = (map[key] || 0) + (e.wordCount || 0)
   }
   return map
@@ -44,7 +60,7 @@ const grid = computed(() => {
     for (let d = 0; d < 7; d++) {
       const date = new Date(startMonday)
       date.setDate(startMonday.getDate() + w * 7 + d)
-      const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
+      const key = toLocalDateKey(date)
       const wc = wordCountByDate.value[key] || 0
       const isFuture = date > today
       week.push({ key, wordCount: wc, isFuture })

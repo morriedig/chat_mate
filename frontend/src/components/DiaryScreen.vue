@@ -13,6 +13,7 @@ import DiaryFeedback from './diary/DiaryFeedback.vue'
 import DiaryEntryCard from './diary/DiaryEntryCard.vue'
 import DiaryCalendar from './diary/DiaryCalendar.vue'
 import ContributionGrid from './diary/ContributionGrid.vue'
+import { toLocalDateKey } from '../utils/dateUtils'
 
 const { t } = useI18n()
 const router = useRouter()
@@ -201,17 +202,15 @@ function handleExport() {
 }
 
 function getExportDate() {
-  const d = new Date()
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+  return toLocalDateKey(new Date())
 }
 
 // Filtered entries for list view (when a calendar date is selected)
 const filteredEntries = computed(() => {
   if (!filterDate.value) return entryIndex.value
   return entryIndex.value.filter(e => {
-    const d = new Date(e.createdAt)
-    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
-    return key === filterDate.value
+    const key = toLocalDateKey(e.createdAt)
+    return key && key === filterDate.value
   })
 })
 

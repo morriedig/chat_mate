@@ -1,5 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { toLocalDateKey, getTodayKey, LOCALE_MAP } from '../../utils/dateUtils'
 
 const props = defineProps({
   entries: {
@@ -10,17 +12,24 @@ const props = defineProps({
 
 const emit = defineEmits(['select-date'])
 
+const { locale } = useI18n()
+
 const now = new Date()
 const currentYear = ref(now.getFullYear())
 const currentMonth = ref(now.getMonth())
 
-const dayLabels = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']
+const dayLabels = computed(() => {
+  const intlLocale = LOCALE_MAP[locale.value] || locale.value
+  const formatter = new Intl.DateTimeFormat(intlLocale, { weekday: 'narrow' })
+  // Jan 5 2026 is a Monday
+  return Array.from({ length: 7 }, (_, i) => {
+    const d = new Date(2026, 0, 5 + i)
+    return formatter.format(d)
+  })
+})
 
 // Reactive today so isToday stays correct across midnight
-const todayKey = computed(() => {
-  const d = new Date()
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
-})
+const todayKey = computed(() => getTodayKey())
 
 const monthLabel = computed(() => {
   const d = new Date(currentYear.value, currentMonth.value, 1)
@@ -32,10 +41,8 @@ const entryDateSet = computed(() => {
   const set = new Set()
   for (const e of props.entries) {
     if (!e.createdAt) continue
-    const d = new Date(e.createdAt)
-    if (isNaN(d.getTime())) continue
-    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
-    set.add(key)
+    const key = toLocalDateKey(e.createdAt)
+    if (key) set.add(key)
   }
   return set
 })
@@ -60,7 +67,7 @@ const calendarDays = computed(() => {
   }
 
   for (let d = 1; d <= daysInMonth; d++) {
-    const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`
+    const dateStr = toLocalDateKey(new Date(year, month, d))
     const isToday = dateStr === todayKey.value
     const hasEntry = entryDateSet.value.has(dateStr)
     days.push({ day: d, dateStr, isToday, hasEntry })
@@ -116,8 +123,8 @@ function selectDate(cell) {
     <!-- Day labels -->
     <div class="grid grid-cols-7 gap-0 mb-1">
       <div
-        v-for="label in dayLabels"
-        :key="label"
+        v-for="(label, idx) in dayLabels"
+        :key="idx"
         class="text-center text-[10px] font-medium text-text-muted dark:text-slate-500 py-1"
       >
         {{ label }}

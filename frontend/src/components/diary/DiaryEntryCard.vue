@@ -56,21 +56,23 @@ const countLabel = computed(() => {
 <template>
   <button
     @click="emit('select', entry)"
+    data-testid="diary-entry-card"
     class="w-full text-left p-4 rounded-2xl bg-surface-light dark:bg-surface-dark border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md hover:border-primary/30 dark:hover:border-primary/30 transition-all active:scale-[0.99]"
   >
     <div class="flex items-start justify-between gap-3">
       <div class="min-w-0 flex-1">
         <!-- Date -->
-        <p class="text-xs font-medium text-text-muted dark:text-slate-400 mb-1">{{ dateFormatted }}</p>
+        <p data-testid="entry-date" class="text-xs font-medium text-text-muted dark:text-slate-400 mb-1">{{ dateFormatted }}</p>
         <!-- Preview text -->
-        <p class="text-sm text-text-main dark:text-slate-200 leading-relaxed line-clamp-2">{{ previewText }}</p>
+        <p data-testid="entry-preview" class="text-sm text-text-main dark:text-slate-200 leading-relaxed line-clamp-2">{{ previewText }}</p>
         <!-- Word count -->
-        <p class="text-xs text-text-muted dark:text-slate-500 mt-1.5">{{ countLabel }}</p>
+        <p data-testid="entry-word-count" class="text-xs text-text-muted dark:text-slate-500 mt-1.5">{{ countLabel }}</p>
       </div>
       <!-- Feedback badge -->
       <div class="shrink-0 flex flex-col items-end gap-2">
         <span
           v-if="entry.rewriteOf"
+          data-testid="rewrite-badge"
           class="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[11px] font-medium bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-300"
         >
           <span class="material-symbols-outlined text-[12px]">edit_note</span>
@@ -78,6 +80,7 @@ const countLabel = computed(() => {
         </span>
         <span
           v-if="feedbackBadge"
+          data-testid="feedback-badge"
           class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium"
           :class="feedbackBadge.class"
         >

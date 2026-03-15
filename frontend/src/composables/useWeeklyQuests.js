@@ -3,22 +3,22 @@ import { ref, computed } from 'vue'
 const STORAGE_KEY = 'chatmate_weeklyQuests'
 
 const QUEST_POOL = [
-  { id: 'chat_5', target: 5, reward: 50, key: 'weeklyQuests.quests.chat5' },
-  { id: 'chat_10', target: 10, reward: 80, key: 'weeklyQuests.quests.chat10' },
-  { id: 'vocab_10', target: 10, reward: 40, key: 'weeklyQuests.quests.vocab10' },
-  { id: 'vocab_20', target: 20, reward: 60, key: 'weeklyQuests.quests.vocab20' },
-  { id: 'quiz_3', target: 3, reward: 30, key: 'weeklyQuests.quests.quiz3' },
-  { id: 'quiz_perfect', target: 1, reward: 50, key: 'weeklyQuests.quests.quizPerfect' },
-  { id: 'streak_5', target: 5, reward: 60, key: 'weeklyQuests.quests.streak5' },
-  { id: 'streak_7', target: 7, reward: 100, key: 'weeklyQuests.quests.streak7' },
-  { id: 'minutes_30', target: 30, reward: 40, key: 'weeklyQuests.quests.minutes30' },
-  { id: 'challenge_3', target: 3, reward: 50, key: 'weeklyQuests.quests.challenge3' },
-  { id: 'diary_entries_3', target: 3, reward: 30, key: 'weeklyQuests.quests.diaryEntries3' },
-  { id: 'diary_entries_5', target: 5, reward: 50, key: 'weeklyQuests.quests.diaryEntries5' },
-  { id: 'diary_vocab_use_5', target: 5, reward: 25, key: 'weeklyQuests.quests.diaryVocabUse5' },
-  { id: 'diary_vocab_use_10', target: 10, reward: 40, key: 'weeklyQuests.quests.diaryVocabUse10' },
-  { id: 'diary_word_count_150', target: 150, reward: 25, key: 'weeklyQuests.quests.diaryWordCount150' },
-  { id: 'diary_word_count_300', target: 300, reward: 40, key: 'weeklyQuests.quests.diaryWordCount300' },
+  { id: 'chat_5', family: 'chat', target: 5, reward: 50, key: 'weeklyQuests.quests.chat5' },
+  { id: 'chat_10', family: 'chat', target: 10, reward: 80, key: 'weeklyQuests.quests.chat10' },
+  { id: 'vocab_10', family: 'vocab', target: 10, reward: 40, key: 'weeklyQuests.quests.vocab10' },
+  { id: 'vocab_20', family: 'vocab', target: 20, reward: 60, key: 'weeklyQuests.quests.vocab20' },
+  { id: 'quiz_3', family: 'quiz', target: 3, reward: 30, key: 'weeklyQuests.quests.quiz3' },
+  { id: 'quiz_perfect', family: 'quiz', target: 1, reward: 50, key: 'weeklyQuests.quests.quizPerfect' },
+  { id: 'streak_5', family: 'streak', target: 5, reward: 60, key: 'weeklyQuests.quests.streak5' },
+  { id: 'streak_7', family: 'streak', target: 7, reward: 100, key: 'weeklyQuests.quests.streak7' },
+  { id: 'minutes_30', family: null, target: 30, reward: 40, key: 'weeklyQuests.quests.minutes30' },
+  { id: 'challenge_3', family: null, target: 3, reward: 50, key: 'weeklyQuests.quests.challenge3' },
+  { id: 'diary_entries_3', family: 'diary_entries', target: 3, reward: 30, key: 'weeklyQuests.quests.diaryEntries3' },
+  { id: 'diary_entries_5', family: 'diary_entries', target: 5, reward: 50, key: 'weeklyQuests.quests.diaryEntries5' },
+  { id: 'diary_vocab_use_5', family: 'diary_vocab', target: 5, reward: 25, key: 'weeklyQuests.quests.diaryVocabUse5' },
+  { id: 'diary_vocab_use_10', family: 'diary_vocab', target: 10, reward: 40, key: 'weeklyQuests.quests.diaryVocabUse10' },
+  { id: 'diary_word_count_150', family: 'diary_words', target: 150, reward: 25, key: 'weeklyQuests.quests.diaryWordCount150' },
+  { id: 'diary_word_count_300', family: 'diary_words', target: 300, reward: 40, key: 'weeklyQuests.quests.diaryWordCount300' },
 ]
 
 function getWeekId() {
@@ -57,7 +57,17 @@ function selectQuests(count = 3) {
     const j = seed % (i + 1)
     ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
   }
-  return shuffled.slice(0, count)
+
+  // Pick quests while enforcing at most one per family
+  const selected = []
+  const usedFamilies = new Set()
+  for (const quest of shuffled) {
+    if (selected.length >= count) break
+    if (quest.family && usedFamilies.has(quest.family)) continue
+    selected.push(quest)
+    if (quest.family) usedFamilies.add(quest.family)
+  }
+  return selected
 }
 
 // Singleton state
