@@ -1,8 +1,10 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useVocabularyBank } from '../../composables/useVocabularyBank'
 
 const { t } = useI18n()
+const { addWord, hasWord } = useVocabularyBank()
 
 defineProps({
   feedback: {
@@ -26,6 +28,37 @@ defineProps({
 const emit = defineEmits(['retry'])
 
 const correctionsExpanded = ref(false)
+
+// Track which vocab words and corrections have been added to the bank
+const addedWords = reactive({})
+
+function isWordAdded(word) {
+  return addedWords[word] || hasWord(word)
+}
+
+function handleAddVocabWord(word) {
+  const added = addWord({
+    word: word.word,
+    translation: word.meaning || '',
+    context: word.example || '',
+    source: 'diary',
+  })
+  if (added) {
+    addedWords[word.word] = true
+  }
+}
+
+function handleSaveCorrection(correction) {
+  const added = addWord({
+    word: correction.corrected,
+    translation: correction.explanation || '',
+    context: correction.original || '',
+    source: 'diary',
+  })
+  if (added) {
+    addedWords[correction.corrected] = true
+  }
+}
 
 function getSeverityBorder(severity) {
   switch (severity) {
@@ -85,7 +118,7 @@ function getScoreBarBg(score) {
           class="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-300 text-xs font-semibold hover:bg-red-200 dark:hover:bg-red-800/50 transition-colors"
         >
           <span class="material-symbols-outlined text-[16px]">refresh</span>
-          Retry
+          {{ t('diary.feedback.retry') }}
         </button>
       </div>
     </div>
@@ -156,6 +189,24 @@ function getScoreBarBg(score) {
           <p v-if="correction.explanation" class="text-xs text-text-muted dark:text-slate-400 mt-1.5">
             {{ correction.explanation }}
           </p>
+          <!-- Save corrected word to vocab bank -->
+          <div class="mt-1.5">
+            <button
+              v-if="!isWordAdded(correction.corrected)"
+              @click="handleSaveCorrection(correction)"
+              class="text-xs text-primary hover:text-primary/80 transition-colors flex items-center gap-0.5 font-medium"
+            >
+              <span class="material-symbols-outlined text-[14px]">bookmark_add</span>
+              {{ t('diary.feedback.saveWord') }}
+            </button>
+            <span
+              v-else
+              class="text-xs text-green-600 dark:text-green-400 flex items-center gap-0.5 font-medium"
+            >
+              <span class="material-symbols-outlined text-[14px]">check_circle</span>
+              {{ t('diary.feedback.added') }}
+            </span>
+          </div>
         </div>
       </div>
     </div>
@@ -164,7 +215,7 @@ function getScoreBarBg(score) {
     <div v-if="feedback.betterExpressions?.length" class="space-y-2">
       <p class="text-xs font-semibold text-primary uppercase tracking-wider flex items-center gap-1.5">
         <span class="material-symbols-outlined text-[16px]">auto_awesome</span>
-        Better expressions
+        {{ t('diary.feedback.betterExpressions') }}
       </p>
       <div class="space-y-2">
         <div
@@ -200,10 +251,21 @@ function getScoreBarBg(score) {
             <p class="text-sm font-semibold text-text-main dark:text-white">{{ word.word }}</p>
             <p v-if="word.meaning" class="text-xs text-text-muted dark:text-slate-400 mt-0.5">{{ word.meaning }}</p>
             <p v-if="word.example" class="text-xs text-text-muted dark:text-slate-500 mt-1 italic">"{{ word.example }}"</p>
-            <button class="mt-2 text-xs font-semibold text-primary hover:text-primary/80 transition-colors flex items-center gap-1">
+            <button
+              v-if="!isWordAdded(word.word)"
+              @click="handleAddVocabWord(word)"
+              class="mt-2 text-xs font-semibold text-primary hover:text-primary/80 transition-colors flex items-center gap-1"
+            >
               <span class="material-symbols-outlined text-[14px]">add</span>
               {{ t('diary.feedback.addToVocab') }}
             </button>
+            <span
+              v-else
+              class="mt-2 text-xs font-semibold text-green-600 dark:text-green-400 flex items-center gap-1"
+            >
+              <span class="material-symbols-outlined text-[14px]">check_circle</span>
+              {{ t('diary.feedback.added') }}
+            </span>
           </template>
           <template v-else>
             <p class="text-sm text-text-main dark:text-slate-200">{{ word }}</p>
@@ -223,7 +285,7 @@ function getScoreBarBg(score) {
     <div v-if="feedback.grammar?.score || feedback.vocabulary?.score || feedback.naturalness?.score" class="pt-2 space-y-2">
       <!-- Grammar -->
       <div v-if="feedback.grammar?.score" class="flex items-center gap-2">
-        <span class="text-xs text-text-muted dark:text-slate-400 w-20 shrink-0">Grammar</span>
+        <span class="text-xs text-text-muted dark:text-slate-400 w-20 shrink-0">{{ t('diary.feedback.grammar') }}</span>
         <div class="flex-1 h-1.5 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
           <div
             class="h-full rounded-full transition-all"
@@ -235,7 +297,7 @@ function getScoreBarBg(score) {
       </div>
       <!-- Vocabulary -->
       <div v-if="feedback.vocabulary?.score" class="flex items-center gap-2">
-        <span class="text-xs text-text-muted dark:text-slate-400 w-20 shrink-0">Vocabulary</span>
+        <span class="text-xs text-text-muted dark:text-slate-400 w-20 shrink-0">{{ t('diary.feedback.vocabulary') }}</span>
         <div class="flex-1 h-1.5 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
           <div
             class="h-full rounded-full transition-all"
@@ -247,7 +309,7 @@ function getScoreBarBg(score) {
       </div>
       <!-- Naturalness -->
       <div v-if="feedback.naturalness?.score" class="flex items-center gap-2">
-        <span class="text-xs text-text-muted dark:text-slate-400 w-20 shrink-0">Naturalness</span>
+        <span class="text-xs text-text-muted dark:text-slate-400 w-20 shrink-0">{{ t('diary.feedback.naturalness') }}</span>
         <div class="flex-1 h-1.5 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
           <div
             class="h-full rounded-full transition-all"
@@ -259,7 +321,7 @@ function getScoreBarBg(score) {
       </div>
       <!-- Effort -->
       <div v-if="feedback.effort?.score" class="flex items-center gap-2">
-        <span class="text-xs text-text-muted dark:text-slate-400 w-20 shrink-0">Effort</span>
+        <span class="text-xs text-text-muted dark:text-slate-400 w-20 shrink-0">{{ t('diary.feedback.effort') }}</span>
         <div class="flex-1 h-1.5 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
           <div
             class="h-full rounded-full transition-all"

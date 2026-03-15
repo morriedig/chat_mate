@@ -433,7 +433,15 @@
       "niceJob": "這些寫得很好！",
       "tryNext": "可以試試看",
       "wordsToTry": "下次試試這些詞",
-      "addToVocab": "加入單字本"
+      "addToVocab": "加入單字本",
+      "added": "已加入！",
+      "saveWord": "儲存",
+      "retry": "重試",
+      "betterExpressions": "更自然的說法",
+      "grammar": "文法",
+      "vocabulary": "詞彙",
+      "naturalness": "自然度",
+      "effort": "努力"
     },
     "writeAnother": "再寫一篇",
     "saveAndClose": "儲存並關閉",

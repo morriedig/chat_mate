@@ -433,7 +433,15 @@
       "niceJob": "Nice job on these!",
       "tryNext": "A few things to try",
       "wordsToTry": "Words to try next time",
-      "addToVocab": "Add to vocab bank"
+      "addToVocab": "Add to vocab bank",
+      "added": "Added!",
+      "saveWord": "Save",
+      "retry": "Retry",
+      "betterExpressions": "Better expressions",
+      "grammar": "Grammar",
+      "vocabulary": "Vocabulary",
+      "naturalness": "Naturalness",
+      "effort": "Effort"
     },
     "writeAnother": "Write another",
     "saveAndClose": "Save & close",

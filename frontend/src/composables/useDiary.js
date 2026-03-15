@@ -3,6 +3,7 @@ import { useDiaryStorage } from './useDiaryStorage'
 import { useDiaryFeedback } from './useDiaryFeedback'
 import { useDiaryPrompts } from './useDiaryPrompts'
 import { useUserProgress } from './useUserProgress'
+import { useVocabularyBank } from './useVocabularyBank'
 
 const DIARY_XP = 15
 
@@ -20,6 +21,7 @@ export function useDiary() {
   const feedback = useDiaryFeedback()
   const prompts = useDiaryPrompts()
   const { addXP, progress, onDiarySubmitted } = useUserProgress()
+  const { words: vocabWords } = useVocabularyBank()
 
   // Check if an entry exists for today
   const todayEntry = computed(() => {
@@ -101,7 +103,11 @@ export function useDiary() {
   async function submitEntry(body, { language, level, characterId, nativeLanguage, prompt }) {
     const id = generateId()
     const now = new Date().toISOString()
-    const wordCount = body.trim().split(/\s+/).filter(Boolean).length
+    // CJK languages don't use spaces — count characters instead
+    const isCJK = /[\u3000-\u9fff\u4e00-\u9fff\u3040-\u309f\u30a0-\u30ff]/.test(body)
+    const wordCount = isCJK
+      ? body.replace(/\s/g, '').length
+      : body.trim().split(/\s+/).filter(Boolean).length
 
     const entry = {
       id,
@@ -121,11 +127,23 @@ export function useDiary() {
     // Save entry
     storage.saveEntry(entry)
 
+    // Count how many vocab bank words appear in the diary text
+    const bodyLower = body.toLowerCase()
+    const vocabWordsUsed = vocabWords.value.filter(w => {
+      if (!w.word) return false
+      const wLower = w.word.toLowerCase()
+      const wIsCJK = /[\u3000-\u9fff\u4e00-\u9fff\u3040-\u309f\u30a0-\u30ff]/.test(wLower)
+      if (wIsCJK) return bodyLower.includes(wLower)
+      // Word boundary match for non-CJK to avoid substring false positives
+      const re = new RegExp(`\\b${wLower.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`)
+      return re.test(bodyLower)
+    }).length
+
     // Award XP for diary writing
     addXP(DIARY_XP, 'diaryEntry')
 
     // Update diary progress tracking (achievements, streak, etc.)
-    onDiarySubmitted({ wordCount })
+    onDiarySubmitted({ wordCount, vocabWordsUsed })
 
     // Update main streak (diary counts toward main streak)
     const today = new Date().toDateString()

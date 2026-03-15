@@ -433,7 +433,15 @@
       "niceJob": "ここがよかった！",
       "tryNext": "こうするともっと自然",
       "wordsToTry": "次に使ってみよう",
-      "addToVocab": "単語帳に追加"
+      "addToVocab": "単語帳に追加",
+      "added": "追加済み！",
+      "saveWord": "保存",
+      "retry": "再試行",
+      "betterExpressions": "より自然な表現",
+      "grammar": "文法",
+      "vocabulary": "語彙",
+      "naturalness": "自然さ",
+      "effort": "努力"
     },
     "writeAnother": "もう一つ書く",
     "saveAndClose": "保存して閉じる",
