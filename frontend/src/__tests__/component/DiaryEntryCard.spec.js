@@ -63,22 +63,22 @@ describe('DiaryEntryCard', () => {
   describe('feedback status badge', () => {
     it('should show Reviewed badge for done status', () => {
       const wrapper = createWrapper(createEntry({ feedbackStatus: 'done' }))
-      expect(wrapper.text()).toContain('Reviewed')
+      expect(wrapper.text()).toContain('diary.status.reviewed')
     })
 
     it('should show Reviewing... badge for loading status', () => {
       const wrapper = createWrapper(createEntry({ feedbackStatus: 'loading' }))
-      expect(wrapper.text()).toContain('Reviewing...')
+      expect(wrapper.text()).toContain('diary.status.reviewing')
     })
 
     it('should show Pending badge for pending status', () => {
       const wrapper = createWrapper(createEntry({ feedbackStatus: 'pending' }))
-      expect(wrapper.text()).toContain('Pending')
+      expect(wrapper.text()).toContain('diary.status.pending')
     })
 
     it('should show Error badge for error status', () => {
       const wrapper = createWrapper(createEntry({ feedbackStatus: 'error' }))
-      expect(wrapper.text()).toContain('Error')
+      expect(wrapper.text()).toContain('diary.status.error')
     })
 
     it('should show no badge for none status', () => {

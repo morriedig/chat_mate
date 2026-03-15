@@ -31,13 +31,13 @@ const previewText = computed(() => {
 const feedbackBadge = computed(() => {
   switch (props.entry.feedbackStatus) {
     case 'done':
-      return { label: 'Reviewed', class: 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300' }
+      return { label: t('diary.status.reviewed'), class: 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300' }
     case 'loading':
-      return { label: 'Reviewing...', class: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300' }
+      return { label: t('diary.status.reviewing'), class: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300' }
     case 'pending':
-      return { label: 'Pending', class: 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300' }
+      return { label: t('diary.status.pending'), class: 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300' }
     case 'error':
-      return { label: 'Error', class: 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300' }
+      return { label: t('diary.status.error'), class: 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300' }
     default:
       return null
   }
@@ -69,6 +69,13 @@ const countLabel = computed(() => {
       </div>
       <!-- Feedback badge -->
       <div class="shrink-0 flex flex-col items-end gap-2">
+        <span
+          v-if="entry.rewriteOf"
+          class="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[11px] font-medium bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-300"
+        >
+          <span class="material-symbols-outlined text-[12px]">edit_note</span>
+          {{ t('diary.rewriteOf') }}
+        </span>
         <span
           v-if="feedbackBadge"
           class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium"

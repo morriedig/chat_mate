@@ -52,6 +52,7 @@ export function useDiaryStorage() {
       wordCount: entry.wordCount,
       feedbackStatus: entry.feedbackStatus || 'none',
       language: entry.language,
+      rewriteOf: entry.rewriteOf || null,
     }
 
     if (existing >= 0) {

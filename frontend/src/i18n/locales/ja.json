@@ -464,6 +464,15 @@
     "calendar": "カレンダー",
     "list": "一覧",
     "totalWords": "合計文字数",
-    "noEntriesForDate": "この日の日記はありません"
+    "noEntriesForDate": "この日の日記はありません",
+    "rewrite": "書き直す",
+    "rewriteOf": "書き直し",
+    "export": "エクスポート",
+    "status": {
+      "reviewed": "レビュー済み",
+      "reviewing": "レビュー中...",
+      "pending": "保留中",
+      "error": "エラー"
+    }
   }
 }

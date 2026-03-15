@@ -102,7 +102,7 @@ export function useDiary() {
     return streak
   }
 
-  async function submitEntry(body, { language, level, characterId, nativeLanguage, prompt }) {
+  async function submitEntry(body, { language, level, characterId, nativeLanguage, prompt, rewriteOf }) {
     const id = generateId()
     const now = new Date().toISOString()
     // CJK languages don't use spaces — count characters instead
@@ -122,6 +122,7 @@ export function useDiary() {
       characterId,
       nativeLanguage,
       prompt: prompt || null,
+      rewriteOf: rewriteOf || null,
       feedbackStatus: 'none',
       feedback: null,
     }

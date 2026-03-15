@@ -63,6 +63,10 @@ const selectedEntry = ref(null)
 // Active entry that was just submitted (to show feedback)
 const activeEntry = ref(null)
 
+// Rewrite state
+const rewriteOfId = ref(null)
+const rewriteInitialText = ref('')
+
 // Resolve character for feedback display
 const feedbackCharacter = computed(() => {
   const charId = character.value?.id || activeEntry.value?.characterId
@@ -103,12 +107,15 @@ async function handleSubmit(body) {
     characterId: character.value?.id || 'emma',
     nativeLanguage: motherTongue.value,
     prompt: initialPrompt.value || null,
+    rewriteOf: rewriteOfId.value || null,
   })
 
   activeEntry.value = entry
 
-  // Clear prompt and draft after submission
+  // Clear prompt, draft, and rewrite state after submission
   initialPrompt.value = ''
+  rewriteOfId.value = null
+  rewriteInitialText.value = ''
   try {
     localStorage.removeItem('chatmate_diary_draft')
   } catch { /* ignore */ }
@@ -128,9 +135,74 @@ async function handleRetryFeedback() {
   if (updated) activeEntry.value = updated
 }
 
+function handleRewrite() {
+  if (!activeEntry.value) return
+  rewriteOfId.value = activeEntry.value.id
+  rewriteInitialText.value = activeEntry.value.body
+  activeEntry.value = null
+}
+
+function handleRewriteFromHistory() {
+  if (!selectedEntry.value) return
+  rewriteOfId.value = selectedEntry.value.id
+  rewriteInitialText.value = selectedEntry.value.body
+  selectedEntry.value = null
+  viewMode.value = 'write'
+}
+
 function handleWriteAnother() {
   activeEntry.value = null
   initialPrompt.value = ''
+}
+
+function handleExport() {
+  const entries = entryIndex.value
+  if (entries.length === 0) return
+
+  const lines = entries.map(meta => {
+    const full = loadEntry(meta.id)
+    if (!full) return null
+
+    const date = new Date(full.createdAt).toLocaleDateString('en-US', {
+      year: 'numeric', month: 'short', day: 'numeric', weekday: 'short',
+    })
+    const wordLine = `Words: ${full.wordCount || 0}`
+    const parts = [date, '', full.body, '', wordLine]
+
+    if (full.feedback) {
+      if (full.feedback.reaction || full.feedback.encouragement) {
+        parts.push(`Feedback: ${full.feedback.reaction || full.feedback.encouragement}`)
+      }
+      if (full.feedback.corrections?.length) {
+        parts.push(`Corrections: ${full.feedback.corrections.length}`)
+      }
+    }
+
+    if (full.rewriteOf) {
+      parts.push(`Rewrite of: ${full.rewriteOf}`)
+    }
+
+    return parts.join('\n')
+  }).filter(Boolean)
+
+  const text = lines.join('\n\n---\n\n')
+  const blob = new Blob([text], { type: 'text/plain;charset=utf-8' })
+  const url = URL.createObjectURL(blob)
+  try {
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `diary-export-${getExportDate()}.txt`
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+  } finally {
+    URL.revokeObjectURL(url)
+  }
+}
+
+function getExportDate() {
+  const d = new Date()
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
 }
 
 // Filtered entries for list view (when a calendar date is selected)
@@ -232,7 +304,7 @@ function handleBack() {
             :language="language"
             :level="level?.id || 'intermediate'"
             :is-loading="isLoadingFeedback"
-            :initial-prompt="initialPrompt"
+            :initial-prompt="rewriteInitialText || initialPrompt"
             @submit="handleSubmit"
           />
 
@@ -251,6 +323,7 @@ function handleBack() {
                 :loading="isLoadingFeedback"
                 :error="activeEntry.feedbackStatus === 'error'"
                 @retry="handleRetryFeedback"
+                @rewrite="handleRewrite"
               />
 
               <!-- Action buttons after feedback -->
@@ -301,6 +374,7 @@ function handleBack() {
                 :character="feedbackCharacter"
                 :loading="selectedEntry.feedbackStatus === 'loading'"
                 :error="selectedEntry.feedbackStatus === 'error'"
+                @rewrite="handleRewriteFromHistory"
               />
 
               <div v-else-if="selectedEntry.feedbackStatus === 'pending'" class="p-4 rounded-xl bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 text-sm text-amber-700 dark:text-amber-300">
@@ -332,6 +406,13 @@ function handleBack() {
                   <span class="material-symbols-outlined text-[14px]">local_fire_department</span>
                   {{ t('diary.writingStreak') }}: {{ t('diary.days', { count: stats.currentWritingStreak }) }}
                 </span>
+                <button
+                  @click="handleExport"
+                  class="ml-auto flex items-center gap-1 px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-text-muted dark:text-slate-400 text-xs font-medium transition-colors"
+                >
+                  <span class="material-symbols-outlined text-[14px]">download</span>
+                  {{ t('diary.export') }}
+                </button>
               </div>
 
               <!-- View toggle: List / Calendar -->

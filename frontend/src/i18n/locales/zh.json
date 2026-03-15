@@ -464,6 +464,15 @@
     "calendar": "月曆",
     "list": "列表",
     "totalWords": "總字數",
-    "noEntriesForDate": "這天沒有日記"
+    "noEntriesForDate": "這天沒有日記",
+    "rewrite": "重寫",
+    "rewriteOf": "重寫版",
+    "export": "匯出",
+    "status": {
+      "reviewed": "已審閱",
+      "reviewing": "審閱中...",
+      "pending": "等待中",
+      "error": "錯誤"
+    }
   }
 }

@@ -25,7 +25,7 @@ defineProps({
   }
 })
 
-const emit = defineEmits(['retry'])
+const emit = defineEmits(['retry', 'rewrite'])
 
 const correctionsExpanded = ref(false)
 
@@ -279,6 +279,17 @@ function getScoreBarBg(score) {
       <div class="p-3 rounded-xl bg-gradient-to-r from-primary/5 to-sky-400/5 dark:from-primary/10 dark:to-sky-400/10 border border-primary/10 dark:border-primary/20">
         <p class="text-sm text-text-main dark:text-slate-200 text-center font-medium">{{ feedback.encouragement }}</p>
       </div>
+    </div>
+
+    <!-- Rewrite button -->
+    <div class="pt-2">
+      <button
+        @click="emit('rewrite')"
+        class="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-text-main dark:text-slate-200 text-sm font-medium hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+      >
+        <span class="material-symbols-outlined text-[18px]">edit_note</span>
+        {{ t('diary.rewrite') }}
+      </button>
     </div>
 
     <!-- 7. Score bars (subtle, at bottom) -->

@@ -464,6 +464,15 @@
     "calendar": "Calendar",
     "list": "List",
     "totalWords": "Total words",
-    "noEntriesForDate": "No entries for this date"
+    "noEntriesForDate": "No entries for this date",
+    "rewrite": "Rewrite",
+    "rewriteOf": "Rewrite",
+    "export": "Export",
+    "status": {
+      "reviewed": "Reviewed",
+      "reviewing": "Reviewing...",
+      "pending": "Pending",
+      "error": "Error"
+    }
   }
 }
