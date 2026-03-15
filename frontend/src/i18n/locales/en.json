@@ -460,6 +460,10 @@
     "offline": "You're offline. Your entry is saved — feedback available when you reconnect.",
     "mode": "Diary",
     "modeDesc": "Write about your day",
-    "writeInDiary": "Write in diary"
+    "writeInDiary": "Write in diary",
+    "calendar": "Calendar",
+    "list": "List",
+    "totalWords": "Total words",
+    "noEntriesForDate": "No entries for this date"
   }
 }

@@ -11,6 +11,8 @@ import { characters } from '../data/characters'
 import DiaryEditor from './diary/DiaryEditor.vue'
 import DiaryFeedback from './diary/DiaryFeedback.vue'
 import DiaryEntryCard from './diary/DiaryEntryCard.vue'
+import DiaryCalendar from './diary/DiaryCalendar.vue'
+import ContributionGrid from './diary/ContributionGrid.vue'
 
 const { t } = useI18n()
 const router = useRouter()
@@ -48,6 +50,12 @@ const initialPrompt = ref(route.query.prompt || '')
 
 // View mode: 'write' or 'history'
 const viewMode = ref('write')
+
+// History sub-view: 'list' or 'calendar'
+const historyView = ref('list')
+
+// Date filter for calendar selection
+const filterDate = ref(null)
 
 // Current entry being viewed (for history detail)
 const selectedEntry = ref(null)
@@ -123,6 +131,30 @@ async function handleRetryFeedback() {
 function handleWriteAnother() {
   activeEntry.value = null
   initialPrompt.value = ''
+}
+
+// Filtered entries for list view (when a calendar date is selected)
+const filteredEntries = computed(() => {
+  if (!filterDate.value) return entryIndex.value
+  return entryIndex.value.filter(e => {
+    const d = new Date(e.createdAt)
+    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+    return key === filterDate.value
+  })
+})
+
+// Total word count across all entries
+const totalWords = computed(() => {
+  return entryIndex.value.reduce((sum, e) => sum + (e.wordCount || 0), 0)
+})
+
+function handleCalendarDate(dateStr) {
+  filterDate.value = dateStr
+  historyView.value = 'list'
+}
+
+function clearDateFilter() {
+  filterDate.value = null
 }
 
 function handleSelectEntry(entryMeta) {
@@ -280,13 +312,21 @@ function handleBack() {
             </div>
           </div>
 
-          <!-- Entry list -->
+          <!-- Entry list / Calendar view -->
           <div v-else class="flex-1 overflow-y-auto">
             <div class="max-w-2xl mx-auto px-4 py-4 sm:py-6 space-y-3">
-              <!-- Stats bar -->
-              <div v-if="entryIndex.length > 0" class="flex items-center gap-4 mb-2 px-1">
+              <!-- Contribution heatmap -->
+              <div v-if="entryIndex.length > 0" class="p-3 rounded-2xl bg-surface-light dark:bg-surface-dark border border-slate-100 dark:border-slate-800">
+                <ContributionGrid :entries="entryIndex" />
+              </div>
+
+              <!-- Stats bar with streak and totals -->
+              <div v-if="entryIndex.length > 0" class="flex items-center flex-wrap gap-3 mb-1 px-1">
                 <span class="text-xs text-text-muted dark:text-slate-400">
                   {{ t('diary.entries', { count: stats.totalEntries }) }}
+                </span>
+                <span class="text-xs text-text-muted dark:text-slate-400">
+                  {{ t('diary.totalWords') }}: {{ totalWords }}
                 </span>
                 <span v-if="stats.currentWritingStreak > 0" class="text-xs text-amber-600 dark:text-amber-400 flex items-center gap-1">
                   <span class="material-symbols-outlined text-[14px]">local_fire_department</span>
@@ -294,13 +334,55 @@ function handleBack() {
                 </span>
               </div>
 
-              <!-- Entry cards -->
-              <DiaryEntryCard
-                v-for="entry in entryIndex"
-                :key="entry.id"
-                :entry="entry"
-                @select="handleSelectEntry"
-              />
+              <!-- View toggle: List / Calendar -->
+              <div v-if="entryIndex.length > 0" class="flex items-center gap-1 p-1 bg-slate-100 dark:bg-slate-800 rounded-lg w-fit">
+                <button
+                  @click="historyView = 'list'; filterDate = null"
+                  class="flex items-center gap-1 px-3 py-1.5 rounded-md text-xs font-medium transition-colors"
+                  :class="historyView === 'list' ? 'bg-white dark:bg-slate-700 text-text-main dark:text-white shadow-sm' : 'text-text-muted dark:text-slate-400'"
+                >
+                  <span class="material-symbols-outlined text-[14px]">list</span>
+                  {{ t('diary.list') }}
+                </button>
+                <button
+                  @click="historyView = 'calendar'; filterDate = null"
+                  class="flex items-center gap-1 px-3 py-1.5 rounded-md text-xs font-medium transition-colors"
+                  :class="historyView === 'calendar' ? 'bg-white dark:bg-slate-700 text-text-main dark:text-white shadow-sm' : 'text-text-muted dark:text-slate-400'"
+                >
+                  <span class="material-symbols-outlined text-[14px]">calendar_month</span>
+                  {{ t('diary.calendar') }}
+                </button>
+              </div>
+
+              <!-- Calendar view -->
+              <div v-if="historyView === 'calendar'" class="p-3 rounded-2xl bg-surface-light dark:bg-surface-dark border border-slate-100 dark:border-slate-800">
+                <DiaryCalendar :entries="entryIndex" @select-date="handleCalendarDate" />
+              </div>
+
+              <!-- Date filter indicator -->
+              <div v-if="filterDate" class="flex items-center gap-2 px-1">
+                <span class="text-xs text-primary font-medium">{{ filterDate }}</span>
+                <button
+                  @click="clearDateFilter"
+                  class="text-xs text-text-muted dark:text-slate-400 hover:text-text-main dark:hover:text-white underline"
+                >
+                  {{ t('diary.list') }}
+                </button>
+              </div>
+
+              <!-- List view (default or filtered) -->
+              <template v-if="historyView === 'list' || filterDate">
+                <DiaryEntryCard
+                  v-for="entry in filteredEntries"
+                  :key="entry.id"
+                  :entry="entry"
+                  @select="handleSelectEntry"
+                />
+
+                <div v-if="filteredEntries.length === 0 && filterDate" class="text-center py-8">
+                  <p class="text-sm text-text-muted dark:text-slate-400">{{ t('diary.noEntriesForDate') }}</p>
+                </div>
+              </template>
 
               <!-- Empty state -->
               <div v-if="entryIndex.length === 0" class="flex flex-col items-center justify-center py-16 text-center">

@@ -460,6 +460,10 @@
     "offline": "オフラインです。日記は保存されました。ネットに繋がったらフィードバックがもらえます。",
     "mode": "日記",
     "modeDesc": "今日のことを書こう",
-    "writeInDiary": "日記に書く"
+    "writeInDiary": "日記に書く",
+    "calendar": "カレンダー",
+    "list": "一覧",
+    "totalWords": "合計文字数",
+    "noEntriesForDate": "この日の日記はありません"
   }
 }

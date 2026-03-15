@@ -460,6 +460,10 @@
     "offline": "你目前離線。日記已儲存，連線後可取得回饋。",
     "mode": "日記",
     "modeDesc": "寫下你的一天",
-    "writeInDiary": "寫進日記"
+    "writeInDiary": "寫進日記",
+    "calendar": "月曆",
+    "list": "列表",
+    "totalWords": "總字數",
+    "noEntriesForDate": "這天沒有日記"
   }
 }
