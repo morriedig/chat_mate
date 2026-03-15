@@ -114,7 +114,8 @@
       "first_steps": "第一步",
       "consistency": "堅持",
       "learning": "學習",
-      "mastery": "精通"
+      "mastery": "精通",
+      "writing": "寫作"
     },
     "first_chat": {
       "title": "第一次聊天",
@@ -175,6 +176,46 @@
       "title": "傳奇",
       "description": "達到傳奇等級",
       "hint": "獲得5500 XP解鎖"
+    },
+    "diary_first": {
+      "title": "親愛的日記",
+      "description": "寫下第一篇日記",
+      "hint": "提交日記解鎖"
+    },
+    "diary_week": {
+      "title": "一週文字",
+      "description": "在7個不同的日子寫日記",
+      "hint": "寫7天日記解鎖"
+    },
+    "diary_month": {
+      "title": "月度回憶錄",
+      "description": "寫30篇日記",
+      "hint": "提交30篇日記解鎖"
+    },
+    "diary_vocab_5": {
+      "title": "文字編織者",
+      "description": "在日記中使用5個單字本的詞彙",
+      "hint": "在日記中使用單字本的詞彙"
+    },
+    "diary_vocab_25": {
+      "title": "活字典",
+      "description": "在日記中使用25個單字本的詞彙",
+      "hint": "持續在日記中使用單字本的詞彙"
+    },
+    "diary_streak_7": {
+      "title": "墨水不乾",
+      "description": "保持7天日記連續",
+      "hint": "連續7天寫日記"
+    },
+    "diary_long": {
+      "title": "深度思考",
+      "description": "寫一篇200字以上的日記",
+      "hint": "寫一篇較長的日記解鎖"
+    },
+    "diary_100": {
+      "title": "百篇書記",
+      "description": "寫100篇日記",
+      "hint": "提交100篇日記解鎖"
     }
   },
   "ranks": {

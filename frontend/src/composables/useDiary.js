@@ -7,7 +7,8 @@ import { useUserProgress } from './useUserProgress'
 const DIARY_XP = 15
 
 function getToday() {
-  return new Date().toISOString().split('T')[0]
+  const d = new Date()
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
 }
 
 function generateId() {
@@ -18,7 +19,7 @@ export function useDiary() {
   const storage = useDiaryStorage()
   const feedback = useDiaryFeedback()
   const prompts = useDiaryPrompts()
-  const { addXP, progress } = useUserProgress()
+  const { addXP, progress, onDiarySubmitted } = useUserProgress()
 
   // Check if an entry exists for today
   const todayEntry = computed(() => {
@@ -122,6 +123,9 @@ export function useDiary() {
 
     // Award XP for diary writing
     addXP(DIARY_XP, 'diaryEntry')
+
+    // Update diary progress tracking (achievements, streak, etc.)
+    onDiarySubmitted({ wordCount })
 
     // Update main streak (diary counts toward main streak)
     const today = new Date().toDateString()

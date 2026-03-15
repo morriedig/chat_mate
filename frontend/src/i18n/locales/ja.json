@@ -114,7 +114,8 @@
       "first_steps": "はじめの一歩",
       "consistency": "継続",
       "learning": "学習",
-      "mastery": "マスタリー"
+      "mastery": "マスタリー",
+      "writing": "ライティング"
     },
     "first_chat": {
       "title": "初めてのチャット",
@@ -175,6 +176,46 @@
       "title": "レジェンド",
       "description": "レジェンドランクに到達",
       "hint": "5500 XPを獲得して解除"
+    },
+    "diary_first": {
+      "title": "はじめての日記",
+      "description": "最初の日記を書く",
+      "hint": "日記を書いて解除"
+    },
+    "diary_week": {
+      "title": "一週間の言葉",
+      "description": "7日間日記を書く",
+      "hint": "7日間日記を書いて解除"
+    },
+    "diary_month": {
+      "title": "月間回顧録",
+      "description": "日記を30回書く",
+      "hint": "30回日記を書いて解除"
+    },
+    "diary_vocab_5": {
+      "title": "言葉の織り手",
+      "description": "日記で単語帳の単語を5つ使う",
+      "hint": "日記で単語帳の単語を使おう"
+    },
+    "diary_vocab_25": {
+      "title": "生きた辞書",
+      "description": "日記で単語帳の単語を25個使う",
+      "hint": "日記で単語帳の単語を使い続けよう"
+    },
+    "diary_streak_7": {
+      "title": "インクは乾かない",
+      "description": "7日連続で日記を書く",
+      "hint": "7日連続で日記を書こう"
+    },
+    "diary_long": {
+      "title": "深い思考",
+      "description": "200語以上の日記を書く",
+      "hint": "長い日記を書いて解除"
+    },
+    "diary_100": {
+      "title": "百人書記",
+      "description": "日記を100回書く",
+      "hint": "100回日記を書いて解除"
     }
   },
   "ranks": {

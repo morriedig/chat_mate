@@ -20,6 +20,12 @@ function getDefaultProgress() {
     characterStats: {},
     claimedMilestones: [],
     unlockedAchievements: [],
+    diaryEntries: 0,
+    diaryStreak: 0,
+    longestDiaryStreak: 0,
+    diaryVocabUsed: 0,
+    hasWrittenLongEntry: false,
+    lastDiaryDate: null,
   }
 }
 
@@ -103,6 +109,52 @@ export function useUserProgress() {
     saveProgress()
   }
 
+  function onDiarySubmitted({ wordCount = 0, vocabWordsUsed = 0 } = {}) {
+    // Update diary streak
+    const today = new Date().toDateString()
+    const lastDate = progress.value.lastDiaryDate
+    if (lastDate === today) {
+      // Already submitted today — only update long entry flag, don't inflate count
+      if (wordCount >= 200) {
+        progress.value.hasWrittenLongEntry = true
+      }
+      saveProgress()
+      checkAchievements()
+      return
+    }
+
+    // First entry of the day — increment count
+    progress.value.diaryEntries += 1
+
+    {
+      const yesterday = new Date()
+      yesterday.setDate(yesterday.getDate() - 1)
+      if (lastDate === yesterday.toDateString()) {
+        progress.value.diaryStreak += 1
+      } else {
+        progress.value.diaryStreak = 1
+      }
+      progress.value.lastDiaryDate = today
+    }
+
+    if (progress.value.diaryStreak > progress.value.longestDiaryStreak) {
+      progress.value.longestDiaryStreak = progress.value.diaryStreak
+    }
+
+    // Track vocab words used
+    if (vocabWordsUsed > 0) {
+      progress.value.diaryVocabUsed += vocabWordsUsed
+    }
+
+    // Track long entries (200+ words)
+    if (wordCount >= 200) {
+      progress.value.hasWrittenLongEntry = true
+    }
+
+    saveProgress()
+    checkAchievements()
+  }
+
   function resetProgress() {
     progress.value = getDefaultProgress()
     saveProgress()
@@ -134,6 +186,7 @@ export function useUserProgress() {
     onArticleStarted,
     onWordLearned,
     trackCharacterInteraction,
+    onDiarySubmitted,
     dismissLevelUp,
     dismissStreakMilestone,
     dismissAchievementUnlock,

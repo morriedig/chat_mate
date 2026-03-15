@@ -14,6 +14,15 @@ export const ACHIEVEMENTS = [
   { id: 'word_collector', category: 'learning', icon: '📝', condition: (p) => p.wordsLearned.length >= 10 },
   { id: 'bookworm', category: 'learning', icon: '📚', condition: (p) => p.articlesCompleted.length >= 5 },
   { id: 'polyglot', category: 'learning', icon: '🌍', condition: (p) => Object.keys(p.characterStats).length >= 3 },
+  // Writing (diary)
+  { id: 'diary_first', category: 'writing', icon: '📓', condition: (p) => p.diaryEntries >= 1 },
+  { id: 'diary_week', category: 'writing', icon: '📖', condition: (p) => p.diaryEntries >= 7 },
+  { id: 'diary_month', category: 'writing', icon: '📘', condition: (p) => p.diaryEntries >= 30 },
+  { id: 'diary_vocab_5', category: 'writing', icon: '🧵', condition: (p) => p.diaryVocabUsed >= 5 },
+  { id: 'diary_vocab_25', category: 'writing', icon: '📕', condition: (p) => p.diaryVocabUsed >= 25 },
+  { id: 'diary_streak_7', category: 'writing', icon: '🖋️', condition: (p) => p.longestDiaryStreak >= 7 },
+  { id: 'diary_long', category: 'writing', icon: '💭', condition: (p) => p.hasWrittenLongEntry === true },
+  { id: 'diary_100', category: 'writing', icon: '🏛️', condition: (p) => p.diaryEntries >= 100 },
   // Mastery (rank-based)
   { id: 'level_beginner', category: 'mastery', icon: '🌿', condition: (p) => p.totalXP >= 100 },
   { id: 'level_speaker', category: 'mastery', icon: '💬', condition: (p) => p.totalXP >= 600 },

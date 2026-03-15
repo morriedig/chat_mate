@@ -114,7 +114,8 @@
       "first_steps": "First Steps",
       "consistency": "Consistency",
       "learning": "Learning",
-      "mastery": "Mastery"
+      "mastery": "Mastery",
+      "writing": "Writing"
     },
     "first_chat": {
       "title": "First Chat",
@@ -175,6 +176,46 @@
       "title": "Legend",
       "description": "Reach Legend rank",
       "hint": "Earn 5500 XP to unlock"
+    },
+    "diary_first": {
+      "title": "Dear Diary",
+      "description": "Write your first diary entry",
+      "hint": "Submit a diary entry to unlock"
+    },
+    "diary_week": {
+      "title": "Week in Words",
+      "description": "Write diary entries on 7 different days",
+      "hint": "Write diary entries for 7 days"
+    },
+    "diary_month": {
+      "title": "Monthly Memoir",
+      "description": "Write 30 diary entries",
+      "hint": "Submit 30 diary entries to unlock"
+    },
+    "diary_vocab_5": {
+      "title": "Word Weaver",
+      "description": "Use 5 vocab bank words in diary entries",
+      "hint": "Use vocabulary words in your diary"
+    },
+    "diary_vocab_25": {
+      "title": "Living Dictionary",
+      "description": "Use 25 vocab bank words in diary entries",
+      "hint": "Keep using vocabulary words in your diary"
+    },
+    "diary_streak_7": {
+      "title": "Ink Never Dries",
+      "description": "Maintain a 7-day diary streak",
+      "hint": "Write diary entries 7 days in a row"
+    },
+    "diary_long": {
+      "title": "Deep Thoughts",
+      "description": "Write a diary entry with 200+ words",
+      "hint": "Write a longer diary entry to unlock"
+    },
+    "diary_100": {
+      "title": "Centurion Scribe",
+      "description": "Write 100 diary entries",
+      "hint": "Submit 100 diary entries to unlock"
     }
   },
   "ranks": {
