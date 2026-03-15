@@ -74,6 +74,7 @@ chat_mate/
 │   │   │   ├── DailyChallengeCard.vue  # Daily conversation topic
 │   │   │   ├── MicroReward.vue         # Micro-animations (sparkle, confetti, check)
 │   │   │   ├── PwaUpdatePrompt.vue     # Service worker update notification
+│   │   │   ├── DiaryScreen.vue        # Daily diary write + history
 │   │   │   │
 │   │   │   ├── chat/                   # Chat subcomponents
 │   │   │   │   ├── ChatHeader.vue          # Character info, rank, daily goal ring
@@ -95,11 +96,17 @@ chat_mate/
 │   │   │   │   ├── AchievementUnlockModal.vue # Achievement unlock animation
 │   │   │   │   └── AchievementsPanel.vue   # All achievements grid view
 │   │   │   │
-│   │   │   └── learning/               # Learning mode subcomponents
-│   │   │       ├── VocabularyCard.vue       # Word card + 3 audio buttons + pronunciation
-│   │   │       ├── FlashcardMode.vue        # Flip card with keyboard nav
-│   │   │       ├── QuizMode.vue             # Multiple choice quiz with scoring
-│   │   │       └── ConversationPractice.vue # Fixed dialogue with Play All
+│   │   │   ├── learning/               # Learning mode subcomponents
+│   │   │   │   ├── VocabularyCard.vue       # Word card + 3 audio buttons + pronunciation
+│   │   │   │   ├── FlashcardMode.vue        # Flip card with keyboard nav
+│   │   │   │   ├── QuizMode.vue             # Multiple choice quiz with scoring
+│   │   │   │   └── ConversationPractice.vue # Fixed dialogue with Play All
+│   │   │   │
+│   │   │   └── diary/                  # Diary mode subcomponents
+│   │   │       ├── DiaryEditor.vue          # Textarea + word count + speech-to-text
+│   │   │       ├── DiaryFeedback.vue        # AI feedback display (corrections, vocab)
+│   │   │       ├── DiaryPromptBanner.vue    # Daily writing prompt
+│   │   │       └── DiaryEntryCard.vue       # History entry preview card
 │   │   │
 │   │   ├── composables/
 │   │   │   ├── useNavState.js          # Singleton: selected character/level/language/mode
@@ -119,6 +126,12 @@ chat_mate/
 │   │   │   ├── useDailyGoal.js         # Daily study time goal (5/10/15 min)
 │   │   │   ├── useDailyChallenge.js    # Daily conversation topics
 │   │   │   ├── useWeeklyQuests.js      # 10 quest types with weekly reset
+│   │   │   │
+│   │   │   │  # Diary
+│   │   │   ├── useDiary.js             # Diary orchestrator (composes below)
+│   │   │   ├── useDiaryStorage.js      # Split-key localStorage CRUD
+│   │   │   ├── useDiaryFeedback.js     # API call + offline queue
+│   │   │   ├── useDiaryPrompts.js      # Daily prompt rotation (33 prompts)
 │   │   │   │
 │   │   │   │  # Learning
 │   │   │   ├── useLearningStorage.js   # Learning data persistence
@@ -167,6 +180,7 @@ chat_mate/
 └── docs/
     ├── README.md                       # Gamification system overview
     ├── learning-mode.md                # Learning mode & YAML chapter docs
+    ├── diary-feature-analysis.md       # Diary feature design & analysis
     ├── xp-system.md                    # XP earning mechanics
     ├── rank-system.md                  # 10-rank progression
     └── streak-system.md                # Streak tracking & milestones
@@ -181,6 +195,7 @@ chat_mate/
 | `/articles` | ArticleScreen | Article selection |
 | `/learning` | LearningScreen | Vocabulary learning hub |
 | `/settings` | SettingsScreen | User preferences |
+| `/diary` | DiaryScreen | Daily diary writing + AI feedback |
 | `/placement-test` | PlacementTestScreen | Level placement |
 
 Router uses **hash mode** (`/#/chat`) for GitHub Pages compatibility.
@@ -217,7 +232,16 @@ Router uses **hash mode** (`/#/chat`) for GitHub Pages compatibility.
 - **Pronunciation check** (`usePronunciationCheck.js`): Speech recognition scoring
 - **Progress tracking**: Quiz and conversation completion saved to localStorage
 
-### 5. PWA Support
+### 5. Diary Mode
+- **Daily writing**: Users write diary entries in target language with AI friend feedback
+- **AI feedback**: Friend-style corrections, vocabulary suggestions, encouragement (not teacher-style)
+- **Level-adaptive**: Beginner (max 3 corrections), Intermediate (max 5), Advanced (max 4)
+- **Daily prompts**: 33 prompts by level, deterministic rotation
+- **History**: List of past entries with feedback status
+- **Offline support**: Write offline, get feedback when reconnected
+- **Storage**: Split-key localStorage (`chatmate_diary_entries` index + individual entries)
+
+### 6. PWA Support
 - Install prompt, offline caching via Workbox
 - Auto-update check every hour with user notification
 - Caching strategies: StaleWhileRevalidate (fonts), CacheFirst (audio), NetworkFirst (API)
@@ -238,6 +262,10 @@ cd backend && npm start
 POST /api/chat
   Body: { messages, characterId, levelId, language, isGreeting, article, challengeContext }
   Returns: { reply, hints }
+
+POST /api/diary-feedback
+  Body: { diaryText, language, level, characterId, nativeLanguage, streakDays }
+  Returns: { feedback: { reaction, didWell, corrections, betterExpressions, newVocabulary, encouragement, score } }
 
 GET /token
   Returns: Auth token (1-hour expiry)
@@ -272,6 +300,10 @@ All user progress stored in localStorage:
 - `chatmate_vocabBank` - Saved vocabulary words with SRS data
 - `chatmate_dailyGoal` - Daily study time tracking
 - `chatmate_weeklyQuests` - Weekly quest progress
+- `chatmate_diary_entries` - Diary entry index (lightweight metadata)
+- `chatmate_diary_entry_{id}` - Individual diary entries with feedback
+- `chatmate_diary_draft` - Auto-saved diary draft
+- `chatmate_diary_pending_feedback` - Offline feedback queue
 
 ### Composable Patterns
 - **Singleton state**: `useNavState` uses module-level refs shared across components
