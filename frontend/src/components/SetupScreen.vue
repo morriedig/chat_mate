@@ -158,39 +158,39 @@ function handleStart() {
 
       <!-- Primary Mode Selection (Chat vs Learning vs Diary) -->
       <section class="mb-8">
-        <div class="grid grid-cols-3 gap-4">
+        <div class="grid grid-cols-3 gap-3">
           <div
             @click="primaryMode = 'chat'"
-            class="flex flex-col items-center p-6 rounded-2xl border-2 transition-all cursor-pointer"
+            class="flex flex-col items-center p-3 sm:p-5 rounded-2xl border-2 transition-all cursor-pointer"
             :class="primaryMode === 'chat'
               ? 'border-primary bg-gradient-to-br from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/10'
               : 'border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark hover:border-slate-300 dark:hover:border-slate-600'"
           >
-            <span class="material-symbols-outlined text-5xl mb-3" :class="primaryMode === 'chat' ? 'text-primary' : 'text-slate-400'">forum</span>
-            <h3 class="font-bold text-text-main dark:text-white text-lg">{{ t('setup.primaryModes.chat.name') }}</h3>
-            <p class="text-xs text-text-muted dark:text-slate-400 text-center mt-2">{{ t('setup.primaryModes.chat.description') }}</p>
+            <span class="material-symbols-outlined text-3xl sm:text-5xl mb-2 sm:mb-3" :class="primaryMode === 'chat' ? 'text-primary' : 'text-slate-400'">forum</span>
+            <h3 class="font-bold text-text-main dark:text-white text-sm sm:text-lg">{{ t('setup.primaryModes.chat.name') }}</h3>
+            <p class="hidden sm:block text-xs text-text-muted dark:text-slate-400 text-center mt-2">{{ t('setup.primaryModes.chat.description') }}</p>
           </div>
           <div
             @click="primaryMode = 'learning'"
-            class="flex flex-col items-center p-6 rounded-2xl border-2 transition-all cursor-pointer"
+            class="flex flex-col items-center p-3 sm:p-5 rounded-2xl border-2 transition-all cursor-pointer"
             :class="primaryMode === 'learning'
               ? 'border-primary bg-gradient-to-br from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/10'
               : 'border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark hover:border-slate-300 dark:hover:border-slate-600'"
           >
-            <span class="material-symbols-outlined text-5xl mb-3" :class="primaryMode === 'learning' ? 'text-primary' : 'text-slate-400'">school</span>
-            <h3 class="font-bold text-text-main dark:text-white text-lg">{{ t('setup.primaryModes.learning.name') }}</h3>
-            <p class="text-xs text-text-muted dark:text-slate-400 text-center mt-2">{{ t('setup.primaryModes.learning.description') }}</p>
+            <span class="material-symbols-outlined text-3xl sm:text-5xl mb-2 sm:mb-3" :class="primaryMode === 'learning' ? 'text-primary' : 'text-slate-400'">school</span>
+            <h3 class="font-bold text-text-main dark:text-white text-sm sm:text-lg">{{ t('setup.primaryModes.learning.name') }}</h3>
+            <p class="hidden sm:block text-xs text-text-muted dark:text-slate-400 text-center mt-2">{{ t('setup.primaryModes.learning.description') }}</p>
           </div>
           <div
             @click="primaryMode = 'diary'"
-            class="flex flex-col items-center p-6 rounded-2xl border-2 transition-all cursor-pointer"
+            class="flex flex-col items-center p-3 sm:p-5 rounded-2xl border-2 transition-all cursor-pointer"
             :class="primaryMode === 'diary'
               ? 'border-primary bg-gradient-to-br from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/10'
               : 'border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark hover:border-slate-300 dark:hover:border-slate-600'"
           >
-            <span class="material-symbols-outlined text-5xl mb-3" :class="primaryMode === 'diary' ? 'text-primary' : 'text-slate-400'">edit_note</span>
-            <h3 class="font-bold text-text-main dark:text-white text-lg">{{ t('diary.mode') }}</h3>
-            <p class="text-xs text-text-muted dark:text-slate-400 text-center mt-2">{{ t('diary.modeDesc') }}</p>
+            <span class="material-symbols-outlined text-3xl sm:text-5xl mb-2 sm:mb-3" :class="primaryMode === 'diary' ? 'text-primary' : 'text-slate-400'">edit_note</span>
+            <h3 class="font-bold text-text-main dark:text-white text-sm sm:text-lg">{{ t('diary.mode') }}</h3>
+            <p class="hidden sm:block text-xs text-text-muted dark:text-slate-400 text-center mt-2">{{ t('diary.modeDesc') }}</p>
           </div>
         </div>
       </section>
