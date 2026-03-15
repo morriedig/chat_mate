@@ -1125,6 +1125,304 @@ User's message to analyze: "${userMessage}"`;
   ];
 }
 
+// === DIARY FEEDBACK ENDPOINT ===
+app.post('/diary-feedback', async (req, res) => {
+  try {
+    const { diaryText, language = 'en', level = 'intermediate', characterId = 'emma', nativeLanguage = 'en', streakDays = 0, clientId, origin, authToken } = req.body;
+
+    // Input validation
+    if (!diaryText || typeof diaryText !== 'string' || diaryText.trim().length === 0) {
+      return res.status(400).json({ success: false, error: 'Diary text is required' });
+    }
+    if (diaryText.length > 5000) {
+      return res.status(400).json({ success: false, error: 'Diary text must be 5000 characters or less' });
+    }
+    if (!VALID_CHARACTERS.includes(characterId)) {
+      return res.status(400).json({ success: false, error: 'Invalid character' });
+    }
+    if (!VALID_LEVELS.includes(level)) {
+      return res.status(400).json({ success: false, error: 'Invalid level' });
+    }
+    if (!VALID_LANGUAGES.includes(language)) {
+      return res.status(400).json({ success: false, error: 'Invalid language' });
+    }
+    if (!VALID_LANGUAGES.includes(nativeLanguage)) {
+      return res.status(400).json({ success: false, error: 'Invalid native language' });
+    }
+    if (typeof streakDays !== 'number' || streakDays < 0) {
+      return res.status(400).json({ success: false, error: 'Invalid streak days' });
+    }
+
+    // Check origin
+    if (!isAllowedOrigin(origin || '')) {
+      return res.status(403).json({ success: false, error: 'Unauthorized origin' });
+    }
+
+    // Validate auth token
+    if (!SKIP_AUTH && !validateToken(authToken)) {
+      return res.status(401).json({ success: false, error: 'Invalid or expired token.', isTokenError: true });
+    }
+
+    // Check rate limit
+    if (!checkRateLimit(clientId)) {
+      return res.status(429).json({ success: false, error: 'Too many requests.', isRateLimit: true });
+    }
+
+    // Mock mode
+    if (MOCK_API) {
+      await new Promise(r => setTimeout(r, 500));
+      return res.json({
+        success: true,
+        feedback: {
+          reaction: "Oh wow, that sounds like such a fun day! I love how you described the weather. So what made you decide to go there?",
+          didWell: [{ text: "good use of past tense", comment: "Very natural!" }],
+          corrections: [{ original: "I goed", corrected: "I went", explanation: "Irregular past tense", severity: "major" }],
+          betterExpressions: [{ original: "very good", upgraded: "amazing", context: "More natural in casual writing" }],
+          newVocabulary: [{ word: "stroll", meaning: "a relaxed walk", example: "I took a stroll in the park.", relevance: "Great for diary entries about going out" }],
+          encouragement: "Keep writing! Your diary entries are getting more natural every day.",
+          score: { grammar: 3, vocabulary: 3, naturalness: 3, effort: 4 }
+        }
+      });
+    }
+
+    const character = characterId;
+    const systemPrompt = buildDiaryFeedbackPrompt(character, level, language, nativeLanguage, streakDays);
+
+    const geminiMessages = [
+      { role: 'user', parts: [{ text: systemPrompt + '\n\n---\n\nHere is the diary entry to review:\n\n' + diaryText }] }
+    ];
+
+    const diaryFeedbackSchema = {
+      type: 'object',
+      properties: {
+        reaction: { type: 'string', description: 'Friend-like comment on the content (2-4 sentences + follow-up question)' },
+        didWell: {
+          type: 'array',
+          description: 'Specific things the user did well',
+          items: {
+            type: 'object',
+            properties: {
+              text: { type: 'string', description: 'The phrase or aspect done well' },
+              comment: { type: 'string', description: 'Why it was good' }
+            },
+            required: ['text', 'comment']
+          }
+        },
+        corrections: {
+          type: 'array',
+          description: 'Language corrections',
+          items: {
+            type: 'object',
+            properties: {
+              original: { type: 'string', description: 'Original text' },
+              corrected: { type: 'string', description: 'Corrected version' },
+              explanation: { type: 'string', description: 'Brief explanation' },
+              severity: { type: 'string', description: 'minor, moderate, or major' }
+            },
+            required: ['original', 'corrected', 'explanation', 'severity']
+          }
+        },
+        betterExpressions: {
+          type: 'array',
+          description: 'More natural ways to express something',
+          items: {
+            type: 'object',
+            properties: {
+              original: { type: 'string', description: 'Original expression' },
+              upgraded: { type: 'string', description: 'More natural alternative' },
+              context: { type: 'string', description: 'When to use the upgraded version' }
+            },
+            required: ['original', 'upgraded', 'context']
+          }
+        },
+        newVocabulary: {
+          type: 'array',
+          description: 'New vocabulary related to the diary topic',
+          items: {
+            type: 'object',
+            properties: {
+              word: { type: 'string', description: 'The word or phrase' },
+              meaning: { type: 'string', description: 'Meaning' },
+              example: { type: 'string', description: 'Example sentence' },
+              relevance: { type: 'string', description: 'Why this word is relevant to their diary' }
+            },
+            required: ['word', 'meaning', 'example', 'relevance']
+          }
+        },
+        encouragement: { type: 'string', description: 'Warm closing message' },
+        score: {
+          type: 'object',
+          properties: {
+            grammar: { type: 'integer', description: 'Grammar score 1-5' },
+            vocabulary: { type: 'integer', description: 'Vocabulary score 1-5' },
+            naturalness: { type: 'integer', description: 'Naturalness score 1-5' },
+            effort: { type: 'integer', description: 'Effort score 1-5' }
+          },
+          required: ['grammar', 'vocabulary', 'naturalness', 'effort']
+        }
+      },
+      required: ['reaction', 'didWell', 'corrections', 'betterExpressions', 'newVocabulary', 'encouragement', 'score']
+    };
+
+    const data = await callGeminiWithFallback({
+      contents: geminiMessages,
+      generationConfig: {
+        temperature: 0.7,
+        maxOutputTokens: 4096,
+        topP: 0.95,
+        responseMimeType: 'application/json',
+        responseSchema: diaryFeedbackSchema
+      },
+      safetySettings: [
+        { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_ONLY_HIGH' },
+        { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_ONLY_HIGH' },
+        { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_ONLY_HIGH' },
+        { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_ONLY_HIGH' },
+      ],
+    });
+
+    if (!data?.candidates?.[0]?.content?.parts?.[0]?.text) {
+      throw new Error('Invalid response from AI model');
+    }
+
+    const rawText = data.candidates[0].content.parts[0].text;
+    let parsed;
+    try {
+      parsed = JSON.parse(rawText);
+    } catch {
+      throw new Error('AI model returned invalid JSON');
+    }
+
+    if (!parsed.reaction || !parsed.score) {
+      throw new Error('AI model returned incomplete diary feedback');
+    }
+
+    res.json({ success: true, feedback: parsed });
+
+  } catch (error) {
+    console.error('Diary feedback error:', error);
+    const isRateLimit = error.message?.includes('quota') || error.message?.includes('rate') || error.message?.includes('429');
+    res.status(isRateLimit ? 429 : 500).json({
+      success: false,
+      error: isRateLimit ? 'Rate limit exceeded.' : 'An internal error occurred.',
+      isRateLimit
+    });
+  }
+});
+
+function buildDiaryFeedbackPrompt(character, level, targetLanguage, nativeLanguage, streakDays) {
+  const characterPrompt = getCharacterPrompt(character, targetLanguage);
+  const targetLanguageName = targetLanguage === 'ja' ? 'Japanese' : targetLanguage === 'zh' ? 'Chinese' : 'English';
+  const nativeLanguageName = nativeLanguage === 'ja' ? 'Japanese' : nativeLanguage === 'zh' ? 'Chinese' : 'English';
+  const levelName = level === 'beginner' ? 'A1-A2' : level === 'advanced' ? 'C1-C2' : 'B1-B2';
+
+  const maxCorrections = level === 'beginner' ? 3 : level === 'intermediate' ? 5 : 4;
+
+  const explanationLanguage = level === 'beginner'
+    ? `Write all explanations in ${nativeLanguageName} (the user's native language). They need support in their own language.`
+    : `Write explanations in ${targetLanguageName}. The user is ready to receive feedback in the target language.`;
+
+  let levelSpecificInstructions = '';
+  if (level === 'beginner') {
+    levelSpecificInstructions = `## Level-Specific Focus (Beginner / ${levelName})
+- Focus on basic grammar: tense consistency, word order, subject-verb agreement
+- Ignore awkward phrasing - they're still building foundations
+- Praise any correct use of basic structures
+- Keep corrections simple and foundational
+- betterExpressions: only suggest if there's a very common alternative`;
+  } else if (level === 'intermediate') {
+    levelSpecificInstructions = `## Level-Specific Focus (Intermediate / ${levelName})
+- Focus on collocations, naturalness, and register
+- betterExpressions is the KEY section - help them sound more natural
+- Point out unnatural but grammatically correct phrases
+- Suggest more idiomatic alternatives
+- Note when formal/informal register is inconsistent`;
+  } else {
+    levelSpecificInstructions = `## Level-Specific Focus (Advanced / ${levelName})
+- Focus on style, connotation, nuance, and register consistency
+- Respect their stylistic choices - only correct if genuinely wrong or misleading
+- betterExpressions: suggest more sophisticated or precise alternatives
+- Note subtle connotation differences
+- Fewer corrections, but more depth in each one`;
+  }
+
+  let languageSpecificRules = '';
+  if (targetLanguage === 'ja') {
+    languageSpecificRules = `## Language-Specific Rules (Japanese)
+- Respect the politeness level the user chose (casual vs です/ます) - don't force a switch
+- Show furigana notation for kanji in corrections: 漢字(かんじ)
+- Note differences between 話し言葉 (spoken) and 書き言葉 (written) when relevant
+- Pay attention to particle usage (は/が, に/で, etc.)
+- Note when expressions sound too textbook-like vs natural diary style`;
+  } else if (targetLanguage === 'zh') {
+    languageSpecificRules = `## Language-Specific Rules (Chinese)
+- Include pinyin with tone marks for new vocabulary and corrections (e.g., xuéxí 学习)
+- Note differences between 口语 (colloquial) and 书面语 (written/formal) when relevant
+- Focus on measure words (量词) - these are commonly misused
+- Pay attention to 了/过/着 usage for aspect
+- Note when sentence structure follows non-Chinese patterns`;
+  } else {
+    languageSpecificRules = `## Language-Specific Rules (English)
+- Accept both American and British English - never "correct" one to the other
+- At intermediate level, suggest phrasal verbs as betterExpressions (e.g., "find out" instead of "discover")
+- Note article (a/the) and preposition issues - common for all learners
+- Distinguish between formal and casual tone for diary context`;
+  }
+
+  const streakEncouragement = streakDays > 0
+    ? `\nThe user has been writing for ${streakDays} days in a row. Acknowledge their consistency naturally in your encouragement (but don't make it the whole focus).`
+    : '';
+
+  return `${characterPrompt}
+
+---
+
+## Your Role
+
+You are reading a diary entry written by a ${targetLanguageName} learner (${levelName} level). You are their friend who happens to be great at ${targetLanguageName}.
+
+**CRITICAL: React to the CONTENT first, then the language.**
+
+Your feedback style follows "Anti-Work Learning" principles:
+- First, respond to what they WROTE ABOUT - their day, their feelings, their experiences
+- Corrections should feel like a friend texting: "Oh btw, a more natural way to say that would be..."
+- Never sound like a teacher grading homework
+- Be genuine and specific in your praise - not generic "good job!"
+
+---
+
+${levelSpecificInstructions}
+
+---
+
+${languageSpecificRules}
+
+---
+
+## Feedback Rules
+
+1. **reaction**: React to the diary CONTENT like a friend would (2-4 sentences). Ask a follow-up question about what they wrote. This is NOT about language - it's about their life.
+
+2. **didWell**: Point out 1-3 specific things they did well linguistically. Be specific - quote the actual text. Example: { "text": "雨が降っていた", "comment": "Perfect use of progressive past tense!" }
+
+3. **corrections**: Maximum ${maxCorrections} corrections. Prioritize by severity (major first). ${explanationLanguage}
+   - severity "major": Meaning is unclear or wrong
+   - severity "moderate": Understandable but noticeably unnatural
+   - severity "minor": Small issues, still sounds okay
+
+4. **betterExpressions**: Suggest 1-3 more natural alternatives for phrases that are correct but sound learner-like. Include context for when to use the upgraded version.
+
+5. **newVocabulary**: Suggest 2-4 words/phrases related to the TOPIC of their diary that they could use next time. Make them relevant to what they wrote about.
+
+6. **encouragement**: A warm, genuine closing. Not generic - reference something specific from their diary.${streakEncouragement}
+
+7. **score**: Rate 1-5 relative to their level (${levelName}). A score of 3 means "on track for this level." 5 means "exceeding expectations."
+   - grammar: Accuracy of grammar structures
+   - vocabulary: Range and appropriateness of word choices
+   - naturalness: How natural it sounds to a native speaker
+   - effort: Length, detail, and ambition of the writing`;
+}
+
 const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`Backend running at http://localhost:${PORT}`);

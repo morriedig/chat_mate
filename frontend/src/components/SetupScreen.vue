@@ -105,6 +105,8 @@ function handleStart() {
     })
     saveLearningSession({ levelId: selectedLearningLevel.value.id, targetLanguage: selectedTargetLanguage.value, motherTongue: motherTongue.value, uiLanguage: locale.value })
     router.push('/learning')
+  } else if (primaryMode.value === 'diary') {
+    router.push('/diary')
   }
 }
 </script>
@@ -154,9 +156,9 @@ function handleStart() {
         <p class="text-text-muted dark:text-slate-400">{{ t('app.subtitle') }}</p>
       </div>
 
-      <!-- Primary Mode Selection (Chat vs Learning) -->
+      <!-- Primary Mode Selection (Chat vs Learning vs Diary) -->
       <section class="mb-8">
-        <div class="grid grid-cols-2 gap-4">
+        <div class="grid grid-cols-3 gap-4">
           <div
             @click="primaryMode = 'chat'"
             class="flex flex-col items-center p-6 rounded-2xl border-2 transition-all cursor-pointer"
@@ -178,6 +180,17 @@ function handleStart() {
             <span class="material-symbols-outlined text-5xl mb-3" :class="primaryMode === 'learning' ? 'text-primary' : 'text-slate-400'">school</span>
             <h3 class="font-bold text-text-main dark:text-white text-lg">{{ t('setup.primaryModes.learning.name') }}</h3>
             <p class="text-xs text-text-muted dark:text-slate-400 text-center mt-2">{{ t('setup.primaryModes.learning.description') }}</p>
+          </div>
+          <div
+            @click="primaryMode = 'diary'"
+            class="flex flex-col items-center p-6 rounded-2xl border-2 transition-all cursor-pointer"
+            :class="primaryMode === 'diary'
+              ? 'border-primary bg-gradient-to-br from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/10'
+              : 'border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark hover:border-slate-300 dark:hover:border-slate-600'"
+          >
+            <span class="material-symbols-outlined text-5xl mb-3" :class="primaryMode === 'diary' ? 'text-primary' : 'text-slate-400'">edit_note</span>
+            <h3 class="font-bold text-text-main dark:text-white text-lg">{{ t('diary.mode') }}</h3>
+            <p class="text-xs text-text-muted dark:text-slate-400 text-center mt-2">{{ t('diary.modeDesc') }}</p>
           </div>
         </div>
       </section>
@@ -403,13 +416,13 @@ function handleStart() {
         @click="handleStart"
         :disabled="(primaryMode === 'chat' && !canStartChat) || (primaryMode === 'learning' && !canStartLearning)"
         class="w-full py-4 rounded-xl font-bold text-lg transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none"
-        :class="(primaryMode === 'chat' && canStartChat) || (primaryMode === 'learning' && canStartLearning)
+        :class="(primaryMode === 'chat' && canStartChat) || (primaryMode === 'learning' && canStartLearning) || primaryMode === 'diary'
           ? 'bg-primary text-[#0d171b] hover:bg-primary/90 hover:scale-[1.02] active:scale-[0.98]'
           : 'bg-slate-300 dark:bg-slate-700 text-slate-500 dark:text-slate-400'"
       >
         <span class="flex items-center justify-center gap-2">
           <span class="material-symbols-outlined">arrow_forward</span>
-          {{ primaryMode === 'chat' ? t('setup.startChatting') : t('setup.startLearning') }}
+          {{ primaryMode === 'chat' ? t('setup.startChatting') : primaryMode === 'diary' ? t('diary.mode') : t('setup.startLearning') }}
         </span>
       </button>
     </div>

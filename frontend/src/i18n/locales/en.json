@@ -368,5 +368,42 @@
         "skip": "Maybe Later"
       }
     }
+  },
+  "diary": {
+    "title": "Daily Diary",
+    "todaysDiary": "Today's Diary",
+    "history": "History",
+    "prompt": {
+      "label": "TODAY'S PROMPT",
+      "useThis": "Use this",
+      "another": "Another"
+    },
+    "placeholder": {
+      "beginner": "Write a few sentences about your day...",
+      "intermediate": "What happened today? Tell me about it...",
+      "advanced": "Describe your day, your thoughts, anything..."
+    },
+    "wordCount": "{count} words",
+    "charCount": "{count} characters",
+    "getFeedback": "Get Feedback",
+    "submitting": "Your friend is reading...",
+    "feedback": {
+      "friendSays": "Your friend says:",
+      "niceJob": "Nice job on these!",
+      "tryNext": "A few things to try",
+      "wordsToTry": "Words to try next time",
+      "addToVocab": "Add to vocab bank"
+    },
+    "writeAnother": "Write another",
+    "saveAndClose": "Save & close",
+    "noEntries": "Your diary is empty",
+    "noEntriesDesc": "Start writing to track your progress!",
+    "writeFirst": "Write your first entry",
+    "writingStreak": "Writing streak",
+    "days": "{count} days",
+    "entries": "{count} entries",
+    "offline": "You're offline. Your entry is saved — feedback available when you reconnect.",
+    "mode": "Diary",
+    "modeDesc": "Write about your day"
   }
 }

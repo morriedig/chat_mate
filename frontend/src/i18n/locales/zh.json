@@ -368,5 +368,42 @@
         "skip": "下次再說"
       }
     }
+  },
+  "diary": {
+    "title": "每日日記",
+    "todaysDiary": "今日的日記",
+    "history": "歷史紀錄",
+    "prompt": {
+      "label": "今日的提示",
+      "useThis": "使用這個",
+      "another": "換一個"
+    },
+    "placeholder": {
+      "beginner": "寫幾句關於你的一天...",
+      "intermediate": "今天發生了什麼事？跟我說說...",
+      "advanced": "描述你的一天、想法、任何事..."
+    },
+    "wordCount": "{count} 字",
+    "charCount": "{count} 字",
+    "getFeedback": "取得回饋",
+    "submitting": "你的朋友正在閱讀...",
+    "feedback": {
+      "friendSays": "你的朋友說：",
+      "niceJob": "這些寫得很好！",
+      "tryNext": "可以試試看",
+      "wordsToTry": "下次試試這些詞",
+      "addToVocab": "加入單字本"
+    },
+    "writeAnother": "再寫一篇",
+    "saveAndClose": "儲存並關閉",
+    "noEntries": "日記還是空的",
+    "noEntriesDesc": "開始寫作來追蹤你的進步！",
+    "writeFirst": "寫下第一篇日記",
+    "writingStreak": "寫作連續天數",
+    "days": "{count} 天",
+    "entries": "{count} 篇",
+    "offline": "你目前離線。日記已儲存，連線後可取得回饋。",
+    "mode": "日記",
+    "modeDesc": "寫下你的一天"
   }
 }

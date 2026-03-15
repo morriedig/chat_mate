@@ -34,6 +34,11 @@ const router = createRouter({
       name: 'placementTest',
       component: () => import('./components/PlacementTestScreen.vue'),
     },
+    {
+      path: '/diary',
+      name: 'diary',
+      component: () => import('./components/DiaryScreen.vue'),
+    },
     // Catch-all redirect to setup
     {
       path: '/:pathMatch(.*)*',

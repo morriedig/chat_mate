@@ -368,5 +368,42 @@
         "skip": "また今度"
       }
     }
+  },
+  "diary": {
+    "title": "毎日の日記",
+    "todaysDiary": "今日の日記",
+    "history": "履歴",
+    "prompt": {
+      "label": "今日のお題",
+      "useThis": "これを使う",
+      "another": "別のお題"
+    },
+    "placeholder": {
+      "beginner": "今日のことを書いてみよう...",
+      "intermediate": "今日は何があった？書いてみて...",
+      "advanced": "今日のこと、思ったこと、何でも書いて..."
+    },
+    "wordCount": "{count} 文字",
+    "charCount": "{count} 文字",
+    "getFeedback": "フィードバックをもらう",
+    "submitting": "読んでいるよ...",
+    "feedback": {
+      "friendSays": "友達からのコメント:",
+      "niceJob": "ここがよかった！",
+      "tryNext": "こうするともっと自然",
+      "wordsToTry": "次に使ってみよう",
+      "addToVocab": "単語帳に追加"
+    },
+    "writeAnother": "もう一つ書く",
+    "saveAndClose": "保存して閉じる",
+    "noEntries": "日記はまだありません",
+    "noEntriesDesc": "書き始めて成長を記録しよう！",
+    "writeFirst": "最初の日記を書く",
+    "writingStreak": "連続記録",
+    "days": "{count} 日",
+    "entries": "{count} 件",
+    "offline": "オフラインです。日記は保存されました。ネットに繋がったらフィードバックがもらえます。",
+    "mode": "日記",
+    "modeDesc": "今日のことを書こう"
   }
 }
