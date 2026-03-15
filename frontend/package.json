@@ -11,7 +11,9 @@
     "test:unit": "vitest run --testPathPattern=unit",
     "test:component": "vitest run --testPathPattern=component",
     "test:integration": "vitest run --testPathPattern=integration",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "npx playwright test",
+    "test:e2e:ui": "npx playwright test --ui"
   },
   "dependencies": {
     "html2canvas": "^1.4.1",
@@ -21,6 +23,7 @@
     "vue-router": "^4.6.4"
   },
   "devDependencies": {
+    "@playwright/test": "^1.58.2",
     "@tailwindcss/postcss": "^4.1.18",
     "@vitejs/plugin-vue": "^6.0.1",
     "@vitest/coverage-v8": "^4.0.16",
