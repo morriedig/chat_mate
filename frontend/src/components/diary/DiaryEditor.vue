@@ -17,6 +17,10 @@ const props = defineProps({
   isLoading: {
     type: Boolean,
     default: false
+  },
+  initialPrompt: {
+    type: String,
+    default: ''
   }
 })
 
@@ -111,15 +115,26 @@ function autoGrowTextarea() {
   })
 }
 
-// Restore draft on mount
+// Restore draft on mount, or pre-fill with prompt from query
 onMounted(() => {
-  try {
-    const draft = localStorage.getItem(DRAFT_KEY)
-    if (draft) {
-      body.value = draft
+  if (props.initialPrompt) {
+    body.value = props.initialPrompt + '\n\n'
+    promptDismissed.value = true
+  } else {
+    try {
+      const draft = localStorage.getItem(DRAFT_KEY)
+      if (draft) {
+        body.value = draft
+      }
+    } catch { /* ignore */ }
+  }
+  nextTick(() => {
+    autoGrowTextarea()
+    if (props.initialPrompt && textareaRef.value) {
+      textareaRef.value.focus()
+      textareaRef.value.selectionStart = textareaRef.value.selectionEnd = body.value.length
     }
-  } catch { /* ignore */ }
-  nextTick(() => autoGrowTextarea())
+  })
 })
 
 onBeforeUnmount(() => {

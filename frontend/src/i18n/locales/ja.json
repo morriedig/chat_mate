@@ -278,7 +278,13 @@
       "streak5": "5日連続を維持",
       "streak7": "7日連続を維持",
       "minutes30": "30分間学習する",
-      "challenge3": "デイリーチャレンジを3回達成"
+      "challenge3": "デイリーチャレンジを3回達成",
+      "diaryEntries3": "3日間日記を書く",
+      "diaryEntries5": "5日間日記を書く",
+      "diaryVocabUse5": "日記で単語帳の単語を5個使う",
+      "diaryVocabUse10": "日記で単語帳の単語を10個使う",
+      "diaryWordCount150": "日記で合計150語書く",
+      "diaryWordCount300": "日記で合計300語書く"
     }
   },
   "dailyChallenge": {
@@ -453,6 +459,7 @@
     "entries": "{count} 件",
     "offline": "オフラインです。日記は保存されました。ネットに繋がったらフィードバックがもらえます。",
     "mode": "日記",
-    "modeDesc": "今日のことを書こう"
+    "modeDesc": "今日のことを書こう",
+    "writeInDiary": "日記に書く"
   }
 }

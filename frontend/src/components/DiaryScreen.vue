@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { useNavState } from '../composables/useNavState'
 import { useMotherTongue } from '../composables/useMotherTongue'
 import { useDarkMode } from '../composables/useDarkMode'
@@ -14,6 +14,7 @@ import DiaryEntryCard from './diary/DiaryEntryCard.vue'
 
 const { t } = useI18n()
 const router = useRouter()
+const route = useRoute()
 const { isDark, toggle: toggleDark } = useDarkMode()
 const {
   selectedCharacter: character,
@@ -35,11 +36,15 @@ const {
   entryIndex,
   loadEntry,
   submitEntry,
+  retryFeedback,
   todayEntry,
   isLoadingFeedback,
   feedbackError,
   stats,
 } = useDiary()
+
+// Prompt passed via query parameter (from DailyPromptCard)
+const initialPrompt = ref(route.query.prompt || '')
 
 // View mode: 'write' or 'history'
 const viewMode = ref('write')
@@ -89,26 +94,35 @@ async function handleSubmit(body) {
     level: level.value?.id || 'intermediate',
     characterId: character.value?.id || 'emma',
     nativeLanguage: motherTongue.value,
-    prompt: null,
+    prompt: initialPrompt.value || null,
   })
 
   activeEntry.value = entry
 
-  // Clear draft
+  // Clear prompt and draft after submission
+  initialPrompt.value = ''
   try {
     localStorage.removeItem('chatmate_diary_draft')
   } catch { /* ignore */ }
 }
 
-function handleRetryFeedback() {
-  if (activeEntry.value) {
-    // Re-submit the same entry text
-    handleSubmit(activeEntry.value.body)
-  }
+async function handleRetryFeedback() {
+  if (!activeEntry.value) return
+  // Retry feedback only — don't re-create entry or re-award XP
+  await retryFeedback(activeEntry.value.id, {
+    language: language.value,
+    level: level.value?.id || 'intermediate',
+    characterId: character.value?.id || 'emma',
+    nativeLanguage: motherTongue.value,
+  })
+  // Reload the entry to get updated feedback
+  const updated = loadEntry(activeEntry.value.id)
+  if (updated) activeEntry.value = updated
 }
 
 function handleWriteAnother() {
   activeEntry.value = null
+  initialPrompt.value = ''
 }
 
 function handleSelectEntry(entryMeta) {
@@ -186,6 +200,7 @@ function handleBack() {
             :language="language"
             :level="level?.id || 'intermediate'"
             :is-loading="isLoadingFeedback"
+            :initial-prompt="initialPrompt"
             @submit="handleSubmit"
           />
 

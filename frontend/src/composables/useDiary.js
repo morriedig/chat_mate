@@ -4,6 +4,7 @@ import { useDiaryFeedback } from './useDiaryFeedback'
 import { useDiaryPrompts } from './useDiaryPrompts'
 import { useUserProgress } from './useUserProgress'
 import { useVocabularyBank } from './useVocabularyBank'
+import { useWeeklyQuests } from './useWeeklyQuests'
 
 const DIARY_XP = 15
 
@@ -22,6 +23,7 @@ export function useDiary() {
   const prompts = useDiaryPrompts()
   const { addXP, progress, onDiarySubmitted } = useUserProgress()
   const { words: vocabWords } = useVocabularyBank()
+  const { onDiaryEntry, onDiaryVocabUsed, onDiaryWordCount } = useWeeklyQuests()
 
   // Check if an entry exists for today
   const todayEntry = computed(() => {
@@ -145,6 +147,11 @@ export function useDiary() {
     // Update diary progress tracking (achievements, streak, etc.)
     onDiarySubmitted({ wordCount, vocabWordsUsed })
 
+    // Update weekly quest progress
+    onDiaryEntry()
+    if (vocabWordsUsed > 0) onDiaryVocabUsed(vocabWordsUsed)
+    if (wordCount > 0) onDiaryWordCount(wordCount)
+
     // Update main streak (diary counts toward main streak)
     const today = new Date().toDateString()
     if (progress.value.lastActiveDate !== today) {
@@ -208,6 +215,32 @@ export function useDiary() {
     }
   })
 
+  // Retry feedback only (no XP, no quest tracking, no new entry)
+  async function retryFeedback(entryId, { language, level, characterId, nativeLanguage }) {
+    const entry = storage.loadEntry(entryId)
+    if (!entry) return
+
+    entry.feedbackStatus = 'loading'
+    storage.saveEntry(entry)
+
+    const result = await feedback.fetchFeedback({
+      diaryText: entry.body,
+      language,
+      level,
+      characterId,
+      nativeLanguage,
+      streakDays: currentWritingStreak.value,
+    })
+
+    if (result) {
+      entry.feedback = result
+      entry.feedbackStatus = 'done'
+    } else {
+      entry.feedbackStatus = 'error'
+    }
+    storage.saveEntry(entry)
+  }
+
   return {
     // Storage pass-through
     entryIndex: storage.entryIndex,
@@ -225,6 +258,7 @@ export function useDiary() {
 
     // Core
     submitEntry,
+    retryFeedback,
     todayEntry,
     stats,
     totalEntries,

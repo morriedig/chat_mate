@@ -278,7 +278,13 @@
       "streak5": "Maintain a 5-day streak",
       "streak7": "Maintain a 7-day streak",
       "minutes30": "Study for 30 minutes",
-      "challenge3": "Complete 3 daily challenges"
+      "challenge3": "Complete 3 daily challenges",
+      "diaryEntries3": "Write diary entries on 3 days",
+      "diaryEntries5": "Write diary entries on 5 days",
+      "diaryVocabUse5": "Use 5 vocab words in diary entries",
+      "diaryVocabUse10": "Use 10 vocab words in diary entries",
+      "diaryWordCount150": "Write 150 words in diary entries",
+      "diaryWordCount300": "Write 300 words in diary entries"
     }
   },
   "dailyChallenge": {
@@ -453,6 +459,7 @@
     "entries": "{count} entries",
     "offline": "You're offline. Your entry is saved — feedback available when you reconnect.",
     "mode": "Diary",
-    "modeDesc": "Write about your day"
+    "modeDesc": "Write about your day",
+    "writeInDiary": "Write in diary"
   }
 }

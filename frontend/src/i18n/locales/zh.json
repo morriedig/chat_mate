@@ -278,7 +278,13 @@
       "streak5": "維持 5 天連續",
       "streak7": "維持 7 天連續",
       "minutes30": "學習 30 分鐘",
-      "challenge3": "完成 3 次每日挑戰"
+      "challenge3": "完成 3 次每日挑戰",
+      "diaryEntries3": "3 天寫日記",
+      "diaryEntries5": "5 天寫日記",
+      "diaryVocabUse5": "在日記中使用 5 個單字本單字",
+      "diaryVocabUse10": "在日記中使用 10 個單字本單字",
+      "diaryWordCount150": "日記共寫 150 字",
+      "diaryWordCount300": "日記共寫 300 字"
     }
   },
   "dailyChallenge": {
@@ -453,6 +459,7 @@
     "entries": "{count} 篇",
     "offline": "你目前離線。日記已儲存，連線後可取得回饋。",
     "mode": "日記",
-    "modeDesc": "寫下你的一天"
+    "modeDesc": "寫下你的一天",
+    "writeInDiary": "寫進日記"
   }
 }

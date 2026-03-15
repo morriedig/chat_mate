@@ -1,8 +1,10 @@
 <script setup>
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
 
 const { t } = useI18n()
+const router = useRouter()
 
 const props = defineProps({
   level: { type: String, default: 'intermediate' },
@@ -73,14 +75,23 @@ const todayPrompt = computed(() => {
       <!-- Prompt Text -->
       <p class="text-sm text-text-main dark:text-white font-medium mb-3 pr-6">{{ todayPrompt }}</p>
 
-      <!-- Use Button -->
-      <button
-        @click="emit('use-prompt', todayPrompt)"
-        class="text-xs font-semibold text-primary hover:text-primary/80 transition-colors flex items-center gap-1"
-      >
-        <span class="material-symbols-outlined text-[16px]">edit</span>
-        {{ t('dailyPrompt.tryIt') }}
-      </button>
+      <!-- Action Buttons -->
+      <div class="flex items-center gap-4">
+        <button
+          @click="emit('use-prompt', todayPrompt)"
+          class="text-xs font-semibold text-primary hover:text-primary/80 transition-colors flex items-center gap-1"
+        >
+          <span class="material-symbols-outlined text-[16px]">edit</span>
+          {{ t('dailyPrompt.tryIt') }}
+        </button>
+        <button
+          @click="router.push({ path: '/diary', query: { prompt: todayPrompt } })"
+          class="text-xs font-semibold text-primary hover:text-primary/80 transition-colors flex items-center gap-1"
+        >
+          <span class="material-symbols-outlined text-[16px]">menu_book</span>
+          {{ t('diary.writeInDiary') }}
+        </button>
+      </div>
     </div>
   </div>
 </template>
