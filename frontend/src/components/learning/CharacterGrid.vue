@@ -145,6 +145,7 @@ const gridStyle = computed(() => ({
           v-for="character in group.characters"
           :key="character.id"
           @click="handleSelect(character)"
+          :aria-label="character.char + ' ' + character.romaji"
           class="relative flex flex-col items-center justify-center p-1.5 rounded-lg border-2 transition-all touch-target active:scale-95 character-cell"
           :class="getCellClasses(character.id)"
         >

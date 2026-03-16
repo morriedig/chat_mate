@@ -181,7 +181,13 @@ function getToneButtonClasses(tone) {
   return 'border-slate-200 dark:border-slate-700 opacity-40'
 }
 
-watch(() => props.characters, (newChars) => buildQuestions(newChars), { immediate: true })
+watch(() => props.characters, (newChars) => {
+  if (autoAdvanceTimer.value) {
+    clearTimeout(autoAdvanceTimer.value)
+    autoAdvanceTimer.value = null
+  }
+  buildQuestions(newChars)
+}, { immediate: true })
 </script>
 
 <template>
@@ -217,6 +223,7 @@ watch(() => props.characters, (newChars) => buildQuestions(newChars), { immediat
           <button
             @click="playCurrentAudio"
             :disabled="isPlayingAudio"
+            aria-label="Play audio"
             class="mx-auto flex items-center justify-center size-16 rounded-full bg-white dark:bg-slate-800 shadow-lg hover:shadow-xl transition-shadow"
             :class="{ 'animate-pulse': isPlayingAudio }"
           >
@@ -243,6 +250,7 @@ watch(() => props.characters, (newChars) => buildQuestions(newChars), { immediat
           :key="btn.tone"
           @click="selectTone(btn.tone)"
           :disabled="isAnswered"
+          :aria-label="btn.label + ' tone'"
           class="relative flex flex-col items-center justify-center p-5 rounded-xl border-2 transition-all touch-target"
           :class="getToneButtonClasses(btn.tone)"
         >

@@ -163,13 +163,25 @@ function getOptionClasses(character) {
 }
 
 // Initialize on mount and when characters change
-watch(() => props.characters, (newChars) => buildQuestions(newChars), { immediate: true })
+watch(() => props.characters, (newChars) => {
+  if (autoAdvanceTimer.value) {
+    clearTimeout(autoAdvanceTimer.value)
+    autoAdvanceTimer.value = null
+  }
+  buildQuestions(newChars)
+}, { immediate: true })
 </script>
 
 <template>
   <div class="flex flex-col items-center w-full max-w-lg mx-auto">
+    <!-- Empty State -->
+    <div v-if="totalQuestions === 0" class="text-center py-12">
+      <span class="material-symbols-outlined text-[48px] text-slate-300 dark:text-slate-600 mb-4">quiz</span>
+      <p class="text-sm text-text-muted dark:text-slate-400">No characters to practice</p>
+    </div>
+
     <!-- Game In Progress -->
-    <template v-if="!isCompleted">
+    <template v-else-if="!isCompleted">
       <!-- Progress Bar -->
       <div class="w-full mb-6">
         <div class="flex justify-between text-sm text-text-muted dark:text-slate-400 mb-2">
@@ -193,6 +205,7 @@ watch(() => props.characters, (newChars) => buildQuestions(newChars), { immediat
           <button
             @click="playCurrentAudio"
             :disabled="isPlayingAudio"
+            aria-label="Play audio"
             class="mx-auto flex items-center justify-center size-16 rounded-full bg-white dark:bg-slate-800 shadow-lg hover:shadow-xl transition-shadow"
             :class="{ 'animate-pulse': isPlayingAudio }"
           >
@@ -219,6 +232,7 @@ watch(() => props.characters, (newChars) => buildQuestions(newChars), { immediat
           :key="option.id"
           @click="selectOption(option)"
           :disabled="isAnswered"
+          :aria-label="option.char + ' ' + option.romaji"
           class="relative flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all touch-target"
           :class="getOptionClasses(option)"
         >

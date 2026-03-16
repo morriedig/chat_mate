@@ -65,7 +65,7 @@ characters:
     mnemonic:
       en: "NOOdles tangled together in a bowl"
       zh: "一碗纏在一起的麵條"
-    stroke_count: 2
+    stroke_count: 4
     row: "n"
     examples:
       - word: "ぬの"
@@ -83,7 +83,7 @@ characters:
     mnemonic:
       en: "A cat curled up with its tail — 'NEko!'"
       zh: "貓咪蜷起尾巴——「猫！」"
-    stroke_count: 2
+    stroke_count: 4
     row: "n"
     examples:
       - word: "ねこ"

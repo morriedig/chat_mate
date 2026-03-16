@@ -210,7 +210,7 @@ characters:
     row: "d"
     examples:
       - word: "はなぢ"
-        reading: "hanadi"
+        reading: "hanaji"
         meaning: { en: "nosebleed", zh: "流鼻血" }
 
   - id: du
@@ -225,7 +225,7 @@ characters:
     row: "d"
     examples:
       - word: "つづく"
-        reading: "tsuduku"
+        reading: "tsuzuku"
         meaning: { en: "to continue", zh: "繼續" }
 
   - id: de

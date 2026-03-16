@@ -122,6 +122,26 @@ describe('usePreLessonProgress', () => {
     })
   })
 
+  describe('markMatchingCompleted', () => {
+    it('should set matchingCompleted to true', () => {
+      const progress = usePreLessonProgress()
+      progress.markMatchingCompleted('hiragana-01')
+
+      const status = progress.getLessonStatus('hiragana-01')
+      expect(status.matchingCompleted).toBe(true)
+    })
+  })
+
+  describe('isMatchingCompleted', () => {
+    it('should return correct boolean', () => {
+      const progress = usePreLessonProgress()
+      expect(progress.isMatchingCompleted('hiragana-01')).toBe(false)
+
+      progress.markMatchingCompleted('hiragana-01')
+      expect(progress.isMatchingCompleted('hiragana-01')).toBe(true)
+    })
+  })
+
   describe('markQuizCompleted', () => {
     it('should update quiz state when passing (>= 70%)', () => {
       const progress = usePreLessonProgress()
@@ -162,6 +182,16 @@ describe('usePreLessonProgress', () => {
 
       const saved = JSON.parse(localStorage.getItem('chatmate_preLessonProgress'))
       expect(saved.lessons['hiragana-01'].quizCompleted).toBe(true)
+    })
+
+    it('should return early without error when total is 0', () => {
+      const progress = usePreLessonProgress()
+      const result = progress.markQuizCompleted('hiragana-01', 0, 0)
+
+      expect(result).toEqual({ percentage: 0, passed: false })
+      // Should not have created a lesson entry
+      const status = progress.getLessonStatus('hiragana-01')
+      expect(status.quizCompleted).toBe(false)
     })
   })
 
@@ -239,6 +269,15 @@ describe('usePreLessonProgress', () => {
       getPreLessons.mockReturnValue([])
       const progress = usePreLessonProgress()
       expect(progress.areChaptersLocked('ja')).toBe(false)
+    })
+
+    it('should return true when pre-lessons are NOT complete and user has no existing chapter progress', () => {
+      getPreLessons.mockReturnValue([{ id: 'hiragana-01' }])
+      getChaptersByLevel.mockReturnValue([{ id: 'chapter-01' }])
+      mockGetChapterCompletionStatus.mockReturnValue({ quiz: false, conversation: false, complete: false })
+
+      const progress = usePreLessonProgress()
+      expect(progress.areChaptersLocked('ja')).toBe(true)
     })
   })
 

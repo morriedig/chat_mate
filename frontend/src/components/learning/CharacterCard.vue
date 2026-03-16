@@ -90,6 +90,7 @@ async function playExample(word) {
         <button
           @click="playCharacter"
           :disabled="isPlayingChar"
+          :aria-label="character.reading"
           class="flex items-center justify-center size-10 rounded-full bg-primary/10 hover:bg-primary/20 text-primary transition-colors disabled:opacity-50 touch-target"
           :class="{ 'animate-pulse': isPlayingChar }"
         >
@@ -129,6 +130,7 @@ async function playExample(word) {
             <button
               @click="playExample(example.word)"
               :disabled="isPlayingExample"
+              :aria-label="example.reading"
               class="shrink-0 flex items-center justify-center size-7 rounded-full bg-white dark:bg-slate-700 hover:bg-slate-100 dark:hover:bg-slate-600 text-primary transition-colors disabled:opacity-50 shadow-sm touch-target"
               :class="{ 'animate-pulse': isPlayingExample }"
             >
