@@ -609,7 +609,7 @@ onMounted(() => {
             v-for="word in currentWords"
             :key="word.id"
             :word="word"
-            :language="targetLanguage"
+            :language="props.targetLanguage"
             :bilingual="isBilingual"
             :voice-speed="voiceSpeed"
           />
@@ -619,7 +619,7 @@ onMounted(() => {
         <FlashcardMode
           v-else-if="learningMode === 'flashcard'"
           :words="currentWords"
-          :language="targetLanguage"
+          :language="props.targetLanguage"
           :bilingual="isBilingual"
           :voice-speed="voiceSpeed"
         />
@@ -628,7 +628,7 @@ onMounted(() => {
         <QuizMode
           v-else-if="learningMode === 'quiz'"
           :words="currentWords"
-          :language="targetLanguage"
+          :language="props.targetLanguage"
           :chapter-id="selectedChapter.id"
           @complete="handleQuizComplete"
         />
@@ -637,7 +637,7 @@ onMounted(() => {
         <ConversationPractice
           v-else-if="learningMode === 'conversation'"
           :conversations="currentConversations"
-          :language="targetLanguage"
+          :language="props.targetLanguage"
           :bilingual="isBilingual"
           :voice-speed="voiceSpeed"
           :chapter-id="selectedChapter.id"
