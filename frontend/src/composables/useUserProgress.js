@@ -1,7 +1,8 @@
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useXPSystem, RANKS, XP_REWARDS, recentXPGain, showLevelUp, newRank } from './useXPSystem'
 import { useStreakTracker, STREAK_MILESTONES, showStreakMilestone, currentMilestone } from './useStreakTracker'
 import { useAchievements, ACHIEVEMENTS, showAchievementUnlock, newAchievement } from './useAchievements'
+import { usePreLessonProgress } from './usePreLessonProgress'
 
 const STORAGE_KEY = 'chatmate_userProgress'
 
@@ -56,7 +57,20 @@ function saveProgress() {
   }
 }
 
+// Module-level watcher (runs once, not per useUserProgress() call)
+let preLessonWatcherInitialized = false
+
 export function useUserProgress() {
+  // Inject pre-lesson stats into progress for achievement checking
+  const { stats: preLessonStats, setOnCharacterLearnedCallback } = usePreLessonProgress()
+  progress.value.preLessonStats = preLessonStats.value
+  if (!preLessonWatcherInitialized) {
+    preLessonWatcherInitialized = true
+    watch(preLessonStats, (newStats) => {
+      progress.value.preLessonStats = newStats
+    }, { deep: true })
+  }
+
   // Compose sub-systems
   const {
     currentRank, nextRank, xpToNextRank, progressToNextRank,
@@ -71,6 +85,15 @@ export function useUserProgress() {
     unlockedAchievements, lockedAchievements,
     checkAchievements, dismissAchievementUnlock,
   } = useAchievements(progress, saveProgress)
+
+  // Wire up XP reward for pre-lesson character learning (+2 XP per new character)
+  setOnCharacterLearnedCallback(() => {
+    addXP(2, 'characterLearned')
+    // Re-sync preLessonStats after the callback may have updated
+    progress.value.preLessonStats = preLessonStats.value
+    saveProgress()
+    checkAchievements()
+  })
 
   function onMessageSent() {
     updateStreak()

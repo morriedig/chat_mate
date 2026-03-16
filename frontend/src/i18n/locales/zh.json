@@ -162,6 +162,26 @@
       "description": "與3個不同角色聊天",
       "hint": "嘗試和不同的AI朋友交流"
     },
+    "first_character": {
+      "title": "文字初體驗",
+      "description": "學會第一個文字",
+      "hint": "在預備課程中學習一個文字"
+    },
+    "hiragana_10": {
+      "title": "平假名探索者",
+      "description": "學會10個平假名",
+      "hint": "在預備課程中學習10個文字"
+    },
+    "hiragana_master": {
+      "title": "平假名大師",
+      "description": "掌握全部46個基本平假名",
+      "hint": "學會全部46個平假名"
+    },
+    "script_scholar": {
+      "title": "文字學者",
+      "description": "完成5個預備課程",
+      "hint": "完成5個基礎課程解鎖"
+    },
     "level_beginner": {
       "title": "新星",
       "description": "達到初學者等級",

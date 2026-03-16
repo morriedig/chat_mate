@@ -1,0 +1,437 @@
+# Pre-Lesson: Hiragana Dakuten & Handakuten
+meta:
+  id: hiragana-05-dakuten
+  title:
+    en: "Hiragana: Dakuten & Handakuten"
+    ja: "ひらがな：濁音と半濁音"
+    zh: "平假名：濁音與半濁音"
+  description:
+    en: "Learn voiced and semi-voiced hiragana characters"
+    ja: "濁音と半濁音の文字を学びましょう"
+    zh: "學習濁音和半濁音的文字"
+  icon: "が"
+  order: 0.5
+  level: foundation
+  type: pre-lesson
+  group:
+    en: "Hiragana"
+    ja: "ひらがな"
+    zh: "平假名"
+  estimatedMinutes: 15
+  prerequisite: hiragana-04-m-y-r-w
+
+characters:
+  # ga-row (か → が)
+  - id: ga
+    char: "が"
+    reading: "ga"
+    romaji: "ga"
+    audio_hint: "ga, as in 'garden'"
+    mnemonic:
+      en: "が is か with dakuten marks — the voice becomes heavier, like GArdening in heavy boots"
+      zh: "が是か加上濁點——聲音變重了，像穿重靴子在花園裡"
+    stroke_count: 5
+    row: "g"
+    examples:
+      - word: "がっこう"
+        reading: "gakkou"
+        meaning: { en: "school", zh: "學校" }
+      - word: "がいこく"
+        reading: "gaikoku"
+        meaning: { en: "foreign country", zh: "外國" }
+
+  - id: gi
+    char: "ぎ"
+    reading: "gi"
+    romaji: "gi"
+    audio_hint: "gee, as in 'geese'"
+    mnemonic:
+      en: "ぎ is き with dakuten — the key now buzzes with energy"
+      zh: "ぎ是き加上濁點——鑰匙現在嗡嗡作響"
+    stroke_count: 6
+    row: "g"
+    examples:
+      - word: "ぎんこう"
+        reading: "ginkou"
+        meaning: { en: "bank", zh: "銀行" }
+
+  - id: gu
+    char: "ぐ"
+    reading: "gu"
+    romaji: "gu"
+    audio_hint: "goo, as in 'goose'"
+    mnemonic:
+      en: "ぐ is く with dakuten — the beak now GOOs louder"
+      zh: "ぐ是く加上濁點——鳥嘴叫得更大聲了"
+    stroke_count: 3
+    row: "g"
+    examples:
+      - word: "ぐうぜん"
+        reading: "guuzen"
+        meaning: { en: "by chance", zh: "偶然" }
+
+  - id: ge
+    char: "げ"
+    reading: "ge"
+    romaji: "ge"
+    audio_hint: "geh, as in 'get'"
+    mnemonic:
+      en: "げ is け with dakuten — the gate now creaks with a heavy GET"
+      zh: "げ是け加上濁點——門現在發出沉重的嘎吱聲"
+    stroke_count: 5
+    row: "g"
+    examples:
+      - word: "げんき"
+        reading: "genki"
+        meaning: { en: "healthy / energetic", zh: "精神好" }
+
+  - id: go
+    char: "ご"
+    reading: "go"
+    romaji: "go"
+    audio_hint: "goh, as in 'go'"
+    mnemonic:
+      en: "ご is こ with dakuten — the worms are ready to GO"
+      zh: "ご是こ加上濁點——蟲子準備出發了"
+    stroke_count: 4
+    row: "g"
+    examples:
+      - word: "ごご"
+        reading: "gogo"
+        meaning: { en: "afternoon", zh: "下午" }
+
+  # za-row (さ → ざ)
+  - id: za
+    char: "ざ"
+    reading: "za"
+    romaji: "za"
+    audio_hint: "za, as in 'pizza'"
+    mnemonic:
+      en: "ざ is さ with dakuten — the sad bench now buzZes"
+      zh: "ざ是さ加上濁點——長椅現在嗡嗡響"
+    stroke_count: 5
+    row: "z"
+    examples:
+      - word: "ざっし"
+        reading: "zasshi"
+        meaning: { en: "magazine", zh: "雜誌" }
+
+  - id: ji
+    char: "じ"
+    reading: "ji"
+    romaji: "ji"
+    audio_hint: "jee, as in 'jeep'"
+    mnemonic:
+      en: "じ is し with dakuten — the hook now JIngles"
+      zh: "じ是し加上濁點——魚鉤現在叮噹響"
+    stroke_count: 3
+    row: "z"
+    examples:
+      - word: "じかん"
+        reading: "jikan"
+        meaning: { en: "time", zh: "時間" }
+      - word: "じてんしゃ"
+        reading: "jitensha"
+        meaning: { en: "bicycle", zh: "自行車" }
+
+  - id: zu
+    char: "ず"
+    reading: "zu"
+    romaji: "zu"
+    audio_hint: "zoo, as in 'zoo'"
+    mnemonic:
+      en: "ず is す with dakuten — the noodle swirls around the ZOO"
+      zh: "ず是す加上濁點——麵條在動物園裡轉圈"
+    stroke_count: 4
+    row: "z"
+    examples:
+      - word: "みず"
+        reading: "mizu"
+        meaning: { en: "water", zh: "水" }
+
+  - id: ze
+    char: "ぜ"
+    reading: "ze"
+    romaji: "ze"
+    audio_hint: "zeh, as in 'zest'"
+    mnemonic:
+      en: "ぜ is せ with dakuten — the mouth now speaks with ZEst"
+      zh: "ぜ是せ加上濁點——嘴巴現在充滿熱情地說話"
+    stroke_count: 5
+    row: "z"
+    examples:
+      - word: "ぜんぶ"
+        reading: "zenbu"
+        meaning: { en: "all / everything", zh: "全部" }
+
+  - id: zo
+    char: "ぞ"
+    reading: "zo"
+    romaji: "zo"
+    audio_hint: "zoh, as in 'zone'"
+    mnemonic:
+      en: "ぞ is そ with dakuten — the lightning enters the ZOne"
+      zh: "ぞ是そ加上濁點——閃電進入了區域"
+    stroke_count: 3
+    row: "z"
+    examples:
+      - word: "ぞう"
+        reading: "zou"
+        meaning: { en: "elephant", zh: "大象" }
+
+  # da-row (た → だ)
+  - id: da
+    char: "だ"
+    reading: "da"
+    romaji: "da"
+    audio_hint: "da, as in 'dad'"
+    mnemonic:
+      en: "だ is た with dakuten — 'TA-da!' becomes 'DA-da!'"
+      zh: "だ是た加上濁點——「噠噠」變成「大大」"
+    stroke_count: 6
+    row: "d"
+    examples:
+      - word: "だれ"
+        reading: "dare"
+        meaning: { en: "who", zh: "誰" }
+      - word: "だいがく"
+        reading: "daigaku"
+        meaning: { en: "university", zh: "大學" }
+
+  - id: di
+    char: "ぢ"
+    reading: "ji"
+    romaji: "ji"
+    audio_hint: "jee (same sound as じ)"
+    mnemonic:
+      en: "ぢ is ち with dakuten — rarely used, sounds like じ"
+      zh: "ぢ是ち加上濁點——很少使用，發音同じ"
+    stroke_count: 4
+    row: "d"
+    examples:
+      - word: "はなぢ"
+        reading: "hanadi"
+        meaning: { en: "nosebleed", zh: "流鼻血" }
+
+  - id: du
+    char: "づ"
+    reading: "zu"
+    romaji: "zu"
+    audio_hint: "zoo (same sound as ず)"
+    mnemonic:
+      en: "づ is つ with dakuten — rarely used, sounds like ず"
+      zh: "づ是つ加上濁點——很少使用，發音同ず"
+    stroke_count: 3
+    row: "d"
+    examples:
+      - word: "つづく"
+        reading: "tsuduku"
+        meaning: { en: "to continue", zh: "繼續" }
+
+  - id: de
+    char: "で"
+    reading: "de"
+    romaji: "de"
+    audio_hint: "deh, as in 'desk'"
+    mnemonic:
+      en: "で is て with dakuten — the hand now pounds the DEsk"
+      zh: "で是て加上濁點——手現在拍打桌子"
+    stroke_count: 3
+    row: "d"
+    examples:
+      - word: "でんわ"
+        reading: "denwa"
+        meaning: { en: "telephone", zh: "電話" }
+      - word: "でる"
+        reading: "deru"
+        meaning: { en: "to go out", zh: "出去" }
+
+  - id: do
+    char: "ど"
+    reading: "do"
+    romaji: "do"
+    audio_hint: "doh, as in 'door'"
+    mnemonic:
+      en: "ど is と with dakuten — the toe now kicks the DOor"
+      zh: "ど是と加上濁點——腳趾現在踢門了"
+    stroke_count: 4
+    row: "d"
+    examples:
+      - word: "どこ"
+        reading: "doko"
+        meaning: { en: "where", zh: "哪裡" }
+      - word: "どうぶつ"
+        reading: "doubutsu"
+        meaning: { en: "animal", zh: "動物" }
+
+  # ba-row (は → ば)
+  - id: ba
+    char: "ば"
+    reading: "ba"
+    romaji: "ba"
+    audio_hint: "ba, as in 'bar'"
+    mnemonic:
+      en: "ば is は with dakuten — the laughter turns into BAA like a sheep"
+      zh: "ば是は加上濁點——笑聲變成了綿羊的「咩」"
+    stroke_count: 5
+    row: "b"
+    examples:
+      - word: "ばしょ"
+        reading: "basho"
+        meaning: { en: "place", zh: "地方" }
+
+  - id: bi
+    char: "び"
+    reading: "bi"
+    romaji: "bi"
+    audio_hint: "bee, as in 'bee'"
+    mnemonic:
+      en: "び is ひ with dakuten — the smile now BEEs with energy"
+      zh: "び是ひ加上濁點——微笑現在充滿活力"
+    stroke_count: 3
+    row: "b"
+    examples:
+      - word: "びじゅつ"
+        reading: "bijutsu"
+        meaning: { en: "art", zh: "美術" }
+
+  - id: bu
+    char: "ぶ"
+    reading: "bu"
+    romaji: "bu"
+    audio_hint: "boo, as in 'boot'"
+    mnemonic:
+      en: "ぶ is ふ with dakuten — Mount Fuji goes BOOm"
+      zh: "ぶ是ふ加上濁點——富士山轟隆作響"
+    stroke_count: 6
+    row: "b"
+    examples:
+      - word: "ぶたにく"
+        reading: "butaniku"
+        meaning: { en: "pork", zh: "豬肉" }
+
+  - id: be
+    char: "べ"
+    reading: "be"
+    romaji: "be"
+    audio_hint: "beh, as in 'bed'"
+    mnemonic:
+      en: "べ is へ with dakuten — the mountain peak is now a BEd"
+      zh: "べ是へ加上濁點——山峰現在變成了床"
+    stroke_count: 3
+    row: "b"
+    examples:
+      - word: "べんきょう"
+        reading: "benkyou"
+        meaning: { en: "study", zh: "學習" }
+
+  - id: bo
+    char: "ぼ"
+    reading: "bo"
+    romaji: "bo"
+    audio_hint: "boh, as in 'boat'"
+    mnemonic:
+      en: "ぼ is ほ with dakuten — the flag is on a BOat"
+      zh: "ぼ是ほ加上濁點——旗子在船上"
+    stroke_count: 6
+    row: "b"
+    examples:
+      - word: "ぼうし"
+        reading: "boushi"
+        meaning: { en: "hat", zh: "帽子" }
+
+  # pa-row (は → ぱ) handakuten
+  - id: pa
+    char: "ぱ"
+    reading: "pa"
+    romaji: "pa"
+    audio_hint: "pa, as in 'papa'"
+    mnemonic:
+      en: "ぱ is は with a handakuten circle — a POP sound, like PAPA clapping"
+      zh: "ぱ是は加上半濁點圓圈——啪的一聲，像爸爸拍手"
+    stroke_count: 4
+    row: "p"
+    examples:
+      - word: "ぱん"
+        reading: "pan"
+        meaning: { en: "bread", zh: "麵包" }
+
+  - id: pi
+    char: "ぴ"
+    reading: "pi"
+    romaji: "pi"
+    audio_hint: "pee, as in 'peace'"
+    mnemonic:
+      en: "ぴ is ひ with a handakuten circle — a PIng sound"
+      zh: "ぴ是ひ加上半濁點——叮的一聲"
+    stroke_count: 2
+    row: "p"
+    examples:
+      - word: "ぴかぴか"
+        reading: "pikapika"
+        meaning: { en: "sparkling", zh: "閃亮亮" }
+
+  - id: pu
+    char: "ぷ"
+    reading: "pu"
+    romaji: "pu"
+    audio_hint: "poo, as in 'pool'"
+    mnemonic:
+      en: "ぷ is ふ with a handakuten circle — a PUff of air"
+      zh: "ぷ是ふ加上半濁點——噗的一口氣"
+    stroke_count: 5
+    row: "p"
+    examples:
+      - word: "てんぷら"
+        reading: "tenpura"
+        meaning: { en: "tempura", zh: "天婦羅" }
+
+  - id: pe
+    char: "ぺ"
+    reading: "pe"
+    romaji: "pe"
+    audio_hint: "peh, as in 'pen'"
+    mnemonic:
+      en: "ぺ is へ with a handakuten circle — flat like a PEbble"
+      zh: "ぺ是へ加上半濁點——扁扁的像鵝卵石"
+    stroke_count: 2
+    row: "p"
+    examples:
+      - word: "ぺん"
+        reading: "pen"
+        meaning: { en: "pen", zh: "筆" }
+
+  - id: po
+    char: "ぽ"
+    reading: "po"
+    romaji: "po"
+    audio_hint: "poh, as in 'post'"
+    mnemonic:
+      en: "ぽ is ほ with a handakuten circle — POP goes the flag!"
+      zh: "ぽ是ほ加上半濁點——旗子啪地彈開！"
+    stroke_count: 5
+    row: "p"
+    examples:
+      - word: "たんぽぽ"
+        reading: "tanpopo"
+        meaning: { en: "dandelion", zh: "蒲公英" }
+
+words: []
+
+grid:
+  columns: 5
+  groupBy: "row"
+
+matching:
+  pairs: 5
+  modes:
+    - "char_to_reading"
+    - "audio_to_char"
+
+quiz:
+  questionsPerRound: 10
+  xpReward: 15
+  questionTypes:
+    - "char_to_reading"
+    - "reading_to_char"
+    - "audio_to_char"

@@ -162,6 +162,26 @@
       "description": "3人のキャラクターとチャット",
       "hint": "違うAI友達と話してみて"
     },
+    "first_character": {
+      "title": "文字の第一歩",
+      "description": "最初の文字を学ぶ",
+      "hint": "プレレッスンで文字を学んで解除"
+    },
+    "hiragana_10": {
+      "title": "ひらがな探検家",
+      "description": "ひらがなを10文字学ぶ",
+      "hint": "プレレッスンで10文字学んで解除"
+    },
+    "hiragana_master": {
+      "title": "ひらがなマスター",
+      "description": "基本ひらがな46文字を習得",
+      "hint": "ひらがな46文字すべてを学ぼう"
+    },
+    "script_scholar": {
+      "title": "文字の学者",
+      "description": "プレレッスンを5つ完了",
+      "hint": "基礎レッスンを5つ完了して解除"
+    },
     "level_beginner": {
       "title": "ライジングスター",
       "description": "ビギナーランクに到達",

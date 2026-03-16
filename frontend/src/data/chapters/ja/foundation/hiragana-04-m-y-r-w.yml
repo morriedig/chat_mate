@@ -1,0 +1,312 @@
+# Pre-Lesson: Hiragana M-row, Y-row, R-row, W-row & N
+meta:
+  id: hiragana-04-m-y-r-w
+  title:
+    en: "Hiragana: M, Y, R, W-rows & N"
+    ja: "ひらがな：ま行・や行・ら行・わ行・ん"
+    zh: "平假名：ma行・ya行・ra行・wa行・ん"
+  description:
+    en: "Learn the remaining basic hiragana characters"
+    ja: "残りの基本ひらがなを学びましょう"
+    zh: "學習剩餘的基本平假名"
+  icon: "ま"
+  order: 0.4
+  level: foundation
+  type: pre-lesson
+  group:
+    en: "Hiragana"
+    ja: "ひらがな"
+    zh: "平假名"
+  estimatedMinutes: 15
+  prerequisite: hiragana-03-n-h
+
+characters:
+  - id: ma
+    char: "ま"
+    reading: "ma"
+    romaji: "ma"
+    audio_hint: "ma, as in 'mama'"
+    mnemonic:
+      en: "A MAma with her arms open wide"
+      zh: "媽媽張開雙臂——「媽！」"
+    stroke_count: 3
+    row: "m"
+    examples:
+      - word: "まち"
+        reading: "machi"
+        meaning: { en: "town", zh: "城鎮" }
+      - word: "まど"
+        reading: "mado"
+        meaning: { en: "window", zh: "窗戶" }
+
+  - id: mi
+    char: "み"
+    reading: "mi"
+    romaji: "mi"
+    audio_hint: "mee, as in 'me'"
+    mnemonic:
+      en: "Two streams MEeting together"
+      zh: "兩條溪流匯合在一起"
+    stroke_count: 2
+    row: "m"
+    examples:
+      - word: "みず"
+        reading: "mizu"
+        meaning: { en: "water", zh: "水" }
+      - word: "みみ"
+        reading: "mimi"
+        meaning: { en: "ear", zh: "耳朵" }
+
+  - id: mu
+    char: "む"
+    reading: "mu"
+    romaji: "mu"
+    audio_hint: "moo, as in 'moo'"
+    mnemonic:
+      en: "A cow says 'MOO!' — see the horns?"
+      zh: "牛叫「哞！」——看到牛角了嗎？"
+    stroke_count: 3
+    row: "m"
+    examples:
+      - word: "むし"
+        reading: "mushi"
+        meaning: { en: "insect", zh: "蟲子" }
+      - word: "むら"
+        reading: "mura"
+        meaning: { en: "village", zh: "村莊" }
+
+  - id: me
+    char: "め"
+    reading: "me"
+    romaji: "me"
+    audio_hint: "meh, as in 'met'"
+    mnemonic:
+      en: "An eye with eyelashes — 'me' means eye!"
+      zh: "一隻帶睫毛的眼睛——「目」就是眼睛！"
+    stroke_count: 2
+    row: "m"
+    examples:
+      - word: "め"
+        reading: "me"
+        meaning: { en: "eye", zh: "眼睛" }
+      - word: "あめ"
+        reading: "ame"
+        meaning: { en: "rain / candy", zh: "雨／糖果" }
+
+  - id: mo
+    char: "も"
+    reading: "mo"
+    romaji: "mo"
+    audio_hint: "moh, as in 'more'"
+    mnemonic:
+      en: "A fishhook catching MORE fish!"
+      zh: "魚鉤釣到更多的魚！"
+    stroke_count: 3
+    row: "m"
+    examples:
+      - word: "もの"
+        reading: "mono"
+        meaning: { en: "thing", zh: "東西" }
+      - word: "もり"
+        reading: "mori"
+        meaning: { en: "forest", zh: "森林" }
+
+  - id: ya
+    char: "や"
+    reading: "ya"
+    romaji: "ya"
+    audio_hint: "ya, as in 'yard'"
+    mnemonic:
+      en: "A YAk with big horns"
+      zh: "一頭有大角的犛牛"
+    stroke_count: 3
+    row: "y"
+    examples:
+      - word: "やま"
+        reading: "yama"
+        meaning: { en: "mountain", zh: "山" }
+      - word: "やすい"
+        reading: "yasui"
+        meaning: { en: "cheap", zh: "便宜" }
+
+  - id: yu
+    char: "ゆ"
+    reading: "yu"
+    romaji: "yu"
+    audio_hint: "yoo, as in 'you'"
+    mnemonic:
+      en: "A fish swimming — 'YOUr fish is getting away!'"
+      zh: "一條魚在游——「你的魚跑了！」"
+    stroke_count: 2
+    row: "y"
+    examples:
+      - word: "ゆき"
+        reading: "yuki"
+        meaning: { en: "snow", zh: "雪" }
+      - word: "ゆめ"
+        reading: "yume"
+        meaning: { en: "dream", zh: "夢" }
+
+  - id: yo
+    char: "よ"
+    reading: "yo"
+    romaji: "yo"
+    audio_hint: "yoh, as in 'yoga'"
+    mnemonic:
+      en: "A person doing YOga — standing on one leg"
+      zh: "一個人在做瑜伽——單腳站立"
+    stroke_count: 2
+    row: "y"
+    examples:
+      - word: "よる"
+        reading: "yoru"
+        meaning: { en: "night", zh: "夜晚" }
+      - word: "よむ"
+        reading: "yomu"
+        meaning: { en: "to read", zh: "閱讀" }
+
+  - id: ra
+    char: "ら"
+    reading: "ra"
+    romaji: "ra"
+    audio_hint: "ra, between 'ra' and 'la'"
+    mnemonic:
+      en: "A RAmp going up — 'RA-ce up the ramp!'"
+      zh: "一條斜坡往上——「跑上去！」"
+    stroke_count: 2
+    row: "r"
+    examples:
+      - word: "らいねん"
+        reading: "rainen"
+        meaning: { en: "next year", zh: "明年" }
+
+  - id: ri
+    char: "り"
+    reading: "ri"
+    romaji: "ri"
+    audio_hint: "ree, between 'ree' and 'lee'"
+    mnemonic:
+      en: "Two REEds swaying in the wind"
+      zh: "兩根蘆葦在風中搖擺"
+    stroke_count: 2
+    row: "r"
+    examples:
+      - word: "りんご"
+        reading: "ringo"
+        meaning: { en: "apple", zh: "蘋果" }
+
+  - id: ru
+    char: "る"
+    reading: "ru"
+    romaji: "ru"
+    audio_hint: "roo, between 'roo' and 'loo'"
+    mnemonic:
+      en: "A ROOt growing into the ground with a loop"
+      zh: "一條根長進地裡打了個圈"
+    stroke_count: 1
+    row: "r"
+    examples:
+      - word: "みる"
+        reading: "miru"
+        meaning: { en: "to see", zh: "看" }
+      - word: "たべる"
+        reading: "taberu"
+        meaning: { en: "to eat", zh: "吃" }
+
+  - id: re
+    char: "れ"
+    reading: "re"
+    romaji: "re"
+    audio_hint: "reh, between 'reh' and 'leh'"
+    mnemonic:
+      en: "A person REaching out to the side"
+      zh: "一個人向旁邊伸手"
+    stroke_count: 2
+    row: "r"
+    examples:
+      - word: "れきし"
+        reading: "rekishi"
+        meaning: { en: "history", zh: "歷史" }
+
+  - id: ro
+    char: "ろ"
+    reading: "ro"
+    romaji: "ro"
+    audio_hint: "roh, between 'roh' and 'loh'"
+    mnemonic:
+      en: "A ROad winding along — follow the road!"
+      zh: "一條蜿蜒的路——沿著走！"
+    stroke_count: 1
+    row: "r"
+    examples:
+      - word: "ろく"
+        reading: "roku"
+        meaning: { en: "six", zh: "六" }
+
+  - id: wa
+    char: "わ"
+    reading: "wa"
+    romaji: "wa"
+    audio_hint: "wa, as in 'wand'"
+    mnemonic:
+      en: "A person saying 'WA!' in surprise"
+      zh: "一個人驚訝地說「哇！」"
+    stroke_count: 2
+    row: "w"
+    examples:
+      - word: "わたし"
+        reading: "watashi"
+        meaning: { en: "I / me", zh: "我" }
+
+  - id: wo
+    char: "を"
+    reading: "wo"
+    romaji: "wo"
+    audio_hint: "oh (used as particle 'o')"
+    mnemonic:
+      en: "A WOrker balancing — this is the object marker particle!"
+      zh: "一個工人在保持平衡——這是助詞！"
+    stroke_count: 3
+    row: "w"
+    examples:
+      - word: "みずをのむ"
+        reading: "mizu wo nomu"
+        meaning: { en: "to drink water", zh: "喝水" }
+
+  - id: "n"
+    char: "ん"
+    reading: "n"
+    romaji: "n"
+    audio_hint: "n, a nasal sound like 'hmm'"
+    mnemonic:
+      en: "A person humming — 'Nn...' The only consonant without a vowel!"
+      zh: "一個人在哼歌——「嗯……」唯一沒有母音的子音！"
+    stroke_count: 1
+    row: "special"
+    examples:
+      - word: "にほん"
+        reading: "nihon"
+        meaning: { en: "Japan", zh: "日本" }
+      - word: "せんせい"
+        reading: "sensei"
+        meaning: { en: "teacher", zh: "老師" }
+
+words: []
+
+grid:
+  columns: 5
+  groupBy: "row"
+
+matching:
+  pairs: 5
+  modes:
+    - "char_to_reading"
+    - "audio_to_char"
+
+quiz:
+  questionsPerRound: 10
+  xpReward: 15
+  questionTypes:
+    - "char_to_reading"
+    - "reading_to_char"
+    - "audio_to_char"

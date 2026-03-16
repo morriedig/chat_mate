@@ -23,6 +23,11 @@ export const ACHIEVEMENTS = [
   { id: 'diary_streak_7', category: 'writing', icon: '🖋️', condition: (p) => p.longestDiaryStreak >= 7 },
   { id: 'diary_long', category: 'writing', icon: '💭', condition: (p) => p.hasWrittenLongEntry === true },
   { id: 'diary_100', category: 'writing', icon: '🏛️', condition: (p) => p.diaryEntries >= 100 },
+  // Pre-Lesson (script learning)
+  { id: 'first_character', category: 'learning', icon: 'あ', condition: (p) => p.preLessonStats?.totalCharactersLearned >= 1 },
+  { id: 'hiragana_10', category: 'learning', icon: '📖', condition: (p) => p.preLessonStats?.totalCharactersLearned >= 10 },
+  { id: 'hiragana_master', category: 'mastery', icon: '🏆', condition: (p) => p.preLessonStats?.totalCharactersLearned >= 46 },
+  { id: 'script_scholar', category: 'mastery', icon: '📜', condition: (p) => p.preLessonStats?.totalPreLessonsCompleted >= 5 },
   // Mastery (rank-based)
   { id: 'level_beginner', category: 'mastery', icon: '🌿', condition: (p) => p.totalXP >= 100 },
   { id: 'level_speaker', category: 'mastery', icon: '💬', condition: (p) => p.totalXP >= 600 },

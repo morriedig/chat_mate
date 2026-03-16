@@ -23,10 +23,10 @@ const defaultProgress = {
 function loadProgress() {
   try {
     const saved = localStorage.getItem(STORAGE_KEY)
-    return saved ? JSON.parse(saved) : { ...defaultProgress, lessons: {} }
+    return saved ? JSON.parse(saved) : { ...defaultProgress, stats: { ...defaultProgress.stats }, lessons: {} }
   } catch (e) {
     console.error('Failed to load pre-lesson progress:', e)
-    return { ...defaultProgress, lessons: {} }
+    return { ...defaultProgress, stats: { ...defaultProgress.stats }, lessons: {} }
   }
 }
 
@@ -40,6 +40,9 @@ function saveProgress(data) {
 
 // Shared reactive state (singleton)
 const progress = ref(loadProgress())
+
+// Callback for XP integration — set by useUserProgress to avoid circular dependency
+let onCharacterLearnedCallback = null
 
 /**
  * Initialize or get lesson progress object
@@ -78,6 +81,11 @@ export function usePreLessonProgress() {
       lesson.charactersLearned.push(characterId)
       progress.value.stats.totalCharactersLearned++
       persist()
+
+      // Award XP for first-time character learning
+      if (onCharacterLearnedCallback) {
+        onCharacterLearnedCallback(lessonId, characterId)
+      }
     }
   }
 
@@ -259,6 +267,14 @@ export function usePreLessonProgress() {
     persist()
   }
 
+  /**
+   * Register a callback for when a character is learned for the first time.
+   * Used by useUserProgress to award XP without circular dependency.
+   */
+  function setOnCharacterLearnedCallback(cb) {
+    onCharacterLearnedCallback = cb
+  }
+
   return {
     // Character
     markCharacterLearned,
@@ -282,6 +298,9 @@ export function usePreLessonProgress() {
 
     // Stats
     stats,
+
+    // XP integration
+    setOnCharacterLearnedCallback,
 
     // Reset
     resetProgress

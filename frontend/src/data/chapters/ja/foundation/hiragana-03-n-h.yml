@@ -1,0 +1,222 @@
+# Pre-Lesson: Hiragana N-row & H-row
+meta:
+  id: hiragana-03-n-h
+  title:
+    en: "Hiragana: N-row & H-row"
+    ja: "ひらがな：な行とは行"
+    zh: "平假名：na行與ha行"
+  description:
+    en: "Learn the na-row and ha-row characters"
+    ja: "な行とは行の文字を学びましょう"
+    zh: "學習na行和ha行的文字"
+  icon: "な"
+  order: 0.3
+  level: foundation
+  type: pre-lesson
+  group:
+    en: "Hiragana"
+    ja: "ひらがな"
+    zh: "平假名"
+  estimatedMinutes: 15
+  prerequisite: hiragana-02-s-t
+
+characters:
+  - id: na
+    char: "な"
+    reading: "na"
+    romaji: "na"
+    audio_hint: "na, as in 'nacho'"
+    mnemonic:
+      en: "A kNOT tied in a rope — 'NA-t!'"
+      zh: "繩子打了個結——「哪！」"
+    stroke_count: 4
+    row: "n"
+    examples:
+      - word: "なつ"
+        reading: "natsu"
+        meaning: { en: "summer", zh: "夏天" }
+      - word: "なまえ"
+        reading: "namae"
+        meaning: { en: "name", zh: "名字" }
+
+  - id: ni
+    char: "に"
+    reading: "ni"
+    romaji: "ni"
+    audio_hint: "nee, as in 'knee'"
+    mnemonic:
+      en: "A pair of kNEEs side by side — 'NEE!'"
+      zh: "兩個膝蓋並排——「尼！」"
+    stroke_count: 3
+    row: "n"
+    examples:
+      - word: "にく"
+        reading: "niku"
+        meaning: { en: "meat", zh: "肉" }
+      - word: "にほん"
+        reading: "nihon"
+        meaning: { en: "Japan", zh: "日本" }
+
+  - id: nu
+    char: "ぬ"
+    reading: "nu"
+    romaji: "nu"
+    audio_hint: "noo, as in 'noodle'"
+    mnemonic:
+      en: "NOOdles tangled together in a bowl"
+      zh: "一碗纏在一起的麵條"
+    stroke_count: 2
+    row: "n"
+    examples:
+      - word: "ぬの"
+        reading: "nuno"
+        meaning: { en: "cloth", zh: "布" }
+      - word: "いぬ"
+        reading: "inu"
+        meaning: { en: "dog", zh: "狗" }
+
+  - id: ne
+    char: "ね"
+    reading: "ne"
+    romaji: "ne"
+    audio_hint: "neh, as in 'net'"
+    mnemonic:
+      en: "A cat curled up with its tail — 'NEko!'"
+      zh: "貓咪蜷起尾巴——「猫！」"
+    stroke_count: 2
+    row: "n"
+    examples:
+      - word: "ねこ"
+        reading: "neko"
+        meaning: { en: "cat", zh: "貓" }
+      - word: "ねる"
+        reading: "neru"
+        meaning: { en: "to sleep", zh: "睡覺" }
+
+  - id: "no"
+    char: "の"
+    reading: "no"
+    romaji: "no"
+    audio_hint: "noh, as in 'no'"
+    mnemonic:
+      en: "A 'NO entry' sign — a circle with a line!"
+      zh: "一個「禁止進入」的標誌——圈加一條線！"
+    stroke_count: 1
+    row: "n"
+    examples:
+      - word: "のむ"
+        reading: "nomu"
+        meaning: { en: "to drink", zh: "喝" }
+      - word: "もの"
+        reading: "mono"
+        meaning: { en: "thing", zh: "東西" }
+
+  - id: ha
+    char: "は"
+    reading: "ha"
+    romaji: "ha"
+    audio_hint: "ha, as in 'ha-ha'"
+    mnemonic:
+      en: "A person laughing — 'HA HA HA!'"
+      zh: "一個人在大笑——「哈哈哈！」"
+    stroke_count: 3
+    row: "h"
+    examples:
+      - word: "はな"
+        reading: "hana"
+        meaning: { en: "flower / nose", zh: "花／鼻子" }
+      - word: "はし"
+        reading: "hashi"
+        meaning: { en: "chopsticks / bridge", zh: "筷子／橋" }
+
+  - id: hi
+    char: "ひ"
+    reading: "hi"
+    romaji: "hi"
+    audio_hint: "hee, as in 'he'"
+    mnemonic:
+      en: "A smiling mouth — 'HEE hee!'"
+      zh: "一張微笑的嘴——「嘻嘻！」"
+    stroke_count: 1
+    row: "h"
+    examples:
+      - word: "ひと"
+        reading: "hito"
+        meaning: { en: "person", zh: "人" }
+      - word: "ひかり"
+        reading: "hikari"
+        meaning: { en: "light", zh: "光" }
+
+  - id: fu
+    char: "ふ"
+    reading: "fu"
+    romaji: "fu"
+    audio_hint: "foo, between 'foo' and 'hoo'"
+    mnemonic:
+      en: "Mount FUji with a cloud on top"
+      zh: "富士山頂上有朵雲"
+    stroke_count: 4
+    row: "h"
+    examples:
+      - word: "ふね"
+        reading: "fune"
+        meaning: { en: "ship", zh: "船" }
+      - word: "ふゆ"
+        reading: "fuyu"
+        meaning: { en: "winter", zh: "冬天" }
+
+  - id: he
+    char: "へ"
+    reading: "he"
+    romaji: "he"
+    audio_hint: "heh, as in 'help'"
+    mnemonic:
+      en: "A mountain peak — let's HEad to the top!"
+      zh: "一座山峰——往山頂走！"
+    stroke_count: 1
+    row: "h"
+    examples:
+      - word: "へや"
+        reading: "heya"
+        meaning: { en: "room", zh: "房間" }
+      - word: "へた"
+        reading: "heta"
+        meaning: { en: "unskillful", zh: "不擅長" }
+
+  - id: ho
+    char: "ほ"
+    reading: "ho"
+    romaji: "ho"
+    audio_hint: "hoh, as in 'hope'"
+    mnemonic:
+      en: "A flag on a pole — 'HO-ist the flag!'"
+      zh: "旗桿上的旗——「升旗！」"
+    stroke_count: 4
+    row: "h"
+    examples:
+      - word: "ほし"
+        reading: "hoshi"
+        meaning: { en: "star", zh: "星星" }
+      - word: "ほん"
+        reading: "hon"
+        meaning: { en: "book", zh: "書" }
+
+words: []
+
+grid:
+  columns: 5
+  groupBy: "row"
+
+matching:
+  pairs: 5
+  modes:
+    - "char_to_reading"
+    - "audio_to_char"
+
+quiz:
+  questionsPerRound: 10
+  xpReward: 15
+  questionTypes:
+    - "char_to_reading"
+    - "reading_to_char"
+    - "audio_to_char"
