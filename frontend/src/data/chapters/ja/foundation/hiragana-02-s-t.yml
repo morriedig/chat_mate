@@ -1,0 +1,222 @@
+# Pre-Lesson: Hiragana S-row & T-row
+meta:
+  id: hiragana-02-s-t
+  title:
+    en: "Hiragana: S-row & T-row"
+    ja: "ひらがな：さ行とた行"
+    zh: "平假名：sa行與ta行"
+  description:
+    en: "Learn the sa-row and ta-row characters"
+    ja: "さ行とた行の文字を学びましょう"
+    zh: "學習sa行和ta行的文字"
+  icon: "さ"
+  order: 0.2
+  level: foundation
+  type: pre-lesson
+  group:
+    en: "Hiragana"
+    ja: "ひらがな"
+    zh: "平假名"
+  estimatedMinutes: 15
+  prerequisite: hiragana-01-vowels-k
+
+characters:
+  - id: sa
+    char: "さ"
+    reading: "sa"
+    romaji: "sa"
+    audio_hint: "sa, as in 'saw'"
+    mnemonic:
+      en: "A person sitting on a SAd bench"
+      zh: "一個人坐在憂傷的長椅上"
+    stroke_count: 3
+    row: "s"
+    examples:
+      - word: "さくら"
+        reading: "sakura"
+        meaning: { en: "cherry blossom", zh: "櫻花" }
+      - word: "さかな"
+        reading: "sakana"
+        meaning: { en: "fish", zh: "魚" }
+
+  - id: shi
+    char: "し"
+    reading: "shi"
+    romaji: "shi"
+    audio_hint: "shee, as in 'she'"
+    mnemonic:
+      en: "A fishing hook — 'SHE caught a fish!'"
+      zh: "一個魚鉤——「她釣到魚了！」"
+    stroke_count: 1
+    row: "s"
+    examples:
+      - word: "しお"
+        reading: "shio"
+        meaning: { en: "salt", zh: "鹽" }
+      - word: "しま"
+        reading: "shima"
+        meaning: { en: "island", zh: "島" }
+
+  - id: su
+    char: "す"
+    reading: "su"
+    romaji: "su"
+    audio_hint: "soo, as in 'suit'"
+    mnemonic:
+      en: "A swirling noodle on a chopstick — slurp the SOOp!"
+      zh: "筷子上轉圈的麵條——喝湯！"
+    stroke_count: 2
+    row: "s"
+    examples:
+      - word: "すし"
+        reading: "sushi"
+        meaning: { en: "sushi", zh: "壽司" }
+      - word: "すき"
+        reading: "suki"
+        meaning: { en: "like / fond of", zh: "喜歡" }
+
+  - id: se
+    char: "せ"
+    reading: "se"
+    romaji: "se"
+    audio_hint: "seh, as in 'set'"
+    mnemonic:
+      en: "A mouth open wide, ready to SAY something"
+      zh: "嘴巴張大，準備「說」什麼"
+    stroke_count: 3
+    row: "s"
+    examples:
+      - word: "せかい"
+        reading: "sekai"
+        meaning: { en: "world", zh: "世界" }
+      - word: "せんせい"
+        reading: "sensei"
+        meaning: { en: "teacher", zh: "老師" }
+
+  - id: so
+    char: "そ"
+    reading: "so"
+    romaji: "so"
+    audio_hint: "soh, as in 'so'"
+    mnemonic:
+      en: "A zigzag lightning bolt — 'SO shocking!'"
+      zh: "一道閃電——「好震驚！」"
+    stroke_count: 1
+    row: "s"
+    examples:
+      - word: "そと"
+        reading: "soto"
+        meaning: { en: "outside", zh: "外面" }
+      - word: "そら"
+        reading: "sora"
+        meaning: { en: "sky", zh: "天空" }
+
+  - id: ta
+    char: "た"
+    reading: "ta"
+    romaji: "ta"
+    audio_hint: "ta, as in 'taco'"
+    mnemonic:
+      en: "A person crossing their legs — 'TA-da!'"
+      zh: "一個人翹著腳——「噠噠！」"
+    stroke_count: 4
+    row: "t"
+    examples:
+      - word: "たべる"
+        reading: "taberu"
+        meaning: { en: "to eat", zh: "吃" }
+      - word: "たかい"
+        reading: "takai"
+        meaning: { en: "tall / expensive", zh: "高／貴" }
+
+  - id: chi
+    char: "ち"
+    reading: "chi"
+    romaji: "chi"
+    audio_hint: "chee, as in 'cheese'"
+    mnemonic:
+      en: "A cheerleader kicking — 'CHEEr!'"
+      zh: "啦啦隊員踢腿——「加油！」"
+    stroke_count: 2
+    row: "t"
+    examples:
+      - word: "ちかい"
+        reading: "chikai"
+        meaning: { en: "near / close", zh: "近" }
+      - word: "ちず"
+        reading: "chizu"
+        meaning: { en: "map", zh: "地圖" }
+
+  - id: tsu
+    char: "つ"
+    reading: "tsu"
+    romaji: "tsu"
+    audio_hint: "tsoo, as in 'tsunami'"
+    mnemonic:
+      en: "A TSUnami wave curling over!"
+      zh: "一道海嘯捲起的浪！"
+    stroke_count: 1
+    row: "t"
+    examples:
+      - word: "つき"
+        reading: "tsuki"
+        meaning: { en: "moon", zh: "月亮" }
+      - word: "つくえ"
+        reading: "tsukue"
+        meaning: { en: "desk", zh: "書桌" }
+
+  - id: te
+    char: "て"
+    reading: "te"
+    romaji: "te"
+    audio_hint: "teh, as in 'ten'"
+    mnemonic:
+      en: "A hand reaching out — 'te' means hand!"
+      zh: "一隻手伸出來——「te」就是手！"
+    stroke_count: 1
+    row: "t"
+    examples:
+      - word: "てがみ"
+        reading: "tegami"
+        meaning: { en: "letter", zh: "信" }
+      - word: "てんき"
+        reading: "tenki"
+        meaning: { en: "weather", zh: "天氣" }
+
+  - id: to
+    char: "と"
+    reading: "to"
+    romaji: "to"
+    audio_hint: "toh, as in 'toe'"
+    mnemonic:
+      en: "A TOEnail with a dot — ouch, stubbed my TOE!"
+      zh: "一個腳趾甲加一點——啊，撞到腳趾了！"
+    stroke_count: 2
+    row: "t"
+    examples:
+      - word: "とり"
+        reading: "tori"
+        meaning: { en: "bird", zh: "鳥" }
+      - word: "ともだち"
+        reading: "tomodachi"
+        meaning: { en: "friend", zh: "朋友" }
+
+words: []
+
+grid:
+  columns: 5
+  groupBy: "row"
+
+matching:
+  pairs: 5
+  modes:
+    - "char_to_reading"
+    - "audio_to_char"
+
+quiz:
+  questionsPerRound: 10
+  xpReward: 15
+  questionTypes:
+    - "char_to_reading"
+    - "reading_to_char"
+    - "audio_to_char"

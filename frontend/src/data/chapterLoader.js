@@ -131,8 +131,10 @@ export function getChapterList(targetLanguage = 'ja', uiLanguage = 'en') {
     description: chapter.meta.description[uiLanguage] || chapter.meta.description.en,
     icon: chapter.meta.icon,
     level: chapter.meta.level,
+    type: chapter.meta.type || 'chapter',
     targetLanguage: chapter.meta.targetLanguage,
     wordCount: chapter.words?.length || 0,
+    characterCount: chapter.characters?.length || 0,
     order: chapter.meta.order
   }))
 }
@@ -214,6 +216,55 @@ export function reloadChapters() {
   return getAllChaptersByLanguage()
 }
 
+/**
+ * Get pre-lessons (foundation level) for a language
+ * @param {string} targetLanguage - The language user wants to learn
+ * @param {string} uiLanguage - UI display language for titles/descriptions
+ */
+export function getPreLessons(targetLanguage = 'ja', uiLanguage = 'en') {
+  return getChapterList(targetLanguage, uiLanguage)
+    .filter(ch => ch.level === 'foundation')
+}
+
+/**
+ * Get characters from a pre-lesson chapter, transformed for components
+ * @param {string} chapterId - Chapter ID
+ * @param {string} targetLanguage - The language user is learning
+ * @param {string} motherTongue - User's native language for bilingual display
+ */
+export function getChapterCharacters(chapterId, targetLanguage = 'ja', motherTongue = 'en') {
+  const chapter = getChapter(chapterId, targetLanguage)
+  if (!chapter?.characters) return []
+
+  return chapter.characters.map(c => ({
+    id: `${chapter.meta.id}_${c.id}`,
+    char: c.char,
+    reading: c.reading,
+    romaji: c.romaji,
+    strokeCount: c.stroke_count,
+    mnemonic: c.mnemonic?.[motherTongue] || c.mnemonic?.en,
+    audioHint: c.audio_hint,
+    tone: c.tone,
+    toneDescription: c.tone_description?.[motherTongue] || c.tone_description?.en,
+    row: c.row,
+    examples: (c.examples || []).map(ex => ({
+      word: ex.word,
+      reading: ex.reading,
+      meaning: ex.meaning[motherTongue] || ex.meaning.en,
+    })),
+  }))
+}
+
+/**
+ * Check if a chapter is a pre-lesson
+ * @param {string} chapterId - Chapter ID
+ * @param {string} targetLanguage - The language to check
+ */
+export function isPreLesson(chapterId, targetLanguage = 'ja') {
+  const chapter = getChapter(chapterId, targetLanguage)
+  return chapter?.meta?.type === 'pre-lesson'
+}
+
 // Export for backward compatibility
 export const chapters = {
   getChapters,
@@ -225,6 +276,9 @@ export const chapters = {
   getChapterQuizSettings,
   getAvailableLevels,
   getAvailableTargetLanguages,
+  getPreLessons,
+  getChapterCharacters,
+  isPreLesson,
   reloadChapters
 }
 

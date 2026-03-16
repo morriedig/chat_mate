@@ -474,5 +474,32 @@
       "pending": "保留中",
       "error": "エラー"
     }
+  },
+  "foundation": {
+    "title": "基礎",
+    "description": "文字の基礎を学ぼう",
+    "progress": "{percent}% 完了",
+    "completeToUnlock": "基礎を完了してチャプターを解除",
+    "characters": "{count} 文字",
+    "charactersLearned": "{learned}/{total} 習得",
+    "grid": "表",
+    "cards": "カード",
+    "match": "マッチ",
+    "startHere": "ここから始めよう",
+    "skipToChapters": "もう知っています",
+    "rowComplete": "行完了！"
+  },
+  "prelesson": {
+    "learned": "習得済み",
+    "strokes": "{count}画",
+    "exampleWords": "例の単語",
+    "collected": "{learned}/{total} 習得",
+    "stateLearned": "習得済み",
+    "stateInProgress": "学習中",
+    "stateNew": "新規",
+    "tapCharacterYouHear": "聞こえた文字をタップしてください",
+    "nextCharacter": "次へ",
+    "matchComplete": "マッチ完了！",
+    "xpEarned": "+{xp} XP獲得"
   }
 }

@@ -105,7 +105,26 @@ vi.mock('../../data/chapterLoader', () => ({
       { id: 'food-dining_menu', word: 'menu', meaning: 'A list of food', example: 'Can I see the menu?' }
     ]
   },
-  getChapterConversations: () => []
+  getChapterConversations: () => [],
+  getPreLessons: () => [],
+  getChapterCharacters: () => [],
+  isPreLesson: () => false
+}))
+
+// Mock usePreLessonProgress
+vi.mock('../../composables/usePreLessonProgress', () => ({
+  usePreLessonProgress: () => ({
+    getLessonStatus: () => ({ charactersLearned: 0, quizCompleted: false, quizBestScore: 0, matchingCompleted: false, complete: false }),
+    areChaptersLocked: () => false,
+    arePreLessonsComplete: () => true,
+    markCharacterLearned: vi.fn(),
+    isCharacterLearned: () => false,
+    markQuizCompleted: vi.fn(),
+    markMatchingCompleted: vi.fn(),
+    isPreLessonCompleted: () => false,
+    stats: ref({ totalCharactersLearned: 0, totalPreLessonsCompleted: 0 }),
+    resetProgress: vi.fn()
+  })
 }))
 
 // Mock useQuiz (used by QuizMode)

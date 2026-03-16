@@ -474,5 +474,32 @@
       "pending": "等待中",
       "error": "錯誤"
     }
+  },
+  "foundation": {
+    "title": "基礎",
+    "description": "學習文字基礎",
+    "progress": "完成 {percent}%",
+    "completeToUnlock": "完成基礎以解鎖章節",
+    "characters": "{count} 個字",
+    "charactersLearned": "已學 {learned}/{total}",
+    "grid": "表格",
+    "cards": "卡片",
+    "match": "配對",
+    "startHere": "從這裡開始",
+    "skipToChapters": "我已經會了",
+    "rowComplete": "行完成！"
+  },
+  "prelesson": {
+    "learned": "已學會",
+    "strokes": "{count} 筆畫",
+    "exampleWords": "範例單字",
+    "collected": "已學 {learned}/{total}",
+    "stateLearned": "已學會",
+    "stateInProgress": "學習中",
+    "stateNew": "新的",
+    "tapCharacterYouHear": "點擊你聽到的字",
+    "nextCharacter": "下一個",
+    "matchComplete": "配對完成！",
+    "xpEarned": "+{xp} XP 獲得"
   }
 }

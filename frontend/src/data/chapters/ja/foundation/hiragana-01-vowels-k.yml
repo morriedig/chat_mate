@@ -1,0 +1,222 @@
+# Pre-Lesson: Hiragana Vowels & K-row
+meta:
+  id: hiragana-01-vowels-k
+  title:
+    en: "Hiragana: Vowels & K-row"
+    ja: "ひらがな：母音とか行"
+    zh: "平假名：母音與ka行"
+  description:
+    en: "Learn the 5 vowels and the ka-row"
+    ja: "5つの母音とか行を学びましょう"
+    zh: "學習5個母音和ka行"
+  icon: "あ"
+  order: 0.1
+  level: foundation
+  type: pre-lesson
+  group:
+    en: "Hiragana"
+    ja: "ひらがな"
+    zh: "平假名"
+  estimatedMinutes: 15
+  prerequisite: null
+
+characters:
+  - id: a
+    char: "あ"
+    reading: "a"
+    romaji: "a"
+    audio_hint: "ah, as in 'father'"
+    mnemonic:
+      en: "A person crossing a street, saying 'Ahh!'"
+      zh: "一個人過馬路，說「啊！」"
+    stroke_count: 3
+    row: "vowel"
+    examples:
+      - word: "あめ"
+        reading: "ame"
+        meaning: { en: "rain", zh: "雨" }
+      - word: "あさ"
+        reading: "asa"
+        meaning: { en: "morning", zh: "早上" }
+
+  - id: i
+    char: "い"
+    reading: "i"
+    romaji: "i"
+    audio_hint: "ee, as in 'eat'"
+    mnemonic:
+      en: "Two eels swimming side by side — 'eee!'"
+      zh: "兩條鰻魚並排游——「咦！」"
+    stroke_count: 2
+    row: "vowel"
+    examples:
+      - word: "いぬ"
+        reading: "inu"
+        meaning: { en: "dog", zh: "狗" }
+      - word: "いえ"
+        reading: "ie"
+        meaning: { en: "house", zh: "房子" }
+
+  - id: u
+    char: "う"
+    reading: "u"
+    romaji: "u"
+    audio_hint: "oo, as in 'food'"
+    mnemonic:
+      en: "A wiggling worm poking up — 'ooo!'"
+      zh: "一條蟲子冒出來——「嗚！」"
+    stroke_count: 2
+    row: "vowel"
+    examples:
+      - word: "うみ"
+        reading: "umi"
+        meaning: { en: "sea", zh: "海" }
+      - word: "うえ"
+        reading: "ue"
+        meaning: { en: "above", zh: "上面" }
+
+  - id: e
+    char: "え"
+    reading: "e"
+    romaji: "e"
+    audio_hint: "eh, as in 'pet'"
+    mnemonic:
+      en: "An energetic dancer with arms out — 'eh?'"
+      zh: "一個精力充沛的舞者張開雙臂——「欸？」"
+    stroke_count: 2
+    row: "vowel"
+    examples:
+      - word: "えき"
+        reading: "eki"
+        meaning: { en: "station", zh: "車站" }
+      - word: "えん"
+        reading: "en"
+        meaning: { en: "yen / circle", zh: "日圓／圓" }
+
+  - id: o
+    char: "お"
+    reading: "o"
+    romaji: "o"
+    audio_hint: "oh, as in 'go'"
+    mnemonic:
+      en: "A golf ball on a tee — 'Oh, nice shot!'"
+      zh: "高爾夫球在球座上——「噢，好球！」"
+    stroke_count: 3
+    row: "vowel"
+    examples:
+      - word: "おか"
+        reading: "oka"
+        meaning: { en: "hill", zh: "小山丘" }
+      - word: "おと"
+        reading: "oto"
+        meaning: { en: "sound", zh: "聲音" }
+
+  - id: ka
+    char: "か"
+    reading: "ka"
+    romaji: "ka"
+    audio_hint: "ka, as in 'car'"
+    mnemonic:
+      en: "A knife cutting — 'KA-chop!'"
+      zh: "刀子切東西——「咔嚓！」"
+    stroke_count: 3
+    row: "k"
+    examples:
+      - word: "かさ"
+        reading: "kasa"
+        meaning: { en: "umbrella", zh: "傘" }
+      - word: "かお"
+        reading: "kao"
+        meaning: { en: "face", zh: "臉" }
+
+  - id: ki
+    char: "き"
+    reading: "ki"
+    romaji: "ki"
+    audio_hint: "kee, as in 'key'"
+    mnemonic:
+      en: "A key hanging on a hook — 'KEY!'"
+      zh: "一把鑰匙掛在鉤子上——「KEY！」"
+    stroke_count: 4
+    row: "k"
+    examples:
+      - word: "きく"
+        reading: "kiku"
+        meaning: { en: "to listen", zh: "聽" }
+      - word: "きた"
+        reading: "kita"
+        meaning: { en: "north", zh: "北" }
+
+  - id: ku
+    char: "く"
+    reading: "ku"
+    romaji: "ku"
+    audio_hint: "koo, as in 'cool'"
+    mnemonic:
+      en: "A beak of a cuckoo bird — 'KOO-koo!'"
+      zh: "布穀鳥的嘴——「咕咕！」"
+    stroke_count: 1
+    row: "k"
+    examples:
+      - word: "くち"
+        reading: "kuchi"
+        meaning: { en: "mouth", zh: "嘴巴" }
+      - word: "くも"
+        reading: "kumo"
+        meaning: { en: "cloud / spider", zh: "雲／蜘蛛" }
+
+  - id: ke
+    char: "け"
+    reading: "ke"
+    romaji: "ke"
+    audio_hint: "keh, as in 'kept'"
+    mnemonic:
+      en: "A gate swinging open — 'KE-reak!'"
+      zh: "一扇門打開——「嘎！」"
+    stroke_count: 3
+    row: "k"
+    examples:
+      - word: "けす"
+        reading: "kesu"
+        meaning: { en: "to erase", zh: "擦掉" }
+      - word: "けいたい"
+        reading: "keitai"
+        meaning: { en: "mobile phone", zh: "手機" }
+
+  - id: ko
+    char: "こ"
+    reading: "ko"
+    romaji: "ko"
+    audio_hint: "koh, as in 'coat'"
+    mnemonic:
+      en: "Two worms on the ground — a KOuple of worms!"
+      zh: "地上兩條蟲——一對蟲子！"
+    stroke_count: 2
+    row: "k"
+    examples:
+      - word: "こえ"
+        reading: "koe"
+        meaning: { en: "voice", zh: "聲音" }
+      - word: "ここ"
+        reading: "koko"
+        meaning: { en: "here", zh: "這裡" }
+
+words: []
+
+grid:
+  columns: 5
+  groupBy: "row"
+
+matching:
+  pairs: 5
+  modes:
+    - "char_to_reading"
+    - "audio_to_char"
+
+quiz:
+  questionsPerRound: 10
+  xpReward: 15
+  questionTypes:
+    - "char_to_reading"
+    - "reading_to_char"
+    - "audio_to_char"

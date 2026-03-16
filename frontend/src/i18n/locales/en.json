@@ -474,5 +474,32 @@
       "pending": "Pending",
       "error": "Error"
     }
+  },
+  "foundation": {
+    "title": "Foundation",
+    "description": "Learn the writing system basics",
+    "progress": "{percent}% complete",
+    "completeToUnlock": "Complete foundation to unlock chapters",
+    "characters": "{count} characters",
+    "charactersLearned": "{learned}/{total} learned",
+    "grid": "Grid",
+    "cards": "Cards",
+    "match": "Match",
+    "startHere": "Start here",
+    "skipToChapters": "I already know this",
+    "rowComplete": "Row complete!"
+  },
+  "prelesson": {
+    "learned": "Learned",
+    "strokes": "{count} strokes",
+    "exampleWords": "Example Words",
+    "collected": "{learned}/{total} collected",
+    "stateLearned": "Learned",
+    "stateInProgress": "In Progress",
+    "stateNew": "New",
+    "tapCharacterYouHear": "Tap the character you hear",
+    "nextCharacter": "Next",
+    "matchComplete": "Match Complete!",
+    "xpEarned": "+{xp} XP earned"
   }
 }
