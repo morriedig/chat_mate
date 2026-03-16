@@ -1,4 +1,4 @@
-import{c as N,k,u as pn,a as y,o as f,b as i,d as R,n as E,t as u,F as Y,r as G,i as $,e as c,f as jn,_ as re,p as ae,v as En,s as $t,D as me,m as Yt,C as qt,g as hn,z as Bt,E as Ut,j as Gt}from"./index-1qGuezx4.js";import{a as Kt,u as Qt}from"./useUserProgress-B-47W1au.js";import{u as Vt}from"./useNavState-C3YuI-IR.js";const Oe="chatmate_learningProgress",fe={chapters:{},stats:{totalQuizzesPassed:0,totalConversationsCompleted:0}};function Jt(){try{const n=localStorage.getItem(Oe);return n?JSON.parse(n):{...fe}}catch(n){return console.error("Failed to load learning progress:",n),{...fe}}}function Zt(n){try{localStorage.setItem(Oe,JSON.stringify(n))}catch(e){console.error("Failed to save learning progress:",e)}}const en=k(Jt());function ye(n){return en.value.chapters[n]||(en.value.chapters[n]={quizCompleted:!1,quizScore:0,quizBestScore:0,conversationCompleted:!1}),en.value.chapters[n]}function $n(){Zt(en.value)}function Nn(){function n(h,p,m){const g=ye(h),x=Math.round(p/m*100);return x>g.quizBestScore&&(g.quizBestScore=x),g.quizScore=x,x>=60&&!g.quizCompleted&&(g.quizCompleted=!0,en.value.stats.totalQuizzesPassed++),$n(),{percentage:x,passed:x>=60}}function e(h){return en.value.chapters[h]?.quizCompleted||!1}function t(h){return en.value.chapters[h]?.quizBestScore||0}function a(h){const p=ye(h);p.conversationCompleted||(p.conversationCompleted=!0,en.value.stats.totalConversationsCompleted++,$n())}function r(h){return en.value.chapters[h]?.conversationCompleted||!1}function o(h){const p=en.value.chapters[h];return p?p.quizCompleted&&p.conversationCompleted:!1}function s(h){const p=en.value.chapters[h];return p?{quiz:p.quizCompleted,conversation:p.conversationCompleted,complete:p.quizCompleted&&p.conversationCompleted,quizBestScore:p.quizBestScore||0}:{quiz:!1,conversation:!1,complete:!1,quizBestScore:0}}const l=N(()=>en.value.stats);function d(){en.value={chapters:{},stats:{totalQuizzesPassed:0,totalConversationsCompleted:0}},$n()}return{markQuizCompleted:n,isQuizCompleted:e,getQuizBestScore:t,markConversationCompleted:a,isConversationCompleted:r,isChapterCompleted:o,getChapterCompletionStatus:s,stats:l,resetProgress:d}}const Ne="chatmate_srsProgress",an=k(Xt());function Xt(){try{const n=localStorage.getItem(Ne);return n?JSON.parse(n):{words:{}}}catch{return{words:{}}}}function xe(){try{localStorage.setItem(Ne,JSON.stringify(an.value))}catch(n){console.error("Failed to save SRS data:",n)}}function wn(){return new Date().toISOString().split("T")[0]}function ve(n,e){const t=new Date(n),a=new Date(e);return Math.round((a-t)/(1e3*60*60*24))}function nr(n,e){let{interval:t,easeFactor:a,repetitions:r}=n;e>=3?(r===0?t=1:r===1?t=6:t=Math.round(t*a),r++):(r=0,t=1),a=Math.max(1.3,a+(.1-(5-e)*(.08+(5-e)*.02)));const o=new Date;return o.setDate(o.getDate()+t),{interval:t,easeFactor:Math.round(a*100)/100,repetitions:r,nextReview:o.toISOString().split("T")[0]}}function De(){function n(h,p,m){const g=an.value.words[h]||{interval:0,easeFactor:2.5,repetitions:0,nextReview:wn(),correctCount:0,incorrectCount:0},x=m!==void 0?m:p?4:1,b=nr({interval:g.interval,easeFactor:g.easeFactor,repetitions:g.repetitions},x);an.value.words[h]={...b,correctCount:g.correctCount+(p?1:0),incorrectCount:g.incorrectCount+(p?0:1),lastReviewed:wn()},xe()}function e(h){for(const p of h)n(p.word.id,p.isCorrect)}function t(h){const p=wn();return h.filter(m=>{const g=an.value.words[m.id];return g?g.nextReview<=p:!1}).sort((m,g)=>{const x=an.value.words[m.id],b=an.value.words[g.id];return ve(x.nextReview,p)-ve(b.nextReview,p)}).reverse()}function a(h){const p=wn();return h.filter(m=>{const g=an.value.words[m.id];return g?g.nextReview<=p:!1}).length}function r(h){return an.value.words[h]||null}function o(h){const p=an.value.words[h];if(!p)return 0;const m=p.correctCount+p.incorrectCount;if(m===0)return 0;const g=p.correctCount/m,x=Math.min(p.repetitions/5,1);return Math.round(g*50+x*50)}const s=N(()=>Object.keys(an.value.words).length),l=N(()=>{const h=wn();return Object.values(an.value.words).filter(p=>p.nextReview<=h).length});function d(){an.value={words:{}},xe()}return{recordReview:n,recordQuizResults:e,getDueWords:t,getDueCount:a,getWordSRS:r,getWordMastery:o,totalTrackedWords:s,totalDueToday:l,resetSRS:d}}const er=`# Chapter: Week 7 - City & Transportation
+import{C as tt,k as E,c as M,p as it}from"./index-CfvbX_Ci.js";const L=E(!1);function wa(){function n(){L.value?document.documentElement.classList.add("dark"):document.documentElement.classList.remove("dark");const i=document.querySelector('meta[name="theme-color"]');i&&i.setAttribute("content",L.value?"#101c22":"#2badee")}function e(){L.value=!L.value,localStorage.setItem("chatmate_darkMode",L.value?"dark":"light"),n()}function t(){const i=localStorage.getItem("chatmate_darkMode");i?L.value=i==="dark":L.value=window.matchMedia("(prefers-color-scheme: dark)").matches,n()}return tt(()=>{t()}),{isDark:L,toggle:e,init:t}}const K=[{level:1,title:"Novice",minXP:0,icon:"🌱"},{level:2,title:"Beginner",minXP:100,icon:"🌿"},{level:3,title:"Learner",minXP:300,icon:"🌳"},{level:4,title:"Speaker",minXP:600,icon:"💬"},{level:5,title:"Conversationalist",minXP:1e3,icon:"🗣️"},{level:6,title:"Fluent",minXP:1500,icon:"📚"},{level:7,title:"Advanced",minXP:2200,icon:"🎓"},{level:8,title:"Expert",minXP:3e3,icon:"⭐"},{level:9,title:"Master",minXP:4e3,icon:"🏆"},{level:10,title:"Legend",minXP:5500,icon:"👑"}],Z={userMessage:5,systemMessage:2,dailyStreak:10,firstMessageOfDay:5},wn=E(null),vn=E(!1),xn=E(null);let cn=null;function rt(n,e){const t=M(()=>{const l=n.value.totalXP;let d=K[0];for(const c of K)if(l>=c.minXP)d=c;else break;return d}),i=M(()=>{const l=t.value.level;return K.find(d=>d.level===l+1)||null}),r=M(()=>i.value?i.value.minXP-n.value.totalXP:0),o=M(()=>{if(!i.value)return 100;const l=t.value,d=i.value,c=n.value.totalXP-l.minXP,p=d.minXP-l.minXP;return Math.min(100,Math.round(c/p*100))});function a(l,d="action"){const c=t.value.level;return n.value.totalXP+=l,wn.value={amount:l,reason:d},t.value.level>c&&(xn.value=t.value,vn.value=!0),e(),cn&&clearTimeout(cn),cn=setTimeout(()=>{wn.value=null},2e3),l}function s(){vn.value=!1,xn.value=null}function h(){return K}return{currentRank:t,nextRank:i,xpToNextRank:r,progressToNextRank:o,addXP:a,dismissLevelUp:s,getAllRanks:h}}const he=[{days:3,bonus:15,icon:"🔥"},{days:7,bonus:35,icon:"⚡"},{days:14,bonus:70,icon:"💪"},{days:30,bonus:150,icon:"🌟"},{days:60,bonus:300,icon:"💎"},{days:100,bonus:500,icon:"🏆"},{days:365,bonus:1825,icon:"👑"}],kn=E(!1),bn=E(null);function at(n,e,t,i){function r(l){for(const d of he)if(l===d.days&&!n.value.claimedMilestones.includes(d.days))return n.value.claimedMilestones.push(d.days),t(d.bonus,"streakMilestone"),bn.value=d,kn.value=!0,!0;return!1}function o(){const l=new Date,d=n.value.lastFreezeReplenish;if(!d){n.value.streakFreezes=Math.min((n.value.streakFreezes||0)+1,2),n.value.lastFreezeReplenish=l.toDateString();return}const c=new Date(d);Math.round((Date.UTC(l.getFullYear(),l.getMonth(),l.getDate())-Date.UTC(c.getFullYear(),c.getMonth(),c.getDate()))/864e5)>=7&&(n.value.streakFreezes=Math.min((n.value.streakFreezes||0)+1,2),n.value.lastFreezeReplenish=l.toDateString())}function a(){return(n.value.streakFreezes||0)>0?(n.value.streakFreezes-=1,!0):!1}function s(){const l=new Date().toDateString(),d=n.value.lastActiveDate;if(o(),d!==l){const c=new Date;if(c.setDate(c.getDate()-1),d===c.toDateString())n.value.currentStreak+=1,n.value.currentStreak>n.value.longestStreak&&(n.value.longestStreak=n.value.currentStreak),t(i.dailyStreak,"streak"),r(n.value.currentStreak);else if(d){const p=new Date(l),u=new Date(d);Math.round((Date.UTC(p.getFullYear(),p.getMonth(),p.getDate())-Date.UTC(u.getFullYear(),u.getMonth(),u.getDate()))/864e5)===2&&a()?(n.value.currentStreak+=1,n.value.currentStreak>n.value.longestStreak&&(n.value.longestStreak=n.value.currentStreak)):n.value.currentStreak=1}else n.value.currentStreak=1;t(i.firstMessageOfDay,"firstOfDay"),n.value.lastActiveDate=l,e()}}function h(){kn.value=!1,bn.value=null}return{updateStreak:s,dismissStreakMilestone:h}}const tn=[{id:"first_chat",category:"first_steps",icon:"💬",condition:n=>n.messagesSent>=1},{id:"ice_breaker",category:"first_steps",icon:"🧊",condition:n=>n.messagesSent>=10},{id:"chatterbox",category:"first_steps",icon:"🗣️",condition:n=>n.messagesSent>=100},{id:"streak_3",category:"consistency",icon:"🔥",condition:n=>n.longestStreak>=3},{id:"streak_7",category:"consistency",icon:"⚡",condition:n=>n.longestStreak>=7},{id:"streak_30",category:"consistency",icon:"🌟",condition:n=>n.longestStreak>=30},{id:"word_collector",category:"learning",icon:"📝",condition:n=>n.wordsLearned.length>=10},{id:"bookworm",category:"learning",icon:"📚",condition:n=>n.articlesCompleted.length>=5},{id:"polyglot",category:"learning",icon:"🌍",condition:n=>Object.keys(n.characterStats).length>=3},{id:"diary_first",category:"writing",icon:"📓",condition:n=>n.diaryEntries>=1},{id:"diary_week",category:"writing",icon:"📖",condition:n=>n.diaryEntries>=7},{id:"diary_month",category:"writing",icon:"📘",condition:n=>n.diaryEntries>=30},{id:"diary_vocab_5",category:"writing",icon:"🧵",condition:n=>n.diaryVocabUsed>=5},{id:"diary_vocab_25",category:"writing",icon:"📕",condition:n=>n.diaryVocabUsed>=25},{id:"diary_streak_7",category:"writing",icon:"🖋️",condition:n=>n.longestDiaryStreak>=7},{id:"diary_long",category:"writing",icon:"💭",condition:n=>n.hasWrittenLongEntry===!0},{id:"diary_100",category:"writing",icon:"🏛️",condition:n=>n.diaryEntries>=100},{id:"first_character",category:"learning",icon:"あ",condition:n=>n.preLessonStats?.totalCharactersLearned>=1},{id:"hiragana_10",category:"learning",icon:"📖",condition:n=>n.preLessonStats?.totalCharactersLearned>=10},{id:"hiragana_master",category:"mastery",icon:"🏆",condition:n=>n.preLessonStats?.totalCharactersLearned>=46},{id:"script_scholar",category:"mastery",icon:"📜",condition:n=>n.preLessonStats?.totalPreLessonsCompleted>=5},{id:"level_beginner",category:"mastery",icon:"🌿",condition:n=>n.totalXP>=100},{id:"level_speaker",category:"mastery",icon:"💬",condition:n=>n.totalXP>=600},{id:"level_legend",category:"mastery",icon:"👑",condition:n=>n.totalXP>=5500}],In=E(!1),An=E(null);function ot(n,e){const t=M(()=>tn.filter(a=>n.value.unlockedAchievements.includes(a.id))),i=M(()=>tn.filter(a=>!n.value.unlockedAchievements.includes(a.id)));function r(){for(const a of tn)if(!n.value.unlockedAchievements.includes(a.id)&&a.condition(n.value))return n.value.unlockedAchievements.push(a.id),An.value=a,In.value=!0,e(),!0;return!1}function o(){In.value=!1,An.value=null,setTimeout(()=>r(),300)}return{unlockedAchievements:t,lockedAchievements:i,checkAchievements:r,dismissAchievementUnlock:o}}const st=`# Chapter: Week 7 - City & Transportation
 meta:
   id: city-and-transportation
   title:
@@ -406,7 +406,7 @@ chat:
 quiz:
   questionsPerRound: 5
   xpReward: 20
-`,tr=`# Chapter: Week 5 - Clothes & Shopping
+`,ht=`# Chapter: Week 5 - Clothes & Shopping
 meta:
   id: clothes-and-shopping
   title:
@@ -804,7 +804,7 @@ chat:
 quiz:
   questionsPerRound: 5
   xpReward: 20
-`,rr=`# Chapter: Week 4 - Family & Friends
+`,lt=`# Chapter: Week 4 - Family & Friends
 meta:
   id: family-and-friends
   title:
@@ -1212,7 +1212,7 @@ chat:
 quiz:
   questionsPerRound: 5
   xpReward: 20
-`,ar=`# Chapter: Week 2 - Food & Eating
+`,dt=`# Chapter: Week 2 - Food & Eating
 meta:
   id: food-and-eating
   title:
@@ -1620,7 +1620,7 @@ chat:
 quiz:
   questionsPerRound: 5
   xpReward: 20
-`,or=`# Chapter: Week 10 - Health & Body
+`,ct=`# Chapter: Week 10 - Health & Body
 meta:
   id: health-and-body
   title:
@@ -2018,7 +2018,7 @@ chat:
 quiz:
   questionsPerRound: 5
   xpReward: 20
-`,ir=`# Chapter: Week 8 - Hobbies & Free Time
+`,ut=`# Chapter: Week 8 - Hobbies & Free Time
 meta:
   id: hobbies-and-free-time
   title:
@@ -2416,7 +2416,7 @@ chat:
 quiz:
   questionsPerRound: 5
   xpReward: 20
-`,sr=`# Chapter: Week 3 - Home & Living
+`,pt=`# Chapter: Week 3 - Home & Living
 meta:
   id: home-and-living
   title:
@@ -2840,7 +2840,7 @@ chat:
 quiz:
   questionsPerRound: 5
   xpReward: 20
-`,lr=`# Chapter: Week 1 - The Morning Routine
+`,gt=`# Chapter: Week 1 - The Morning Routine
 meta:
   id: morning-routine
   title:
@@ -3244,7 +3244,7 @@ chat:
 quiz:
   questionsPerRound: 5
   xpReward: 20
-`,dr=`# Chapter: Week 6 - Time & Schedules
+`,mt=`# Chapter: Week 6 - Time & Schedules
 meta:
   id: time-and-schedules
   title:
@@ -3652,7 +3652,7 @@ chat:
 quiz:
   questionsPerRound: 5
   xpReward: 20
-`,hr=`# Chapter: Week 9 - Weather & Seasons
+`,zt=`# Chapter: Week 9 - Weather & Seasons
 meta:
   id: weather-and-seasons
   title:
@@ -4050,7 +4050,7 @@ chat:
 quiz:
   questionsPerRound: 5
   xpReward: 20
-`,ur=`# Chapter: Week 3 - Future & Plans
+`,ft=`# Chapter: Week 3 - Future & Plans
 meta:
   id: future-and-plans
   title:
@@ -4434,7 +4434,7 @@ chat:
 quiz:
   questionsPerRound: 5
   xpReward: 25
-`,cr=`# Chapter: Week 4 - Experiences & Achievements
+`,jt=`# Chapter: Week 4 - Experiences & Achievements
 meta:
   id: experiences-and-achievements
   title:
@@ -4843,7 +4843,7 @@ chat:
 quiz:
   questionsPerRound: 5
   xpReward: 25
-`,pr=`# Chapter: Week 5 - Travel Problems & Complaints
+`,yt=`# Chapter: Week 5 - Travel Problems & Complaints
 meta:
   id: travel-problems-and-complaints
   title:
@@ -5278,7 +5278,7 @@ chat:
 quiz:
   questionsPerRound: 5
   xpReward: 25
-`,gr=`# Chapter: Week 6 - Opinions & Disagreement
+`,wt=`# Chapter: Week 6 - Opinions & Disagreement
 meta:
   id: opinions-and-disagreement
   title:
@@ -5683,7 +5683,7 @@ chat:
 quiz:
   questionsPerRound: 5
   xpReward: 25
-`,mr=`# Chapter: Week 7 - Describing Personality
+`,vt=`# Chapter: Week 7 - Describing Personality
 meta:
   id: describing-personality
   title:
@@ -6200,7 +6200,7 @@ chat:
 quiz:
   questionsPerRound: 5
   xpReward: 25
-`,fr=`# Chapter: Week 8 - Entertainment & Reviews
+`,xt=`# Chapter: Week 8 - Entertainment & Reviews
 meta:
   id: entertainment-and-reviews
   title:
@@ -6678,7 +6678,7 @@ chat:
 quiz:
   questionsPerRound: 5
   xpReward: 25
-`,yr=`# Chapter: Week 1 - Identity & Background
+`,kt=`# Chapter: Week 1 - Identity & Background
 meta:
   id: identity-and-background
   title:
@@ -7058,7 +7058,7 @@ chat:
 quiz:
   questionsPerRound: 5
   xpReward: 25
-`,xr=`# Chapter: Week 2 - Telling Stories
+`,bt=`# Chapter: Week 2 - Telling Stories
 meta:
   id: telling-stories
   title:
@@ -7432,7 +7432,7 @@ chat:
 quiz:
   questionsPerRound: 5
   xpReward: 25
-`,vr=`# Chapter: Comprehension Check
+`,It=`# Chapter: Comprehension Check
 meta:
   id: comprehension-check
   title:
@@ -7642,7 +7642,7 @@ chat:
 
 quiz:
   questionsPerRound: 5
-  xpReward: 20`,zr=`# Chapter: Me and You
+  xpReward: 20`,At=`# Chapter: Me and You
 meta:
   id: me-and-you
   title:
@@ -7853,7 +7853,7 @@ chat:
 quiz:
   questionsPerRound: 5
   xpReward: 20
-`,jr=`# Chapter: Me, You, and Professionals
+`,_t=`# Chapter: Me, You, and Professionals
 meta:
   id: me-you-and-professionals
   title:
@@ -8064,7 +8064,7 @@ chat:
 quiz:
   questionsPerRound: 5
   xpReward: 20
-`,wr=`# Chapter: Mixed Practice (Dialogue Flow)
+`,St=`# Chapter: Mixed Practice (Dialogue Flow)
 meta:
   id: mixed-practice-dialogue-flow
   title:
@@ -8274,7 +8274,7 @@ chat:
 
 quiz:
   questionsPerRound: 5
-  xpReward: 20`,br=`# Chapter: The Negative (Not X)
+  xpReward: 20`,Tt=`# Chapter: The Negative (Not X)
 meta:
   id: negative-not-x
   title:
@@ -8494,7 +8494,7 @@ chat:
 
 quiz:
   questionsPerRound: 5
-  xpReward: 20`,kr=`# Chapter: Shadowing (Speed & Rhythm)
+  xpReward: 20`,Ct=`# Chapter: Shadowing (Speed & Rhythm)
 # Focus: Repeat these rapidly without pausing.
 meta:
   id: shadowing-speed-rhythm
@@ -8705,7 +8705,7 @@ chat:
 
 quiz:
   questionsPerRound: 5
-  xpReward: 20`,Ir=`# Chapter: Stating Facts
+  xpReward: 20`,Et=`# Chapter: Stating Facts
 meta:
   id: stating-facts
   title:
@@ -8915,7 +8915,7 @@ chat:
 
 quiz:
   questionsPerRound: 5
-  xpReward: 20`,_r=`# Chapter: Yes / No Questions
+  xpReward: 20`,Dt=`# Chapter: Yes / No Questions
 # Focus: Notice the "ka" sound at the end makes it a question.
 meta:
   id: yes-no-questions
@@ -9126,7 +9126,7 @@ chat:
 
 quiz:
   questionsPerRound: 5
-  xpReward: 20`,Sr=`# Pre-Lesson: Hiragana Vowels & K-row
+  xpReward: 20`,Pt=`# Pre-Lesson: Hiragana Vowels & K-row
 meta:
   id: hiragana-01-vowels-k
   title:
@@ -9348,7 +9348,7 @@ quiz:
     - "char_to_reading"
     - "reading_to_char"
     - "audio_to_char"
-`,Cr=`# Pre-Lesson: Hiragana S-row & T-row
+`,Ot=`# Pre-Lesson: Hiragana S-row & T-row
 meta:
   id: hiragana-02-s-t
   title:
@@ -9570,7 +9570,978 @@ quiz:
     - "char_to_reading"
     - "reading_to_char"
     - "audio_to_char"
-`,Ar=`# Chapter: Discussing Movies
+`,Lt=`# Pre-Lesson: Hiragana N-row & H-row
+meta:
+  id: hiragana-03-n-h
+  title:
+    en: "Hiragana: N-row & H-row"
+    ja: "ひらがな：な行とは行"
+    zh: "平假名：na行與ha行"
+  description:
+    en: "Learn the na-row and ha-row characters"
+    ja: "な行とは行の文字を学びましょう"
+    zh: "學習na行和ha行的文字"
+  icon: "な"
+  order: 0.3
+  level: foundation
+  type: pre-lesson
+  group:
+    en: "Hiragana"
+    ja: "ひらがな"
+    zh: "平假名"
+  estimatedMinutes: 15
+  prerequisite: hiragana-02-s-t
+
+characters:
+  - id: na
+    char: "な"
+    reading: "na"
+    romaji: "na"
+    audio_hint: "na, as in 'nacho'"
+    mnemonic:
+      en: "A kNOT tied in a rope — 'NA-t!'"
+      zh: "繩子打了個結——「哪！」"
+    stroke_count: 4
+    row: "n"
+    examples:
+      - word: "なつ"
+        reading: "natsu"
+        meaning: { en: "summer", zh: "夏天" }
+      - word: "なまえ"
+        reading: "namae"
+        meaning: { en: "name", zh: "名字" }
+
+  - id: ni
+    char: "に"
+    reading: "ni"
+    romaji: "ni"
+    audio_hint: "nee, as in 'knee'"
+    mnemonic:
+      en: "A pair of kNEEs side by side — 'NEE!'"
+      zh: "兩個膝蓋並排——「尼！」"
+    stroke_count: 3
+    row: "n"
+    examples:
+      - word: "にく"
+        reading: "niku"
+        meaning: { en: "meat", zh: "肉" }
+      - word: "にほん"
+        reading: "nihon"
+        meaning: { en: "Japan", zh: "日本" }
+
+  - id: nu
+    char: "ぬ"
+    reading: "nu"
+    romaji: "nu"
+    audio_hint: "noo, as in 'noodle'"
+    mnemonic:
+      en: "NOOdles tangled together in a bowl"
+      zh: "一碗纏在一起的麵條"
+    stroke_count: 2
+    row: "n"
+    examples:
+      - word: "ぬの"
+        reading: "nuno"
+        meaning: { en: "cloth", zh: "布" }
+      - word: "いぬ"
+        reading: "inu"
+        meaning: { en: "dog", zh: "狗" }
+
+  - id: ne
+    char: "ね"
+    reading: "ne"
+    romaji: "ne"
+    audio_hint: "neh, as in 'net'"
+    mnemonic:
+      en: "A cat curled up with its tail — 'NEko!'"
+      zh: "貓咪蜷起尾巴——「猫！」"
+    stroke_count: 2
+    row: "n"
+    examples:
+      - word: "ねこ"
+        reading: "neko"
+        meaning: { en: "cat", zh: "貓" }
+      - word: "ねる"
+        reading: "neru"
+        meaning: { en: "to sleep", zh: "睡覺" }
+
+  - id: "no"
+    char: "の"
+    reading: "no"
+    romaji: "no"
+    audio_hint: "noh, as in 'no'"
+    mnemonic:
+      en: "A 'NO entry' sign — a circle with a line!"
+      zh: "一個「禁止進入」的標誌——圈加一條線！"
+    stroke_count: 1
+    row: "n"
+    examples:
+      - word: "のむ"
+        reading: "nomu"
+        meaning: { en: "to drink", zh: "喝" }
+      - word: "もの"
+        reading: "mono"
+        meaning: { en: "thing", zh: "東西" }
+
+  - id: ha
+    char: "は"
+    reading: "ha"
+    romaji: "ha"
+    audio_hint: "ha, as in 'ha-ha'"
+    mnemonic:
+      en: "A person laughing — 'HA HA HA!'"
+      zh: "一個人在大笑——「哈哈哈！」"
+    stroke_count: 3
+    row: "h"
+    examples:
+      - word: "はな"
+        reading: "hana"
+        meaning: { en: "flower / nose", zh: "花／鼻子" }
+      - word: "はし"
+        reading: "hashi"
+        meaning: { en: "chopsticks / bridge", zh: "筷子／橋" }
+
+  - id: hi
+    char: "ひ"
+    reading: "hi"
+    romaji: "hi"
+    audio_hint: "hee, as in 'he'"
+    mnemonic:
+      en: "A smiling mouth — 'HEE hee!'"
+      zh: "一張微笑的嘴——「嘻嘻！」"
+    stroke_count: 1
+    row: "h"
+    examples:
+      - word: "ひと"
+        reading: "hito"
+        meaning: { en: "person", zh: "人" }
+      - word: "ひかり"
+        reading: "hikari"
+        meaning: { en: "light", zh: "光" }
+
+  - id: fu
+    char: "ふ"
+    reading: "fu"
+    romaji: "fu"
+    audio_hint: "foo, between 'foo' and 'hoo'"
+    mnemonic:
+      en: "Mount FUji with a cloud on top"
+      zh: "富士山頂上有朵雲"
+    stroke_count: 4
+    row: "h"
+    examples:
+      - word: "ふね"
+        reading: "fune"
+        meaning: { en: "ship", zh: "船" }
+      - word: "ふゆ"
+        reading: "fuyu"
+        meaning: { en: "winter", zh: "冬天" }
+
+  - id: he
+    char: "へ"
+    reading: "he"
+    romaji: "he"
+    audio_hint: "heh, as in 'help'"
+    mnemonic:
+      en: "A mountain peak — let's HEad to the top!"
+      zh: "一座山峰——往山頂走！"
+    stroke_count: 1
+    row: "h"
+    examples:
+      - word: "へや"
+        reading: "heya"
+        meaning: { en: "room", zh: "房間" }
+      - word: "へた"
+        reading: "heta"
+        meaning: { en: "unskillful", zh: "不擅長" }
+
+  - id: ho
+    char: "ほ"
+    reading: "ho"
+    romaji: "ho"
+    audio_hint: "hoh, as in 'hope'"
+    mnemonic:
+      en: "A flag on a pole — 'HO-ist the flag!'"
+      zh: "旗桿上的旗——「升旗！」"
+    stroke_count: 4
+    row: "h"
+    examples:
+      - word: "ほし"
+        reading: "hoshi"
+        meaning: { en: "star", zh: "星星" }
+      - word: "ほん"
+        reading: "hon"
+        meaning: { en: "book", zh: "書" }
+
+words: []
+
+grid:
+  columns: 5
+  groupBy: "row"
+
+matching:
+  pairs: 5
+  modes:
+    - "char_to_reading"
+    - "audio_to_char"
+
+quiz:
+  questionsPerRound: 10
+  xpReward: 15
+  questionTypes:
+    - "char_to_reading"
+    - "reading_to_char"
+    - "audio_to_char"
+`,Mt=`# Pre-Lesson: Hiragana M-row, Y-row, R-row, W-row & N
+meta:
+  id: hiragana-04-m-y-r-w
+  title:
+    en: "Hiragana: M, Y, R, W-rows & N"
+    ja: "ひらがな：ま行・や行・ら行・わ行・ん"
+    zh: "平假名：ma行・ya行・ra行・wa行・ん"
+  description:
+    en: "Learn the remaining basic hiragana characters"
+    ja: "残りの基本ひらがなを学びましょう"
+    zh: "學習剩餘的基本平假名"
+  icon: "ま"
+  order: 0.4
+  level: foundation
+  type: pre-lesson
+  group:
+    en: "Hiragana"
+    ja: "ひらがな"
+    zh: "平假名"
+  estimatedMinutes: 15
+  prerequisite: hiragana-03-n-h
+
+characters:
+  - id: ma
+    char: "ま"
+    reading: "ma"
+    romaji: "ma"
+    audio_hint: "ma, as in 'mama'"
+    mnemonic:
+      en: "A MAma with her arms open wide"
+      zh: "媽媽張開雙臂——「媽！」"
+    stroke_count: 3
+    row: "m"
+    examples:
+      - word: "まち"
+        reading: "machi"
+        meaning: { en: "town", zh: "城鎮" }
+      - word: "まど"
+        reading: "mado"
+        meaning: { en: "window", zh: "窗戶" }
+
+  - id: mi
+    char: "み"
+    reading: "mi"
+    romaji: "mi"
+    audio_hint: "mee, as in 'me'"
+    mnemonic:
+      en: "Two streams MEeting together"
+      zh: "兩條溪流匯合在一起"
+    stroke_count: 2
+    row: "m"
+    examples:
+      - word: "みず"
+        reading: "mizu"
+        meaning: { en: "water", zh: "水" }
+      - word: "みみ"
+        reading: "mimi"
+        meaning: { en: "ear", zh: "耳朵" }
+
+  - id: mu
+    char: "む"
+    reading: "mu"
+    romaji: "mu"
+    audio_hint: "moo, as in 'moo'"
+    mnemonic:
+      en: "A cow says 'MOO!' — see the horns?"
+      zh: "牛叫「哞！」——看到牛角了嗎？"
+    stroke_count: 3
+    row: "m"
+    examples:
+      - word: "むし"
+        reading: "mushi"
+        meaning: { en: "insect", zh: "蟲子" }
+      - word: "むら"
+        reading: "mura"
+        meaning: { en: "village", zh: "村莊" }
+
+  - id: me
+    char: "め"
+    reading: "me"
+    romaji: "me"
+    audio_hint: "meh, as in 'met'"
+    mnemonic:
+      en: "An eye with eyelashes — 'me' means eye!"
+      zh: "一隻帶睫毛的眼睛——「目」就是眼睛！"
+    stroke_count: 2
+    row: "m"
+    examples:
+      - word: "め"
+        reading: "me"
+        meaning: { en: "eye", zh: "眼睛" }
+      - word: "あめ"
+        reading: "ame"
+        meaning: { en: "rain / candy", zh: "雨／糖果" }
+
+  - id: mo
+    char: "も"
+    reading: "mo"
+    romaji: "mo"
+    audio_hint: "moh, as in 'more'"
+    mnemonic:
+      en: "A fishhook catching MORE fish!"
+      zh: "魚鉤釣到更多的魚！"
+    stroke_count: 3
+    row: "m"
+    examples:
+      - word: "もの"
+        reading: "mono"
+        meaning: { en: "thing", zh: "東西" }
+      - word: "もり"
+        reading: "mori"
+        meaning: { en: "forest", zh: "森林" }
+
+  - id: ya
+    char: "や"
+    reading: "ya"
+    romaji: "ya"
+    audio_hint: "ya, as in 'yard'"
+    mnemonic:
+      en: "A YAk with big horns"
+      zh: "一頭有大角的犛牛"
+    stroke_count: 3
+    row: "y"
+    examples:
+      - word: "やま"
+        reading: "yama"
+        meaning: { en: "mountain", zh: "山" }
+      - word: "やすい"
+        reading: "yasui"
+        meaning: { en: "cheap", zh: "便宜" }
+
+  - id: yu
+    char: "ゆ"
+    reading: "yu"
+    romaji: "yu"
+    audio_hint: "yoo, as in 'you'"
+    mnemonic:
+      en: "A fish swimming — 'YOUr fish is getting away!'"
+      zh: "一條魚在游——「你的魚跑了！」"
+    stroke_count: 2
+    row: "y"
+    examples:
+      - word: "ゆき"
+        reading: "yuki"
+        meaning: { en: "snow", zh: "雪" }
+      - word: "ゆめ"
+        reading: "yume"
+        meaning: { en: "dream", zh: "夢" }
+
+  - id: yo
+    char: "よ"
+    reading: "yo"
+    romaji: "yo"
+    audio_hint: "yoh, as in 'yoga'"
+    mnemonic:
+      en: "A person doing YOga — standing on one leg"
+      zh: "一個人在做瑜伽——單腳站立"
+    stroke_count: 2
+    row: "y"
+    examples:
+      - word: "よる"
+        reading: "yoru"
+        meaning: { en: "night", zh: "夜晚" }
+      - word: "よむ"
+        reading: "yomu"
+        meaning: { en: "to read", zh: "閱讀" }
+
+  - id: ra
+    char: "ら"
+    reading: "ra"
+    romaji: "ra"
+    audio_hint: "ra, between 'ra' and 'la'"
+    mnemonic:
+      en: "A RAmp going up — 'RA-ce up the ramp!'"
+      zh: "一條斜坡往上——「跑上去！」"
+    stroke_count: 2
+    row: "r"
+    examples:
+      - word: "らいねん"
+        reading: "rainen"
+        meaning: { en: "next year", zh: "明年" }
+
+  - id: ri
+    char: "り"
+    reading: "ri"
+    romaji: "ri"
+    audio_hint: "ree, between 'ree' and 'lee'"
+    mnemonic:
+      en: "Two REEds swaying in the wind"
+      zh: "兩根蘆葦在風中搖擺"
+    stroke_count: 2
+    row: "r"
+    examples:
+      - word: "りんご"
+        reading: "ringo"
+        meaning: { en: "apple", zh: "蘋果" }
+
+  - id: ru
+    char: "る"
+    reading: "ru"
+    romaji: "ru"
+    audio_hint: "roo, between 'roo' and 'loo'"
+    mnemonic:
+      en: "A ROOt growing into the ground with a loop"
+      zh: "一條根長進地裡打了個圈"
+    stroke_count: 1
+    row: "r"
+    examples:
+      - word: "みる"
+        reading: "miru"
+        meaning: { en: "to see", zh: "看" }
+      - word: "たべる"
+        reading: "taberu"
+        meaning: { en: "to eat", zh: "吃" }
+
+  - id: re
+    char: "れ"
+    reading: "re"
+    romaji: "re"
+    audio_hint: "reh, between 'reh' and 'leh'"
+    mnemonic:
+      en: "A person REaching out to the side"
+      zh: "一個人向旁邊伸手"
+    stroke_count: 2
+    row: "r"
+    examples:
+      - word: "れきし"
+        reading: "rekishi"
+        meaning: { en: "history", zh: "歷史" }
+
+  - id: ro
+    char: "ろ"
+    reading: "ro"
+    romaji: "ro"
+    audio_hint: "roh, between 'roh' and 'loh'"
+    mnemonic:
+      en: "A ROad winding along — follow the road!"
+      zh: "一條蜿蜒的路——沿著走！"
+    stroke_count: 1
+    row: "r"
+    examples:
+      - word: "ろく"
+        reading: "roku"
+        meaning: { en: "six", zh: "六" }
+
+  - id: wa
+    char: "わ"
+    reading: "wa"
+    romaji: "wa"
+    audio_hint: "wa, as in 'wand'"
+    mnemonic:
+      en: "A person saying 'WA!' in surprise"
+      zh: "一個人驚訝地說「哇！」"
+    stroke_count: 2
+    row: "w"
+    examples:
+      - word: "わたし"
+        reading: "watashi"
+        meaning: { en: "I / me", zh: "我" }
+
+  - id: wo
+    char: "を"
+    reading: "wo"
+    romaji: "wo"
+    audio_hint: "oh (used as particle 'o')"
+    mnemonic:
+      en: "A WOrker balancing — this is the object marker particle!"
+      zh: "一個工人在保持平衡——這是助詞！"
+    stroke_count: 3
+    row: "w"
+    examples:
+      - word: "みずをのむ"
+        reading: "mizu wo nomu"
+        meaning: { en: "to drink water", zh: "喝水" }
+
+  - id: "n"
+    char: "ん"
+    reading: "n"
+    romaji: "n"
+    audio_hint: "n, a nasal sound like 'hmm'"
+    mnemonic:
+      en: "A person humming — 'Nn...' The only consonant without a vowel!"
+      zh: "一個人在哼歌——「嗯……」唯一沒有母音的子音！"
+    stroke_count: 1
+    row: "special"
+    examples:
+      - word: "にほん"
+        reading: "nihon"
+        meaning: { en: "Japan", zh: "日本" }
+      - word: "せんせい"
+        reading: "sensei"
+        meaning: { en: "teacher", zh: "老師" }
+
+words: []
+
+grid:
+  columns: 5
+  groupBy: "row"
+
+matching:
+  pairs: 5
+  modes:
+    - "char_to_reading"
+    - "audio_to_char"
+
+quiz:
+  questionsPerRound: 10
+  xpReward: 15
+  questionTypes:
+    - "char_to_reading"
+    - "reading_to_char"
+    - "audio_to_char"
+`,Rt=`# Pre-Lesson: Hiragana Dakuten & Handakuten
+meta:
+  id: hiragana-05-dakuten
+  title:
+    en: "Hiragana: Dakuten & Handakuten"
+    ja: "ひらがな：濁音と半濁音"
+    zh: "平假名：濁音與半濁音"
+  description:
+    en: "Learn voiced and semi-voiced hiragana characters"
+    ja: "濁音と半濁音の文字を学びましょう"
+    zh: "學習濁音和半濁音的文字"
+  icon: "が"
+  order: 0.5
+  level: foundation
+  type: pre-lesson
+  group:
+    en: "Hiragana"
+    ja: "ひらがな"
+    zh: "平假名"
+  estimatedMinutes: 15
+  prerequisite: hiragana-04-m-y-r-w
+
+characters:
+  # ga-row (か → が)
+  - id: ga
+    char: "が"
+    reading: "ga"
+    romaji: "ga"
+    audio_hint: "ga, as in 'garden'"
+    mnemonic:
+      en: "が is か with dakuten marks — the voice becomes heavier, like GArdening in heavy boots"
+      zh: "が是か加上濁點——聲音變重了，像穿重靴子在花園裡"
+    stroke_count: 5
+    row: "g"
+    examples:
+      - word: "がっこう"
+        reading: "gakkou"
+        meaning: { en: "school", zh: "學校" }
+      - word: "がいこく"
+        reading: "gaikoku"
+        meaning: { en: "foreign country", zh: "外國" }
+
+  - id: gi
+    char: "ぎ"
+    reading: "gi"
+    romaji: "gi"
+    audio_hint: "gee, as in 'geese'"
+    mnemonic:
+      en: "ぎ is き with dakuten — the key now buzzes with energy"
+      zh: "ぎ是き加上濁點——鑰匙現在嗡嗡作響"
+    stroke_count: 6
+    row: "g"
+    examples:
+      - word: "ぎんこう"
+        reading: "ginkou"
+        meaning: { en: "bank", zh: "銀行" }
+
+  - id: gu
+    char: "ぐ"
+    reading: "gu"
+    romaji: "gu"
+    audio_hint: "goo, as in 'goose'"
+    mnemonic:
+      en: "ぐ is く with dakuten — the beak now GOOs louder"
+      zh: "ぐ是く加上濁點——鳥嘴叫得更大聲了"
+    stroke_count: 3
+    row: "g"
+    examples:
+      - word: "ぐうぜん"
+        reading: "guuzen"
+        meaning: { en: "by chance", zh: "偶然" }
+
+  - id: ge
+    char: "げ"
+    reading: "ge"
+    romaji: "ge"
+    audio_hint: "geh, as in 'get'"
+    mnemonic:
+      en: "げ is け with dakuten — the gate now creaks with a heavy GET"
+      zh: "げ是け加上濁點——門現在發出沉重的嘎吱聲"
+    stroke_count: 5
+    row: "g"
+    examples:
+      - word: "げんき"
+        reading: "genki"
+        meaning: { en: "healthy / energetic", zh: "精神好" }
+
+  - id: go
+    char: "ご"
+    reading: "go"
+    romaji: "go"
+    audio_hint: "goh, as in 'go'"
+    mnemonic:
+      en: "ご is こ with dakuten — the worms are ready to GO"
+      zh: "ご是こ加上濁點——蟲子準備出發了"
+    stroke_count: 4
+    row: "g"
+    examples:
+      - word: "ごご"
+        reading: "gogo"
+        meaning: { en: "afternoon", zh: "下午" }
+
+  # za-row (さ → ざ)
+  - id: za
+    char: "ざ"
+    reading: "za"
+    romaji: "za"
+    audio_hint: "za, as in 'pizza'"
+    mnemonic:
+      en: "ざ is さ with dakuten — the sad bench now buzZes"
+      zh: "ざ是さ加上濁點——長椅現在嗡嗡響"
+    stroke_count: 5
+    row: "z"
+    examples:
+      - word: "ざっし"
+        reading: "zasshi"
+        meaning: { en: "magazine", zh: "雜誌" }
+
+  - id: ji
+    char: "じ"
+    reading: "ji"
+    romaji: "ji"
+    audio_hint: "jee, as in 'jeep'"
+    mnemonic:
+      en: "じ is し with dakuten — the hook now JIngles"
+      zh: "じ是し加上濁點——魚鉤現在叮噹響"
+    stroke_count: 3
+    row: "z"
+    examples:
+      - word: "じかん"
+        reading: "jikan"
+        meaning: { en: "time", zh: "時間" }
+      - word: "じてんしゃ"
+        reading: "jitensha"
+        meaning: { en: "bicycle", zh: "自行車" }
+
+  - id: zu
+    char: "ず"
+    reading: "zu"
+    romaji: "zu"
+    audio_hint: "zoo, as in 'zoo'"
+    mnemonic:
+      en: "ず is す with dakuten — the noodle swirls around the ZOO"
+      zh: "ず是す加上濁點——麵條在動物園裡轉圈"
+    stroke_count: 4
+    row: "z"
+    examples:
+      - word: "みず"
+        reading: "mizu"
+        meaning: { en: "water", zh: "水" }
+
+  - id: ze
+    char: "ぜ"
+    reading: "ze"
+    romaji: "ze"
+    audio_hint: "zeh, as in 'zest'"
+    mnemonic:
+      en: "ぜ is せ with dakuten — the mouth now speaks with ZEst"
+      zh: "ぜ是せ加上濁點——嘴巴現在充滿熱情地說話"
+    stroke_count: 5
+    row: "z"
+    examples:
+      - word: "ぜんぶ"
+        reading: "zenbu"
+        meaning: { en: "all / everything", zh: "全部" }
+
+  - id: zo
+    char: "ぞ"
+    reading: "zo"
+    romaji: "zo"
+    audio_hint: "zoh, as in 'zone'"
+    mnemonic:
+      en: "ぞ is そ with dakuten — the lightning enters the ZOne"
+      zh: "ぞ是そ加上濁點——閃電進入了區域"
+    stroke_count: 3
+    row: "z"
+    examples:
+      - word: "ぞう"
+        reading: "zou"
+        meaning: { en: "elephant", zh: "大象" }
+
+  # da-row (た → だ)
+  - id: da
+    char: "だ"
+    reading: "da"
+    romaji: "da"
+    audio_hint: "da, as in 'dad'"
+    mnemonic:
+      en: "だ is た with dakuten — 'TA-da!' becomes 'DA-da!'"
+      zh: "だ是た加上濁點——「噠噠」變成「大大」"
+    stroke_count: 6
+    row: "d"
+    examples:
+      - word: "だれ"
+        reading: "dare"
+        meaning: { en: "who", zh: "誰" }
+      - word: "だいがく"
+        reading: "daigaku"
+        meaning: { en: "university", zh: "大學" }
+
+  - id: di
+    char: "ぢ"
+    reading: "ji"
+    romaji: "ji"
+    audio_hint: "jee (same sound as じ)"
+    mnemonic:
+      en: "ぢ is ち with dakuten — rarely used, sounds like じ"
+      zh: "ぢ是ち加上濁點——很少使用，發音同じ"
+    stroke_count: 4
+    row: "d"
+    examples:
+      - word: "はなぢ"
+        reading: "hanadi"
+        meaning: { en: "nosebleed", zh: "流鼻血" }
+
+  - id: du
+    char: "づ"
+    reading: "zu"
+    romaji: "zu"
+    audio_hint: "zoo (same sound as ず)"
+    mnemonic:
+      en: "づ is つ with dakuten — rarely used, sounds like ず"
+      zh: "づ是つ加上濁點——很少使用，發音同ず"
+    stroke_count: 3
+    row: "d"
+    examples:
+      - word: "つづく"
+        reading: "tsuduku"
+        meaning: { en: "to continue", zh: "繼續" }
+
+  - id: de
+    char: "で"
+    reading: "de"
+    romaji: "de"
+    audio_hint: "deh, as in 'desk'"
+    mnemonic:
+      en: "で is て with dakuten — the hand now pounds the DEsk"
+      zh: "で是て加上濁點——手現在拍打桌子"
+    stroke_count: 3
+    row: "d"
+    examples:
+      - word: "でんわ"
+        reading: "denwa"
+        meaning: { en: "telephone", zh: "電話" }
+      - word: "でる"
+        reading: "deru"
+        meaning: { en: "to go out", zh: "出去" }
+
+  - id: do
+    char: "ど"
+    reading: "do"
+    romaji: "do"
+    audio_hint: "doh, as in 'door'"
+    mnemonic:
+      en: "ど is と with dakuten — the toe now kicks the DOor"
+      zh: "ど是と加上濁點——腳趾現在踢門了"
+    stroke_count: 4
+    row: "d"
+    examples:
+      - word: "どこ"
+        reading: "doko"
+        meaning: { en: "where", zh: "哪裡" }
+      - word: "どうぶつ"
+        reading: "doubutsu"
+        meaning: { en: "animal", zh: "動物" }
+
+  # ba-row (は → ば)
+  - id: ba
+    char: "ば"
+    reading: "ba"
+    romaji: "ba"
+    audio_hint: "ba, as in 'bar'"
+    mnemonic:
+      en: "ば is は with dakuten — the laughter turns into BAA like a sheep"
+      zh: "ば是は加上濁點——笑聲變成了綿羊的「咩」"
+    stroke_count: 5
+    row: "b"
+    examples:
+      - word: "ばしょ"
+        reading: "basho"
+        meaning: { en: "place", zh: "地方" }
+
+  - id: bi
+    char: "び"
+    reading: "bi"
+    romaji: "bi"
+    audio_hint: "bee, as in 'bee'"
+    mnemonic:
+      en: "び is ひ with dakuten — the smile now BEEs with energy"
+      zh: "び是ひ加上濁點——微笑現在充滿活力"
+    stroke_count: 3
+    row: "b"
+    examples:
+      - word: "びじゅつ"
+        reading: "bijutsu"
+        meaning: { en: "art", zh: "美術" }
+
+  - id: bu
+    char: "ぶ"
+    reading: "bu"
+    romaji: "bu"
+    audio_hint: "boo, as in 'boot'"
+    mnemonic:
+      en: "ぶ is ふ with dakuten — Mount Fuji goes BOOm"
+      zh: "ぶ是ふ加上濁點——富士山轟隆作響"
+    stroke_count: 6
+    row: "b"
+    examples:
+      - word: "ぶたにく"
+        reading: "butaniku"
+        meaning: { en: "pork", zh: "豬肉" }
+
+  - id: be
+    char: "べ"
+    reading: "be"
+    romaji: "be"
+    audio_hint: "beh, as in 'bed'"
+    mnemonic:
+      en: "べ is へ with dakuten — the mountain peak is now a BEd"
+      zh: "べ是へ加上濁點——山峰現在變成了床"
+    stroke_count: 3
+    row: "b"
+    examples:
+      - word: "べんきょう"
+        reading: "benkyou"
+        meaning: { en: "study", zh: "學習" }
+
+  - id: bo
+    char: "ぼ"
+    reading: "bo"
+    romaji: "bo"
+    audio_hint: "boh, as in 'boat'"
+    mnemonic:
+      en: "ぼ is ほ with dakuten — the flag is on a BOat"
+      zh: "ぼ是ほ加上濁點——旗子在船上"
+    stroke_count: 6
+    row: "b"
+    examples:
+      - word: "ぼうし"
+        reading: "boushi"
+        meaning: { en: "hat", zh: "帽子" }
+
+  # pa-row (は → ぱ) handakuten
+  - id: pa
+    char: "ぱ"
+    reading: "pa"
+    romaji: "pa"
+    audio_hint: "pa, as in 'papa'"
+    mnemonic:
+      en: "ぱ is は with a handakuten circle — a POP sound, like PAPA clapping"
+      zh: "ぱ是は加上半濁點圓圈——啪的一聲，像爸爸拍手"
+    stroke_count: 4
+    row: "p"
+    examples:
+      - word: "ぱん"
+        reading: "pan"
+        meaning: { en: "bread", zh: "麵包" }
+
+  - id: pi
+    char: "ぴ"
+    reading: "pi"
+    romaji: "pi"
+    audio_hint: "pee, as in 'peace'"
+    mnemonic:
+      en: "ぴ is ひ with a handakuten circle — a PIng sound"
+      zh: "ぴ是ひ加上半濁點——叮的一聲"
+    stroke_count: 2
+    row: "p"
+    examples:
+      - word: "ぴかぴか"
+        reading: "pikapika"
+        meaning: { en: "sparkling", zh: "閃亮亮" }
+
+  - id: pu
+    char: "ぷ"
+    reading: "pu"
+    romaji: "pu"
+    audio_hint: "poo, as in 'pool'"
+    mnemonic:
+      en: "ぷ is ふ with a handakuten circle — a PUff of air"
+      zh: "ぷ是ふ加上半濁點——噗的一口氣"
+    stroke_count: 5
+    row: "p"
+    examples:
+      - word: "てんぷら"
+        reading: "tenpura"
+        meaning: { en: "tempura", zh: "天婦羅" }
+
+  - id: pe
+    char: "ぺ"
+    reading: "pe"
+    romaji: "pe"
+    audio_hint: "peh, as in 'pen'"
+    mnemonic:
+      en: "ぺ is へ with a handakuten circle — flat like a PEbble"
+      zh: "ぺ是へ加上半濁點——扁扁的像鵝卵石"
+    stroke_count: 2
+    row: "p"
+    examples:
+      - word: "ぺん"
+        reading: "pen"
+        meaning: { en: "pen", zh: "筆" }
+
+  - id: po
+    char: "ぽ"
+    reading: "po"
+    romaji: "po"
+    audio_hint: "poh, as in 'post'"
+    mnemonic:
+      en: "ぽ is ほ with a handakuten circle — POP goes the flag!"
+      zh: "ぽ是ほ加上半濁點——旗子啪地彈開！"
+    stroke_count: 5
+    row: "p"
+    examples:
+      - word: "たんぽぽ"
+        reading: "tanpopo"
+        meaning: { en: "dandelion", zh: "蒲公英" }
+
+words: []
+
+grid:
+  columns: 5
+  groupBy: "row"
+
+matching:
+  pairs: 5
+  modes:
+    - "char_to_reading"
+    - "audio_to_char"
+
+quiz:
+  questionsPerRound: 10
+  xpReward: 15
+  questionTypes:
+    - "char_to_reading"
+    - "reading_to_char"
+    - "audio_to_char"
+`,Nt=`# Chapter: Discussing Movies
 
 meta:
   id: discussing-movies
@@ -9744,35 +10715,35 @@ chat:
 quiz:
   questionsPerRound: 5
   xpReward: 20
-`;function He(n){return typeof n>"u"||n===null}function Tr(n){return typeof n=="object"&&n!==null}function Er(n){return Array.isArray(n)?n:He(n)?[]:[n]}function Lr(n,e){var t,a,r,o;if(e)for(o=Object.keys(e),t=0,a=o.length;t<a;t+=1)r=o[t],n[r]=e[r];return n}function Mr(n,e){var t="",a;for(a=0;a<e;a+=1)t+=n;return t}function Pr(n){return n===0&&Number.NEGATIVE_INFINITY===1/n}var Rr=He,Wr=Tr,Or=Er,Nr=Mr,Dr=Pr,Hr=Lr,U={isNothing:Rr,isObject:Wr,toArray:Or,repeat:Nr,isNegativeZero:Dr,extend:Hr};function Fe(n,e){var t="",a=n.reason||"(unknown reason)";return n.mark?(n.mark.name&&(t+='in "'+n.mark.name+'" '),t+="("+(n.mark.line+1)+":"+(n.mark.column+1)+")",!e&&n.mark.snippet&&(t+=`
+`;function le(n){return typeof n>"u"||n===null}function Ht(n){return typeof n=="object"&&n!==null}function Wt(n){return Array.isArray(n)?n:le(n)?[]:[n]}function Ft(n,e){var t,i,r,o;if(e)for(o=Object.keys(e),t=0,i=o.length;t<i;t+=1)r=o[t],n[r]=e[r];return n}function Yt(n,e){var t="",i;for(i=0;i<e;i+=1)t+=n;return t}function qt(n){return n===0&&Number.NEGATIVE_INFINITY===1/n}var Bt=le,Ut=Ht,Gt=Wt,Kt=Yt,Vt=qt,Jt=Ft,x={isNothing:Bt,isObject:Ut,toArray:Gt,repeat:Kt,isNegativeZero:Vt,extend:Jt};function de(n,e){var t="",i=n.reason||"(unknown reason)";return n.mark?(n.mark.name&&(t+='in "'+n.mark.name+'" '),t+="("+(n.mark.line+1)+":"+(n.mark.column+1)+")",!e&&n.mark.snippet&&(t+=`
 
-`+n.mark.snippet),a+" "+t):a}function kn(n,e){Error.call(this),this.name="YAMLException",this.reason=n,this.mark=e,this.message=Fe(this,!1),Error.captureStackTrace?Error.captureStackTrace(this,this.constructor):this.stack=new Error().stack||""}kn.prototype=Object.create(Error.prototype);kn.prototype.constructor=kn;kn.prototype.toString=function(e){return this.name+": "+Fe(this,e)};var J=kn;function Yn(n,e,t,a,r){var o="",s="",l=Math.floor(r/2)-1;return a-e>l&&(o=" ... ",e=a-l+o.length),t-a>l&&(s=" ...",t=a+l-s.length),{str:o+n.slice(e,t).replace(/\t/g,"→")+s,pos:a-e+o.length}}function qn(n,e){return U.repeat(" ",e-n.length)+n}function Fr(n,e){if(e=Object.create(e||null),!n.buffer)return null;e.maxLength||(e.maxLength=79),typeof e.indent!="number"&&(e.indent=1),typeof e.linesBefore!="number"&&(e.linesBefore=3),typeof e.linesAfter!="number"&&(e.linesAfter=2);for(var t=/\r?\n|\r|\0/g,a=[0],r=[],o,s=-1;o=t.exec(n.buffer);)r.push(o.index),a.push(o.index+o[0].length),n.position<=o.index&&s<0&&(s=a.length-2);s<0&&(s=a.length-1);var l="",d,h,p=Math.min(n.line+e.linesAfter,r.length).toString().length,m=e.maxLength-(e.indent+p+3);for(d=1;d<=e.linesBefore&&!(s-d<0);d++)h=Yn(n.buffer,a[s-d],r[s-d],n.position-(a[s]-a[s-d]),m),l=U.repeat(" ",e.indent)+qn((n.line-d+1).toString(),p)+" | "+h.str+`
-`+l;for(h=Yn(n.buffer,a[s],r[s],n.position,m),l+=U.repeat(" ",e.indent)+qn((n.line+1).toString(),p)+" | "+h.str+`
-`,l+=U.repeat("-",e.indent+p+3+h.pos)+`^
-`,d=1;d<=e.linesAfter&&!(s+d>=r.length);d++)h=Yn(n.buffer,a[s+d],r[s+d],n.position-(a[s]-a[s+d]),m),l+=U.repeat(" ",e.indent)+qn((n.line+d+1).toString(),p)+" | "+h.str+`
-`;return l.replace(/\n$/,"")}var $r=Fr,Yr=["kind","multi","resolve","construct","instanceOf","predicate","represent","representName","defaultStyle","styleAliases"],qr=["scalar","sequence","mapping"];function Br(n){var e={};return n!==null&&Object.keys(n).forEach(function(t){n[t].forEach(function(a){e[String(a)]=t})}),e}function Ur(n,e){if(e=e||{},Object.keys(e).forEach(function(t){if(Yr.indexOf(t)===-1)throw new J('Unknown option "'+t+'" is met in definition of "'+n+'" YAML type.')}),this.options=e,this.tag=n,this.kind=e.kind||null,this.resolve=e.resolve||function(){return!0},this.construct=e.construct||function(t){return t},this.instanceOf=e.instanceOf||null,this.predicate=e.predicate||null,this.represent=e.represent||null,this.representName=e.representName||null,this.defaultStyle=e.defaultStyle||null,this.multi=e.multi||!1,this.styleAliases=Br(e.styleAliases||null),qr.indexOf(this.kind)===-1)throw new J('Unknown kind "'+this.kind+'" is specified for "'+n+'" YAML type.')}var K=Ur;function ze(n,e){var t=[];return n[e].forEach(function(a){var r=t.length;t.forEach(function(o,s){o.tag===a.tag&&o.kind===a.kind&&o.multi===a.multi&&(r=s)}),t[r]=a}),t}function Gr(){var n={scalar:{},sequence:{},mapping:{},fallback:{},multi:{scalar:[],sequence:[],mapping:[],fallback:[]}},e,t;function a(r){r.multi?(n.multi[r.kind].push(r),n.multi.fallback.push(r)):n[r.kind][r.tag]=n.fallback[r.tag]=r}for(e=0,t=arguments.length;e<t;e+=1)arguments[e].forEach(a);return n}function Jn(n){return this.extend(n)}Jn.prototype.extend=function(e){var t=[],a=[];if(e instanceof K)a.push(e);else if(Array.isArray(e))a=a.concat(e);else if(e&&(Array.isArray(e.implicit)||Array.isArray(e.explicit)))e.implicit&&(t=t.concat(e.implicit)),e.explicit&&(a=a.concat(e.explicit));else throw new J("Schema.extend argument should be a Type, [ Type ], or a schema definition ({ implicit: [...], explicit: [...] })");t.forEach(function(o){if(!(o instanceof K))throw new J("Specified list of YAML types (or a single Type object) contains a non-Type object.");if(o.loadKind&&o.loadKind!=="scalar")throw new J("There is a non-scalar type in the implicit list of a schema. Implicit resolving of such types is not supported.");if(o.multi)throw new J("There is a multi type in the implicit list of a schema. Multi tags can only be listed as explicit.")}),a.forEach(function(o){if(!(o instanceof K))throw new J("Specified list of YAML types (or a single Type object) contains a non-Type object.")});var r=Object.create(Jn.prototype);return r.implicit=(this.implicit||[]).concat(t),r.explicit=(this.explicit||[]).concat(a),r.compiledImplicit=ze(r,"implicit"),r.compiledExplicit=ze(r,"explicit"),r.compiledTypeMap=Gr(r.compiledImplicit,r.compiledExplicit),r};var $e=Jn,Ye=new K("tag:yaml.org,2002:str",{kind:"scalar",construct:function(n){return n!==null?n:""}}),qe=new K("tag:yaml.org,2002:seq",{kind:"sequence",construct:function(n){return n!==null?n:[]}}),Be=new K("tag:yaml.org,2002:map",{kind:"mapping",construct:function(n){return n!==null?n:{}}}),Ue=new $e({explicit:[Ye,qe,Be]});function Kr(n){if(n===null)return!0;var e=n.length;return e===1&&n==="~"||e===4&&(n==="null"||n==="Null"||n==="NULL")}function Qr(){return null}function Vr(n){return n===null}var Ge=new K("tag:yaml.org,2002:null",{kind:"scalar",resolve:Kr,construct:Qr,predicate:Vr,represent:{canonical:function(){return"~"},lowercase:function(){return"null"},uppercase:function(){return"NULL"},camelcase:function(){return"Null"},empty:function(){return""}},defaultStyle:"lowercase"});function Jr(n){if(n===null)return!1;var e=n.length;return e===4&&(n==="true"||n==="True"||n==="TRUE")||e===5&&(n==="false"||n==="False"||n==="FALSE")}function Zr(n){return n==="true"||n==="True"||n==="TRUE"}function Xr(n){return Object.prototype.toString.call(n)==="[object Boolean]"}var Ke=new K("tag:yaml.org,2002:bool",{kind:"scalar",resolve:Jr,construct:Zr,predicate:Xr,represent:{lowercase:function(n){return n?"true":"false"},uppercase:function(n){return n?"TRUE":"FALSE"},camelcase:function(n){return n?"True":"False"}},defaultStyle:"lowercase"});function na(n){return 48<=n&&n<=57||65<=n&&n<=70||97<=n&&n<=102}function ea(n){return 48<=n&&n<=55}function ta(n){return 48<=n&&n<=57}function ra(n){if(n===null)return!1;var e=n.length,t=0,a=!1,r;if(!e)return!1;if(r=n[t],(r==="-"||r==="+")&&(r=n[++t]),r==="0"){if(t+1===e)return!0;if(r=n[++t],r==="b"){for(t++;t<e;t++)if(r=n[t],r!=="_"){if(r!=="0"&&r!=="1")return!1;a=!0}return a&&r!=="_"}if(r==="x"){for(t++;t<e;t++)if(r=n[t],r!=="_"){if(!na(n.charCodeAt(t)))return!1;a=!0}return a&&r!=="_"}if(r==="o"){for(t++;t<e;t++)if(r=n[t],r!=="_"){if(!ea(n.charCodeAt(t)))return!1;a=!0}return a&&r!=="_"}}if(r==="_")return!1;for(;t<e;t++)if(r=n[t],r!=="_"){if(!ta(n.charCodeAt(t)))return!1;a=!0}return!(!a||r==="_")}function aa(n){var e=n,t=1,a;if(e.indexOf("_")!==-1&&(e=e.replace(/_/g,"")),a=e[0],(a==="-"||a==="+")&&(a==="-"&&(t=-1),e=e.slice(1),a=e[0]),e==="0")return 0;if(a==="0"){if(e[1]==="b")return t*parseInt(e.slice(2),2);if(e[1]==="x")return t*parseInt(e.slice(2),16);if(e[1]==="o")return t*parseInt(e.slice(2),8)}return t*parseInt(e,10)}function oa(n){return Object.prototype.toString.call(n)==="[object Number]"&&n%1===0&&!U.isNegativeZero(n)}var Qe=new K("tag:yaml.org,2002:int",{kind:"scalar",resolve:ra,construct:aa,predicate:oa,represent:{binary:function(n){return n>=0?"0b"+n.toString(2):"-0b"+n.toString(2).slice(1)},octal:function(n){return n>=0?"0o"+n.toString(8):"-0o"+n.toString(8).slice(1)},decimal:function(n){return n.toString(10)},hexadecimal:function(n){return n>=0?"0x"+n.toString(16).toUpperCase():"-0x"+n.toString(16).toUpperCase().slice(1)}},defaultStyle:"decimal",styleAliases:{binary:[2,"bin"],octal:[8,"oct"],decimal:[10,"dec"],hexadecimal:[16,"hex"]}}),ia=new RegExp("^(?:[-+]?(?:[0-9][0-9_]*)(?:\\.[0-9_]*)?(?:[eE][-+]?[0-9]+)?|\\.[0-9_]+(?:[eE][-+]?[0-9]+)?|[-+]?\\.(?:inf|Inf|INF)|\\.(?:nan|NaN|NAN))$");function sa(n){return!(n===null||!ia.test(n)||n[n.length-1]==="_")}function la(n){var e,t;return e=n.replace(/_/g,"").toLowerCase(),t=e[0]==="-"?-1:1,"+-".indexOf(e[0])>=0&&(e=e.slice(1)),e===".inf"?t===1?Number.POSITIVE_INFINITY:Number.NEGATIVE_INFINITY:e===".nan"?NaN:t*parseFloat(e,10)}var da=/^[-+]?[0-9]+e/;function ha(n,e){var t;if(isNaN(n))switch(e){case"lowercase":return".nan";case"uppercase":return".NAN";case"camelcase":return".NaN"}else if(Number.POSITIVE_INFINITY===n)switch(e){case"lowercase":return".inf";case"uppercase":return".INF";case"camelcase":return".Inf"}else if(Number.NEGATIVE_INFINITY===n)switch(e){case"lowercase":return"-.inf";case"uppercase":return"-.INF";case"camelcase":return"-.Inf"}else if(U.isNegativeZero(n))return"-0.0";return t=n.toString(10),da.test(t)?t.replace("e",".e"):t}function ua(n){return Object.prototype.toString.call(n)==="[object Number]"&&(n%1!==0||U.isNegativeZero(n))}var Ve=new K("tag:yaml.org,2002:float",{kind:"scalar",resolve:sa,construct:la,predicate:ua,represent:ha,defaultStyle:"lowercase"}),Je=Ue.extend({implicit:[Ge,Ke,Qe,Ve]}),Ze=Je,Xe=new RegExp("^([0-9][0-9][0-9][0-9])-([0-9][0-9])-([0-9][0-9])$"),nt=new RegExp("^([0-9][0-9][0-9][0-9])-([0-9][0-9]?)-([0-9][0-9]?)(?:[Tt]|[ \\t]+)([0-9][0-9]?):([0-9][0-9]):([0-9][0-9])(?:\\.([0-9]*))?(?:[ \\t]*(Z|([-+])([0-9][0-9]?)(?::([0-9][0-9]))?))?$");function ca(n){return n===null?!1:Xe.exec(n)!==null||nt.exec(n)!==null}function pa(n){var e,t,a,r,o,s,l,d=0,h=null,p,m,g;if(e=Xe.exec(n),e===null&&(e=nt.exec(n)),e===null)throw new Error("Date resolve error");if(t=+e[1],a=+e[2]-1,r=+e[3],!e[4])return new Date(Date.UTC(t,a,r));if(o=+e[4],s=+e[5],l=+e[6],e[7]){for(d=e[7].slice(0,3);d.length<3;)d+="0";d=+d}return e[9]&&(p=+e[10],m=+(e[11]||0),h=(p*60+m)*6e4,e[9]==="-"&&(h=-h)),g=new Date(Date.UTC(t,a,r,o,s,l,d)),h&&g.setTime(g.getTime()-h),g}function ga(n){return n.toISOString()}var et=new K("tag:yaml.org,2002:timestamp",{kind:"scalar",resolve:ca,construct:pa,instanceOf:Date,represent:ga});function ma(n){return n==="<<"||n===null}var tt=new K("tag:yaml.org,2002:merge",{kind:"scalar",resolve:ma}),oe=`ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=
-\r`;function fa(n){if(n===null)return!1;var e,t,a=0,r=n.length,o=oe;for(t=0;t<r;t++)if(e=o.indexOf(n.charAt(t)),!(e>64)){if(e<0)return!1;a+=6}return a%8===0}function ya(n){var e,t,a=n.replace(/[\r\n=]/g,""),r=a.length,o=oe,s=0,l=[];for(e=0;e<r;e++)e%4===0&&e&&(l.push(s>>16&255),l.push(s>>8&255),l.push(s&255)),s=s<<6|o.indexOf(a.charAt(e));return t=r%4*6,t===0?(l.push(s>>16&255),l.push(s>>8&255),l.push(s&255)):t===18?(l.push(s>>10&255),l.push(s>>2&255)):t===12&&l.push(s>>4&255),new Uint8Array(l)}function xa(n){var e="",t=0,a,r,o=n.length,s=oe;for(a=0;a<o;a++)a%3===0&&a&&(e+=s[t>>18&63],e+=s[t>>12&63],e+=s[t>>6&63],e+=s[t&63]),t=(t<<8)+n[a];return r=o%3,r===0?(e+=s[t>>18&63],e+=s[t>>12&63],e+=s[t>>6&63],e+=s[t&63]):r===2?(e+=s[t>>10&63],e+=s[t>>4&63],e+=s[t<<2&63],e+=s[64]):r===1&&(e+=s[t>>2&63],e+=s[t<<4&63],e+=s[64],e+=s[64]),e}function va(n){return Object.prototype.toString.call(n)==="[object Uint8Array]"}var rt=new K("tag:yaml.org,2002:binary",{kind:"scalar",resolve:fa,construct:ya,predicate:va,represent:xa}),za=Object.prototype.hasOwnProperty,ja=Object.prototype.toString;function wa(n){if(n===null)return!0;var e=[],t,a,r,o,s,l=n;for(t=0,a=l.length;t<a;t+=1){if(r=l[t],s=!1,ja.call(r)!=="[object Object]")return!1;for(o in r)if(za.call(r,o))if(!s)s=!0;else return!1;if(!s)return!1;if(e.indexOf(o)===-1)e.push(o);else return!1}return!0}function ba(n){return n!==null?n:[]}var at=new K("tag:yaml.org,2002:omap",{kind:"sequence",resolve:wa,construct:ba}),ka=Object.prototype.toString;function Ia(n){if(n===null)return!0;var e,t,a,r,o,s=n;for(o=new Array(s.length),e=0,t=s.length;e<t;e+=1){if(a=s[e],ka.call(a)!=="[object Object]"||(r=Object.keys(a),r.length!==1))return!1;o[e]=[r[0],a[r[0]]]}return!0}function _a(n){if(n===null)return[];var e,t,a,r,o,s=n;for(o=new Array(s.length),e=0,t=s.length;e<t;e+=1)a=s[e],r=Object.keys(a),o[e]=[r[0],a[r[0]]];return o}var ot=new K("tag:yaml.org,2002:pairs",{kind:"sequence",resolve:Ia,construct:_a}),Sa=Object.prototype.hasOwnProperty;function Ca(n){if(n===null)return!0;var e,t=n;for(e in t)if(Sa.call(t,e)&&t[e]!==null)return!1;return!0}function Aa(n){return n!==null?n:{}}var it=new K("tag:yaml.org,2002:set",{kind:"mapping",resolve:Ca,construct:Aa}),ie=Ze.extend({implicit:[et,tt],explicit:[rt,at,ot,it]}),cn=Object.prototype.hasOwnProperty,Mn=1,st=2,lt=3,Pn=4,Bn=1,Ta=2,je=3,Ea=/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F-\x84\x86-\x9F\uFFFE\uFFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF]/,La=/[\x85\u2028\u2029]/,Ma=/[,\[\]\{\}]/,dt=/^(?:!|!!|![a-z\-]+!)$/i,ht=/^(?:!|[^,\[\]\{\}])(?:%[0-9a-f]{2}|[0-9a-z\-#;\/\?:@&=\+\$,_\.!~\*'\(\)\[\]])*$/i;function we(n){return Object.prototype.toString.call(n)}function sn(n){return n===10||n===13}function gn(n){return n===9||n===32}function X(n){return n===9||n===32||n===10||n===13}function xn(n){return n===44||n===91||n===93||n===123||n===125}function Pa(n){var e;return 48<=n&&n<=57?n-48:(e=n|32,97<=e&&e<=102?e-97+10:-1)}function Ra(n){return n===120?2:n===117?4:n===85?8:0}function Wa(n){return 48<=n&&n<=57?n-48:-1}function be(n){return n===48?"\0":n===97?"\x07":n===98?"\b":n===116||n===9?"	":n===110?`
-`:n===118?"\v":n===102?"\f":n===114?"\r":n===101?"\x1B":n===32?" ":n===34?'"':n===47?"/":n===92?"\\":n===78?"":n===95?" ":n===76?"\u2028":n===80?"\u2029":""}function Oa(n){return n<=65535?String.fromCharCode(n):String.fromCharCode((n-65536>>10)+55296,(n-65536&1023)+56320)}function ut(n,e,t){e==="__proto__"?Object.defineProperty(n,e,{configurable:!0,enumerable:!0,writable:!0,value:t}):n[e]=t}var ct=new Array(256),pt=new Array(256);for(var fn=0;fn<256;fn++)ct[fn]=be(fn)?1:0,pt[fn]=be(fn);function Na(n,e){this.input=n,this.filename=e.filename||null,this.schema=e.schema||ie,this.onWarning=e.onWarning||null,this.legacy=e.legacy||!1,this.json=e.json||!1,this.listener=e.listener||null,this.implicitTypes=this.schema.compiledImplicit,this.typeMap=this.schema.compiledTypeMap,this.length=n.length,this.position=0,this.line=0,this.lineStart=0,this.lineIndent=0,this.firstTabInLine=-1,this.documents=[]}function gt(n,e){var t={name:n.filename,buffer:n.input.slice(0,-1),position:n.position,line:n.line,column:n.position-n.lineStart};return t.snippet=$r(t),new J(e,t)}function I(n,e){throw gt(n,e)}function Rn(n,e){n.onWarning&&n.onWarning.call(null,gt(n,e))}var ke={YAML:function(e,t,a){var r,o,s;e.version!==null&&I(e,"duplication of %YAML directive"),a.length!==1&&I(e,"YAML directive accepts exactly one argument"),r=/^([0-9]+)\.([0-9]+)$/.exec(a[0]),r===null&&I(e,"ill-formed argument of the YAML directive"),o=parseInt(r[1],10),s=parseInt(r[2],10),o!==1&&I(e,"unacceptable YAML version of the document"),e.version=a[0],e.checkLineBreaks=s<2,s!==1&&s!==2&&Rn(e,"unsupported YAML version of the document")},TAG:function(e,t,a){var r,o;a.length!==2&&I(e,"TAG directive accepts exactly two arguments"),r=a[0],o=a[1],dt.test(r)||I(e,"ill-formed tag handle (first argument) of the TAG directive"),cn.call(e.tagMap,r)&&I(e,'there is a previously declared suffix for "'+r+'" tag handle'),ht.test(o)||I(e,"ill-formed tag prefix (second argument) of the TAG directive");try{o=decodeURIComponent(o)}catch{I(e,"tag prefix is malformed: "+o)}e.tagMap[r]=o}};function un(n,e,t,a){var r,o,s,l;if(e<t){if(l=n.input.slice(e,t),a)for(r=0,o=l.length;r<o;r+=1)s=l.charCodeAt(r),s===9||32<=s&&s<=1114111||I(n,"expected valid JSON character");else Ea.test(l)&&I(n,"the stream contains non-printable characters");n.result+=l}}function Ie(n,e,t,a){var r,o,s,l;for(U.isObject(t)||I(n,"cannot merge mappings; the provided source object is unacceptable"),r=Object.keys(t),s=0,l=r.length;s<l;s+=1)o=r[s],cn.call(e,o)||(ut(e,o,t[o]),a[o]=!0)}function vn(n,e,t,a,r,o,s,l,d){var h,p;if(Array.isArray(r))for(r=Array.prototype.slice.call(r),h=0,p=r.length;h<p;h+=1)Array.isArray(r[h])&&I(n,"nested arrays are not supported inside keys"),typeof r=="object"&&we(r[h])==="[object Object]"&&(r[h]="[object Object]");if(typeof r=="object"&&we(r)==="[object Object]"&&(r="[object Object]"),r=String(r),e===null&&(e={}),a==="tag:yaml.org,2002:merge")if(Array.isArray(o))for(h=0,p=o.length;h<p;h+=1)Ie(n,e,o[h],t);else Ie(n,e,o,t);else!n.json&&!cn.call(t,r)&&cn.call(e,r)&&(n.line=s||n.line,n.lineStart=l||n.lineStart,n.position=d||n.position,I(n,"duplicated mapping key")),ut(e,r,o),delete t[r];return e}function se(n){var e;e=n.input.charCodeAt(n.position),e===10?n.position++:e===13?(n.position++,n.input.charCodeAt(n.position)===10&&n.position++):I(n,"a line break is expected"),n.line+=1,n.lineStart=n.position,n.firstTabInLine=-1}function q(n,e,t){for(var a=0,r=n.input.charCodeAt(n.position);r!==0;){for(;gn(r);)r===9&&n.firstTabInLine===-1&&(n.firstTabInLine=n.position),r=n.input.charCodeAt(++n.position);if(e&&r===35)do r=n.input.charCodeAt(++n.position);while(r!==10&&r!==13&&r!==0);if(sn(r))for(se(n),r=n.input.charCodeAt(n.position),a++,n.lineIndent=0;r===32;)n.lineIndent++,r=n.input.charCodeAt(++n.position);else break}return t!==-1&&a!==0&&n.lineIndent<t&&Rn(n,"deficient indentation"),a}function Dn(n){var e=n.position,t;return t=n.input.charCodeAt(e),!!((t===45||t===46)&&t===n.input.charCodeAt(e+1)&&t===n.input.charCodeAt(e+2)&&(e+=3,t=n.input.charCodeAt(e),t===0||X(t)))}function le(n,e){e===1?n.result+=" ":e>1&&(n.result+=U.repeat(`
-`,e-1))}function Da(n,e,t){var a,r,o,s,l,d,h,p,m=n.kind,g=n.result,x;if(x=n.input.charCodeAt(n.position),X(x)||xn(x)||x===35||x===38||x===42||x===33||x===124||x===62||x===39||x===34||x===37||x===64||x===96||(x===63||x===45)&&(r=n.input.charCodeAt(n.position+1),X(r)||t&&xn(r)))return!1;for(n.kind="scalar",n.result="",o=s=n.position,l=!1;x!==0;){if(x===58){if(r=n.input.charCodeAt(n.position+1),X(r)||t&&xn(r))break}else if(x===35){if(a=n.input.charCodeAt(n.position-1),X(a))break}else{if(n.position===n.lineStart&&Dn(n)||t&&xn(x))break;if(sn(x))if(d=n.line,h=n.lineStart,p=n.lineIndent,q(n,!1,-1),n.lineIndent>=e){l=!0,x=n.input.charCodeAt(n.position);continue}else{n.position=s,n.line=d,n.lineStart=h,n.lineIndent=p;break}}l&&(un(n,o,s,!1),le(n,n.line-d),o=s=n.position,l=!1),gn(x)||(s=n.position+1),x=n.input.charCodeAt(++n.position)}return un(n,o,s,!1),n.result?!0:(n.kind=m,n.result=g,!1)}function Ha(n,e){var t,a,r;if(t=n.input.charCodeAt(n.position),t!==39)return!1;for(n.kind="scalar",n.result="",n.position++,a=r=n.position;(t=n.input.charCodeAt(n.position))!==0;)if(t===39)if(un(n,a,n.position,!0),t=n.input.charCodeAt(++n.position),t===39)a=n.position,n.position++,r=n.position;else return!0;else sn(t)?(un(n,a,r,!0),le(n,q(n,!1,e)),a=r=n.position):n.position===n.lineStart&&Dn(n)?I(n,"unexpected end of the document within a single quoted scalar"):(n.position++,r=n.position);I(n,"unexpected end of the stream within a single quoted scalar")}function Fa(n,e){var t,a,r,o,s,l;if(l=n.input.charCodeAt(n.position),l!==34)return!1;for(n.kind="scalar",n.result="",n.position++,t=a=n.position;(l=n.input.charCodeAt(n.position))!==0;){if(l===34)return un(n,t,n.position,!0),n.position++,!0;if(l===92){if(un(n,t,n.position,!0),l=n.input.charCodeAt(++n.position),sn(l))q(n,!1,e);else if(l<256&&ct[l])n.result+=pt[l],n.position++;else if((s=Ra(l))>0){for(r=s,o=0;r>0;r--)l=n.input.charCodeAt(++n.position),(s=Pa(l))>=0?o=(o<<4)+s:I(n,"expected hexadecimal character");n.result+=Oa(o),n.position++}else I(n,"unknown escape sequence");t=a=n.position}else sn(l)?(un(n,t,a,!0),le(n,q(n,!1,e)),t=a=n.position):n.position===n.lineStart&&Dn(n)?I(n,"unexpected end of the document within a double quoted scalar"):(n.position++,a=n.position)}I(n,"unexpected end of the stream within a double quoted scalar")}function $a(n,e){var t=!0,a,r,o,s=n.tag,l,d=n.anchor,h,p,m,g,x,b=Object.create(null),v,z,_,j;if(j=n.input.charCodeAt(n.position),j===91)p=93,x=!1,l=[];else if(j===123)p=125,x=!0,l={};else return!1;for(n.anchor!==null&&(n.anchorMap[n.anchor]=l),j=n.input.charCodeAt(++n.position);j!==0;){if(q(n,!0,e),j=n.input.charCodeAt(n.position),j===p)return n.position++,n.tag=s,n.anchor=d,n.kind=x?"mapping":"sequence",n.result=l,!0;t?j===44&&I(n,"expected the node content, but found ','"):I(n,"missed comma between flow collection entries"),z=v=_=null,m=g=!1,j===63&&(h=n.input.charCodeAt(n.position+1),X(h)&&(m=g=!0,n.position++,q(n,!0,e))),a=n.line,r=n.lineStart,o=n.position,zn(n,e,Mn,!1,!0),z=n.tag,v=n.result,q(n,!0,e),j=n.input.charCodeAt(n.position),(g||n.line===a)&&j===58&&(m=!0,j=n.input.charCodeAt(++n.position),q(n,!0,e),zn(n,e,Mn,!1,!0),_=n.result),x?vn(n,l,b,z,v,_,a,r,o):m?l.push(vn(n,null,b,z,v,_,a,r,o)):l.push(v),q(n,!0,e),j=n.input.charCodeAt(n.position),j===44?(t=!0,j=n.input.charCodeAt(++n.position)):t=!1}I(n,"unexpected end of the stream within a flow collection")}function Ya(n,e){var t,a,r=Bn,o=!1,s=!1,l=e,d=0,h=!1,p,m;if(m=n.input.charCodeAt(n.position),m===124)a=!1;else if(m===62)a=!0;else return!1;for(n.kind="scalar",n.result="";m!==0;)if(m=n.input.charCodeAt(++n.position),m===43||m===45)Bn===r?r=m===43?je:Ta:I(n,"repeat of a chomping mode identifier");else if((p=Wa(m))>=0)p===0?I(n,"bad explicit indentation width of a block scalar; it cannot be less than one"):s?I(n,"repeat of an indentation width identifier"):(l=e+p-1,s=!0);else break;if(gn(m)){do m=n.input.charCodeAt(++n.position);while(gn(m));if(m===35)do m=n.input.charCodeAt(++n.position);while(!sn(m)&&m!==0)}for(;m!==0;){for(se(n),n.lineIndent=0,m=n.input.charCodeAt(n.position);(!s||n.lineIndent<l)&&m===32;)n.lineIndent++,m=n.input.charCodeAt(++n.position);if(!s&&n.lineIndent>l&&(l=n.lineIndent),sn(m)){d++;continue}if(n.lineIndent<l){r===je?n.result+=U.repeat(`
-`,o?1+d:d):r===Bn&&o&&(n.result+=`
-`);break}for(a?gn(m)?(h=!0,n.result+=U.repeat(`
-`,o?1+d:d)):h?(h=!1,n.result+=U.repeat(`
-`,d+1)):d===0?o&&(n.result+=" "):n.result+=U.repeat(`
-`,d):n.result+=U.repeat(`
-`,o?1+d:d),o=!0,s=!0,d=0,t=n.position;!sn(m)&&m!==0;)m=n.input.charCodeAt(++n.position);un(n,t,n.position,!1)}return!0}function _e(n,e){var t,a=n.tag,r=n.anchor,o=[],s,l=!1,d;if(n.firstTabInLine!==-1)return!1;for(n.anchor!==null&&(n.anchorMap[n.anchor]=o),d=n.input.charCodeAt(n.position);d!==0&&(n.firstTabInLine!==-1&&(n.position=n.firstTabInLine,I(n,"tab characters must not be used in indentation")),!(d!==45||(s=n.input.charCodeAt(n.position+1),!X(s))));){if(l=!0,n.position++,q(n,!0,-1)&&n.lineIndent<=e){o.push(null),d=n.input.charCodeAt(n.position);continue}if(t=n.line,zn(n,e,lt,!1,!0),o.push(n.result),q(n,!0,-1),d=n.input.charCodeAt(n.position),(n.line===t||n.lineIndent>e)&&d!==0)I(n,"bad indentation of a sequence entry");else if(n.lineIndent<e)break}return l?(n.tag=a,n.anchor=r,n.kind="sequence",n.result=o,!0):!1}function qa(n,e,t){var a,r,o,s,l,d,h=n.tag,p=n.anchor,m={},g=Object.create(null),x=null,b=null,v=null,z=!1,_=!1,j;if(n.firstTabInLine!==-1)return!1;for(n.anchor!==null&&(n.anchorMap[n.anchor]=m),j=n.input.charCodeAt(n.position);j!==0;){if(!z&&n.firstTabInLine!==-1&&(n.position=n.firstTabInLine,I(n,"tab characters must not be used in indentation")),a=n.input.charCodeAt(n.position+1),o=n.line,(j===63||j===58)&&X(a))j===63?(z&&(vn(n,m,g,x,b,null,s,l,d),x=b=v=null),_=!0,z=!0,r=!0):z?(z=!1,r=!0):I(n,"incomplete explicit mapping pair; a key node is missed; or followed by a non-tabulated empty line"),n.position+=1,j=a;else{if(s=n.line,l=n.lineStart,d=n.position,!zn(n,t,st,!1,!0))break;if(n.line===o){for(j=n.input.charCodeAt(n.position);gn(j);)j=n.input.charCodeAt(++n.position);if(j===58)j=n.input.charCodeAt(++n.position),X(j)||I(n,"a whitespace character is expected after the key-value separator within a block mapping"),z&&(vn(n,m,g,x,b,null,s,l,d),x=b=v=null),_=!0,z=!1,r=!1,x=n.tag,b=n.result;else if(_)I(n,"can not read an implicit mapping pair; a colon is missed");else return n.tag=h,n.anchor=p,!0}else if(_)I(n,"can not read a block mapping entry; a multiline key may not be an implicit key");else return n.tag=h,n.anchor=p,!0}if((n.line===o||n.lineIndent>e)&&(z&&(s=n.line,l=n.lineStart,d=n.position),zn(n,e,Pn,!0,r)&&(z?b=n.result:v=n.result),z||(vn(n,m,g,x,b,v,s,l,d),x=b=v=null),q(n,!0,-1),j=n.input.charCodeAt(n.position)),(n.line===o||n.lineIndent>e)&&j!==0)I(n,"bad indentation of a mapping entry");else if(n.lineIndent<e)break}return z&&vn(n,m,g,x,b,null,s,l,d),_&&(n.tag=h,n.anchor=p,n.kind="mapping",n.result=m),_}function Ba(n){var e,t=!1,a=!1,r,o,s;if(s=n.input.charCodeAt(n.position),s!==33)return!1;if(n.tag!==null&&I(n,"duplication of a tag property"),s=n.input.charCodeAt(++n.position),s===60?(t=!0,s=n.input.charCodeAt(++n.position)):s===33?(a=!0,r="!!",s=n.input.charCodeAt(++n.position)):r="!",e=n.position,t){do s=n.input.charCodeAt(++n.position);while(s!==0&&s!==62);n.position<n.length?(o=n.input.slice(e,n.position),s=n.input.charCodeAt(++n.position)):I(n,"unexpected end of the stream within a verbatim tag")}else{for(;s!==0&&!X(s);)s===33&&(a?I(n,"tag suffix cannot contain exclamation marks"):(r=n.input.slice(e-1,n.position+1),dt.test(r)||I(n,"named tag handle cannot contain such characters"),a=!0,e=n.position+1)),s=n.input.charCodeAt(++n.position);o=n.input.slice(e,n.position),Ma.test(o)&&I(n,"tag suffix cannot contain flow indicator characters")}o&&!ht.test(o)&&I(n,"tag name cannot contain such characters: "+o);try{o=decodeURIComponent(o)}catch{I(n,"tag name is malformed: "+o)}return t?n.tag=o:cn.call(n.tagMap,r)?n.tag=n.tagMap[r]+o:r==="!"?n.tag="!"+o:r==="!!"?n.tag="tag:yaml.org,2002:"+o:I(n,'undeclared tag handle "'+r+'"'),!0}function Ua(n){var e,t;if(t=n.input.charCodeAt(n.position),t!==38)return!1;for(n.anchor!==null&&I(n,"duplication of an anchor property"),t=n.input.charCodeAt(++n.position),e=n.position;t!==0&&!X(t)&&!xn(t);)t=n.input.charCodeAt(++n.position);return n.position===e&&I(n,"name of an anchor node must contain at least one character"),n.anchor=n.input.slice(e,n.position),!0}function Ga(n){var e,t,a;if(a=n.input.charCodeAt(n.position),a!==42)return!1;for(a=n.input.charCodeAt(++n.position),e=n.position;a!==0&&!X(a)&&!xn(a);)a=n.input.charCodeAt(++n.position);return n.position===e&&I(n,"name of an alias node must contain at least one character"),t=n.input.slice(e,n.position),cn.call(n.anchorMap,t)||I(n,'unidentified alias "'+t+'"'),n.result=n.anchorMap[t],q(n,!0,-1),!0}function zn(n,e,t,a,r){var o,s,l,d=1,h=!1,p=!1,m,g,x,b,v,z;if(n.listener!==null&&n.listener("open",n),n.tag=null,n.anchor=null,n.kind=null,n.result=null,o=s=l=Pn===t||lt===t,a&&q(n,!0,-1)&&(h=!0,n.lineIndent>e?d=1:n.lineIndent===e?d=0:n.lineIndent<e&&(d=-1)),d===1)for(;Ba(n)||Ua(n);)q(n,!0,-1)?(h=!0,l=o,n.lineIndent>e?d=1:n.lineIndent===e?d=0:n.lineIndent<e&&(d=-1)):l=!1;if(l&&(l=h||r),(d===1||Pn===t)&&(Mn===t||st===t?v=e:v=e+1,z=n.position-n.lineStart,d===1?l&&(_e(n,z)||qa(n,z,v))||$a(n,v)?p=!0:(s&&Ya(n,v)||Ha(n,v)||Fa(n,v)?p=!0:Ga(n)?(p=!0,(n.tag!==null||n.anchor!==null)&&I(n,"alias node should not have any properties")):Da(n,v,Mn===t)&&(p=!0,n.tag===null&&(n.tag="?")),n.anchor!==null&&(n.anchorMap[n.anchor]=n.result)):d===0&&(p=l&&_e(n,z))),n.tag===null)n.anchor!==null&&(n.anchorMap[n.anchor]=n.result);else if(n.tag==="?"){for(n.result!==null&&n.kind!=="scalar"&&I(n,'unacceptable node kind for !<?> tag; it should be "scalar", not "'+n.kind+'"'),m=0,g=n.implicitTypes.length;m<g;m+=1)if(b=n.implicitTypes[m],b.resolve(n.result)){n.result=b.construct(n.result),n.tag=b.tag,n.anchor!==null&&(n.anchorMap[n.anchor]=n.result);break}}else if(n.tag!=="!"){if(cn.call(n.typeMap[n.kind||"fallback"],n.tag))b=n.typeMap[n.kind||"fallback"][n.tag];else for(b=null,x=n.typeMap.multi[n.kind||"fallback"],m=0,g=x.length;m<g;m+=1)if(n.tag.slice(0,x[m].tag.length)===x[m].tag){b=x[m];break}b||I(n,"unknown tag !<"+n.tag+">"),n.result!==null&&b.kind!==n.kind&&I(n,"unacceptable node kind for !<"+n.tag+'> tag; it should be "'+b.kind+'", not "'+n.kind+'"'),b.resolve(n.result,n.tag)?(n.result=b.construct(n.result,n.tag),n.anchor!==null&&(n.anchorMap[n.anchor]=n.result)):I(n,"cannot resolve a node with !<"+n.tag+"> explicit tag")}return n.listener!==null&&n.listener("close",n),n.tag!==null||n.anchor!==null||p}function Ka(n){var e=n.position,t,a,r,o=!1,s;for(n.version=null,n.checkLineBreaks=n.legacy,n.tagMap=Object.create(null),n.anchorMap=Object.create(null);(s=n.input.charCodeAt(n.position))!==0&&(q(n,!0,-1),s=n.input.charCodeAt(n.position),!(n.lineIndent>0||s!==37));){for(o=!0,s=n.input.charCodeAt(++n.position),t=n.position;s!==0&&!X(s);)s=n.input.charCodeAt(++n.position);for(a=n.input.slice(t,n.position),r=[],a.length<1&&I(n,"directive name must not be less than one character in length");s!==0;){for(;gn(s);)s=n.input.charCodeAt(++n.position);if(s===35){do s=n.input.charCodeAt(++n.position);while(s!==0&&!sn(s));break}if(sn(s))break;for(t=n.position;s!==0&&!X(s);)s=n.input.charCodeAt(++n.position);r.push(n.input.slice(t,n.position))}s!==0&&se(n),cn.call(ke,a)?ke[a](n,a,r):Rn(n,'unknown document directive "'+a+'"')}if(q(n,!0,-1),n.lineIndent===0&&n.input.charCodeAt(n.position)===45&&n.input.charCodeAt(n.position+1)===45&&n.input.charCodeAt(n.position+2)===45?(n.position+=3,q(n,!0,-1)):o&&I(n,"directives end mark is expected"),zn(n,n.lineIndent-1,Pn,!1,!0),q(n,!0,-1),n.checkLineBreaks&&La.test(n.input.slice(e,n.position))&&Rn(n,"non-ASCII line breaks are interpreted as content"),n.documents.push(n.result),n.position===n.lineStart&&Dn(n)){n.input.charCodeAt(n.position)===46&&(n.position+=3,q(n,!0,-1));return}if(n.position<n.length-1)I(n,"end of the stream or a document separator is expected");else return}function mt(n,e){n=String(n),e=e||{},n.length!==0&&(n.charCodeAt(n.length-1)!==10&&n.charCodeAt(n.length-1)!==13&&(n+=`
-`),n.charCodeAt(0)===65279&&(n=n.slice(1)));var t=new Na(n,e),a=n.indexOf("\0");for(a!==-1&&(t.position=a,I(t,"null byte is not allowed in input")),t.input+="\0";t.input.charCodeAt(t.position)===32;)t.lineIndent+=1,t.position+=1;for(;t.position<t.length-1;)Ka(t);return t.documents}function Qa(n,e,t){e!==null&&typeof e=="object"&&typeof t>"u"&&(t=e,e=null);var a=mt(n,t);if(typeof e!="function")return a;for(var r=0,o=a.length;r<o;r+=1)e(a[r])}function Va(n,e){var t=mt(n,e);if(t.length!==0){if(t.length===1)return t[0];throw new J("expected a single document in the stream, but found more")}}var Ja=Qa,Za=Va,ft={loadAll:Ja,load:Za},yt=Object.prototype.toString,xt=Object.prototype.hasOwnProperty,de=65279,Xa=9,In=10,no=13,eo=32,to=33,ro=34,Zn=35,ao=37,oo=38,io=39,so=42,vt=44,lo=45,Wn=58,ho=61,uo=62,co=63,po=64,zt=91,jt=93,go=96,wt=123,mo=124,bt=125,V={};V[0]="\\0";V[7]="\\a";V[8]="\\b";V[9]="\\t";V[10]="\\n";V[11]="\\v";V[12]="\\f";V[13]="\\r";V[27]="\\e";V[34]='\\"';V[92]="\\\\";V[133]="\\N";V[160]="\\_";V[8232]="\\L";V[8233]="\\P";var fo=["y","Y","yes","Yes","YES","on","On","ON","n","N","no","No","NO","off","Off","OFF"],yo=/^[-+]?[0-9_]+(?::[0-9_]+)+(?:\.[0-9_]*)?$/;function xo(n,e){var t,a,r,o,s,l,d;if(e===null)return{};for(t={},a=Object.keys(e),r=0,o=a.length;r<o;r+=1)s=a[r],l=String(e[s]),s.slice(0,2)==="!!"&&(s="tag:yaml.org,2002:"+s.slice(2)),d=n.compiledTypeMap.fallback[s],d&&xt.call(d.styleAliases,l)&&(l=d.styleAliases[l]),t[s]=l;return t}function vo(n){var e,t,a;if(e=n.toString(16).toUpperCase(),n<=255)t="x",a=2;else if(n<=65535)t="u",a=4;else if(n<=4294967295)t="U",a=8;else throw new J("code point within a string may not be greater than 0xFFFFFFFF");return"\\"+t+U.repeat("0",a-e.length)+e}var zo=1,_n=2;function jo(n){this.schema=n.schema||ie,this.indent=Math.max(1,n.indent||2),this.noArrayIndent=n.noArrayIndent||!1,this.skipInvalid=n.skipInvalid||!1,this.flowLevel=U.isNothing(n.flowLevel)?-1:n.flowLevel,this.styleMap=xo(this.schema,n.styles||null),this.sortKeys=n.sortKeys||!1,this.lineWidth=n.lineWidth||80,this.noRefs=n.noRefs||!1,this.noCompatMode=n.noCompatMode||!1,this.condenseFlow=n.condenseFlow||!1,this.quotingType=n.quotingType==='"'?_n:zo,this.forceQuotes=n.forceQuotes||!1,this.replacer=typeof n.replacer=="function"?n.replacer:null,this.implicitTypes=this.schema.compiledImplicit,this.explicitTypes=this.schema.compiledExplicit,this.tag=null,this.result="",this.duplicates=[],this.usedDuplicates=null}function Se(n,e){for(var t=U.repeat(" ",e),a=0,r=-1,o="",s,l=n.length;a<l;)r=n.indexOf(`
-`,a),r===-1?(s=n.slice(a),a=l):(s=n.slice(a,r+1),a=r+1),s.length&&s!==`
-`&&(o+=t),o+=s;return o}function Xn(n,e){return`
-`+U.repeat(" ",n.indent*e)}function wo(n,e){var t,a,r;for(t=0,a=n.implicitTypes.length;t<a;t+=1)if(r=n.implicitTypes[t],r.resolve(e))return!0;return!1}function On(n){return n===eo||n===Xa}function Sn(n){return 32<=n&&n<=126||161<=n&&n<=55295&&n!==8232&&n!==8233||57344<=n&&n<=65533&&n!==de||65536<=n&&n<=1114111}function Ce(n){return Sn(n)&&n!==de&&n!==no&&n!==In}function Ae(n,e,t){var a=Ce(n),r=a&&!On(n);return(t?a:a&&n!==vt&&n!==zt&&n!==jt&&n!==wt&&n!==bt)&&n!==Zn&&!(e===Wn&&!r)||Ce(e)&&!On(e)&&n===Zn||e===Wn&&r}function bo(n){return Sn(n)&&n!==de&&!On(n)&&n!==lo&&n!==co&&n!==Wn&&n!==vt&&n!==zt&&n!==jt&&n!==wt&&n!==bt&&n!==Zn&&n!==oo&&n!==so&&n!==to&&n!==mo&&n!==ho&&n!==uo&&n!==io&&n!==ro&&n!==ao&&n!==po&&n!==go}function ko(n){return!On(n)&&n!==Wn}function bn(n,e){var t=n.charCodeAt(e),a;return t>=55296&&t<=56319&&e+1<n.length&&(a=n.charCodeAt(e+1),a>=56320&&a<=57343)?(t-55296)*1024+a-56320+65536:t}function kt(n){var e=/^\n* /;return e.test(n)}var It=1,ne=2,_t=3,St=4,yn=5;function Io(n,e,t,a,r,o,s,l){var d,h=0,p=null,m=!1,g=!1,x=a!==-1,b=-1,v=bo(bn(n,0))&&ko(bn(n,n.length-1));if(e||s)for(d=0;d<n.length;h>=65536?d+=2:d++){if(h=bn(n,d),!Sn(h))return yn;v=v&&Ae(h,p,l),p=h}else{for(d=0;d<n.length;h>=65536?d+=2:d++){if(h=bn(n,d),h===In)m=!0,x&&(g=g||d-b-1>a&&n[b+1]!==" ",b=d);else if(!Sn(h))return yn;v=v&&Ae(h,p,l),p=h}g=g||x&&d-b-1>a&&n[b+1]!==" "}return!m&&!g?v&&!s&&!r(n)?It:o===_n?yn:ne:t>9&&kt(n)?yn:s?o===_n?yn:ne:g?St:_t}function _o(n,e,t,a,r){n.dump=(function(){if(e.length===0)return n.quotingType===_n?'""':"''";if(!n.noCompatMode&&(fo.indexOf(e)!==-1||yo.test(e)))return n.quotingType===_n?'"'+e+'"':"'"+e+"'";var o=n.indent*Math.max(1,t),s=n.lineWidth===-1?-1:Math.max(Math.min(n.lineWidth,40),n.lineWidth-o),l=a||n.flowLevel>-1&&t>=n.flowLevel;function d(h){return wo(n,h)}switch(Io(e,l,n.indent,s,d,n.quotingType,n.forceQuotes&&!a,r)){case It:return e;case ne:return"'"+e.replace(/'/g,"''")+"'";case _t:return"|"+Te(e,n.indent)+Ee(Se(e,o));case St:return">"+Te(e,n.indent)+Ee(Se(So(e,s),o));case yn:return'"'+Co(e)+'"';default:throw new J("impossible error: invalid scalar style")}})()}function Te(n,e){var t=kt(n)?String(e):"",a=n[n.length-1]===`
-`,r=a&&(n[n.length-2]===`
+`+n.mark.snippet),i+" "+t):i}function J(n,e){Error.call(this),this.name="YAMLException",this.reason=n,this.mark=e,this.message=de(this,!1),Error.captureStackTrace?Error.captureStackTrace(this,this.constructor):this.stack=new Error().stack||""}J.prototype=Object.create(Error.prototype);J.prototype.constructor=J;J.prototype.toString=function(e){return this.name+": "+de(this,e)};var _=J;function un(n,e,t,i,r){var o="",a="",s=Math.floor(r/2)-1;return i-e>s&&(o=" ... ",e=i-s+o.length),t-i>s&&(a=" ...",t=i+s-a.length),{str:o+n.slice(e,t).replace(/\t/g,"→")+a,pos:i-e+o.length}}function pn(n,e){return x.repeat(" ",e-n.length)+n}function Xt(n,e){if(e=Object.create(e||null),!n.buffer)return null;e.maxLength||(e.maxLength=79),typeof e.indent!="number"&&(e.indent=1),typeof e.linesBefore!="number"&&(e.linesBefore=3),typeof e.linesAfter!="number"&&(e.linesAfter=2);for(var t=/\r?\n|\r|\0/g,i=[0],r=[],o,a=-1;o=t.exec(n.buffer);)r.push(o.index),i.push(o.index+o[0].length),n.position<=o.index&&a<0&&(a=i.length-2);a<0&&(a=i.length-1);var s="",h,l,d=Math.min(n.line+e.linesAfter,r.length).toString().length,c=e.maxLength-(e.indent+d+3);for(h=1;h<=e.linesBefore&&!(a-h<0);h++)l=un(n.buffer,i[a-h],r[a-h],n.position-(i[a]-i[a-h]),c),s=x.repeat(" ",e.indent)+pn((n.line-h+1).toString(),d)+" | "+l.str+`
+`+s;for(l=un(n.buffer,i[a],r[a],n.position,c),s+=x.repeat(" ",e.indent)+pn((n.line+1).toString(),d)+" | "+l.str+`
+`,s+=x.repeat("-",e.indent+d+3+l.pos)+`^
+`,h=1;h<=e.linesAfter&&!(a+h>=r.length);h++)l=un(n.buffer,i[a+h],r[a+h],n.position-(i[a]-i[a+h]),c),s+=x.repeat(" ",e.indent)+pn((n.line+h+1).toString(),d)+" | "+l.str+`
+`;return s.replace(/\n$/,"")}var Qt=Xt,$t=["kind","multi","resolve","construct","instanceOf","predicate","represent","representName","defaultStyle","styleAliases"],Zt=["scalar","sequence","mapping"];function ni(n){var e={};return n!==null&&Object.keys(n).forEach(function(t){n[t].forEach(function(i){e[String(i)]=t})}),e}function ei(n,e){if(e=e||{},Object.keys(e).forEach(function(t){if($t.indexOf(t)===-1)throw new _('Unknown option "'+t+'" is met in definition of "'+n+'" YAML type.')}),this.options=e,this.tag=n,this.kind=e.kind||null,this.resolve=e.resolve||function(){return!0},this.construct=e.construct||function(t){return t},this.instanceOf=e.instanceOf||null,this.predicate=e.predicate||null,this.represent=e.represent||null,this.representName=e.representName||null,this.defaultStyle=e.defaultStyle||null,this.multi=e.multi||!1,this.styleAliases=ni(e.styleAliases||null),Zt.indexOf(this.kind)===-1)throw new _('Unknown kind "'+this.kind+'" is specified for "'+n+'" YAML type.')}var b=ei;function qn(n,e){var t=[];return n[e].forEach(function(i){var r=t.length;t.forEach(function(o,a){o.tag===i.tag&&o.kind===i.kind&&o.multi===i.multi&&(r=a)}),t[r]=i}),t}function ti(){var n={scalar:{},sequence:{},mapping:{},fallback:{},multi:{scalar:[],sequence:[],mapping:[],fallback:[]}},e,t;function i(r){r.multi?(n.multi[r.kind].push(r),n.multi.fallback.push(r)):n[r.kind][r.tag]=n.fallback[r.tag]=r}for(e=0,t=arguments.length;e<t;e+=1)arguments[e].forEach(i);return n}function _n(n){return this.extend(n)}_n.prototype.extend=function(e){var t=[],i=[];if(e instanceof b)i.push(e);else if(Array.isArray(e))i=i.concat(e);else if(e&&(Array.isArray(e.implicit)||Array.isArray(e.explicit)))e.implicit&&(t=t.concat(e.implicit)),e.explicit&&(i=i.concat(e.explicit));else throw new _("Schema.extend argument should be a Type, [ Type ], or a schema definition ({ implicit: [...], explicit: [...] })");t.forEach(function(o){if(!(o instanceof b))throw new _("Specified list of YAML types (or a single Type object) contains a non-Type object.");if(o.loadKind&&o.loadKind!=="scalar")throw new _("There is a non-scalar type in the implicit list of a schema. Implicit resolving of such types is not supported.");if(o.multi)throw new _("There is a multi type in the implicit list of a schema. Multi tags can only be listed as explicit.")}),i.forEach(function(o){if(!(o instanceof b))throw new _("Specified list of YAML types (or a single Type object) contains a non-Type object.")});var r=Object.create(_n.prototype);return r.implicit=(this.implicit||[]).concat(t),r.explicit=(this.explicit||[]).concat(i),r.compiledImplicit=qn(r,"implicit"),r.compiledExplicit=qn(r,"explicit"),r.compiledTypeMap=ti(r.compiledImplicit,r.compiledExplicit),r};var ce=_n,ue=new b("tag:yaml.org,2002:str",{kind:"scalar",construct:function(n){return n!==null?n:""}}),pe=new b("tag:yaml.org,2002:seq",{kind:"sequence",construct:function(n){return n!==null?n:[]}}),ge=new b("tag:yaml.org,2002:map",{kind:"mapping",construct:function(n){return n!==null?n:{}}}),me=new ce({explicit:[ue,pe,ge]});function ii(n){if(n===null)return!0;var e=n.length;return e===1&&n==="~"||e===4&&(n==="null"||n==="Null"||n==="NULL")}function ri(){return null}function ai(n){return n===null}var ze=new b("tag:yaml.org,2002:null",{kind:"scalar",resolve:ii,construct:ri,predicate:ai,represent:{canonical:function(){return"~"},lowercase:function(){return"null"},uppercase:function(){return"NULL"},camelcase:function(){return"Null"},empty:function(){return""}},defaultStyle:"lowercase"});function oi(n){if(n===null)return!1;var e=n.length;return e===4&&(n==="true"||n==="True"||n==="TRUE")||e===5&&(n==="false"||n==="False"||n==="FALSE")}function si(n){return n==="true"||n==="True"||n==="TRUE"}function hi(n){return Object.prototype.toString.call(n)==="[object Boolean]"}var fe=new b("tag:yaml.org,2002:bool",{kind:"scalar",resolve:oi,construct:si,predicate:hi,represent:{lowercase:function(n){return n?"true":"false"},uppercase:function(n){return n?"TRUE":"FALSE"},camelcase:function(n){return n?"True":"False"}},defaultStyle:"lowercase"});function li(n){return 48<=n&&n<=57||65<=n&&n<=70||97<=n&&n<=102}function di(n){return 48<=n&&n<=55}function ci(n){return 48<=n&&n<=57}function ui(n){if(n===null)return!1;var e=n.length,t=0,i=!1,r;if(!e)return!1;if(r=n[t],(r==="-"||r==="+")&&(r=n[++t]),r==="0"){if(t+1===e)return!0;if(r=n[++t],r==="b"){for(t++;t<e;t++)if(r=n[t],r!=="_"){if(r!=="0"&&r!=="1")return!1;i=!0}return i&&r!=="_"}if(r==="x"){for(t++;t<e;t++)if(r=n[t],r!=="_"){if(!li(n.charCodeAt(t)))return!1;i=!0}return i&&r!=="_"}if(r==="o"){for(t++;t<e;t++)if(r=n[t],r!=="_"){if(!di(n.charCodeAt(t)))return!1;i=!0}return i&&r!=="_"}}if(r==="_")return!1;for(;t<e;t++)if(r=n[t],r!=="_"){if(!ci(n.charCodeAt(t)))return!1;i=!0}return!(!i||r==="_")}function pi(n){var e=n,t=1,i;if(e.indexOf("_")!==-1&&(e=e.replace(/_/g,"")),i=e[0],(i==="-"||i==="+")&&(i==="-"&&(t=-1),e=e.slice(1),i=e[0]),e==="0")return 0;if(i==="0"){if(e[1]==="b")return t*parseInt(e.slice(2),2);if(e[1]==="x")return t*parseInt(e.slice(2),16);if(e[1]==="o")return t*parseInt(e.slice(2),8)}return t*parseInt(e,10)}function gi(n){return Object.prototype.toString.call(n)==="[object Number]"&&n%1===0&&!x.isNegativeZero(n)}var je=new b("tag:yaml.org,2002:int",{kind:"scalar",resolve:ui,construct:pi,predicate:gi,represent:{binary:function(n){return n>=0?"0b"+n.toString(2):"-0b"+n.toString(2).slice(1)},octal:function(n){return n>=0?"0o"+n.toString(8):"-0o"+n.toString(8).slice(1)},decimal:function(n){return n.toString(10)},hexadecimal:function(n){return n>=0?"0x"+n.toString(16).toUpperCase():"-0x"+n.toString(16).toUpperCase().slice(1)}},defaultStyle:"decimal",styleAliases:{binary:[2,"bin"],octal:[8,"oct"],decimal:[10,"dec"],hexadecimal:[16,"hex"]}}),mi=new RegExp("^(?:[-+]?(?:[0-9][0-9_]*)(?:\\.[0-9_]*)?(?:[eE][-+]?[0-9]+)?|\\.[0-9_]+(?:[eE][-+]?[0-9]+)?|[-+]?\\.(?:inf|Inf|INF)|\\.(?:nan|NaN|NAN))$");function zi(n){return!(n===null||!mi.test(n)||n[n.length-1]==="_")}function fi(n){var e,t;return e=n.replace(/_/g,"").toLowerCase(),t=e[0]==="-"?-1:1,"+-".indexOf(e[0])>=0&&(e=e.slice(1)),e===".inf"?t===1?Number.POSITIVE_INFINITY:Number.NEGATIVE_INFINITY:e===".nan"?NaN:t*parseFloat(e,10)}var ji=/^[-+]?[0-9]+e/;function yi(n,e){var t;if(isNaN(n))switch(e){case"lowercase":return".nan";case"uppercase":return".NAN";case"camelcase":return".NaN"}else if(Number.POSITIVE_INFINITY===n)switch(e){case"lowercase":return".inf";case"uppercase":return".INF";case"camelcase":return".Inf"}else if(Number.NEGATIVE_INFINITY===n)switch(e){case"lowercase":return"-.inf";case"uppercase":return"-.INF";case"camelcase":return"-.Inf"}else if(x.isNegativeZero(n))return"-0.0";return t=n.toString(10),ji.test(t)?t.replace("e",".e"):t}function wi(n){return Object.prototype.toString.call(n)==="[object Number]"&&(n%1!==0||x.isNegativeZero(n))}var ye=new b("tag:yaml.org,2002:float",{kind:"scalar",resolve:zi,construct:fi,predicate:wi,represent:yi,defaultStyle:"lowercase"}),we=me.extend({implicit:[ze,fe,je,ye]}),ve=we,xe=new RegExp("^([0-9][0-9][0-9][0-9])-([0-9][0-9])-([0-9][0-9])$"),ke=new RegExp("^([0-9][0-9][0-9][0-9])-([0-9][0-9]?)-([0-9][0-9]?)(?:[Tt]|[ \\t]+)([0-9][0-9]?):([0-9][0-9]):([0-9][0-9])(?:\\.([0-9]*))?(?:[ \\t]*(Z|([-+])([0-9][0-9]?)(?::([0-9][0-9]))?))?$");function vi(n){return n===null?!1:xe.exec(n)!==null||ke.exec(n)!==null}function xi(n){var e,t,i,r,o,a,s,h=0,l=null,d,c,p;if(e=xe.exec(n),e===null&&(e=ke.exec(n)),e===null)throw new Error("Date resolve error");if(t=+e[1],i=+e[2]-1,r=+e[3],!e[4])return new Date(Date.UTC(t,i,r));if(o=+e[4],a=+e[5],s=+e[6],e[7]){for(h=e[7].slice(0,3);h.length<3;)h+="0";h=+h}return e[9]&&(d=+e[10],c=+(e[11]||0),l=(d*60+c)*6e4,e[9]==="-"&&(l=-l)),p=new Date(Date.UTC(t,i,r,o,a,s,h)),l&&p.setTime(p.getTime()-l),p}function ki(n){return n.toISOString()}var be=new b("tag:yaml.org,2002:timestamp",{kind:"scalar",resolve:vi,construct:xi,instanceOf:Date,represent:ki});function bi(n){return n==="<<"||n===null}var Ie=new b("tag:yaml.org,2002:merge",{kind:"scalar",resolve:bi}),Pn=`ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=
+\r`;function Ii(n){if(n===null)return!1;var e,t,i=0,r=n.length,o=Pn;for(t=0;t<r;t++)if(e=o.indexOf(n.charAt(t)),!(e>64)){if(e<0)return!1;i+=6}return i%8===0}function Ai(n){var e,t,i=n.replace(/[\r\n=]/g,""),r=i.length,o=Pn,a=0,s=[];for(e=0;e<r;e++)e%4===0&&e&&(s.push(a>>16&255),s.push(a>>8&255),s.push(a&255)),a=a<<6|o.indexOf(i.charAt(e));return t=r%4*6,t===0?(s.push(a>>16&255),s.push(a>>8&255),s.push(a&255)):t===18?(s.push(a>>10&255),s.push(a>>2&255)):t===12&&s.push(a>>4&255),new Uint8Array(s)}function _i(n){var e="",t=0,i,r,o=n.length,a=Pn;for(i=0;i<o;i++)i%3===0&&i&&(e+=a[t>>18&63],e+=a[t>>12&63],e+=a[t>>6&63],e+=a[t&63]),t=(t<<8)+n[i];return r=o%3,r===0?(e+=a[t>>18&63],e+=a[t>>12&63],e+=a[t>>6&63],e+=a[t&63]):r===2?(e+=a[t>>10&63],e+=a[t>>4&63],e+=a[t<<2&63],e+=a[64]):r===1&&(e+=a[t>>2&63],e+=a[t<<4&63],e+=a[64],e+=a[64]),e}function Si(n){return Object.prototype.toString.call(n)==="[object Uint8Array]"}var Ae=new b("tag:yaml.org,2002:binary",{kind:"scalar",resolve:Ii,construct:Ai,predicate:Si,represent:_i}),Ti=Object.prototype.hasOwnProperty,Ci=Object.prototype.toString;function Ei(n){if(n===null)return!0;var e=[],t,i,r,o,a,s=n;for(t=0,i=s.length;t<i;t+=1){if(r=s[t],a=!1,Ci.call(r)!=="[object Object]")return!1;for(o in r)if(Ti.call(r,o))if(!a)a=!0;else return!1;if(!a)return!1;if(e.indexOf(o)===-1)e.push(o);else return!1}return!0}function Di(n){return n!==null?n:[]}var _e=new b("tag:yaml.org,2002:omap",{kind:"sequence",resolve:Ei,construct:Di}),Pi=Object.prototype.toString;function Oi(n){if(n===null)return!0;var e,t,i,r,o,a=n;for(o=new Array(a.length),e=0,t=a.length;e<t;e+=1){if(i=a[e],Pi.call(i)!=="[object Object]"||(r=Object.keys(i),r.length!==1))return!1;o[e]=[r[0],i[r[0]]]}return!0}function Li(n){if(n===null)return[];var e,t,i,r,o,a=n;for(o=new Array(a.length),e=0,t=a.length;e<t;e+=1)i=a[e],r=Object.keys(i),o[e]=[r[0],i[r[0]]];return o}var Se=new b("tag:yaml.org,2002:pairs",{kind:"sequence",resolve:Oi,construct:Li}),Mi=Object.prototype.hasOwnProperty;function Ri(n){if(n===null)return!0;var e,t=n;for(e in t)if(Mi.call(t,e)&&t[e]!==null)return!1;return!0}function Ni(n){return n!==null?n:{}}var Te=new b("tag:yaml.org,2002:set",{kind:"mapping",resolve:Ri,construct:Ni}),On=ve.extend({implicit:[be,Ie],explicit:[Ae,_e,Se,Te]}),N=Object.prototype.hasOwnProperty,rn=1,Ce=2,Ee=3,an=4,gn=1,Hi=2,Bn=3,Wi=/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F-\x84\x86-\x9F\uFFFE\uFFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF]/,Fi=/[\x85\u2028\u2029]/,Yi=/[,\[\]\{\}]/,De=/^(?:!|!!|![a-z\-]+!)$/i,Pe=/^(?:!|[^,\[\]\{\}])(?:%[0-9a-f]{2}|[0-9a-z\-#;\/\?:@&=\+\$,_\.!~\*'\(\)\[\]])*$/i;function Un(n){return Object.prototype.toString.call(n)}function D(n){return n===10||n===13}function W(n){return n===9||n===32}function S(n){return n===9||n===32||n===10||n===13}function q(n){return n===44||n===91||n===93||n===123||n===125}function qi(n){var e;return 48<=n&&n<=57?n-48:(e=n|32,97<=e&&e<=102?e-97+10:-1)}function Bi(n){return n===120?2:n===117?4:n===85?8:0}function Ui(n){return 48<=n&&n<=57?n-48:-1}function Gn(n){return n===48?"\0":n===97?"\x07":n===98?"\b":n===116||n===9?"	":n===110?`
+`:n===118?"\v":n===102?"\f":n===114?"\r":n===101?"\x1B":n===32?" ":n===34?'"':n===47?"/":n===92?"\\":n===78?"":n===95?" ":n===76?"\u2028":n===80?"\u2029":""}function Gi(n){return n<=65535?String.fromCharCode(n):String.fromCharCode((n-65536>>10)+55296,(n-65536&1023)+56320)}function Oe(n,e,t){e==="__proto__"?Object.defineProperty(n,e,{configurable:!0,enumerable:!0,writable:!0,value:t}):n[e]=t}var Le=new Array(256),Me=new Array(256);for(var F=0;F<256;F++)Le[F]=Gn(F)?1:0,Me[F]=Gn(F);function Ki(n,e){this.input=n,this.filename=e.filename||null,this.schema=e.schema||On,this.onWarning=e.onWarning||null,this.legacy=e.legacy||!1,this.json=e.json||!1,this.listener=e.listener||null,this.implicitTypes=this.schema.compiledImplicit,this.typeMap=this.schema.compiledTypeMap,this.length=n.length,this.position=0,this.line=0,this.lineStart=0,this.lineIndent=0,this.firstTabInLine=-1,this.documents=[]}function Re(n,e){var t={name:n.filename,buffer:n.input.slice(0,-1),position:n.position,line:n.line,column:n.position-n.lineStart};return t.snippet=Qt(t),new _(e,t)}function g(n,e){throw Re(n,e)}function on(n,e){n.onWarning&&n.onWarning.call(null,Re(n,e))}var Kn={YAML:function(e,t,i){var r,o,a;e.version!==null&&g(e,"duplication of %YAML directive"),i.length!==1&&g(e,"YAML directive accepts exactly one argument"),r=/^([0-9]+)\.([0-9]+)$/.exec(i[0]),r===null&&g(e,"ill-formed argument of the YAML directive"),o=parseInt(r[1],10),a=parseInt(r[2],10),o!==1&&g(e,"unacceptable YAML version of the document"),e.version=i[0],e.checkLineBreaks=a<2,a!==1&&a!==2&&on(e,"unsupported YAML version of the document")},TAG:function(e,t,i){var r,o;i.length!==2&&g(e,"TAG directive accepts exactly two arguments"),r=i[0],o=i[1],De.test(r)||g(e,"ill-formed tag handle (first argument) of the TAG directive"),N.call(e.tagMap,r)&&g(e,'there is a previously declared suffix for "'+r+'" tag handle'),Pe.test(o)||g(e,"ill-formed tag prefix (second argument) of the TAG directive");try{o=decodeURIComponent(o)}catch{g(e,"tag prefix is malformed: "+o)}e.tagMap[r]=o}};function R(n,e,t,i){var r,o,a,s;if(e<t){if(s=n.input.slice(e,t),i)for(r=0,o=s.length;r<o;r+=1)a=s.charCodeAt(r),a===9||32<=a&&a<=1114111||g(n,"expected valid JSON character");else Wi.test(s)&&g(n,"the stream contains non-printable characters");n.result+=s}}function Vn(n,e,t,i){var r,o,a,s;for(x.isObject(t)||g(n,"cannot merge mappings; the provided source object is unacceptable"),r=Object.keys(t),a=0,s=r.length;a<s;a+=1)o=r[a],N.call(e,o)||(Oe(e,o,t[o]),i[o]=!0)}function B(n,e,t,i,r,o,a,s,h){var l,d;if(Array.isArray(r))for(r=Array.prototype.slice.call(r),l=0,d=r.length;l<d;l+=1)Array.isArray(r[l])&&g(n,"nested arrays are not supported inside keys"),typeof r=="object"&&Un(r[l])==="[object Object]"&&(r[l]="[object Object]");if(typeof r=="object"&&Un(r)==="[object Object]"&&(r="[object Object]"),r=String(r),e===null&&(e={}),i==="tag:yaml.org,2002:merge")if(Array.isArray(o))for(l=0,d=o.length;l<d;l+=1)Vn(n,e,o[l],t);else Vn(n,e,o,t);else!n.json&&!N.call(t,r)&&N.call(e,r)&&(n.line=a||n.line,n.lineStart=s||n.lineStart,n.position=h||n.position,g(n,"duplicated mapping key")),Oe(e,r,o),delete t[r];return e}function Ln(n){var e;e=n.input.charCodeAt(n.position),e===10?n.position++:e===13?(n.position++,n.input.charCodeAt(n.position)===10&&n.position++):g(n,"a line break is expected"),n.line+=1,n.lineStart=n.position,n.firstTabInLine=-1}function v(n,e,t){for(var i=0,r=n.input.charCodeAt(n.position);r!==0;){for(;W(r);)r===9&&n.firstTabInLine===-1&&(n.firstTabInLine=n.position),r=n.input.charCodeAt(++n.position);if(e&&r===35)do r=n.input.charCodeAt(++n.position);while(r!==10&&r!==13&&r!==0);if(D(r))for(Ln(n),r=n.input.charCodeAt(n.position),i++,n.lineIndent=0;r===32;)n.lineIndent++,r=n.input.charCodeAt(++n.position);else break}return t!==-1&&i!==0&&n.lineIndent<t&&on(n,"deficient indentation"),i}function ln(n){var e=n.position,t;return t=n.input.charCodeAt(e),!!((t===45||t===46)&&t===n.input.charCodeAt(e+1)&&t===n.input.charCodeAt(e+2)&&(e+=3,t=n.input.charCodeAt(e),t===0||S(t)))}function Mn(n,e){e===1?n.result+=" ":e>1&&(n.result+=x.repeat(`
+`,e-1))}function Vi(n,e,t){var i,r,o,a,s,h,l,d,c=n.kind,p=n.result,u;if(u=n.input.charCodeAt(n.position),S(u)||q(u)||u===35||u===38||u===42||u===33||u===124||u===62||u===39||u===34||u===37||u===64||u===96||(u===63||u===45)&&(r=n.input.charCodeAt(n.position+1),S(r)||t&&q(r)))return!1;for(n.kind="scalar",n.result="",o=a=n.position,s=!1;u!==0;){if(u===58){if(r=n.input.charCodeAt(n.position+1),S(r)||t&&q(r))break}else if(u===35){if(i=n.input.charCodeAt(n.position-1),S(i))break}else{if(n.position===n.lineStart&&ln(n)||t&&q(u))break;if(D(u))if(h=n.line,l=n.lineStart,d=n.lineIndent,v(n,!1,-1),n.lineIndent>=e){s=!0,u=n.input.charCodeAt(n.position);continue}else{n.position=a,n.line=h,n.lineStart=l,n.lineIndent=d;break}}s&&(R(n,o,a,!1),Mn(n,n.line-h),o=a=n.position,s=!1),W(u)||(a=n.position+1),u=n.input.charCodeAt(++n.position)}return R(n,o,a,!1),n.result?!0:(n.kind=c,n.result=p,!1)}function Ji(n,e){var t,i,r;if(t=n.input.charCodeAt(n.position),t!==39)return!1;for(n.kind="scalar",n.result="",n.position++,i=r=n.position;(t=n.input.charCodeAt(n.position))!==0;)if(t===39)if(R(n,i,n.position,!0),t=n.input.charCodeAt(++n.position),t===39)i=n.position,n.position++,r=n.position;else return!0;else D(t)?(R(n,i,r,!0),Mn(n,v(n,!1,e)),i=r=n.position):n.position===n.lineStart&&ln(n)?g(n,"unexpected end of the document within a single quoted scalar"):(n.position++,r=n.position);g(n,"unexpected end of the stream within a single quoted scalar")}function Xi(n,e){var t,i,r,o,a,s;if(s=n.input.charCodeAt(n.position),s!==34)return!1;for(n.kind="scalar",n.result="",n.position++,t=i=n.position;(s=n.input.charCodeAt(n.position))!==0;){if(s===34)return R(n,t,n.position,!0),n.position++,!0;if(s===92){if(R(n,t,n.position,!0),s=n.input.charCodeAt(++n.position),D(s))v(n,!1,e);else if(s<256&&Le[s])n.result+=Me[s],n.position++;else if((a=Bi(s))>0){for(r=a,o=0;r>0;r--)s=n.input.charCodeAt(++n.position),(a=qi(s))>=0?o=(o<<4)+a:g(n,"expected hexadecimal character");n.result+=Gi(o),n.position++}else g(n,"unknown escape sequence");t=i=n.position}else D(s)?(R(n,t,i,!0),Mn(n,v(n,!1,e)),t=i=n.position):n.position===n.lineStart&&ln(n)?g(n,"unexpected end of the document within a double quoted scalar"):(n.position++,i=n.position)}g(n,"unexpected end of the stream within a double quoted scalar")}function Qi(n,e){var t=!0,i,r,o,a=n.tag,s,h=n.anchor,l,d,c,p,u,j=Object.create(null),y,m,z,f;if(f=n.input.charCodeAt(n.position),f===91)d=93,u=!1,s=[];else if(f===123)d=125,u=!0,s={};else return!1;for(n.anchor!==null&&(n.anchorMap[n.anchor]=s),f=n.input.charCodeAt(++n.position);f!==0;){if(v(n,!0,e),f=n.input.charCodeAt(n.position),f===d)return n.position++,n.tag=a,n.anchor=h,n.kind=u?"mapping":"sequence",n.result=s,!0;t?f===44&&g(n,"expected the node content, but found ','"):g(n,"missed comma between flow collection entries"),m=y=z=null,c=p=!1,f===63&&(l=n.input.charCodeAt(n.position+1),S(l)&&(c=p=!0,n.position++,v(n,!0,e))),i=n.line,r=n.lineStart,o=n.position,U(n,e,rn,!1,!0),m=n.tag,y=n.result,v(n,!0,e),f=n.input.charCodeAt(n.position),(p||n.line===i)&&f===58&&(c=!0,f=n.input.charCodeAt(++n.position),v(n,!0,e),U(n,e,rn,!1,!0),z=n.result),u?B(n,s,j,m,y,z,i,r,o):c?s.push(B(n,null,j,m,y,z,i,r,o)):s.push(y),v(n,!0,e),f=n.input.charCodeAt(n.position),f===44?(t=!0,f=n.input.charCodeAt(++n.position)):t=!1}g(n,"unexpected end of the stream within a flow collection")}function $i(n,e){var t,i,r=gn,o=!1,a=!1,s=e,h=0,l=!1,d,c;if(c=n.input.charCodeAt(n.position),c===124)i=!1;else if(c===62)i=!0;else return!1;for(n.kind="scalar",n.result="";c!==0;)if(c=n.input.charCodeAt(++n.position),c===43||c===45)gn===r?r=c===43?Bn:Hi:g(n,"repeat of a chomping mode identifier");else if((d=Ui(c))>=0)d===0?g(n,"bad explicit indentation width of a block scalar; it cannot be less than one"):a?g(n,"repeat of an indentation width identifier"):(s=e+d-1,a=!0);else break;if(W(c)){do c=n.input.charCodeAt(++n.position);while(W(c));if(c===35)do c=n.input.charCodeAt(++n.position);while(!D(c)&&c!==0)}for(;c!==0;){for(Ln(n),n.lineIndent=0,c=n.input.charCodeAt(n.position);(!a||n.lineIndent<s)&&c===32;)n.lineIndent++,c=n.input.charCodeAt(++n.position);if(!a&&n.lineIndent>s&&(s=n.lineIndent),D(c)){h++;continue}if(n.lineIndent<s){r===Bn?n.result+=x.repeat(`
+`,o?1+h:h):r===gn&&o&&(n.result+=`
+`);break}for(i?W(c)?(l=!0,n.result+=x.repeat(`
+`,o?1+h:h)):l?(l=!1,n.result+=x.repeat(`
+`,h+1)):h===0?o&&(n.result+=" "):n.result+=x.repeat(`
+`,h):n.result+=x.repeat(`
+`,o?1+h:h),o=!0,a=!0,h=0,t=n.position;!D(c)&&c!==0;)c=n.input.charCodeAt(++n.position);R(n,t,n.position,!1)}return!0}function Jn(n,e){var t,i=n.tag,r=n.anchor,o=[],a,s=!1,h;if(n.firstTabInLine!==-1)return!1;for(n.anchor!==null&&(n.anchorMap[n.anchor]=o),h=n.input.charCodeAt(n.position);h!==0&&(n.firstTabInLine!==-1&&(n.position=n.firstTabInLine,g(n,"tab characters must not be used in indentation")),!(h!==45||(a=n.input.charCodeAt(n.position+1),!S(a))));){if(s=!0,n.position++,v(n,!0,-1)&&n.lineIndent<=e){o.push(null),h=n.input.charCodeAt(n.position);continue}if(t=n.line,U(n,e,Ee,!1,!0),o.push(n.result),v(n,!0,-1),h=n.input.charCodeAt(n.position),(n.line===t||n.lineIndent>e)&&h!==0)g(n,"bad indentation of a sequence entry");else if(n.lineIndent<e)break}return s?(n.tag=i,n.anchor=r,n.kind="sequence",n.result=o,!0):!1}function Zi(n,e,t){var i,r,o,a,s,h,l=n.tag,d=n.anchor,c={},p=Object.create(null),u=null,j=null,y=null,m=!1,z=!1,f;if(n.firstTabInLine!==-1)return!1;for(n.anchor!==null&&(n.anchorMap[n.anchor]=c),f=n.input.charCodeAt(n.position);f!==0;){if(!m&&n.firstTabInLine!==-1&&(n.position=n.firstTabInLine,g(n,"tab characters must not be used in indentation")),i=n.input.charCodeAt(n.position+1),o=n.line,(f===63||f===58)&&S(i))f===63?(m&&(B(n,c,p,u,j,null,a,s,h),u=j=y=null),z=!0,m=!0,r=!0):m?(m=!1,r=!0):g(n,"incomplete explicit mapping pair; a key node is missed; or followed by a non-tabulated empty line"),n.position+=1,f=i;else{if(a=n.line,s=n.lineStart,h=n.position,!U(n,t,Ce,!1,!0))break;if(n.line===o){for(f=n.input.charCodeAt(n.position);W(f);)f=n.input.charCodeAt(++n.position);if(f===58)f=n.input.charCodeAt(++n.position),S(f)||g(n,"a whitespace character is expected after the key-value separator within a block mapping"),m&&(B(n,c,p,u,j,null,a,s,h),u=j=y=null),z=!0,m=!1,r=!1,u=n.tag,j=n.result;else if(z)g(n,"can not read an implicit mapping pair; a colon is missed");else return n.tag=l,n.anchor=d,!0}else if(z)g(n,"can not read a block mapping entry; a multiline key may not be an implicit key");else return n.tag=l,n.anchor=d,!0}if((n.line===o||n.lineIndent>e)&&(m&&(a=n.line,s=n.lineStart,h=n.position),U(n,e,an,!0,r)&&(m?j=n.result:y=n.result),m||(B(n,c,p,u,j,y,a,s,h),u=j=y=null),v(n,!0,-1),f=n.input.charCodeAt(n.position)),(n.line===o||n.lineIndent>e)&&f!==0)g(n,"bad indentation of a mapping entry");else if(n.lineIndent<e)break}return m&&B(n,c,p,u,j,null,a,s,h),z&&(n.tag=l,n.anchor=d,n.kind="mapping",n.result=c),z}function nr(n){var e,t=!1,i=!1,r,o,a;if(a=n.input.charCodeAt(n.position),a!==33)return!1;if(n.tag!==null&&g(n,"duplication of a tag property"),a=n.input.charCodeAt(++n.position),a===60?(t=!0,a=n.input.charCodeAt(++n.position)):a===33?(i=!0,r="!!",a=n.input.charCodeAt(++n.position)):r="!",e=n.position,t){do a=n.input.charCodeAt(++n.position);while(a!==0&&a!==62);n.position<n.length?(o=n.input.slice(e,n.position),a=n.input.charCodeAt(++n.position)):g(n,"unexpected end of the stream within a verbatim tag")}else{for(;a!==0&&!S(a);)a===33&&(i?g(n,"tag suffix cannot contain exclamation marks"):(r=n.input.slice(e-1,n.position+1),De.test(r)||g(n,"named tag handle cannot contain such characters"),i=!0,e=n.position+1)),a=n.input.charCodeAt(++n.position);o=n.input.slice(e,n.position),Yi.test(o)&&g(n,"tag suffix cannot contain flow indicator characters")}o&&!Pe.test(o)&&g(n,"tag name cannot contain such characters: "+o);try{o=decodeURIComponent(o)}catch{g(n,"tag name is malformed: "+o)}return t?n.tag=o:N.call(n.tagMap,r)?n.tag=n.tagMap[r]+o:r==="!"?n.tag="!"+o:r==="!!"?n.tag="tag:yaml.org,2002:"+o:g(n,'undeclared tag handle "'+r+'"'),!0}function er(n){var e,t;if(t=n.input.charCodeAt(n.position),t!==38)return!1;for(n.anchor!==null&&g(n,"duplication of an anchor property"),t=n.input.charCodeAt(++n.position),e=n.position;t!==0&&!S(t)&&!q(t);)t=n.input.charCodeAt(++n.position);return n.position===e&&g(n,"name of an anchor node must contain at least one character"),n.anchor=n.input.slice(e,n.position),!0}function tr(n){var e,t,i;if(i=n.input.charCodeAt(n.position),i!==42)return!1;for(i=n.input.charCodeAt(++n.position),e=n.position;i!==0&&!S(i)&&!q(i);)i=n.input.charCodeAt(++n.position);return n.position===e&&g(n,"name of an alias node must contain at least one character"),t=n.input.slice(e,n.position),N.call(n.anchorMap,t)||g(n,'unidentified alias "'+t+'"'),n.result=n.anchorMap[t],v(n,!0,-1),!0}function U(n,e,t,i,r){var o,a,s,h=1,l=!1,d=!1,c,p,u,j,y,m;if(n.listener!==null&&n.listener("open",n),n.tag=null,n.anchor=null,n.kind=null,n.result=null,o=a=s=an===t||Ee===t,i&&v(n,!0,-1)&&(l=!0,n.lineIndent>e?h=1:n.lineIndent===e?h=0:n.lineIndent<e&&(h=-1)),h===1)for(;nr(n)||er(n);)v(n,!0,-1)?(l=!0,s=o,n.lineIndent>e?h=1:n.lineIndent===e?h=0:n.lineIndent<e&&(h=-1)):s=!1;if(s&&(s=l||r),(h===1||an===t)&&(rn===t||Ce===t?y=e:y=e+1,m=n.position-n.lineStart,h===1?s&&(Jn(n,m)||Zi(n,m,y))||Qi(n,y)?d=!0:(a&&$i(n,y)||Ji(n,y)||Xi(n,y)?d=!0:tr(n)?(d=!0,(n.tag!==null||n.anchor!==null)&&g(n,"alias node should not have any properties")):Vi(n,y,rn===t)&&(d=!0,n.tag===null&&(n.tag="?")),n.anchor!==null&&(n.anchorMap[n.anchor]=n.result)):h===0&&(d=s&&Jn(n,m))),n.tag===null)n.anchor!==null&&(n.anchorMap[n.anchor]=n.result);else if(n.tag==="?"){for(n.result!==null&&n.kind!=="scalar"&&g(n,'unacceptable node kind for !<?> tag; it should be "scalar", not "'+n.kind+'"'),c=0,p=n.implicitTypes.length;c<p;c+=1)if(j=n.implicitTypes[c],j.resolve(n.result)){n.result=j.construct(n.result),n.tag=j.tag,n.anchor!==null&&(n.anchorMap[n.anchor]=n.result);break}}else if(n.tag!=="!"){if(N.call(n.typeMap[n.kind||"fallback"],n.tag))j=n.typeMap[n.kind||"fallback"][n.tag];else for(j=null,u=n.typeMap.multi[n.kind||"fallback"],c=0,p=u.length;c<p;c+=1)if(n.tag.slice(0,u[c].tag.length)===u[c].tag){j=u[c];break}j||g(n,"unknown tag !<"+n.tag+">"),n.result!==null&&j.kind!==n.kind&&g(n,"unacceptable node kind for !<"+n.tag+'> tag; it should be "'+j.kind+'", not "'+n.kind+'"'),j.resolve(n.result,n.tag)?(n.result=j.construct(n.result,n.tag),n.anchor!==null&&(n.anchorMap[n.anchor]=n.result)):g(n,"cannot resolve a node with !<"+n.tag+"> explicit tag")}return n.listener!==null&&n.listener("close",n),n.tag!==null||n.anchor!==null||d}function ir(n){var e=n.position,t,i,r,o=!1,a;for(n.version=null,n.checkLineBreaks=n.legacy,n.tagMap=Object.create(null),n.anchorMap=Object.create(null);(a=n.input.charCodeAt(n.position))!==0&&(v(n,!0,-1),a=n.input.charCodeAt(n.position),!(n.lineIndent>0||a!==37));){for(o=!0,a=n.input.charCodeAt(++n.position),t=n.position;a!==0&&!S(a);)a=n.input.charCodeAt(++n.position);for(i=n.input.slice(t,n.position),r=[],i.length<1&&g(n,"directive name must not be less than one character in length");a!==0;){for(;W(a);)a=n.input.charCodeAt(++n.position);if(a===35){do a=n.input.charCodeAt(++n.position);while(a!==0&&!D(a));break}if(D(a))break;for(t=n.position;a!==0&&!S(a);)a=n.input.charCodeAt(++n.position);r.push(n.input.slice(t,n.position))}a!==0&&Ln(n),N.call(Kn,i)?Kn[i](n,i,r):on(n,'unknown document directive "'+i+'"')}if(v(n,!0,-1),n.lineIndent===0&&n.input.charCodeAt(n.position)===45&&n.input.charCodeAt(n.position+1)===45&&n.input.charCodeAt(n.position+2)===45?(n.position+=3,v(n,!0,-1)):o&&g(n,"directives end mark is expected"),U(n,n.lineIndent-1,an,!1,!0),v(n,!0,-1),n.checkLineBreaks&&Fi.test(n.input.slice(e,n.position))&&on(n,"non-ASCII line breaks are interpreted as content"),n.documents.push(n.result),n.position===n.lineStart&&ln(n)){n.input.charCodeAt(n.position)===46&&(n.position+=3,v(n,!0,-1));return}if(n.position<n.length-1)g(n,"end of the stream or a document separator is expected");else return}function Ne(n,e){n=String(n),e=e||{},n.length!==0&&(n.charCodeAt(n.length-1)!==10&&n.charCodeAt(n.length-1)!==13&&(n+=`
+`),n.charCodeAt(0)===65279&&(n=n.slice(1)));var t=new Ki(n,e),i=n.indexOf("\0");for(i!==-1&&(t.position=i,g(t,"null byte is not allowed in input")),t.input+="\0";t.input.charCodeAt(t.position)===32;)t.lineIndent+=1,t.position+=1;for(;t.position<t.length-1;)ir(t);return t.documents}function rr(n,e,t){e!==null&&typeof e=="object"&&typeof t>"u"&&(t=e,e=null);var i=Ne(n,t);if(typeof e!="function")return i;for(var r=0,o=i.length;r<o;r+=1)e(i[r])}function ar(n,e){var t=Ne(n,e);if(t.length!==0){if(t.length===1)return t[0];throw new _("expected a single document in the stream, but found more")}}var or=rr,sr=ar,He={loadAll:or,load:sr},We=Object.prototype.toString,Fe=Object.prototype.hasOwnProperty,Rn=65279,hr=9,X=10,lr=13,dr=32,cr=33,ur=34,Sn=35,pr=37,gr=38,mr=39,zr=42,Ye=44,fr=45,sn=58,jr=61,yr=62,wr=63,vr=64,qe=91,Be=93,xr=96,Ue=123,kr=124,Ge=125,A={};A[0]="\\0";A[7]="\\a";A[8]="\\b";A[9]="\\t";A[10]="\\n";A[11]="\\v";A[12]="\\f";A[13]="\\r";A[27]="\\e";A[34]='\\"';A[92]="\\\\";A[133]="\\N";A[160]="\\_";A[8232]="\\L";A[8233]="\\P";var br=["y","Y","yes","Yes","YES","on","On","ON","n","N","no","No","NO","off","Off","OFF"],Ir=/^[-+]?[0-9_]+(?::[0-9_]+)+(?:\.[0-9_]*)?$/;function Ar(n,e){var t,i,r,o,a,s,h;if(e===null)return{};for(t={},i=Object.keys(e),r=0,o=i.length;r<o;r+=1)a=i[r],s=String(e[a]),a.slice(0,2)==="!!"&&(a="tag:yaml.org,2002:"+a.slice(2)),h=n.compiledTypeMap.fallback[a],h&&Fe.call(h.styleAliases,s)&&(s=h.styleAliases[s]),t[a]=s;return t}function _r(n){var e,t,i;if(e=n.toString(16).toUpperCase(),n<=255)t="x",i=2;else if(n<=65535)t="u",i=4;else if(n<=4294967295)t="U",i=8;else throw new _("code point within a string may not be greater than 0xFFFFFFFF");return"\\"+t+x.repeat("0",i-e.length)+e}var Sr=1,Q=2;function Tr(n){this.schema=n.schema||On,this.indent=Math.max(1,n.indent||2),this.noArrayIndent=n.noArrayIndent||!1,this.skipInvalid=n.skipInvalid||!1,this.flowLevel=x.isNothing(n.flowLevel)?-1:n.flowLevel,this.styleMap=Ar(this.schema,n.styles||null),this.sortKeys=n.sortKeys||!1,this.lineWidth=n.lineWidth||80,this.noRefs=n.noRefs||!1,this.noCompatMode=n.noCompatMode||!1,this.condenseFlow=n.condenseFlow||!1,this.quotingType=n.quotingType==='"'?Q:Sr,this.forceQuotes=n.forceQuotes||!1,this.replacer=typeof n.replacer=="function"?n.replacer:null,this.implicitTypes=this.schema.compiledImplicit,this.explicitTypes=this.schema.compiledExplicit,this.tag=null,this.result="",this.duplicates=[],this.usedDuplicates=null}function Xn(n,e){for(var t=x.repeat(" ",e),i=0,r=-1,o="",a,s=n.length;i<s;)r=n.indexOf(`
+`,i),r===-1?(a=n.slice(i),i=s):(a=n.slice(i,r+1),i=r+1),a.length&&a!==`
+`&&(o+=t),o+=a;return o}function Tn(n,e){return`
+`+x.repeat(" ",n.indent*e)}function Cr(n,e){var t,i,r;for(t=0,i=n.implicitTypes.length;t<i;t+=1)if(r=n.implicitTypes[t],r.resolve(e))return!0;return!1}function hn(n){return n===dr||n===hr}function $(n){return 32<=n&&n<=126||161<=n&&n<=55295&&n!==8232&&n!==8233||57344<=n&&n<=65533&&n!==Rn||65536<=n&&n<=1114111}function Qn(n){return $(n)&&n!==Rn&&n!==lr&&n!==X}function $n(n,e,t){var i=Qn(n),r=i&&!hn(n);return(t?i:i&&n!==Ye&&n!==qe&&n!==Be&&n!==Ue&&n!==Ge)&&n!==Sn&&!(e===sn&&!r)||Qn(e)&&!hn(e)&&n===Sn||e===sn&&r}function Er(n){return $(n)&&n!==Rn&&!hn(n)&&n!==fr&&n!==wr&&n!==sn&&n!==Ye&&n!==qe&&n!==Be&&n!==Ue&&n!==Ge&&n!==Sn&&n!==gr&&n!==zr&&n!==cr&&n!==kr&&n!==jr&&n!==yr&&n!==mr&&n!==ur&&n!==pr&&n!==vr&&n!==xr}function Dr(n){return!hn(n)&&n!==sn}function V(n,e){var t=n.charCodeAt(e),i;return t>=55296&&t<=56319&&e+1<n.length&&(i=n.charCodeAt(e+1),i>=56320&&i<=57343)?(t-55296)*1024+i-56320+65536:t}function Ke(n){var e=/^\n* /;return e.test(n)}var Ve=1,Cn=2,Je=3,Xe=4,Y=5;function Pr(n,e,t,i,r,o,a,s){var h,l=0,d=null,c=!1,p=!1,u=i!==-1,j=-1,y=Er(V(n,0))&&Dr(V(n,n.length-1));if(e||a)for(h=0;h<n.length;l>=65536?h+=2:h++){if(l=V(n,h),!$(l))return Y;y=y&&$n(l,d,s),d=l}else{for(h=0;h<n.length;l>=65536?h+=2:h++){if(l=V(n,h),l===X)c=!0,u&&(p=p||h-j-1>i&&n[j+1]!==" ",j=h);else if(!$(l))return Y;y=y&&$n(l,d,s),d=l}p=p||u&&h-j-1>i&&n[j+1]!==" "}return!c&&!p?y&&!a&&!r(n)?Ve:o===Q?Y:Cn:t>9&&Ke(n)?Y:a?o===Q?Y:Cn:p?Xe:Je}function Or(n,e,t,i,r){n.dump=(function(){if(e.length===0)return n.quotingType===Q?'""':"''";if(!n.noCompatMode&&(br.indexOf(e)!==-1||Ir.test(e)))return n.quotingType===Q?'"'+e+'"':"'"+e+"'";var o=n.indent*Math.max(1,t),a=n.lineWidth===-1?-1:Math.max(Math.min(n.lineWidth,40),n.lineWidth-o),s=i||n.flowLevel>-1&&t>=n.flowLevel;function h(l){return Cr(n,l)}switch(Pr(e,s,n.indent,a,h,n.quotingType,n.forceQuotes&&!i,r)){case Ve:return e;case Cn:return"'"+e.replace(/'/g,"''")+"'";case Je:return"|"+Zn(e,n.indent)+ne(Xn(e,o));case Xe:return">"+Zn(e,n.indent)+ne(Xn(Lr(e,a),o));case Y:return'"'+Mr(e)+'"';default:throw new _("impossible error: invalid scalar style")}})()}function Zn(n,e){var t=Ke(n)?String(e):"",i=n[n.length-1]===`
+`,r=i&&(n[n.length-2]===`
 `||n===`
-`),o=r?"+":a?"":"-";return t+o+`
-`}function Ee(n){return n[n.length-1]===`
-`?n.slice(0,-1):n}function So(n,e){for(var t=/(\n+)([^\n]*)/g,a=(function(){var h=n.indexOf(`
-`);return h=h!==-1?h:n.length,t.lastIndex=h,Le(n.slice(0,h),e)})(),r=n[0]===`
-`||n[0]===" ",o,s;s=t.exec(n);){var l=s[1],d=s[2];o=d[0]===" ",a+=l+(!r&&!o&&d!==""?`
-`:"")+Le(d,e),r=o}return a}function Le(n,e){if(n===""||n[0]===" ")return n;for(var t=/ [^ ]/g,a,r=0,o,s=0,l=0,d="";a=t.exec(n);)l=a.index,l-r>e&&(o=s>r?s:l,d+=`
-`+n.slice(r,o),r=o+1),s=l;return d+=`
-`,n.length-r>e&&s>r?d+=n.slice(r,s)+`
-`+n.slice(s+1):d+=n.slice(r),d.slice(1)}function Co(n){for(var e="",t=0,a,r=0;r<n.length;t>=65536?r+=2:r++)t=bn(n,r),a=V[t],!a&&Sn(t)?(e+=n[r],t>=65536&&(e+=n[r+1])):e+=a||vo(t);return e}function Ao(n,e,t){var a="",r=n.tag,o,s,l;for(o=0,s=t.length;o<s;o+=1)l=t[o],n.replacer&&(l=n.replacer.call(t,String(o),l)),(ln(n,e,l,!1,!1)||typeof l>"u"&&ln(n,e,null,!1,!1))&&(a!==""&&(a+=","+(n.condenseFlow?"":" ")),a+=n.dump);n.tag=r,n.dump="["+a+"]"}function Me(n,e,t,a){var r="",o=n.tag,s,l,d;for(s=0,l=t.length;s<l;s+=1)d=t[s],n.replacer&&(d=n.replacer.call(t,String(s),d)),(ln(n,e+1,d,!0,!0,!1,!0)||typeof d>"u"&&ln(n,e+1,null,!0,!0,!1,!0))&&((!a||r!=="")&&(r+=Xn(n,e)),n.dump&&In===n.dump.charCodeAt(0)?r+="-":r+="- ",r+=n.dump);n.tag=o,n.dump=r||"[]"}function To(n,e,t){var a="",r=n.tag,o=Object.keys(t),s,l,d,h,p;for(s=0,l=o.length;s<l;s+=1)p="",a!==""&&(p+=", "),n.condenseFlow&&(p+='"'),d=o[s],h=t[d],n.replacer&&(h=n.replacer.call(t,d,h)),ln(n,e,d,!1,!1)&&(n.dump.length>1024&&(p+="? "),p+=n.dump+(n.condenseFlow?'"':"")+":"+(n.condenseFlow?"":" "),ln(n,e,h,!1,!1)&&(p+=n.dump,a+=p));n.tag=r,n.dump="{"+a+"}"}function Eo(n,e,t,a){var r="",o=n.tag,s=Object.keys(t),l,d,h,p,m,g;if(n.sortKeys===!0)s.sort();else if(typeof n.sortKeys=="function")s.sort(n.sortKeys);else if(n.sortKeys)throw new J("sortKeys must be a boolean or a function");for(l=0,d=s.length;l<d;l+=1)g="",(!a||r!=="")&&(g+=Xn(n,e)),h=s[l],p=t[h],n.replacer&&(p=n.replacer.call(t,h,p)),ln(n,e+1,h,!0,!0,!0)&&(m=n.tag!==null&&n.tag!=="?"||n.dump&&n.dump.length>1024,m&&(n.dump&&In===n.dump.charCodeAt(0)?g+="?":g+="? "),g+=n.dump,m&&(g+=Xn(n,e)),ln(n,e+1,p,!0,m)&&(n.dump&&In===n.dump.charCodeAt(0)?g+=":":g+=": ",g+=n.dump,r+=g));n.tag=o,n.dump=r||"{}"}function Pe(n,e,t){var a,r,o,s,l,d;for(r=t?n.explicitTypes:n.implicitTypes,o=0,s=r.length;o<s;o+=1)if(l=r[o],(l.instanceOf||l.predicate)&&(!l.instanceOf||typeof e=="object"&&e instanceof l.instanceOf)&&(!l.predicate||l.predicate(e))){if(t?l.multi&&l.representName?n.tag=l.representName(e):n.tag=l.tag:n.tag="?",l.represent){if(d=n.styleMap[l.tag]||l.defaultStyle,yt.call(l.represent)==="[object Function]")a=l.represent(e,d);else if(xt.call(l.represent,d))a=l.represent[d](e,d);else throw new J("!<"+l.tag+'> tag resolver accepts not "'+d+'" style');n.dump=a}return!0}return!1}function ln(n,e,t,a,r,o,s){n.tag=null,n.dump=t,Pe(n,t,!1)||Pe(n,t,!0);var l=yt.call(n.dump),d=a,h;a&&(a=n.flowLevel<0||n.flowLevel>e);var p=l==="[object Object]"||l==="[object Array]",m,g;if(p&&(m=n.duplicates.indexOf(t),g=m!==-1),(n.tag!==null&&n.tag!=="?"||g||n.indent!==2&&e>0)&&(r=!1),g&&n.usedDuplicates[m])n.dump="*ref_"+m;else{if(p&&g&&!n.usedDuplicates[m]&&(n.usedDuplicates[m]=!0),l==="[object Object]")a&&Object.keys(n.dump).length!==0?(Eo(n,e,n.dump,r),g&&(n.dump="&ref_"+m+n.dump)):(To(n,e,n.dump),g&&(n.dump="&ref_"+m+" "+n.dump));else if(l==="[object Array]")a&&n.dump.length!==0?(n.noArrayIndent&&!s&&e>0?Me(n,e-1,n.dump,r):Me(n,e,n.dump,r),g&&(n.dump="&ref_"+m+n.dump)):(Ao(n,e,n.dump),g&&(n.dump="&ref_"+m+" "+n.dump));else if(l==="[object String]")n.tag!=="?"&&_o(n,n.dump,e,o,d);else{if(l==="[object Undefined]")return!1;if(n.skipInvalid)return!1;throw new J("unacceptable kind of an object to dump "+l)}n.tag!==null&&n.tag!=="?"&&(h=encodeURI(n.tag[0]==="!"?n.tag.slice(1):n.tag).replace(/!/g,"%21"),n.tag[0]==="!"?h="!"+h:h.slice(0,18)==="tag:yaml.org,2002:"?h="!!"+h.slice(18):h="!<"+h+">",n.dump=h+" "+n.dump)}return!0}function Lo(n,e){var t=[],a=[],r,o;for(ee(n,t,a),r=0,o=a.length;r<o;r+=1)e.duplicates.push(t[a[r]]);e.usedDuplicates=new Array(o)}function ee(n,e,t){var a,r,o;if(n!==null&&typeof n=="object")if(r=e.indexOf(n),r!==-1)t.indexOf(r)===-1&&t.push(r);else if(e.push(n),Array.isArray(n))for(r=0,o=n.length;r<o;r+=1)ee(n[r],e,t);else for(a=Object.keys(n),r=0,o=a.length;r<o;r+=1)ee(n[a[r]],e,t)}function Mo(n,e){e=e||{};var t=new jo(e);t.noRefs||Lo(n,t);var a=n;return t.replacer&&(a=t.replacer.call({"":a},"",a)),ln(t,0,a,!0,!0)?t.dump+`
-`:""}var Po=Mo,Ro={dump:Po};function he(n,e){return function(){throw new Error("Function yaml."+n+" is removed in js-yaml 4. Use yaml."+e+" instead, which is now safe by default.")}}var Wo=K,Oo=$e,No=Ue,Do=Je,Ho=Ze,Fo=ie,$o=ft.load,Yo=ft.loadAll,qo=Ro.dump,Bo=J,Uo={binary:rt,float:Ve,map:Be,null:Ge,pairs:ot,set:it,timestamp:et,bool:Ke,int:Qe,merge:tt,omap:at,seq:qe,str:Ye},Go=he("safeLoad","load"),Ko=he("safeLoadAll","loadAll"),Qo=he("safeDump","dump"),Vo={Type:Wo,Schema:Oo,FAILSAFE_SCHEMA:No,JSON_SCHEMA:Do,CORE_SCHEMA:Ho,DEFAULT_SCHEMA:Fo,load:$o,loadAll:Yo,dump:qo,YAMLException:Bo,types:Uo,safeLoad:Go,safeLoadAll:Ko,safeDump:Qo};const Jo=Object.assign({"./chapters/en/beginner/city-and-transportation.yml":er,"./chapters/en/beginner/clothes-and-shopping.yml":tr,"./chapters/en/beginner/family-and-friends.yml":rr,"./chapters/en/beginner/food-and-eating.yml":ar,"./chapters/en/beginner/health-and-body.yml":or,"./chapters/en/beginner/hobbies-and-free-time.yml":ir,"./chapters/en/beginner/home-and-living.yml":sr,"./chapters/en/beginner/morning-routine.yml":lr,"./chapters/en/beginner/time-and-schedules.yml":dr,"./chapters/en/beginner/weather-and-seasons.yml":hr,"./chapters/en/intermediate/03-future-and-plans.yml":ur,"./chapters/en/intermediate/04-experiences-and-achievements.yml":cr,"./chapters/en/intermediate/05-travel-problems.yml":pr,"./chapters/en/intermediate/06-opinions-and-disagreement.yml":gr,"./chapters/en/intermediate/07-describing-personality.yml":mr,"./chapters/en/intermediate/08-entertainment-and-reviews.yml":fr,"./chapters/en/intermediate/identity-and-background.yml":yr,"./chapters/en/intermediate/telling-stories.yml":xr,"./chapters/ja/beginner/comprehension-check.yml":vr,"./chapters/ja/beginner/me-and-you.yml":zr,"./chapters/ja/beginner/me-you-and-professionals.yml":jr,"./chapters/ja/beginner/mixed-practice-dialogue-flow.yml":wr,"./chapters/ja/beginner/negative-not-x.yml":br,"./chapters/ja/beginner/shadowing-speed-rhythm.yml":kr,"./chapters/ja/beginner/stating-facts.yml":Ir,"./chapters/ja/beginner/yes-no-questions.yml":_r,"./chapters/ja/foundation/hiragana-01-vowels-k.yml":Sr,"./chapters/ja/foundation/hiragana-02-s-t.yml":Cr,"./chapters/ja/intermediate/discussing-movies.yml":Ar});function Zo(n){try{return Vo.load(n)}catch(e){return console.error("Failed to parse chapter YAML:",e),null}}function Xo(n){const e=n.match(/\.\/chapters\/([a-z]{2})\//);return e?e[1]:null}function ni(n,e,t="en"){return n?.words?n.words.map((a,r)=>{const o=a.word[e]||a.word.en,s=a.word[t]||a.word.en;return{id:`${n.meta.id}_${a.id}`,word:o,nativeWord:s,meaning:a.description[e]||a.description.en,nativeMeaning:a.description[t]||a.description.en,example:a.sentence[e]||a.sentence.en,nativeExample:a.sentence[t]||a.sentence.en,phonetic:e==="en"?a.phonetic:void 0,reading:e==="ja"?a.reading:void 0}}):[]}function ei(){const n={};for(const[e,t]of Object.entries(Jo)){const a=Xo(e);if(!a)continue;const r=Zo(t);r?.meta&&(r.meta.targetLanguage=a,n[a]||(n[a]=[]),n[a].push(r))}for(const e of Object.keys(n))n[e].sort((t,a)=>(t.meta.order||999)-(a.meta.order||999));return n}let Un=null;function ti(){return Un||(Un=ei()),Un}function Ct(n="ja"){return ti()[n]||[]}function At(n="ja",e="en"){return Ct(n).map(a=>({id:a.meta.id,title:a.meta.title[e]||a.meta.title.en,description:a.meta.description[e]||a.meta.description.en,icon:a.meta.icon,level:a.meta.level,type:a.meta.type||"chapter",targetLanguage:a.meta.targetLanguage,wordCount:a.words?.length||0,characterCount:a.characters?.length||0,order:a.meta.order}))}function Tt(n="ja",e="beginner",t="en"){return At(n,t).filter(a=>a.level===e)}function ue(n,e="ja"){return Ct(e).find(a=>a.meta.id===n)}function Gn(n,e="ja",t="en"){const a=ue(n,e);return a?ni(a,e,t):[]}function ri(n,e="ja",t="en"){const a=ue(n,e);return a?.chat?.conversations?a.chat.conversations.map(r=>({id:r.id,title:r.title[e]||r.title.en,messages:r.messages.map(o=>({role:o.role,text:o.text[e]||o.text.en,nativeText:o.text[t]||o.text.en}))})):[]}function te(n="ja",e="en"){return At(n,e).filter(t=>t.level==="foundation")}function ai(n,e="ja",t="en"){const a=ue(n,e);return a?.characters?a.characters.map(r=>({id:`${a.meta.id}_${r.id}`,char:r.char,reading:r.reading,romaji:r.romaji,strokeCount:r.stroke_count,mnemonic:r.mnemonic?.[t]||r.mnemonic?.en,audioHint:r.audio_hint,tone:r.tone,toneDescription:r.tone_description?.[t]||r.tone_description?.en,row:r.row,examples:(r.examples||[]).map(o=>({word:o.word,reading:o.reading,meaning:o.meaning[t]||o.meaning.en}))})):[]}const Et="chatmate_preLessonProgress",Re={lessons:{},stats:{totalCharactersLearned:0,totalPreLessonsCompleted:0}};function oi(){try{const n=localStorage.getItem(Et);return n?JSON.parse(n):{...Re,lessons:{}}}catch(n){return console.error("Failed to load pre-lesson progress:",n),{...Re,lessons:{}}}}function ii(n){try{localStorage.setItem(Et,JSON.stringify(n))}catch(e){console.error("Failed to save pre-lesson progress:",e)}}const Q=k(oi());function Kn(n){return Q.value.lessons[n]||(Q.value.lessons[n]={charactersLearned:[],quizCompleted:!1,quizBestScore:0,matchingCompleted:!1}),Q.value.lessons[n]}function Tn(){ii(Q.value)}function si(){function n(v,z){const _=Kn(v);_.charactersLearned.includes(z)||(_.charactersLearned.push(z),Q.value.stats.totalCharactersLearned++,Tn())}function e(v,z){return Q.value.lessons[v]?.charactersLearned?.includes(z)||!1}function t(v){return Q.value.lessons[v]?.charactersLearned||[]}function a(v,z,_){if(_===0)return{percentage:0,passed:!1};const j=Kn(v),S=Math.round(z/_*100);if(S>j.quizBestScore&&(j.quizBestScore=S),S>=70){const L=!j.quizCompleted;j.quizCompleted=!0,L&&h()}return Tn(),{percentage:S,passed:S>=70}}function r(v){return Q.value.lessons[v]?.quizCompleted||!1}function o(v){return Q.value.lessons[v]?.quizBestScore||0}function s(v){const z=Kn(v);z.matchingCompleted||(z.matchingCompleted=!0,Tn())}function l(v){return Q.value.lessons[v]?.matchingCompleted||!1}function d(v){const z=Q.value.lessons[v];return z?z.quizCompleted:!1}function h(){const v=Object.values(Q.value.lessons).filter(z=>z.quizCompleted).length;Q.value.stats.totalPreLessonsCompleted=v}function p(v="ja"){const z=te(v);return z.length===0?!0:z.every(_=>d(_.id))}function m(v="ja"){const{getChapterCompletionStatus:z}=Nn();return Tt(v,"beginner").some(L=>{const C=z(L.id);return C.quiz||C.conversation})||te(v).length===0?!1:!p(v)}function g(v){const z=Q.value.lessons[v];return z?{charactersLearned:z.charactersLearned.length,quizCompleted:z.quizCompleted,quizBestScore:z.quizBestScore,matchingCompleted:z.matchingCompleted,complete:z.quizCompleted}:{charactersLearned:0,quizCompleted:!1,quizBestScore:0,matchingCompleted:!1,complete:!1}}const x=N(()=>Q.value.stats);function b(){Q.value={lessons:{},stats:{totalCharactersLearned:0,totalPreLessonsCompleted:0}},Tn()}return{markCharacterLearned:n,isCharacterLearned:e,getLearnedCharacters:t,markQuizCompleted:a,isQuizCompleted:r,getQuizBestScore:o,markMatchingCompleted:s,isMatchingCompleted:l,isPreLessonCompleted:d,arePreLessonsComplete:p,areChaptersLocked:m,getLessonStatus:g,stats:x,resetProgress:b}}const Lt={en:"en-US",ja:"ja-JP",zh:"zh-CN",ko:"ko-KR",es:"es-ES",fr:"fr-FR",de:"de-DE"};function tn(){return"speechSynthesis"in window}function Qn(){tn()&&window.speechSynthesis.cancel()}const li={normal:{rate:.9,label:"Normal"},slow:{rate:.15,label:"Slow"},word:{rate:.5,label:"Word by Word"}};function on(n,e="en",t="normal",a=null){return new Promise((r,o)=>{if(!tn()){o(new Error("Speech synthesis not supported"));return}if(window.speechSynthesis.cancel(),t==="word"){di(n,e,a).then(r).catch(o);return}const s=new SpeechSynthesisUtterance(n);s.lang=Lt[e]||e,s.rate=li[t]?.rate||.9,s.pitch=1,s.onend=()=>r(),s.onerror=l=>o(new Error("Speech synthesis failed")),window.speechSynthesis.speak(s)})}async function di(n,e,t=null){const r=["ja","zh","ko"].includes(e)?n.replace(/[。、！？，]/g," ").split("").filter(o=>o.trim()):n.split(/\s+/).filter(o=>o.trim());for(let o=0;o<r.length;o++){const s=r[o];t&&t(o,s,r),await new Promise((l,d)=>{const h=new SpeechSynthesisUtterance(s);h.lang=Lt[e]||e,h.rate=.6,h.pitch=1,h.onend=()=>l(),h.onerror=()=>d(new Error("Speech synthesis failed")),window.speechSynthesis.speak(h)}),await new Promise(l=>setTimeout(l,400))}t&&t(-1,null,r)}function Cn(n,e="en"){return["ja","zh","ko"].includes(e)?n.split("").filter(a=>a.trim()&&!/[。、！？，]/.test(a)):n.split(/\s+/).filter(a=>a.trim())}const Vn=typeof window<"u"?window.SpeechRecognition||window.webkitSpeechRecognition:null,hi={en:"en-US",ja:"ja-JP",zh:"zh-TW"};function ui(n,e){const t=n.length,a=e.length,r=Array.from({length:t+1},()=>Array(a+1).fill(0));for(let o=0;o<=t;o++)r[o][0]=o;for(let o=0;o<=a;o++)r[0][o]=o;for(let o=1;o<=t;o++)for(let s=1;s<=a;s++)r[o][s]=n[o-1]===e[s-1]?r[o-1][s-1]:1+Math.min(r[o-1][s],r[o][s-1],r[o-1][s-1]);return r[t][a]}function We(n){return n.toLowerCase().replace(/[^\w\s\u3000-\u9fff\u30a0-\u30ff\u3040-\u309f]/g,"").trim()}function ci(){const n=k(!1),e=k(""),t=k(null),a=!!Vn;let r=null;function o(l,d){return new Promise((h,p)=>{if(!Vn){p(new Error("Speech recognition not supported"));return}r&&r.abort(),r=new Vn,r.lang=hi[d]||"en-US",r.interimResults=!1,r.maxAlternatives=1,r.continuous=!1,n.value=!0,e.value="",t.value=null;let m=!1;r.onresult=g=>{const x=g.results[0][0].transcript;e.value=x;const b=We(l),v=We(x),z=ui(b,v),_=Math.max(b.length,v.length,1),j=Math.round((_-z)/_*100);t.value=Math.max(0,Math.min(100,j)),n.value=!1,m=!0,h({transcript:x,score:t.value})},r.onerror=g=>{n.value=!1,!m&&g.error!=="aborted"&&(m=!0,p(new Error(g.error)))},r.onend=()=>{n.value=!1,m||(m=!0,h({transcript:"",score:0}))},r.start()})}function s(){r&&(r.abort(),r=null),n.value=!1}return{isSupported:a,isListening:n,transcript:e,score:t,checkPronunciation:o,stopListening:s}}const pi={class:"p-4 rounded-xl bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-colors"},gi={class:"flex items-start gap-4"},mi=["disabled"],fi={class:"material-symbols-outlined text-xl"},yi={class:"flex-1 min-w-0"},xi={class:"flex items-baseline gap-2 flex-wrap"},vi={class:"text-xl font-bold text-text-main dark:text-white"},zi={key:0,class:"text-lg text-primary font-medium"},ji={key:1,class:"text-sm text-text-muted dark:text-slate-400"},wi={key:2,class:"text-sm text-primary"},bi={class:"flex items-start gap-2 mt-1"},ki=["disabled"],Ii={class:"material-symbols-outlined text-sm"},_i={key:0,class:"text-text-muted dark:text-slate-300"},Si={key:1,class:"text-text-muted dark:text-slate-300"},Ci={key:2,class:"text-sm text-slate-500 dark:text-slate-400"},Ai={class:"mt-3 p-3 rounded-lg bg-slate-50 dark:bg-slate-800/50 border-l-4 border-primary"},Ti={class:"flex items-start gap-2"},Ei=["disabled"],Li={key:0,class:"text-sm text-text-main dark:text-slate-200 italic"},Mi={key:1,class:"text-sm text-text-main dark:text-slate-200 italic"},Pi={key:2,class:"text-xs text-slate-500 dark:text-slate-400 mt-1"},Ri={key:0,class:"mt-3 flex items-center gap-3"},Wi={class:"material-symbols-outlined text-sm"},Oi={key:0,class:"flex items-center gap-1.5"},Ni={class:"w-16 h-1.5 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden"},Di={key:1,class:"mt-2 text-xs text-amber-600 dark:text-amber-400 flex items-center gap-1"},Hi={__name:"VocabularyCard",props:{word:{type:Object,required:!0},language:{type:String,default:"en"},bilingual:{type:Boolean,default:!0},voiceSpeed:{type:String,default:"normal"}},setup(n){const{t:e}=pn(),{isSupported:t,isListening:a,score:r,checkPronunciation:o,stopListening:s}=ci(),l=n,d=k(!1),h=k(!1),p=k(!1),m=k(!1),g=k(!1);async function x(){if(a.value){s();return}g.value=!1;try{await o(l.word.word,l.language)}catch{g.value=!0}}const b=k(-1),v=k(-1),z=N(()=>Cn(l.word.meaning,l.language)),_=N(()=>Cn(l.word.example,l.language));async function j(){if(!d.value){if(!tn()){m.value=!0;return}d.value=!0,m.value=!1;try{await on(l.word.word,l.language,l.voiceSpeed)}catch(C){m.value=!0,console.warn("Audio playback failed:",C)}finally{d.value=!1}}}async function S(){if(!h.value&&tn()){h.value=!0,b.value=-1;try{await on(l.word.meaning,l.language,l.voiceSpeed,C=>{b.value=C})}catch(C){console.warn("Audio playback failed:",C)}finally{h.value=!1,b.value=-1}}}async function L(){if(!p.value&&tn()){p.value=!0,v.value=-1;try{await on(l.word.example,l.language,l.voiceSpeed,C=>{v.value=C})}catch(C){console.warn("Audio playback failed:",C)}finally{p.value=!1,v.value=-1}}}return(C,T)=>(f(),y("div",pi,[i("div",gi,[i("button",{onClick:j,disabled:d.value,class:E(["shrink-0 flex items-center justify-center size-12 rounded-full bg-primary/10 hover:bg-primary/20 text-primary transition-colors disabled:opacity-50",{"animate-pulse":d.value}])},[i("span",fi,u(d.value?"volume_up":"play_arrow"),1)],10,mi),i("div",yi,[i("div",xi,[i("h3",vi,u(n.word.word),1),n.bilingual&&n.word.nativeWord?(f(),y("span",zi,"("+u(n.word.nativeWord)+")",1)):R("",!0),n.word.phonetic?(f(),y("span",ji,u(n.word.phonetic),1)):R("",!0),n.word.reading?(f(),y("span",wi,u(n.word.reading),1)):R("",!0)]),i("div",bi,[i("button",{onClick:S,disabled:h.value,class:E(["shrink-0 flex items-center justify-center size-6 rounded-full bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-text-muted dark:text-slate-400 transition-colors disabled:opacity-50",{"animate-pulse":h.value}])},[i("span",Ii,u((h.value,"volume_up")),1)],10,ki),i("div",null,[n.voiceSpeed==="word"&&b.value>=0?(f(),y("p",_i,[(f(!0),y(Y,null,G(z.value,(M,D)=>(f(),y("span",{key:D,class:E(D===b.value?"bg-primary/30 text-primary font-semibold px-0.5 rounded":"")},u(M)+u(D<z.value.length-1?" ":""),3))),128))])):(f(),y("p",Si,u(n.word.meaning),1)),n.bilingual&&n.word.nativeMeaning?(f(),y("p",Ci,u(n.word.nativeMeaning),1)):R("",!0)])]),i("div",Ai,[i("div",Ti,[i("button",{onClick:L,disabled:p.value,class:E(["shrink-0 flex items-center justify-center size-6 rounded-full bg-white dark:bg-slate-700 hover:bg-slate-100 dark:hover:bg-slate-600 text-primary transition-colors disabled:opacity-50 shadow-sm",{"animate-pulse":p.value}])},[...T[0]||(T[0]=[i("span",{class:"material-symbols-outlined text-sm"},"volume_up",-1)])],10,Ei),i("div",null,[n.voiceSpeed==="word"&&v.value>=0?(f(),y("p",Li,[T[1]||(T[1]=$(' "',-1)),(f(!0),y(Y,null,G(_.value,(M,D)=>(f(),y("span",{key:D,class:E(D===v.value?"bg-primary/30 text-primary font-semibold not-italic px-0.5 rounded":"")},u(M)+u(D<_.value.length-1?" ":""),3))),128)),T[2]||(T[2]=$('" ',-1))])):(f(),y("p",Mi,' "'+u(n.word.example)+'" ',1)),n.bilingual&&n.word.nativeExample?(f(),y("p",Pi,' "'+u(n.word.nativeExample)+'" ',1)):R("",!0)])])])])]),c(t)?(f(),y("div",Ri,[i("button",{onClick:x,class:E(["flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all",c(a)?"bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 animate-pulse":"bg-slate-100 dark:bg-slate-700 text-text-muted dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-600"])},[i("span",Wi,u(c(a)?"mic":"mic_none"),1),$(" "+u(c(a)?"Listening...":"Try saying it"),1)],2),c(r)!==null?(f(),y("div",Oi,[i("div",Ni,[i("div",{class:E(["h-full rounded-full transition-all",c(r)>=80?"bg-green-400":c(r)>=50?"bg-amber-400":"bg-red-400"]),style:jn({width:`${c(r)}%`})},null,6)]),i("span",{class:E(["text-xs font-bold",c(r)>=80?"text-green-500":c(r)>=50?"text-amber-500":"text-red-500"])},u(c(r))+"% ",3)])):R("",!0)])):R("",!0),m.value||g.value?(f(),y("p",Di,[T[3]||(T[3]=i("span",{class:"material-symbols-outlined text-sm"},"warning",-1)),$(" "+u(c(e)("learning.audioNotAvailable")),1)])):R("",!0)]))}};function Ln(n){const e=[...n];for(let t=e.length-1;t>0;t--){const a=Math.floor(Math.random()*(t+1));[e[t],e[a]]=[e[a],e[t]]}return e}function Fi(){const n=k([]),e=k(0),t=k(!1),a=N(()=>n.value[e.value]),r=N(()=>n.value.length===0?0:(e.value+1)/n.value.length*100),o=N(()=>n.value.length),s=N(()=>e.value===0),l=N(()=>e.value===n.value.length-1);function d(x){n.value=Ln(x),e.value=0,t.value=!1}function h(){t.value=!t.value}function p(){e.value<n.value.length-1&&(e.value++,t.value=!1)}function m(){e.value>0&&(e.value--,t.value=!1)}function g(x){d(x)}return{shuffledWords:n,currentIndex:e,isFlipped:t,currentWord:a,progress:r,totalCards:o,isFirstCard:s,isLastCard:l,initCards:d,flipCard:h,nextCard:p,prevCard:m,shuffle:g}}const $i={class:"flex flex-col items-center"},Yi={class:"w-full max-w-lg mb-6"},qi={class:"flex justify-between text-sm text-text-muted dark:text-slate-400 mb-2"},Bi={class:"h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden"},Ui={class:"absolute inset-0 backface-hidden rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 dark:from-primary/30 dark:to-primary/10 border-2 border-primary/30 shadow-lg flex flex-col items-center justify-center p-8"},Gi={class:"text-4xl sm:text-5xl font-bold text-text-main dark:text-white text-center mb-2"},Ki={key:0,class:"text-2xl text-primary font-medium mb-2"},Qi={key:1,class:"text-xl text-primary mb-2"},Vi={key:2,class:"text-lg text-text-muted dark:text-slate-400"},Ji=["disabled"],Zi={class:"material-symbols-outlined text-primary"},Xi={class:"text-sm font-medium text-text-main dark:text-white"},ns={class:"absolute bottom-4 text-sm text-text-muted dark:text-slate-400"},es={class:"absolute inset-0 backface-hidden rotate-y-180 rounded-2xl bg-gradient-to-br from-green-100 to-emerald-50 dark:from-green-900/30 dark:to-emerald-900/20 border-2 border-green-300 dark:border-green-700 shadow-lg flex flex-col items-center justify-center p-6"},ts={class:"flex items-start gap-2 mb-2"},rs=["disabled"],as={class:"material-symbols-outlined text-xl text-green-600 dark:text-green-400"},os={class:"text-center"},is={key:0,class:"text-lg sm:text-xl text-text-main dark:text-white"},ss={key:1,class:"text-lg sm:text-xl text-text-main dark:text-white"},ls={key:2,class:"text-sm text-slate-600 dark:text-slate-400"},ds={class:"p-3 rounded-xl bg-white/50 dark:bg-slate-800/50 w-full mt-2"},hs={class:"flex items-start gap-2"},us=["disabled"],cs={class:"material-symbols-outlined text-xl text-green-600 dark:text-green-400"},ps={key:0,class:"text-text-muted dark:text-slate-300 italic text-sm"},gs={key:1,class:"text-text-muted dark:text-slate-300 italic text-sm"},ms={key:2,class:"text-xs text-slate-500 dark:text-slate-400 italic mt-1"},fs={class:"absolute bottom-4 text-sm text-text-muted dark:text-slate-400"},ys={class:"flex items-center gap-4 mt-8"},xs=["disabled"],vs=["disabled"],zs={class:"mt-4 text-xs text-text-muted dark:text-slate-400 hidden sm:block"},js={__name:"FlashcardMode",props:{words:{type:Array,required:!0},language:{type:String,default:"en"},bilingual:{type:Boolean,default:!0},voiceSpeed:{type:String,default:"normal"}},setup(n){const{t:e}=pn(),t=n,a=k(!1),r=k(!1),o=k(!1),s=k(-1),l=k(-1),d=N(()=>g.value?.meaning?Cn(g.value.meaning,t.language):[]),h=N(()=>g.value?.example?Cn(g.value.example,t.language):[]),{currentIndex:p,isFlipped:m,currentWord:g,progress:x,totalCards:b,isFirstCard:v,isLastCard:z,initCards:_,flipCard:j,nextCard:S,prevCard:L,shuffle:C}=Fi();function T(){j()}function M(){S()}function D(){L()}function Z(){C(t.words)}async function H(){if(!(!g.value?.word||a.value)&&tn()){a.value=!0;try{await on(g.value.word,t.language,t.voiceSpeed)}catch(P){console.warn("Audio playback failed:",P)}finally{a.value=!1}}}async function W(){if(!(!g.value?.meaning||r.value)&&tn()){r.value=!0,s.value=-1;try{await on(g.value.meaning,t.language,t.voiceSpeed,P=>{s.value=P})}catch(P){console.warn("Audio playback failed:",P)}finally{r.value=!1,s.value=-1}}}async function O(){if(!(!g.value?.example||o.value)&&tn()){o.value=!0,l.value=-1;try{await on(g.value.example,t.language,t.voiceSpeed,P=>{l.value=P})}catch(P){console.warn("Audio playback failed:",P)}finally{o.value=!1,l.value=-1}}}return ae(()=>t.words,P=>_(P),{immediate:!0}),(P,B)=>(f(),y("div",$i,[i("div",Yi,[i("div",qi,[i("span",null,u(c(p)+1)+" / "+u(c(b)),1),i("span",null,u(Math.round(c(x)))+"%",1)]),i("div",Bi,[i("div",{class:"h-full bg-gradient-to-r from-primary to-green-400 rounded-full transition-all duration-300",style:jn({width:`${c(x)}%`})},null,4)])]),i("div",{onClick:T,class:"w-full max-w-lg aspect-[4/3] perspective-1000 cursor-pointer"},[i("div",{class:E(["relative w-full h-full transition-transform duration-500 transform-style-3d",{"rotate-y-180":c(m)}])},[i("div",Ui,[i("span",Gi,u(c(g)?.word),1),n.bilingual&&c(g)?.nativeWord?(f(),y("span",Ki," ("+u(c(g).nativeWord)+") ",1)):R("",!0),c(g)?.reading?(f(),y("span",Qi,u(c(g).reading),1)):R("",!0),c(g)?.phonetic?(f(),y("span",Vi,u(c(g).phonetic),1)):R("",!0),i("button",{onClick:En(H,["stop"]),disabled:a.value,class:E(["mt-6 flex items-center gap-2 px-4 py-2 rounded-full bg-white dark:bg-slate-800 shadow-md hover:shadow-lg transition-shadow",{"animate-pulse":a.value}])},[i("span",Zi,u(a.value?"volume_up":"play_arrow"),1),i("span",Xi,u(c(e)("learning.listen")),1)],10,Ji),i("p",ns,u(c(e)("learning.tapToFlip")),1)]),i("div",es,[i("div",ts,[i("button",{onClick:En(W,["stop"]),disabled:r.value,class:E(["flex-shrink-0 p-1.5 rounded-full hover:bg-white/50 dark:hover:bg-slate-700/50 transition-colors",{"animate-pulse text-primary":r.value}])},[i("span",as,u((r.value,"volume_up")),1)],10,rs),i("div",os,[n.voiceSpeed==="word"&&s.value>=0?(f(),y("p",is,[(f(!0),y(Y,null,G(d.value,(rn,nn)=>(f(),y("span",{key:nn,class:E(nn===s.value?"bg-primary/40 text-primary font-bold px-1 rounded":"")},u(rn)+u(nn<d.value.length-1?" ":""),3))),128))])):(f(),y("p",ss,u(c(g)?.meaning),1)),n.bilingual&&c(g)?.nativeMeaning?(f(),y("p",ls,u(c(g).nativeMeaning),1)):R("",!0)])]),i("div",ds,[i("div",hs,[i("button",{onClick:En(O,["stop"]),disabled:o.value,class:E(["flex-shrink-0 p-1.5 rounded-full hover:bg-white/70 dark:hover:bg-slate-700/70 transition-colors",{"animate-pulse text-primary":o.value}])},[i("span",cs,u((o.value,"volume_up")),1)],10,us),i("div",null,[n.voiceSpeed==="word"&&l.value>=0?(f(),y("p",ps,[B[0]||(B[0]=$(' "',-1)),(f(!0),y(Y,null,G(h.value,(rn,nn)=>(f(),y("span",{key:nn,class:E(nn===l.value?"bg-primary/40 text-primary font-bold not-italic px-0.5 rounded":"")},u(rn)+u(nn<h.value.length-1?" ":""),3))),128)),B[1]||(B[1]=$('" ',-1))])):(f(),y("p",gs,' "'+u(c(g)?.example)+'" ',1)),n.bilingual&&c(g)?.nativeExample?(f(),y("p",ms,' "'+u(c(g).nativeExample)+'" ',1)):R("",!0)])])]),i("p",fs,u(c(e)("learning.tapToFlip")),1)])],2)]),i("div",ys,[i("button",{onClick:D,disabled:c(v),class:"flex items-center justify-center size-12 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"},[...B[2]||(B[2]=[i("span",{class:"material-symbols-outlined text-text-main dark:text-white"},"chevron_left",-1)])],8,xs),i("button",{onClick:Z,class:"flex items-center gap-2 px-6 py-3 rounded-xl bg-primary/10 hover:bg-primary/20 text-primary font-medium transition-colors"},[B[3]||(B[3]=i("span",{class:"material-symbols-outlined"},"replay",-1)),$(" "+u(c(e)("learning.shuffle")),1)]),i("button",{onClick:M,disabled:c(z),class:"flex items-center justify-center size-12 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"},[...B[4]||(B[4]=[i("span",{class:"material-symbols-outlined text-text-main dark:text-white"},"chevron_right",-1)])],8,vs)]),i("p",zs,u(c(e)("learning.keyboardHints")),1)]))}},ws=re(js,[["__scopeId","data-v-750517c5"]]);function bs(n){const e=k([]),t=k(0),a=k(null),r=k(!1),o=k(0),s=k(!1),l=k([]),d=N(()=>e.value[t.value]),h=N(()=>e.value.length===0?0:t.value/e.value.length*100),p=N(()=>e.value.length===0?0:Math.round(o.value/e.value.length*100)),m=N(()=>e.value.length),g=N(()=>e.value.length===0?0:Math.round(o.value/e.value.length*20));function x(S,L){const C=[S],T=L.filter(D=>D.id!==S.id),M=Ln(T);for(let D=0;D<Math.min(3,M.length);D++)C.push(M[D]);return Ln(C)}function b(S){const L=Ln(S);e.value=L.map(C=>({...C,options:x(C,S)})),t.value=0,a.value=null,r.value=!1,o.value=0,s.value=!1,l.value=[]}function v(S){if(r.value)return null;a.value=S,r.value=!0;const L=S.id===d.value.id;return l.value.push({word:d.value,selected:S,isCorrect:L}),L&&o.value++,L}function z(){return t.value<e.value.length-1?(t.value++,a.value=null,r.value=!1,{completed:!1}):(s.value=!0,{completed:!0,score:o.value,total:e.value.length,accuracy:p.value,xpEarned:g.value})}function _(S){b(S)}function j(S){return d.value?S.id===d.value.id:!1}return{quizWords:e,currentIndex:t,selectedAnswer:a,isAnswered:r,score:o,isCompleted:s,answers:l,currentQuestion:d,progress:h,accuracy:p,totalQuestions:m,xpEarned:g,initQuiz:b,selectAnswer:v,nextQuestion:z,restartQuiz:_,isCorrectOption:j}}const ks={class:"flex flex-col items-center"},Is={class:"w-full max-w-lg mb-6"},_s={class:"flex justify-between text-sm text-text-muted dark:text-slate-400 mb-2"},Ss={class:"flex items-center gap-1"},Cs={class:"h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden"},As={class:"w-full max-w-lg p-8 rounded-2xl bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/30 dark:to-purple-900/20 border border-indigo-200 dark:border-indigo-800 mb-6"},Ts={class:"text-sm text-text-muted dark:text-slate-400 mb-2"},Es={class:"text-3xl sm:text-4xl font-bold text-text-main dark:text-white text-center"},Ls={key:0,class:"text-xl text-primary text-center mt-2"},Ms={key:1,class:"text-lg text-text-muted dark:text-slate-400 text-center mt-1"},Ps={class:"w-full max-w-lg space-y-3"},Rs=["onClick","disabled"],Ws={class:"flex items-center gap-3"},Os={class:"flex items-center justify-center size-8 rounded-full bg-slate-100 dark:bg-slate-800 text-sm font-bold text-text-muted"},Ns={class:"text-text-main dark:text-white"},Ds={key:0,class:"ml-auto material-symbols-outlined text-green-500"},Hs={key:1,class:"ml-auto material-symbols-outlined text-red-500"},Fs={key:0,class:"w-full max-w-lg mt-6"},$s={class:"flex items-center gap-2 mb-2"},Ys={class:"text-sm text-text-muted dark:text-slate-400"},qs={key:1,class:"w-full max-w-lg text-center"},Bs={class:"p-8 rounded-2xl bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-900/30 dark:to-orange-900/20 border border-amber-200 dark:border-amber-700 mb-6"},Us={class:"text-6xl mb-4"},Gs={class:"text-2xl font-bold text-text-main dark:text-white mb-2"},Ks={class:"text-text-muted dark:text-slate-400 mb-4"},Qs={class:"flex items-center justify-center gap-4"},Vs={class:"text-center"},Js={class:"text-4xl font-bold text-primary"},Zs={class:"text-2xl text-text-muted dark:text-slate-400"},Xs={class:"text-center"},nl={class:"mt-4 text-sm text-amber-600 dark:text-amber-400"},el={class:"mb-6"},tl={class:"text-lg font-semibold text-text-main dark:text-white mb-3 text-left"},rl={class:"space-y-2"},al={class:"font-medium text-text-main dark:text-white"},ol={class:"text-sm text-text-muted dark:text-slate-400 truncate flex-1"},il={class:"flex items-center justify-center gap-2"},sl={__name:"QuizMode",props:{words:{type:Array,required:!0},language:{type:String,default:"en"},chapterId:{type:String,default:null}},emits:["complete"],setup(n,{emit:e}){const{t}=pn(),{markQuizCompleted:a}=Nn(),{recordQuizResults:r}=De(),o=n,s=e,{currentIndex:l,selectedAnswer:d,isAnswered:h,score:p,isCompleted:m,answers:g,currentQuestion:x,progress:b,accuracy:v,totalQuestions:z,xpEarned:_,initQuiz:j,selectAnswer:S,nextQuestion:L,restartQuiz:C,isCorrectOption:T}=bs();function M(W){S(W)}function D(){const W=L();W.completed&&(o.chapterId&&a(o.chapterId,W.score,W.total),r(g.value),s("complete",{score:W.score,total:W.total,accuracy:W.accuracy,xpEarned:W.xpEarned}))}function Z(){C(o.words)}function H(W){return h.value?T(W)?"border-green-500 bg-green-50 dark:bg-green-900/30":d.value?.id===W.id&&!T(W)?"border-red-500 bg-red-50 dark:bg-red-900/30":"border-slate-200 dark:border-slate-700 opacity-50":"border-slate-200 dark:border-slate-700 hover:border-primary dark:hover:border-primary"}return ae(()=>o.words,W=>j(W),{immediate:!0}),(W,O)=>(f(),y("div",ks,[c(m)?(f(),y("div",qs,[i("div",Bs,[i("div",Us,u(c(v)>=80?"🎉":c(v)>=60?"👍":"💪"),1),i("h2",Gs,u(c(t)("learning.quizComplete")),1),i("p",Ks,u(c(t)("learning.yourScore")),1),i("div",Qs,[i("div",Vs,[i("span",Js,u(c(p)),1),i("span",Zs," / "+u(c(z)),1)]),O[1]||(O[1]=i("div",{class:"h-12 w-px bg-slate-300 dark:bg-slate-600"},null,-1)),i("div",Xs,[i("span",{class:E(["text-4xl font-bold",c(v)>=80?"text-green-500":c(v)>=60?"text-amber-500":"text-red-500"])},u(c(v))+"%",3)])]),i("p",nl," +"+u(c(_))+" XP "+u(c(t)("learning.earned")),1)]),i("div",el,[i("h3",tl,u(c(t)("learning.reviewAnswers")),1),i("div",rl,[(f(!0),y(Y,null,G(c(g),(P,B)=>(f(),y("div",{key:B,class:"flex items-center gap-3 p-3 rounded-lg bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-700"},[i("span",{class:E(["material-symbols-outlined",P.isCorrect?"text-green-500":"text-red-500"])},u(P.isCorrect?"check_circle":"cancel"),3),i("span",al,u(P.word.word),1),O[2]||(O[2]=i("span",{class:"text-text-muted dark:text-slate-400"},"-",-1)),i("span",ol,u(P.word.meaning),1)]))),128))])]),i("button",{onClick:Z,class:"w-full py-4 rounded-xl bg-primary text-[#0d171b] font-bold text-lg hover:bg-primary/90 transition-colors"},[i("span",il,[O[3]||(O[3]=i("span",{class:"material-symbols-outlined"},"replay",-1)),$(" "+u(c(t)("learning.tryAgain")),1)])])])):(f(),y(Y,{key:0},[i("div",Is,[i("div",_s,[i("span",null,u(c(t)("learning.question"))+" "+u(c(l)+1)+" / "+u(c(z)),1),i("span",Ss,[O[0]||(O[0]=i("span",{class:"material-symbols-outlined text-sm text-green-500"},"check_circle",-1)),$(" "+u(c(p)),1)])]),i("div",Cs,[i("div",{class:"h-full bg-gradient-to-r from-primary to-green-400 rounded-full transition-all duration-300",style:jn({width:`${c(b)}%`})},null,4)])]),i("div",As,[i("p",Ts,u(c(t)("learning.whatMeans")),1),i("h2",Es,u(c(x)?.word),1),c(x)?.reading?(f(),y("p",Ls,u(c(x).reading),1)):R("",!0),c(x)?.phonetic?(f(),y("p",Ms,u(c(x).phonetic),1)):R("",!0)]),i("div",Ps,[(f(!0),y(Y,null,G(c(x)?.options,(P,B)=>(f(),y("button",{key:P.id,onClick:rn=>M(P),disabled:c(h),class:E(["w-full p-4 rounded-xl border-2 text-left transition-all",H(P)])},[i("div",Ws,[i("span",Os,u(String.fromCharCode(65+B)),1),i("span",Ns,u(P.meaning),1),c(h)&&c(T)(P)?(f(),y("span",Ds,"check_circle")):R("",!0),c(h)&&c(d)?.id===P.id&&!c(T)(P)?(f(),y("span",Hs,"cancel")):R("",!0)])],10,Rs))),128))]),c(h)?(f(),y("div",Fs,[i("div",{class:E(["p-4 rounded-xl mb-4",c(d)?.id===c(x)?.id?"bg-green-100 dark:bg-green-900/30 border border-green-300 dark:border-green-700":"bg-red-100 dark:bg-red-900/30 border border-red-300 dark:border-red-700"])},[i("div",$s,[i("span",{class:E(["material-symbols-outlined",c(d)?.id===c(x)?.id?"text-green-600":"text-red-600"])},u(c(d)?.id===c(x)?.id?"celebration":"sentiment_dissatisfied"),3),i("span",{class:E(["font-semibold",c(d)?.id===c(x)?.id?"text-green-700 dark:text-green-300":"text-red-700 dark:text-red-300"])},u(c(d)?.id===c(x)?.id?c(t)("learning.correct"):c(t)("learning.incorrect")),3)]),i("p",Ys,u(c(x)?.example),1)],2),i("button",{onClick:D,class:"w-full py-4 rounded-xl bg-primary text-[#0d171b] font-bold text-lg hover:bg-primary/90 transition-colors"},u(c(l)<c(z)-1?c(t)("learning.nextQuestion"):c(t)("learning.finishQuiz")),1)])):R("",!0)],64))]))}},ll={class:"flex flex-col h-[600px] max-h-[80vh] bg-surface-light dark:bg-surface-dark rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700"},dl={class:"flex items-center justify-between px-4 py-3 bg-gradient-to-r from-primary/10 to-accent/10 dark:from-primary/20 dark:to-accent/20 border-b border-slate-200 dark:border-slate-700"},hl={class:"flex items-center gap-3"},ul={class:"font-semibold text-text-main dark:text-white text-sm"},cl={class:"text-xs text-text-muted dark:text-slate-400"},pl={class:"material-symbols-outlined text-lg"},gl={class:"text-sm"},ml={key:0,class:"flex-1 overflow-y-auto p-4"},fl={key:0,class:"flex flex-col items-center justify-center h-full text-center"},yl={class:"text-text-muted dark:text-slate-400"},xl={key:1,class:"space-y-3"},vl=["onClick"],zl={class:"flex items-center justify-between"},jl={class:"flex items-center gap-3"},wl={class:"font-medium text-text-main dark:text-white group-hover:text-primary transition-colors"},bl={class:"text-xs text-text-muted dark:text-slate-400"},kl={key:1,class:"flex-1 overflow-y-auto p-4 space-y-4"},Il=["onClick","title"],_l={class:"material-symbols-outlined text-xl"},Sl={key:0,class:"text-text-main dark:text-white text-base leading-relaxed"},Cl={key:1,class:"text-text-main dark:text-white text-base leading-relaxed"},Al={key:2,class:"mt-2 text-sm text-text-muted dark:text-slate-400 italic border-t border-slate-200 dark:border-slate-600 pt-2"},Tl={class:"mt-6 p-4 bg-amber-50 dark:bg-amber-900/20 rounded-xl border border-amber-200 dark:border-amber-800"},El={class:"flex items-start gap-3"},Ll={class:"font-medium text-amber-800 dark:text-amber-200 text-sm mb-1"},Ml={class:"text-xs text-amber-700 dark:text-amber-300"},Pl={__name:"ConversationPractice",props:{conversations:{type:Array,required:!0},language:{type:String,default:"en"},bilingual:{type:Boolean,default:!0},voiceSpeed:{type:String,default:"normal"},chapterId:{type:String,default:null}},emits:["back"],setup(n,{emit:e}){const{t}=pn(),{markConversationCompleted:a}=Nn(),r=n,o=e,s=k(null),l=k(null),d=k(!1),h=k(!1),p=k(-1),m=k(-1),g=N(()=>s.value?r.conversations.find(C=>C.id===s.value):null);function x(C){s.value=C.id}function b(){z(),Qn(),l.value=null,s.value=null}async function v(){if(!g.value?.messages)return;if(d.value){z();return}d.value=!0,h.value=!1;const C=g.value.messages;for(let T=0;T<C.length&&!h.value;T++){l.value=T,m.value=T,p.value=-1;try{await on(C[T].text,r.language,r.voiceSpeed,M=>{p.value=M})}catch(M){console.error("TTS error:",M)}!h.value&&T<C.length-1&&await new Promise(M=>setTimeout(M,500))}!h.value&&r.chapterId&&a(r.chapterId),l.value=null,m.value=-1,p.value=-1,d.value=!1,h.value=!1}function z(){h.value=!0,d.value=!1,Qn(),l.value=null,m.value=-1,p.value=-1}async function _(C,T){if(d.value&&z(),Qn(),l.value===T){l.value=null,m.value=-1,p.value=-1;return}l.value=T,m.value=T,p.value=-1;try{await on(C.text,r.language,r.voiceSpeed,M=>{p.value=M})}catch(M){console.error("TTS error:",M)}finally{l.value=null,m.value=-1,p.value=-1}}function j(C){return Cn(C,r.language)}function S(C){return t(C==="partner"?"learning.conversation.partner":"learning.conversation.you")}function L(C){return C==="partner"?"bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-light":"bg-accent/10 dark:bg-accent/20 text-accent dark:text-accent-light"}return(C,T)=>(f(),y("div",ll,[i("div",dl,[i("div",hl,[i("button",{onClick:T[0]||(T[0]=M=>g.value?b():o("back")),class:"p-1 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"},[...T[1]||(T[1]=[i("span",{class:"material-symbols-outlined text-text-muted dark:text-slate-400"},"arrow_back",-1)])]),i("div",null,[i("h3",ul,u(g.value?g.value.title:c(t)("learning.conversation.title")),1),i("p",cl,u(g.value?c(t)("learning.conversation.practiceDialogue"):c(t)("learning.conversation.selectDialogue")),1)])]),g.value?(f(),y("button",{key:0,onClick:v,class:E(["flex items-center gap-2 px-4 py-2 rounded-xl font-medium transition-all",d.value?"bg-red-500 text-white hover:bg-red-600":"bg-primary text-white hover:bg-primary/90"])},[i("span",pl,u(d.value?"stop":"play_arrow"),1),i("span",gl,u(d.value?c(t)("learning.conversation.stop"):c(t)("learning.conversation.playAll")),1)],2)):R("",!0)]),g.value?(f(),y("div",kl,[(f(!0),y(Y,null,G(g.value.messages,(M,D)=>(f(),y("div",{key:D,class:E(["flex gap-3",M.role==="user"?"flex-row-reverse":""])},[i("button",{onClick:Z=>_(M,D),class:E(["flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-all",[l.value===D?"bg-primary text-white animate-pulse":"bg-slate-100 dark:bg-slate-700 text-text-muted dark:text-slate-400 hover:bg-primary/20 hover:text-primary"]]),title:c(t)("learning.conversation.playAudio")},[i("span",_l,u(l.value===D?"stop":"volume_up"),1)],10,Il),i("div",{class:E(["flex-1 max-w-[80%] rounded-2xl p-4",M.role==="partner"?"bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700":"bg-primary/10 dark:bg-primary/20"])},[i("span",{class:E(["inline-block px-2 py-0.5 rounded-full text-xs font-medium mb-2",L(M.role)])},u(S(M.role)),3),n.voiceSpeed==="word"&&m.value===D&&p.value>=0?(f(),y("p",Sl,[(f(!0),y(Y,null,G(j(M.text),(Z,H)=>(f(),y("span",{key:H,class:E(H===p.value?"bg-primary/40 text-primary font-bold px-0.5 rounded":"")},u(Z)+u(H<j(M.text).length-1?" ":""),3))),128))])):(f(),y("p",Cl,u(M.text),1)),n.bilingual&&M.nativeText&&M.nativeText!==M.text?(f(),y("p",Al,u(M.nativeText),1)):R("",!0)],2)],2))),128)),i("div",Tl,[i("div",El,[T[5]||(T[5]=i("span",{class:"text-xl"},"💡",-1)),i("div",null,[i("h4",Ll,u(c(t)("learning.conversation.practiceTip")),1),i("p",Ml,u(c(t)("learning.conversation.practiceTipText")),1)])])])])):(f(),y("div",ml,[n.conversations.length===0?(f(),y("div",fl,[T[2]||(T[2]=i("span",{class:"text-4xl mb-3"},"💬",-1)),i("p",yl,u(c(t)("learning.conversation.noConversations")),1)])):(f(),y("div",xl,[(f(!0),y(Y,null,G(n.conversations,M=>(f(),y("button",{key:M.id,onClick:D=>x(M),class:"w-full p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-primary dark:hover:border-primary transition-colors text-left group"},[i("div",zl,[i("div",jl,[T[3]||(T[3]=i("span",{class:"text-2xl"},"💬",-1)),i("div",null,[i("h4",wl,u(M.title),1),i("p",bl,u(M.messages.length)+" "+u(c(t)("learning.conversation.messages")),1)])]),T[4]||(T[4]=i("span",{class:"material-symbols-outlined text-text-muted dark:text-slate-400 group-hover:text-primary transition-colors"}," chevron_right ",-1))])],8,vl))),128))]))]))]))}},Rl={key:0,class:"flex justify-end mb-1"},Wl={class:"inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 text-xs font-medium"},Ol={class:"flex items-start gap-4"},Nl={class:"flex flex-col items-center gap-2"},Dl={class:"text-4xl font-bold text-text-main dark:text-white"},Hl={key:0,class:"text-sm text-primary font-medium"},Fl=["disabled"],$l={class:"material-symbols-outlined text-xl"},Yl={class:"flex-1 min-w-0"},ql={key:0,class:"text-base text-text-main dark:text-slate-200 font-medium mb-2"},Bl={key:1,class:"text-sm text-text-muted dark:text-slate-400 mb-3"},Ul={key:2,class:"text-xs text-text-muted dark:text-slate-500 mb-3"},Gl={key:3,class:"space-y-2"},Kl={class:"text-xs font-semibold text-text-muted dark:text-slate-400 uppercase tracking-wide"},Ql=["onClick","disabled"],Vl={class:"text-sm font-medium text-text-main dark:text-white"},Jl={key:0,class:"text-xs text-primary"},Zl={class:"text-xs text-text-muted dark:text-slate-400"},Xl={key:1,class:"mt-2 text-xs text-amber-600 dark:text-amber-400 flex items-center gap-1"},nd={__name:"CharacterCard",props:{character:{type:Object,required:!0},language:{type:String,default:"ja"},learned:{type:Boolean,default:!1}},setup(n){const{t:e}=pn(),t=n,a=k(!1),r=k(!1),o=k(!1);async function s(){if(!a.value){if(!tn()){o.value=!0;return}a.value=!0,o.value=!1;try{await on(t.character.char,t.language)}catch(d){o.value=!0,console.warn("Audio playback failed:",d)}finally{a.value=!1}}}async function l(d){if(!r.value){if(!tn()){o.value=!0;return}r.value=!0,o.value=!1;try{await on(d,t.language)}catch(h){o.value=!0,console.warn("Audio playback failed:",h)}finally{r.value=!1}}}return(d,h)=>(f(),y("div",{class:E(["p-4 rounded-2xl bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-colors",{"border-l-4 border-l-green-500":n.learned}])},[n.learned?(f(),y("div",Rl,[i("span",Wl,[h[0]||(h[0]=i("span",{class:"material-symbols-outlined text-sm"},"check_circle",-1)),$(" "+u(c(e)("prelesson.learned")),1)])])):R("",!0),i("div",Ol,[i("div",Nl,[i("span",Dl,u(n.character.char),1),n.character.romaji?(f(),y("span",Hl,u(n.character.romaji),1)):R("",!0),i("button",{onClick:s,disabled:a.value,class:E(["flex items-center justify-center size-10 rounded-full bg-primary/10 hover:bg-primary/20 text-primary transition-colors disabled:opacity-50 touch-target",{"animate-pulse":a.value}])},[i("span",$l,u(a.value?"volume_up":"play_arrow"),1)],10,Fl)]),i("div",Yl,[n.character.mnemonic?(f(),y("p",ql,u(n.character.mnemonic),1)):R("",!0),n.character.audioHint?(f(),y("p",Bl,u(n.character.audioHint),1)):R("",!0),n.character.strokeCount?(f(),y("p",Ul,u(c(e)("prelesson.strokes",{count:n.character.strokeCount})),1)):R("",!0),n.character.examples&&n.character.examples.length>0?(f(),y("div",Gl,[i("p",Kl,u(c(e)("prelesson.exampleWords")),1),(f(!0),y(Y,null,G(n.character.examples,(p,m)=>(f(),y("div",{key:m,class:"flex items-center gap-2 p-2 rounded-lg bg-slate-50 dark:bg-slate-800/50"},[i("button",{onClick:g=>l(p.word),disabled:r.value,class:E(["shrink-0 flex items-center justify-center size-7 rounded-full bg-white dark:bg-slate-700 hover:bg-slate-100 dark:hover:bg-slate-600 text-primary transition-colors disabled:opacity-50 shadow-sm touch-target",{"animate-pulse":r.value}])},[...h[1]||(h[1]=[i("span",{class:"material-symbols-outlined text-sm"},"volume_up",-1)])],10,Ql),i("span",Vl,u(p.word),1),p.reading?(f(),y("span",Jl,u(p.reading),1)):R("",!0),i("span",Zl,u(p.meaning),1)]))),128))])):R("",!0)])]),o.value?(f(),y("p",Xl,[h[2]||(h[2]=i("span",{class:"material-symbols-outlined text-sm"},"warning",-1)),$(" "+u(c(e)("learning.audioNotAvailable")),1)])):R("",!0)],2))}},ed={class:"w-full"},td={class:"flex items-center justify-between mb-4"},rd={class:"text-sm text-text-muted dark:text-slate-400"},ad={class:"flex items-center gap-3 text-xs text-text-muted dark:text-slate-400"},od={class:"flex items-center gap-1"},id={class:"flex items-center gap-1"},sd={class:"flex items-center gap-1"},ld={key:0,class:"text-xs font-semibold text-text-muted dark:text-slate-400 uppercase tracking-wide mb-2"},dd=["onClick"],hd={class:"text-2xl font-bold leading-tight"},ud={class:"text-xs leading-tight mt-0.5"},cd={key:0,class:"absolute -top-1 -right-1 flex items-center justify-center size-4 rounded-full bg-green-500 text-white"},pd={key:1,class:"absolute -top-1 -right-1 flex items-center justify-center size-4 rounded-full bg-amber-500"},gd={__name:"CharacterGrid",props:{characters:{type:Array,required:!0},language:{type:String,default:"ja"},learnedIds:{type:[Set,Array],default:()=>new Set},inProgressIds:{type:[Set,Array],default:()=>new Set},columns:{type:Number,default:5}},emits:["select"],setup(n,{emit:e}){const{t}=pn(),a=n,r=e,o=N(()=>a.learnedIds instanceof Set?a.learnedIds:new Set(a.learnedIds)),s=N(()=>a.inProgressIds instanceof Set?a.inProgressIds:new Set(a.inProgressIds)),l=N(()=>{if(!a.characters.some(_=>_.row))return[{row:null,characters:a.characters}];const v=[],z=new Map;for(const _ of a.characters){const j=_.row||"other";if(!z.has(j)){const S={row:j,characters:[]};z.set(j,S),v.push(S)}z.get(j).characters.push(_)}return v});function d(b){return o.value.has(b)}function h(b){return s.value.has(b)}function p(b){return d(b)?"learned":h(b)?"in-progress":"not-started"}function m(b){switch(p(b)){case"learned":return"bg-green-100 dark:bg-green-900/30 border-green-400 dark:border-green-600 text-text-main dark:text-white";case"in-progress":return"bg-amber-100 dark:bg-amber-900/30 border-amber-400 dark:border-amber-600 text-text-main dark:text-white";default:return"bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-400 dark:text-slate-500"}}async function g(b){if(r("select",b),tn())try{await on(b.char,a.language)}catch(v){console.warn("TTS playback failed:",v)}}const x=N(()=>({gridTemplateColumns:`repeat(${a.columns}, minmax(0, 1fr))`}));return(b,v)=>(f(),y("div",ed,[i("div",td,[i("span",rd,u(c(t)("prelesson.collected",{learned:o.value.size,total:n.characters.length})),1),i("div",ad,[i("span",od,[v[0]||(v[0]=i("span",{class:"inline-block size-3 rounded-sm bg-green-400"},null,-1)),$(" "+u(c(t)("prelesson.stateLearned")),1)]),i("span",id,[v[1]||(v[1]=i("span",{class:"inline-block size-3 rounded-sm bg-amber-400"},null,-1)),$(" "+u(c(t)("prelesson.stateInProgress")),1)]),i("span",sd,[v[2]||(v[2]=i("span",{class:"inline-block size-3 rounded-sm bg-slate-300 dark:bg-slate-600"},null,-1)),$(" "+u(c(t)("prelesson.stateNew")),1)])])]),(f(!0),y(Y,null,G(l.value,z=>(f(),y("div",{key:z.row||"all",class:"mb-4"},[z.row?(f(),y("p",ld,u(z.row),1)):R("",!0),i("div",{class:"grid gap-1.5",style:jn(x.value)},[(f(!0),y(Y,null,G(z.characters,_=>(f(),y("button",{key:_.id,onClick:j=>g(_),class:E(["relative flex flex-col items-center justify-center p-1.5 rounded-lg border-2 transition-all touch-target active:scale-95 character-cell",m(_.id)])},[i("span",hd,u(_.char),1),i("span",ud,u(_.romaji),1),d(_.id)?(f(),y("span",cd,[...v[3]||(v[3]=[i("span",{class:"material-symbols-outlined text-xs",style:{"font-size":"10px"}},"check",-1)])])):h(_.id)?(f(),y("span",pd,[...v[4]||(v[4]=[i("span",{class:"text-white text-xs font-bold",style:{"font-size":"8px","line-height":"1"}},"...",-1)])])):R("",!0)],10,dd))),128))],4)]))),128))]))}},md=re(gd,[["__scopeId","data-v-c980d5cb"]]),fd={class:"flex flex-col items-center w-full max-w-lg mx-auto"},yd={class:"w-full mb-6"},xd={class:"flex justify-between text-sm text-text-muted dark:text-slate-400 mb-2"},vd={class:"flex items-center gap-1"},zd={class:"h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden"},jd={class:"w-full p-8 rounded-2xl bg-gradient-to-br from-violet-50 to-indigo-50 dark:from-violet-900/30 dark:to-indigo-900/20 border border-violet-200 dark:border-violet-800 mb-6 text-center"},wd=["disabled"],bd={class:"material-symbols-outlined text-3xl text-primary"},kd={class:"mt-4 text-sm text-text-muted dark:text-slate-400"},Id={class:"text-3xl font-bold text-primary mb-2"},_d={class:"text-sm text-text-muted dark:text-slate-400"},Sd={class:"w-full grid grid-cols-3 gap-3 sm:grid-cols-5"},Cd=["onClick","disabled"],Ad={class:"text-3xl font-bold text-text-main dark:text-white"},Td={class:"text-xs text-text-muted dark:text-slate-400 mt-1"},Ed={key:0,class:"absolute top-1 right-1 material-symbols-outlined text-green-500 text-lg"},Ld={key:1,class:"absolute top-1 right-1 material-symbols-outlined text-red-500 text-lg"},Md={key:0,class:"w-full mt-6"},Pd={class:"flex items-center justify-center gap-2"},Rd={key:1,class:"w-full text-center"},Wd={class:"p-8 rounded-2xl bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-900/30 dark:to-orange-900/20 border border-amber-200 dark:border-amber-700 mb-6"},Od={class:"text-6xl mb-4"},Nd={class:"text-2xl font-bold text-text-main dark:text-white mb-2"},Dd={class:"text-text-muted dark:text-slate-400 mb-4"},Hd={class:"flex items-center justify-center gap-4"},Fd={class:"text-center"},$d={class:"text-4xl font-bold text-primary"},Yd={class:"text-2xl text-text-muted dark:text-slate-400"},qd={class:"text-center"},Bd={class:"mt-4 text-sm text-amber-600 dark:text-amber-400"},Ud={class:"flex items-center justify-center gap-2"},Gd={__name:"CharacterMatchGame",props:{characters:{type:Array,required:!0},language:{type:String,default:"ja"}},emits:["complete"],setup(n,{emit:e}){const{t}=pn(),a=n,r=e,o=k([]),s=k(0),l=k(0),d=k(null),h=k(!1),p=k(!1),m=k(!1),g=k(!1),x=k(null),b=N(()=>o.value.length),v=N(()=>b.value>0?s.value/b.value*100:0),z=N(()=>o.value[s.value]||null),_=N(()=>b.value>0?Math.round(l.value/b.value*100):0);function j(H){const W=[...H];for(let O=W.length-1;O>0;O--){const P=Math.floor(Math.random()*(O+1));[W[O],W[P]]=[W[P],W[O]]}return W}function S(H){if(!H||H.length===0)return;const O=j(H).map(P=>{const B=j(H.filter(nn=>nn.id!==P.id)).slice(0,4),rn=j([P,...B]);return{correct:P,options:rn}});o.value=O,s.value=0,l.value=0,d.value=null,h.value=!1,p.value=!1,m.value=!1,me(()=>L())}async function L(){if(!(!z.value||g.value)&&tn()){g.value=!0;try{await on(z.value.correct.char,a.language)}catch(H){console.warn("TTS playback failed:",H)}finally{g.value=!1}}}function C(H){h.value||(d.value=H.id,h.value=!0,p.value=H.id===z.value.correct.id,p.value&&(l.value++,x.value=setTimeout(()=>T(),800)))}function T(){if(s.value>=b.value-1){m.value=!0,r("complete",{score:l.value,total:b.value});return}s.value++,d.value=null,h.value=!1,p.value=!1,me(()=>L())}function M(){T()}function D(){x.value&&(clearTimeout(x.value),x.value=null),S(a.characters)}$t(()=>{x.value&&(clearTimeout(x.value),x.value=null)});function Z(H){if(!h.value)return"border-slate-200 dark:border-slate-700 hover:border-primary dark:hover:border-primary bg-surface-light dark:bg-surface-dark";const W=d.value===H.id,O=H.id===z.value.correct.id;return O?"border-green-500 bg-green-50 dark:bg-green-900/30":W&&!O?"border-red-500 bg-red-50 dark:bg-red-900/30 animate-shake":"border-slate-200 dark:border-slate-700 opacity-40"}return ae(()=>a.characters,H=>S(H),{immediate:!0}),(H,W)=>(f(),y("div",fd,[m.value?(f(),y("div",Rd,[i("div",Wd,[i("div",Od,u(_.value>=80?"🎉":_.value>=60?"👍":"💪"),1),i("h2",Nd,u(c(t)("prelesson.matchComplete")),1),i("p",Dd,u(c(t)("learning.yourScore")),1),i("div",Hd,[i("div",Fd,[i("span",$d,u(l.value),1),i("span",Yd," / "+u(b.value),1)]),W[2]||(W[2]=i("div",{class:"h-12 w-px bg-slate-300 dark:bg-slate-600"},null,-1)),i("div",qd,[i("span",{class:E(["text-4xl font-bold",_.value>=80?"text-green-500":_.value>=60?"text-amber-500":"text-red-500"])},u(_.value)+"% ",3)])]),i("p",Bd,u(c(t)("prelesson.xpEarned",{xp:l.value*2})),1)]),i("button",{onClick:D,class:"w-full py-4 rounded-xl bg-primary text-[#0d171b] font-bold text-lg hover:bg-primary/90 transition-colors"},[i("span",Ud,[W[3]||(W[3]=i("span",{class:"material-symbols-outlined"},"replay",-1)),$(" "+u(c(t)("learning.tryAgain")),1)])])])):(f(),y(Y,{key:0},[i("div",yd,[i("div",xd,[i("span",null,u(s.value+1)+" / "+u(b.value),1),i("span",vd,[W[0]||(W[0]=i("span",{class:"material-symbols-outlined text-sm text-green-500"},"check_circle",-1)),$(" "+u(l.value),1)])]),i("div",zd,[i("div",{class:"h-full bg-gradient-to-r from-primary to-green-400 rounded-full transition-all duration-300",style:jn({width:`${v.value}%`})},null,4)])]),i("div",jd,[c(tn)()?(f(),y(Y,{key:0},[i("button",{onClick:L,disabled:g.value,class:E(["mx-auto flex items-center justify-center size-16 rounded-full bg-white dark:bg-slate-800 shadow-lg hover:shadow-xl transition-shadow",{"animate-pulse":g.value}])},[i("span",bd,u(g.value?"volume_up":"play_arrow"),1)],10,wd),i("p",kd,u(c(t)("prelesson.tapCharacterYouHear")),1)],64)):(f(),y(Y,{key:1},[i("p",Id,u(z.value?.correct.romaji),1),i("p",_d,u(c(t)("prelesson.tapCharacterYouHear")),1)],64))]),i("div",Sd,[(f(!0),y(Y,null,G(z.value?.options,O=>(f(),y("button",{key:O.id,onClick:P=>C(O),disabled:h.value,class:E(["relative flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all touch-target",Z(O)])},[i("span",Ad,u(O.char),1),i("span",Td,u(O.romaji),1),h.value&&O.id===z.value?.correct.id?(f(),y("span",Ed," check_circle ")):R("",!0),h.value&&d.value===O.id&&O.id!==z.value?.correct.id?(f(),y("span",Ld," cancel ")):R("",!0)],10,Cd))),128))]),h.value&&!p.value?(f(),y("div",Md,[i("button",{onClick:M,class:"w-full py-4 rounded-xl bg-primary text-[#0d171b] font-bold text-lg hover:bg-primary/90 transition-colors"},[i("span",Pd,[W[1]||(W[1]=i("span",{class:"material-symbols-outlined"},"arrow_forward",-1)),$(" "+u(c(t)("prelesson.nextCharacter")),1)])])])):R("",!0)],64))]))}},Kd=re(Gd,[["__scopeId","data-v-f8c23bf7"]]),Qd={class:"min-h-screen bg-background-light dark:bg-background-dark"},Vd={class:"sticky top-0 z-10 bg-surface-light dark:bg-surface-dark border-b border-slate-200 dark:border-slate-700 safe-area-top"},Jd={class:"max-w-4xl mx-auto px-4 py-3 flex items-center justify-between"},Zd={class:"text-sm font-medium"},Xd={class:"flex items-center gap-4"},nh={class:"relative"},eh={value:"normal"},th={value:"slow"},rh={value:"word"},ah={class:"hidden sm:inline"},oh={class:"flex items-center gap-2"},ih={class:"text-2xl"},sh={class:"font-semibold text-text-main dark:text-white"},lh={class:"max-w-4xl mx-auto px-4 py-6"},dh={class:"text-2xl font-bold text-text-main dark:text-white mb-2"},hh={class:"text-text-muted dark:text-slate-400 mb-6"},uh={key:0,class:"mb-6"},ch={class:"flex items-center gap-2 mb-3"},ph={class:"text-lg font-bold text-text-main dark:text-white"},gh={class:"text-sm text-text-muted dark:text-slate-400"},mh={class:"space-y-3"},fh=["onClick"],yh={class:"flex-shrink-0 w-12 h-12 rounded-xl bg-violet-100 dark:bg-violet-900/30 flex items-center justify-center"},xh={key:0,class:"material-symbols-outlined text-2xl text-green-600 dark:text-green-400"},vh={key:1,class:"text-2xl"},zh={class:"flex-1 min-w-0"},jh={class:"font-semibold text-text-main dark:text-white text-lg"},wh={class:"text-sm text-text-muted dark:text-slate-400 truncate"},bh={key:0,class:"mt-2"},kh={class:"flex items-center justify-between mb-1"},Ih={class:"text-xs text-violet-600 dark:text-violet-400"},_h={class:"w-full h-1.5 bg-violet-200 dark:bg-violet-800 rounded-full overflow-hidden"},Sh={class:"flex-shrink-0 px-3 py-1 bg-violet-100 dark:bg-violet-900/30 rounded-full"},Ch={class:"text-sm font-medium text-violet-600 dark:text-violet-400"},Ah={key:0,class:"flex items-center gap-3 my-6"},Th={class:"flex items-center gap-1.5 text-sm text-text-muted dark:text-slate-500"},Eh={class:"flex-1 min-w-0"},Lh={class:"font-semibold text-text-main dark:text-white text-lg"},Mh={class:"text-sm text-text-muted dark:text-slate-400"},Ph={class:"flex-shrink-0 px-3 py-1 bg-amber-200 dark:bg-amber-800 rounded-full"},Rh={class:"text-sm font-bold text-amber-800 dark:text-amber-200"},Wh={class:"space-y-4"},Oh=["onClick"],Nh={key:0,class:"material-symbols-outlined text-2xl text-green-600 dark:text-green-400"},Dh={key:1,class:"text-lg font-bold text-primary"},Hh={class:"text-4xl"},Fh={class:"flex-1 min-w-0"},$h={class:"font-semibold text-text-main dark:text-white text-lg"},Yh={class:"text-sm text-text-muted dark:text-slate-400 truncate"},qh={class:"flex items-center gap-3 mt-1"},Bh={class:"material-symbols-outlined text-sm"},Uh={class:"material-symbols-outlined text-sm"},Gh={key:0,class:"flex-shrink-0 px-2.5 py-1 bg-amber-100 dark:bg-amber-900/30 rounded-full"},Kh={class:"text-xs font-bold text-amber-700 dark:text-amber-300"},Qh={class:"flex-shrink-0 px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-full"},Vh={class:"text-sm font-medium text-text-muted dark:text-slate-400"},Jh={key:2,class:"text-center py-12"},Zh={class:"text-lg font-semibold text-text-main dark:text-white mb-2"},Xh={class:"text-text-muted dark:text-slate-400"},nu={class:"flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6"},eu={class:"flex items-center gap-3"},tu={class:"text-4xl"},ru={class:"text-2xl font-bold text-text-main dark:text-white"},au={class:"text-sm text-text-muted dark:text-slate-400"},ou={key:0,class:"flex bg-slate-100 dark:bg-slate-800 rounded-xl p-1"},iu={key:1,class:"flex bg-slate-100 dark:bg-slate-800 rounded-xl p-1"},su={key:0,class:"space-y-3"},lu={key:3,class:"space-y-3"},du={class:"bg-surface-light dark:bg-surface-dark rounded-2xl p-6 max-w-md w-full shadow-xl"},hu={class:"text-center"},uu={class:"text-xl font-bold text-text-main dark:text-white mb-2"},cu={class:"text-text-muted dark:text-slate-400 mb-6"},pu={class:"flex gap-3"},xu={__name:"LearningScreen",setup(n){const{t:e,locale:t}=pn(),a=Yt();Kt();const{addXP:r}=Qt(),{getChapterCompletionStatus:o}=Nn(),{getDueWords:s,getDueCount:l}=De(),{getLessonStatus:d,areChaptersLocked:h,markCharacterLearned:p,markMatchingCompleted:m,markQuizCompleted:g,getLearnedCharacters:x}=si(),{learningLevel:b,selectedTargetLanguage:v,selectedMotherTongue:z,uiLanguage:_}=Vt();b.value||a.replace("/");const j={get level(){return b.value||{id:"intermediate"}},get targetLanguage(){return v.value||"en"},get motherTongue(){return z.value||"en"},get uiLanguage(){return _.value||"en"}},S=k(null),L=k("list"),C=k([]),T=k([]),M=k(!1),D=k(!0),Z=k("normal"),H=k(!1),W=k([]),O=k(!1),P=k([]),B=N(()=>{if(!S.value)return new Set;const F=x(S.value.id);return new Set(F)}),rn=N(()=>te(j.targetLanguage,j.uiLanguage)),nn=N(()=>rn.value.length===0?!1:h(j.targetLanguage)),An=N(()=>{const F={};for(const w of rn.value)F[w.id]=d(w.id);return F}),mn=N(()=>Tt(j.targetLanguage,j.level.id,j.uiLanguage)),Mt=N(()=>{const F=[];for(const w of mn.value)F.push(...Gn(w.id,j.targetLanguage,j.motherTongue));return F}),Hn=N(()=>s(Mt.value)),ce=N(()=>{const F={};for(const w of mn.value){const A=Gn(w.id,j.targetLanguage,j.motherTongue);F[w.id]=l(A)}return F});function Fn(F){S.value=F,H.value=!1,F.type==="pre-lesson"?(O.value=!0,P.value=ai(F.id,j.targetLanguage,j.motherTongue),C.value=Pt(P.value),T.value=[],L.value="cards"):(O.value=!1,P.value=[],C.value=Gn(F.id,j.targetLanguage,j.motherTongue),T.value=ri(F.id,j.targetLanguage,j.motherTongue),L.value="list")}function Pt(F){return F.map(w=>({id:w.id,word:w.char,meaning:w.reading,reading:w.romaji,example:w.examples?.[0]?.word||"",nativeWord:w.examples?.[0]?.meaning||"",nativeMeaning:w.reading,nativeExample:w.examples?.[0]?.meaning||""}))}function Rt(F){S.value&&p(S.value.id,F.id)}function Wt(F){S.value&&(m(S.value.id),r(15,"matchQuiz"))}function Ot(){W.value=Hn.value,W.value.length!==0&&(H.value=!0,S.value={id:null,title:e("srs.dailyReview"),icon:"🔄"},C.value=W.value,T.value=[],L.value="quiz")}function Nt(){S.value=null,H.value=!1,O.value=!1,P.value=[],L.value="list"}function dn(F){L.value=F}function Dt(F){if(F.xpEarned>0&&r(F.xpEarned,"quiz"),O.value&&S.value){g(S.value.id,F.score,F.total);return}H.value||(M.value=!0)}function Ht(){M.value=!1,L.value="conversation"}function pe(){M.value=!1}function Ft(){L.value="list"}return qt(()=>{mn.value.length===1&&Fn(mn.value[0])}),(F,w)=>(f(),y("div",Qd,[i("header",Vd,[i("div",Jd,[i("button",{onClick:w[0]||(w[0]=A=>S.value?Nt():c(a).push("/")),class:"flex items-center gap-2 text-text-muted hover:text-text-main dark:text-slate-400 dark:hover:text-white transition-colors"},[w[11]||(w[11]=i("span",{class:"material-symbols-outlined"},"arrow_back",-1)),i("span",Zd,u(S.value?c(e)("learning.backToChapters"):c(e)("learning.backToSetup")),1)]),i("div",Xd,[i("div",nh,[Bt(i("select",{"onUpdate:modelValue":w[1]||(w[1]=A=>Z.value=A),class:"appearance-none pl-8 pr-8 py-1.5 rounded-full text-sm font-medium bg-slate-100 dark:bg-slate-800 text-text-main dark:text-slate-300 border-none cursor-pointer focus:ring-2 focus:ring-primary focus:outline-none"},[i("option",eh,u(c(e)("learning.voiceSpeed.normal")),1),i("option",th,u(c(e)("learning.voiceSpeed.slow")),1),i("option",rh,u(c(e)("learning.voiceSpeed.word")),1)],512),[[Ut,Z.value]]),w[12]||(w[12]=i("span",{class:"material-symbols-outlined text-lg absolute left-2 top-1/2 -translate-y-1/2 text-text-muted dark:text-slate-400 pointer-events-none"},"volume_up",-1)),w[13]||(w[13]=i("span",{class:"material-symbols-outlined text-sm absolute right-2 top-1/2 -translate-y-1/2 text-text-muted dark:text-slate-400 pointer-events-none"},"expand_more",-1))]),i("button",{onClick:w[2]||(w[2]=A=>D.value=!D.value),class:E(["flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-medium transition-colors",D.value?"bg-primary/10 text-primary":"bg-slate-100 dark:bg-slate-800 text-text-muted dark:text-slate-400"])},[w[14]||(w[14]=i("span",{class:"material-symbols-outlined text-lg"},"translate",-1)),i("span",ah,u(c(e)("learning.bilingual")),1)],2),i("div",oh,[i("span",ih,u(j.level.icon),1),i("span",sh,u(c(e)(`levels.${j.level.id}.name`)),1)])])])]),i("main",lh,[S.value?(f(),y(Y,{key:1},[i("div",nu,[i("div",eu,[i("span",tu,u(S.value.icon),1),i("div",null,[i("h1",ru,u(S.value.title),1),i("p",au,u(O.value?c(e)("foundation.characters",{count:P.value.length}):`${C.value.length} ${c(e)("learning.words")}`),1)])]),O.value?(f(),y("div",ou,[i("button",{onClick:w[3]||(w[3]=A=>dn("cards")),class:E(["flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors",L.value==="cards"?"bg-white dark:bg-slate-700 text-primary shadow-sm":"text-text-muted dark:text-slate-400 hover:text-text-main dark:hover:text-white"])},[w[24]||(w[24]=i("span",{class:"material-symbols-outlined text-lg"},"style",-1)),$(" "+u(c(e)("foundation.cards")),1)],2),i("button",{onClick:w[4]||(w[4]=A=>dn("grid")),class:E(["flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors",L.value==="grid"?"bg-white dark:bg-slate-700 text-primary shadow-sm":"text-text-muted dark:text-slate-400 hover:text-text-main dark:hover:text-white"])},[w[25]||(w[25]=i("span",{class:"material-symbols-outlined text-lg"},"grid_view",-1)),$(" "+u(c(e)("foundation.grid")),1)],2),i("button",{onClick:w[5]||(w[5]=A=>dn("match")),class:E(["flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors",L.value==="match"?"bg-white dark:bg-slate-700 text-primary shadow-sm":"text-text-muted dark:text-slate-400 hover:text-text-main dark:hover:text-white"])},[w[26]||(w[26]=i("span",{class:"material-symbols-outlined text-lg"},"extension",-1)),$(" "+u(c(e)("foundation.match")),1)],2),i("button",{onClick:w[6]||(w[6]=A=>dn("quiz")),class:E(["flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors",L.value==="quiz"?"bg-white dark:bg-slate-700 text-primary shadow-sm":"text-text-muted dark:text-slate-400 hover:text-text-main dark:hover:text-white"])},[w[27]||(w[27]=i("span",{class:"material-symbols-outlined text-lg"},"quiz",-1)),$(" "+u(c(e)("learning.modes.quiz")),1)],2)])):(f(),y("div",iu,[i("button",{onClick:w[7]||(w[7]=A=>dn("list")),class:E(["flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors",L.value==="list"?"bg-white dark:bg-slate-700 text-primary shadow-sm":"text-text-muted dark:text-slate-400 hover:text-text-main dark:hover:text-white"])},[w[28]||(w[28]=i("span",{class:"material-symbols-outlined text-lg"},"list",-1)),$(" "+u(c(e)("learning.modes.list")),1)],2),i("button",{onClick:w[8]||(w[8]=A=>dn("flashcard")),class:E(["flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors",L.value==="flashcard"?"bg-white dark:bg-slate-700 text-primary shadow-sm":"text-text-muted dark:text-slate-400 hover:text-text-main dark:hover:text-white"])},[w[29]||(w[29]=i("span",{class:"material-symbols-outlined text-lg"},"style",-1)),$(" "+u(c(e)("learning.modes.flashcard")),1)],2),i("button",{onClick:w[9]||(w[9]=A=>dn("quiz")),class:E(["flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors",L.value==="quiz"?"bg-white dark:bg-slate-700 text-primary shadow-sm":"text-text-muted dark:text-slate-400 hover:text-text-main dark:hover:text-white"])},[w[30]||(w[30]=i("span",{class:"material-symbols-outlined text-lg"},"quiz",-1)),$(" "+u(c(e)("learning.modes.quiz")),1)],2),H.value?R("",!0):(f(),y("button",{key:0,onClick:w[10]||(w[10]=A=>dn("conversation")),class:E(["flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors",L.value==="conversation"?"bg-white dark:bg-slate-700 text-primary shadow-sm":"text-text-muted dark:text-slate-400 hover:text-text-main dark:hover:text-white"])},[w[31]||(w[31]=i("span",{class:"material-symbols-outlined text-lg"},"chat",-1)),$(" "+u(c(e)("learning.modes.conversation")),1)],2))]))]),O.value&&L.value==="cards"?(f(),y("div",su,[(f(!0),y(Y,null,G(P.value,A=>(f(),hn(nd,{key:A.id,character:A,language:j.targetLanguage,learned:B.value.has(A.id)},null,8,["character","language","learned"]))),128))])):O.value&&L.value==="grid"?(f(),hn(md,{key:1,characters:P.value,language:j.targetLanguage,"learned-ids":B.value,onSelect:Rt},null,8,["characters","language","learned-ids"])):O.value&&L.value==="match"?(f(),hn(Kd,{key:2,characters:P.value,language:j.targetLanguage,onComplete:Wt},null,8,["characters","language"])):L.value==="list"?(f(),y("div",lu,[(f(!0),y(Y,null,G(C.value,A=>(f(),hn(Hi,{key:A.id,word:A,language:j.targetLanguage,bilingual:D.value,"voice-speed":Z.value},null,8,["word","language","bilingual","voice-speed"]))),128))])):L.value==="flashcard"?(f(),hn(ws,{key:4,words:C.value,language:j.targetLanguage,bilingual:D.value,"voice-speed":Z.value},null,8,["words","language","bilingual","voice-speed"])):L.value==="quiz"?(f(),hn(sl,{key:5,words:C.value,language:j.targetLanguage,"chapter-id":S.value.id,onComplete:Dt},null,8,["words","language","chapter-id"])):L.value==="conversation"?(f(),hn(Pl,{key:6,conversations:T.value,language:j.targetLanguage,bilingual:D.value,"voice-speed":Z.value,"chapter-id":S.value.id,onBack:Ft},null,8,["conversations","language","bilingual","voice-speed","chapter-id"])):R("",!0)],64)):(f(),y(Y,{key:0},[i("h1",dh,u(c(e)("learning.chooseChapter")),1),i("p",hh,u(c(e)("learning.chapterDescription")),1),rn.value.length>0?(f(),y("div",uh,[i("div",ch,[w[15]||(w[15]=i("span",{class:"material-symbols-outlined text-violet-500"},"auto_stories",-1)),i("h2",ph,u(c(e)("foundation.title")),1),i("span",gh,u(c(e)("foundation.description")),1)]),i("div",mh,[(f(!0),y(Y,null,G(rn.value,A=>(f(),y("div",{key:A.id,onClick:ge=>Fn(A),class:E(["flex items-center gap-4 p-4 rounded-2xl border-2 cursor-pointer transition-all hover:scale-[1.01] bg-gradient-to-r from-violet-50 to-indigo-50 dark:from-violet-900/20 dark:to-indigo-900/20",An.value[A.id]?.quizCompleted?"border-green-400 dark:border-green-600":"border-violet-300 dark:border-violet-700 hover:border-violet-400 dark:hover:border-violet-500"])},[i("div",yh,[An.value[A.id]?.quizCompleted?(f(),y("span",xh,"check_circle")):(f(),y("span",vh,u(A.icon),1))]),i("div",zh,[i("h3",jh,u(A.title),1),i("p",wh,u(A.description),1),A.characterCount>0?(f(),y("div",bh,[i("div",kh,[i("span",Ih,u(c(e)("foundation.charactersLearned",{learned:An.value[A.id]?.charactersLearned||0,total:A.characterCount})),1)]),i("div",_h,[i("div",{class:"h-full bg-violet-500 dark:bg-violet-400 rounded-full transition-all duration-300",style:jn({width:`${Math.min(100,(An.value[A.id]?.charactersLearned||0)/A.characterCount*100)}%`})},null,4)])])):R("",!0)]),i("div",Sh,[i("span",Ch,u(c(e)("foundation.characters",{count:A.characterCount})),1)]),w[16]||(w[16]=i("span",{class:"material-symbols-outlined text-violet-400 dark:text-violet-500"},"chevron_right",-1))],10,fh))),128))]),nn.value?(f(),y("div",Ah,[w[18]||(w[18]=i("div",{class:"flex-1 h-px bg-slate-200 dark:bg-slate-700"},null,-1)),i("div",Th,[w[17]||(w[17]=i("span",{class:"material-symbols-outlined text-base"},"lock",-1)),$(" "+u(c(e)("foundation.completeToUnlock")),1)]),w[19]||(w[19]=i("div",{class:"flex-1 h-px bg-slate-200 dark:bg-slate-700"},null,-1))])):R("",!0)])):R("",!0),Hn.value.length>0?(f(),y("div",{key:1,onClick:Ot,class:"flex items-center gap-4 p-4 mb-6 rounded-2xl border-2 border-amber-400 dark:border-amber-600 bg-amber-50 dark:bg-amber-900/20 cursor-pointer transition-all hover:scale-[1.01]"},[w[20]||(w[20]=i("div",{class:"flex-shrink-0 w-12 h-12 rounded-xl bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center"},[i("span",{class:"text-2xl"},"🔄")],-1)),i("div",Eh,[i("h3",Lh,u(c(e)("srs.dailyReview")),1),i("p",Mh,u(c(e)("srs.dailyReviewDescription")),1)]),i("div",Ph,[i("span",Rh,u(c(e)("srs.wordsToReview",{count:Hn.value.length})),1)]),w[21]||(w[21]=i("span",{class:"material-symbols-outlined text-amber-600 dark:text-amber-400"},"chevron_right",-1))])):R("",!0),i("div",Wh,[(f(!0),y(Y,null,G(mn.value,(A,ge)=>(f(),y("div",{key:A.id,onClick:gu=>!nn.value&&Fn(A),class:E(["flex items-center gap-4 p-4 rounded-2xl border-2 bg-surface-light dark:bg-surface-dark transition-all",[nn.value?"opacity-50 pointer-events-none border-slate-200 dark:border-slate-700":["hover:border-primary dark:hover:border-primary cursor-pointer hover:scale-[1.01]",c(o)(A.id).complete?"border-green-400 dark:border-green-600":"border-slate-200 dark:border-slate-700"]]])},[i("div",{class:E(["flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center",c(o)(A.id).complete?"bg-green-100 dark:bg-green-900/30":"bg-primary/10 dark:bg-primary/20"])},[c(o)(A.id).complete?(f(),y("span",Nh,"check_circle")):(f(),y("span",Dh,u(ge+1),1))],2),i("span",Hh,u(A.icon),1),i("div",Fh,[i("h3",$h,u(A.title),1),i("p",Yh,u(A.description),1),i("div",qh,[i("span",{class:E(["flex items-center gap-1 text-xs",c(o)(A.id).quiz?"text-green-600 dark:text-green-400":"text-text-muted dark:text-slate-500"])},[i("span",Bh,u(c(o)(A.id).quiz?"check_circle":"radio_button_unchecked"),1),$(" "+u(c(e)("learning.progress.quiz")),1)],2),i("span",{class:E(["flex items-center gap-1 text-xs",c(o)(A.id).conversation?"text-green-600 dark:text-green-400":"text-text-muted dark:text-slate-500"])},[i("span",Uh,u(c(o)(A.id).conversation?"check_circle":"radio_button_unchecked"),1),$(" "+u(c(e)("learning.progress.conversation")),1)],2)])]),ce.value[A.id]>0?(f(),y("div",Gh,[i("span",Kh,u(ce.value[A.id])+" "+u(c(e)("srs.dueToday")),1)])):R("",!0),i("div",Qh,[i("span",Vh,u(A.wordCount)+" "+u(c(e)("learning.words")),1)]),w[22]||(w[22]=i("span",{class:"material-symbols-outlined text-text-muted dark:text-slate-400"},"chevron_right",-1))],10,Oh))),128))]),mn.value.length===0&&rn.value.length===0?(f(),y("div",Jh,[w[23]||(w[23]=i("span",{class:"text-6xl block mb-4"},"📚",-1)),i("h3",Zh,u(c(e)("learning.noChapters")),1),i("p",Xh,u(c(e)("learning.noChaptersDescription")),1)])):R("",!0)],64))]),(f(),hn(Gt,{to:"body"},[M.value?(f(),y("div",{key:0,class:"fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4",onClick:En(pe,["self"])},[i("div",du,[i("div",hu,[w[32]||(w[32]=i("span",{class:"text-5xl block mb-4"},"💬",-1)),i("h3",uu,u(c(e)("learning.conversation.prompt.title")),1),i("p",cu,u(c(e)("learning.conversation.prompt.description")),1),i("div",pu,[i("button",{onClick:pe,class:"flex-1 px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-xl text-text-main dark:text-white font-medium hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"},u(c(e)("learning.conversation.prompt.skip")),1),i("button",{onClick:Ht,class:"flex-1 px-4 py-2.5 bg-primary text-white rounded-xl font-medium hover:bg-primary/90 transition-colors"},u(c(e)("learning.conversation.prompt.start")),1)])])])])):R("",!0)]))]))}};export{xu as default};
+`),o=r?"+":i?"":"-";return t+o+`
+`}function ne(n){return n[n.length-1]===`
+`?n.slice(0,-1):n}function Lr(n,e){for(var t=/(\n+)([^\n]*)/g,i=(function(){var l=n.indexOf(`
+`);return l=l!==-1?l:n.length,t.lastIndex=l,ee(n.slice(0,l),e)})(),r=n[0]===`
+`||n[0]===" ",o,a;a=t.exec(n);){var s=a[1],h=a[2];o=h[0]===" ",i+=s+(!r&&!o&&h!==""?`
+`:"")+ee(h,e),r=o}return i}function ee(n,e){if(n===""||n[0]===" ")return n;for(var t=/ [^ ]/g,i,r=0,o,a=0,s=0,h="";i=t.exec(n);)s=i.index,s-r>e&&(o=a>r?a:s,h+=`
+`+n.slice(r,o),r=o+1),a=s;return h+=`
+`,n.length-r>e&&a>r?h+=n.slice(r,a)+`
+`+n.slice(a+1):h+=n.slice(r),h.slice(1)}function Mr(n){for(var e="",t=0,i,r=0;r<n.length;t>=65536?r+=2:r++)t=V(n,r),i=A[t],!i&&$(t)?(e+=n[r],t>=65536&&(e+=n[r+1])):e+=i||_r(t);return e}function Rr(n,e,t){var i="",r=n.tag,o,a,s;for(o=0,a=t.length;o<a;o+=1)s=t[o],n.replacer&&(s=n.replacer.call(t,String(o),s)),(P(n,e,s,!1,!1)||typeof s>"u"&&P(n,e,null,!1,!1))&&(i!==""&&(i+=","+(n.condenseFlow?"":" ")),i+=n.dump);n.tag=r,n.dump="["+i+"]"}function te(n,e,t,i){var r="",o=n.tag,a,s,h;for(a=0,s=t.length;a<s;a+=1)h=t[a],n.replacer&&(h=n.replacer.call(t,String(a),h)),(P(n,e+1,h,!0,!0,!1,!0)||typeof h>"u"&&P(n,e+1,null,!0,!0,!1,!0))&&((!i||r!=="")&&(r+=Tn(n,e)),n.dump&&X===n.dump.charCodeAt(0)?r+="-":r+="- ",r+=n.dump);n.tag=o,n.dump=r||"[]"}function Nr(n,e,t){var i="",r=n.tag,o=Object.keys(t),a,s,h,l,d;for(a=0,s=o.length;a<s;a+=1)d="",i!==""&&(d+=", "),n.condenseFlow&&(d+='"'),h=o[a],l=t[h],n.replacer&&(l=n.replacer.call(t,h,l)),P(n,e,h,!1,!1)&&(n.dump.length>1024&&(d+="? "),d+=n.dump+(n.condenseFlow?'"':"")+":"+(n.condenseFlow?"":" "),P(n,e,l,!1,!1)&&(d+=n.dump,i+=d));n.tag=r,n.dump="{"+i+"}"}function Hr(n,e,t,i){var r="",o=n.tag,a=Object.keys(t),s,h,l,d,c,p;if(n.sortKeys===!0)a.sort();else if(typeof n.sortKeys=="function")a.sort(n.sortKeys);else if(n.sortKeys)throw new _("sortKeys must be a boolean or a function");for(s=0,h=a.length;s<h;s+=1)p="",(!i||r!=="")&&(p+=Tn(n,e)),l=a[s],d=t[l],n.replacer&&(d=n.replacer.call(t,l,d)),P(n,e+1,l,!0,!0,!0)&&(c=n.tag!==null&&n.tag!=="?"||n.dump&&n.dump.length>1024,c&&(n.dump&&X===n.dump.charCodeAt(0)?p+="?":p+="? "),p+=n.dump,c&&(p+=Tn(n,e)),P(n,e+1,d,!0,c)&&(n.dump&&X===n.dump.charCodeAt(0)?p+=":":p+=": ",p+=n.dump,r+=p));n.tag=o,n.dump=r||"{}"}function ie(n,e,t){var i,r,o,a,s,h;for(r=t?n.explicitTypes:n.implicitTypes,o=0,a=r.length;o<a;o+=1)if(s=r[o],(s.instanceOf||s.predicate)&&(!s.instanceOf||typeof e=="object"&&e instanceof s.instanceOf)&&(!s.predicate||s.predicate(e))){if(t?s.multi&&s.representName?n.tag=s.representName(e):n.tag=s.tag:n.tag="?",s.represent){if(h=n.styleMap[s.tag]||s.defaultStyle,We.call(s.represent)==="[object Function]")i=s.represent(e,h);else if(Fe.call(s.represent,h))i=s.represent[h](e,h);else throw new _("!<"+s.tag+'> tag resolver accepts not "'+h+'" style');n.dump=i}return!0}return!1}function P(n,e,t,i,r,o,a){n.tag=null,n.dump=t,ie(n,t,!1)||ie(n,t,!0);var s=We.call(n.dump),h=i,l;i&&(i=n.flowLevel<0||n.flowLevel>e);var d=s==="[object Object]"||s==="[object Array]",c,p;if(d&&(c=n.duplicates.indexOf(t),p=c!==-1),(n.tag!==null&&n.tag!=="?"||p||n.indent!==2&&e>0)&&(r=!1),p&&n.usedDuplicates[c])n.dump="*ref_"+c;else{if(d&&p&&!n.usedDuplicates[c]&&(n.usedDuplicates[c]=!0),s==="[object Object]")i&&Object.keys(n.dump).length!==0?(Hr(n,e,n.dump,r),p&&(n.dump="&ref_"+c+n.dump)):(Nr(n,e,n.dump),p&&(n.dump="&ref_"+c+" "+n.dump));else if(s==="[object Array]")i&&n.dump.length!==0?(n.noArrayIndent&&!a&&e>0?te(n,e-1,n.dump,r):te(n,e,n.dump,r),p&&(n.dump="&ref_"+c+n.dump)):(Rr(n,e,n.dump),p&&(n.dump="&ref_"+c+" "+n.dump));else if(s==="[object String]")n.tag!=="?"&&Or(n,n.dump,e,o,h);else{if(s==="[object Undefined]")return!1;if(n.skipInvalid)return!1;throw new _("unacceptable kind of an object to dump "+s)}n.tag!==null&&n.tag!=="?"&&(l=encodeURI(n.tag[0]==="!"?n.tag.slice(1):n.tag).replace(/!/g,"%21"),n.tag[0]==="!"?l="!"+l:l.slice(0,18)==="tag:yaml.org,2002:"?l="!!"+l.slice(18):l="!<"+l+">",n.dump=l+" "+n.dump)}return!0}function Wr(n,e){var t=[],i=[],r,o;for(En(n,t,i),r=0,o=i.length;r<o;r+=1)e.duplicates.push(t[i[r]]);e.usedDuplicates=new Array(o)}function En(n,e,t){var i,r,o;if(n!==null&&typeof n=="object")if(r=e.indexOf(n),r!==-1)t.indexOf(r)===-1&&t.push(r);else if(e.push(n),Array.isArray(n))for(r=0,o=n.length;r<o;r+=1)En(n[r],e,t);else for(i=Object.keys(n),r=0,o=i.length;r<o;r+=1)En(n[i[r]],e,t)}function Fr(n,e){e=e||{};var t=new Tr(e);t.noRefs||Wr(n,t);var i=n;return t.replacer&&(i=t.replacer.call({"":i},"",i)),P(t,0,i,!0,!0)?t.dump+`
+`:""}var Yr=Fr,qr={dump:Yr};function Nn(n,e){return function(){throw new Error("Function yaml."+n+" is removed in js-yaml 4. Use yaml."+e+" instead, which is now safe by default.")}}var Br=b,Ur=ce,Gr=me,Kr=we,Vr=ve,Jr=On,Xr=He.load,Qr=He.loadAll,$r=qr.dump,Zr=_,na={binary:Ae,float:ye,map:ge,null:ze,pairs:Se,set:Te,timestamp:be,bool:fe,int:je,merge:Ie,omap:_e,seq:pe,str:ue},ea=Nn("safeLoad","load"),ta=Nn("safeLoadAll","loadAll"),ia=Nn("safeDump","dump"),ra={Type:Br,Schema:Ur,FAILSAFE_SCHEMA:Gr,JSON_SCHEMA:Kr,CORE_SCHEMA:Vr,DEFAULT_SCHEMA:Jr,load:Xr,loadAll:Qr,dump:$r,YAMLException:Zr,types:na,safeLoad:ea,safeLoadAll:ta,safeDump:ia};const aa=Object.assign({"./chapters/en/beginner/city-and-transportation.yml":st,"./chapters/en/beginner/clothes-and-shopping.yml":ht,"./chapters/en/beginner/family-and-friends.yml":lt,"./chapters/en/beginner/food-and-eating.yml":dt,"./chapters/en/beginner/health-and-body.yml":ct,"./chapters/en/beginner/hobbies-and-free-time.yml":ut,"./chapters/en/beginner/home-and-living.yml":pt,"./chapters/en/beginner/morning-routine.yml":gt,"./chapters/en/beginner/time-and-schedules.yml":mt,"./chapters/en/beginner/weather-and-seasons.yml":zt,"./chapters/en/intermediate/03-future-and-plans.yml":ft,"./chapters/en/intermediate/04-experiences-and-achievements.yml":jt,"./chapters/en/intermediate/05-travel-problems.yml":yt,"./chapters/en/intermediate/06-opinions-and-disagreement.yml":wt,"./chapters/en/intermediate/07-describing-personality.yml":vt,"./chapters/en/intermediate/08-entertainment-and-reviews.yml":xt,"./chapters/en/intermediate/identity-and-background.yml":kt,"./chapters/en/intermediate/telling-stories.yml":bt,"./chapters/ja/beginner/comprehension-check.yml":It,"./chapters/ja/beginner/me-and-you.yml":At,"./chapters/ja/beginner/me-you-and-professionals.yml":_t,"./chapters/ja/beginner/mixed-practice-dialogue-flow.yml":St,"./chapters/ja/beginner/negative-not-x.yml":Tt,"./chapters/ja/beginner/shadowing-speed-rhythm.yml":Ct,"./chapters/ja/beginner/stating-facts.yml":Et,"./chapters/ja/beginner/yes-no-questions.yml":Dt,"./chapters/ja/foundation/hiragana-01-vowels-k.yml":Pt,"./chapters/ja/foundation/hiragana-02-s-t.yml":Ot,"./chapters/ja/foundation/hiragana-03-n-h.yml":Lt,"./chapters/ja/foundation/hiragana-04-m-y-r-w.yml":Mt,"./chapters/ja/foundation/hiragana-05-dakuten.yml":Rt,"./chapters/ja/intermediate/discussing-movies.yml":Nt});function oa(n){try{return ra.load(n)}catch(e){return console.error("Failed to parse chapter YAML:",e),null}}function sa(n){const e=n.match(/\.\/chapters\/([a-z]{2})\//);return e?e[1]:null}function ha(n,e,t="en"){return n?.words?n.words.map((i,r)=>{const o=i.word[e]||i.word.en,a=i.word[t]||i.word.en;return{id:`${n.meta.id}_${i.id}`,word:o,nativeWord:a,meaning:i.description[e]||i.description.en,nativeMeaning:i.description[t]||i.description.en,example:i.sentence[e]||i.sentence.en,nativeExample:i.sentence[t]||i.sentence.en,phonetic:e==="en"?i.phonetic:void 0,reading:e==="ja"?i.reading:void 0}}):[]}function la(){const n={};for(const[e,t]of Object.entries(aa)){const i=sa(e);if(!i)continue;const r=oa(t);r?.meta&&(r.meta.targetLanguage=i,n[i]||(n[i]=[]),n[i].push(r))}for(const e of Object.keys(n))n[e].sort((t,i)=>(t.meta.order||999)-(i.meta.order||999));return n}let mn=null;function da(){return mn||(mn=la()),mn}function Qe(n="ja"){return da()[n]||[]}function $e(n="ja",e="en"){return Qe(n).map(i=>({id:i.meta.id,title:i.meta.title[e]||i.meta.title.en,description:i.meta.description[e]||i.meta.description.en,icon:i.meta.icon,level:i.meta.level,type:i.meta.type||"chapter",targetLanguage:i.meta.targetLanguage,wordCount:i.words?.length||0,characterCount:i.characters?.length||0,order:i.meta.order}))}function ca(n="ja",e="beginner",t="en"){return $e(n,t).filter(i=>i.level===e)}function Hn(n,e="ja"){return Qe(e).find(i=>i.meta.id===n)}function va(n,e="ja",t="en"){const i=Hn(n,e);return i?ha(i,e,t):[]}function xa(n,e="ja",t="en"){const i=Hn(n,e);return i?.chat?.conversations?i.chat.conversations.map(r=>({id:r.id,title:r.title[e]||r.title.en,messages:r.messages.map(o=>({role:o.role,text:o.text[e]||o.text.en,nativeText:o.text[t]||o.text.en}))})):[]}function re(n="ja",e="en"){return $e(n,e).filter(t=>t.level==="foundation")}function ka(n,e="ja",t="en"){const i=Hn(n,e);return i?.characters?i.characters.map(r=>({id:`${i.meta.id}_${r.id}`,char:r.char,reading:r.reading,romaji:r.romaji,strokeCount:r.stroke_count,mnemonic:r.mnemonic?.[t]||r.mnemonic?.en,audioHint:r.audio_hint,tone:r.tone,toneDescription:r.tone_description?.[t]||r.tone_description?.en,row:r.row,examples:(r.examples||[]).map(o=>({word:o.word,reading:o.reading,meaning:o.meaning[t]||o.meaning.en}))})):[]}const Ze="chatmate_learningProgress",ae={chapters:{},stats:{totalQuizzesPassed:0,totalConversationsCompleted:0}};function ua(){try{const n=localStorage.getItem(Ze);return n?JSON.parse(n):{...ae}}catch(n){return console.error("Failed to load learning progress:",n),{...ae}}}function pa(n){try{localStorage.setItem(Ze,JSON.stringify(n))}catch(e){console.error("Failed to save learning progress:",e)}}const T=E(ua());function oe(n){return T.value.chapters[n]||(T.value.chapters[n]={quizCompleted:!1,quizScore:0,quizBestScore:0,conversationCompleted:!1}),T.value.chapters[n]}function zn(){pa(T.value)}function ga(){function n(l,d,c){const p=oe(l),u=Math.round(d/c*100);return u>p.quizBestScore&&(p.quizBestScore=u),p.quizScore=u,u>=60&&!p.quizCompleted&&(p.quizCompleted=!0,T.value.stats.totalQuizzesPassed++),zn(),{percentage:u,passed:u>=60}}function e(l){return T.value.chapters[l]?.quizCompleted||!1}function t(l){return T.value.chapters[l]?.quizBestScore||0}function i(l){const d=oe(l);d.conversationCompleted||(d.conversationCompleted=!0,T.value.stats.totalConversationsCompleted++,zn())}function r(l){return T.value.chapters[l]?.conversationCompleted||!1}function o(l){const d=T.value.chapters[l];return d?d.quizCompleted&&d.conversationCompleted:!1}function a(l){const d=T.value.chapters[l];return d?{quiz:d.quizCompleted,conversation:d.conversationCompleted,complete:d.quizCompleted&&d.conversationCompleted,quizBestScore:d.quizBestScore||0}:{quiz:!1,conversation:!1,complete:!1,quizBestScore:0}}const s=M(()=>T.value.stats);function h(){T.value={chapters:{},stats:{totalQuizzesPassed:0,totalConversationsCompleted:0}},zn()}return{markQuizCompleted:n,isQuizCompleted:e,getQuizBestScore:t,markConversationCompleted:i,isConversationCompleted:r,isChapterCompleted:o,getChapterCompletionStatus:a,stats:s,resetProgress:h}}const nt="chatmate_preLessonProgress",nn={lessons:{},stats:{totalCharactersLearned:0,totalPreLessonsCompleted:0}};function ma(){try{const n=localStorage.getItem(nt);return n?JSON.parse(n):{...nn,stats:{...nn.stats},lessons:{}}}catch(n){return console.error("Failed to load pre-lesson progress:",n),{...nn,stats:{...nn.stats},lessons:{}}}}function za(n){try{localStorage.setItem(nt,JSON.stringify(n))}catch(e){console.error("Failed to save pre-lesson progress:",e)}}const I=E(ma());let fn=null;function jn(n){return I.value.lessons[n]||(I.value.lessons[n]={charactersLearned:[],quizCompleted:!1,quizBestScore:0,matchingCompleted:!1}),I.value.lessons[n]}function en(){za(I.value)}function fa(){function n(m,z){const f=jn(m);f.charactersLearned.includes(z)||(f.charactersLearned.push(z),I.value.stats.totalCharactersLearned++,en(),fn&&fn(m,z))}function e(m,z){return I.value.lessons[m]?.charactersLearned?.includes(z)||!1}function t(m){return I.value.lessons[m]?.charactersLearned||[]}function i(m,z,f){if(f===0)return{percentage:0,passed:!1};const H=jn(m),O=Math.round(z/f*100);if(O>H.quizBestScore&&(H.quizBestScore=O),O>=70){const G=!H.quizCompleted;H.quizCompleted=!0,G&&l()}return en(),{percentage:O,passed:O>=70}}function r(m){return I.value.lessons[m]?.quizCompleted||!1}function o(m){return I.value.lessons[m]?.quizBestScore||0}function a(m){const z=jn(m);z.matchingCompleted||(z.matchingCompleted=!0,en())}function s(m){return I.value.lessons[m]?.matchingCompleted||!1}function h(m){const z=I.value.lessons[m];return z?z.quizCompleted:!1}function l(){const m=Object.values(I.value.lessons).filter(z=>z.quizCompleted).length;I.value.stats.totalPreLessonsCompleted=m}function d(m="ja"){const z=re(m);return z.length===0?!0:z.every(f=>h(f.id))}function c(m="ja"){const{getChapterCompletionStatus:z}=ga();return ca(m,"beginner").some(G=>{const k=z(G.id);return k.quiz||k.conversation})||re(m).length===0?!1:!d(m)}function p(m){const z=I.value.lessons[m];return z?{charactersLearned:z.charactersLearned.length,quizCompleted:z.quizCompleted,quizBestScore:z.quizBestScore,matchingCompleted:z.matchingCompleted,complete:z.quizCompleted}:{charactersLearned:0,quizCompleted:!1,quizBestScore:0,matchingCompleted:!1,complete:!1}}const u=M(()=>I.value.stats);function j(){I.value={lessons:{},stats:{totalCharactersLearned:0,totalPreLessonsCompleted:0}},en()}function y(m){fn=m}return{markCharacterLearned:n,isCharacterLearned:e,getLearnedCharacters:t,markQuizCompleted:i,isQuizCompleted:r,getQuizBestScore:o,markMatchingCompleted:a,isMatchingCompleted:s,isPreLessonCompleted:h,arePreLessonsComplete:d,areChaptersLocked:c,getLessonStatus:p,stats:u,setOnCharacterLearnedCallback:y,resetProgress:j}}const et="chatmate_userProgress";function Dn(){return{totalXP:0,messagesSent:0,messagesReceived:0,articlesStarted:[],articlesCompleted:[],currentStreak:0,longestStreak:0,lastActiveDate:null,totalSessionMinutes:0,wordsLearned:[],characterStats:{},claimedMilestones:[],unlockedAchievements:[],diaryEntries:0,diaryStreak:0,longestDiaryStreak:0,diaryVocabUsed:0,hasWrittenLongEntry:!1,lastDiaryDate:null}}function ja(){try{const n=localStorage.getItem(et);if(n)return{...Dn(),...JSON.parse(n)}}catch{}return Dn()}const w=E(ja());let yn=!1;function C(){yn||(yn=!0,queueMicrotask(()=>{localStorage.setItem(et,JSON.stringify(w.value)),yn=!1}))}let se=!1;function ba(){const{stats:n,setOnCharacterLearnedCallback:e}=fa();w.value.preLessonStats=n.value,se||(se=!0,it(n,k=>{w.value.preLessonStats=k},{deep:!0}));const{currentRank:t,nextRank:i,xpToNextRank:r,progressToNextRank:o,addXP:a,dismissLevelUp:s,getAllRanks:h}=rt(w,C),{updateStreak:l,dismissStreakMilestone:d}=at(w,C,a,Z),{unlockedAchievements:c,lockedAchievements:p,checkAchievements:u,dismissAchievementUnlock:j}=ot(w,C);e(()=>{a(2,"characterLearned"),w.value.preLessonStats=n.value,C(),u()});function y(){l(),w.value.messagesSent+=1,a(Z.userMessage,"userMessage"),C(),u()}function m(){w.value.messagesReceived+=1,a(Z.systemMessage,"systemMessage"),C(),u()}function z(k){w.value.articlesStarted.includes(k)||(w.value.articlesStarted.push(k),C())}function f(k){w.value.wordsLearned.includes(k)||(w.value.wordsLearned.push(k),C())}function H(k){w.value.characterStats[k]||(w.value.characterStats[k]={messages:0}),w.value.characterStats[k].messages+=1,C()}function O({wordCount:k=0,vocabWordsUsed:Wn=0}={}){const Fn=new Date().toDateString(),Yn=w.value.lastDiaryDate;if(Yn===Fn){k>=200&&(w.value.hasWrittenLongEntry=!0),C(),u();return}w.value.diaryEntries+=1;{const dn=new Date;dn.setDate(dn.getDate()-1),Yn===dn.toDateString()?w.value.diaryStreak+=1:w.value.diaryStreak=1,w.value.lastDiaryDate=Fn}w.value.diaryStreak>w.value.longestDiaryStreak&&(w.value.longestDiaryStreak=w.value.diaryStreak),Wn>0&&(w.value.diaryVocabUsed+=Wn),k>=200&&(w.value.hasWrittenLongEntry=!0),C(),u()}function G(){w.value=Dn(),C()}return{progress:w,recentXPGain:wn,showLevelUp:vn,newRank:xn,showStreakMilestone:kn,currentMilestone:bn,showAchievementUnlock:In,newAchievement:An,currentRank:t,nextRank:i,xpToNextRank:r,progressToNextRank:o,unlockedAchievements:c,lockedAchievements:p,addXP:a,onMessageSent:y,onMessageReceived:m,onArticleStarted:z,onWordLearned:f,trackCharacterInteraction:H,onDiarySubmitted:O,dismissLevelUp:s,dismissStreakMilestone:d,dismissAchievementUnlock:j,checkAchievements:u,getAllRanks:h,resetProgress:G,RANKS:K,XP_REWARDS:Z,STREAK_MILESTONES:he,ACHIEVEMENTS:tn}}export{wa as a,ga as b,fa as c,ca as d,va as e,ka as f,re as g,xa as h,ba as u};
