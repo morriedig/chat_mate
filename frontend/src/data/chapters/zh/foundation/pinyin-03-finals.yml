@@ -1,0 +1,146 @@
+# Pre-Lesson: Pinyin Finals (Common)
+meta:
+  id: pinyin-03-finals
+  title:
+    en: "Pinyin Finals: a, o, e, i, u, ü, ai, ei"
+    ja: "ピンイン韻母：a, o, e, i, u, ü, ai, ei"
+    zh: "拼音韻母：a, o, e, i, u, ü, ai, ei"
+  description:
+    en: "Learn the 8 most common pinyin finals"
+    ja: "最も一般的な8つのピンイン韻母を学びましょう"
+    zh: "學習8個最常見的拼音韻母"
+  icon: "a"
+  order: 0.3
+  level: foundation
+  type: pre-lesson
+  group:
+    en: "Pinyin"
+    ja: "ピンイン"
+    zh: "拼音"
+  estimatedMinutes: 15
+  prerequisite: pinyin-02-initials
+
+characters:
+  - id: final-a
+    char: "a"
+    reading: "a as in 'father'"
+    romaji: "a"
+    audio_hint: "Open mouth wide, like 'ah' at the doctor"
+    examples:
+      - word: "大"
+        reading: "dà"
+        meaning: { en: "big", ja: "大きい", zh: "大" }
+      - word: "他"
+        reading: "tā"
+        meaning: { en: "he / him", ja: "彼", zh: "他" }
+
+  - id: final-o
+    char: "o"
+    reading: "o as in 'more'"
+    romaji: "o"
+    audio_hint: "Rounded lips, like 'aw' in 'law'"
+    examples:
+      - word: "多"
+        reading: "duō"
+        meaning: { en: "many / much", ja: "多い", zh: "多" }
+      - word: "我"
+        reading: "wǒ"
+        meaning: { en: "I / me", ja: "私", zh: "我" }
+
+  - id: final-e
+    char: "e"
+    reading: "e as in 'duh'"
+    romaji: "e"
+    audio_hint: "Unrounded, like the 'u' in 'but' — not like English 'e'"
+    examples:
+      - word: "喝"
+        reading: "hē"
+        meaning: { en: "to drink", ja: "飲む", zh: "喝" }
+      - word: "的"
+        reading: "de"
+        meaning: { en: "possessive particle", ja: "の（所有格）", zh: "的" }
+
+  - id: final-i
+    char: "i"
+    reading: "i as in 'see'"
+    romaji: "i"
+    audio_hint: "Like 'ee' in 'see' — stretch your lips wide"
+    examples:
+      - word: "你"
+        reading: "nǐ"
+        meaning: { en: "you", ja: "あなた", zh: "你" }
+      - word: "一"
+        reading: "yī"
+        meaning: { en: "one", ja: "一", zh: "一" }
+
+  - id: final-u
+    char: "u"
+    reading: "u as in 'food'"
+    romaji: "u"
+    audio_hint: "Like 'oo' in 'food' — round your lips"
+    examples:
+      - word: "不"
+        reading: "bù"
+        meaning: { en: "not / no", ja: "〜ない", zh: "不" }
+      - word: "五"
+        reading: "wǔ"
+        meaning: { en: "five", ja: "五", zh: "五" }
+
+  - id: final-v
+    char: "ü"
+    reading: "ü as in French 'tu'"
+    romaji: "ü"
+    audio_hint: "Say 'ee' but round your lips like 'oo' — unique to Chinese"
+    examples:
+      - word: "女"
+        reading: "nǚ"
+        meaning: { en: "woman / female", ja: "女", zh: "女" }
+      - word: "绿"
+        reading: "lǜ"
+        meaning: { en: "green", ja: "緑", zh: "綠" }
+
+  - id: final-ai
+    char: "ai"
+    reading: "ai as in 'eye'"
+    romaji: "ai"
+    audio_hint: "Like the English word 'eye' — a + i glide"
+    examples:
+      - word: "爱"
+        reading: "ài"
+        meaning: { en: "love", ja: "愛", zh: "愛" }
+      - word: "太"
+        reading: "tài"
+        meaning: { en: "too (much)", ja: "〜すぎる", zh: "太" }
+
+  - id: final-ei
+    char: "ei"
+    reading: "ei as in 'hey'"
+    romaji: "ei"
+    audio_hint: "Like 'ay' in 'hey' — e + i glide"
+    examples:
+      - word: "谁"
+        reading: "shéi"
+        meaning: { en: "who", ja: "誰", zh: "誰" }
+      - word: "北"
+        reading: "běi"
+        meaning: { en: "north", ja: "北", zh: "北" }
+
+words: []
+
+grid:
+  columns: 4
+  groupBy: "row"
+
+matching:
+  pairs: 5
+  modes:
+    - "char_to_reading"
+    - "audio_to_char"
+
+quiz:
+  questionsPerRound: 8
+  xpReward: 15
+  questionTypes:
+    - "char_to_reading"
+    - "reading_to_char"
+    - "audio_to_char"

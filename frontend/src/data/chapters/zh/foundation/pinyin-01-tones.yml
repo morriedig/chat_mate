@@ -1,0 +1,128 @@
+# Pre-Lesson: Chinese Tones
+meta:
+  id: pinyin-01-tones
+  title:
+    en: "The Four Tones"
+    ja: "四声"
+    zh: "四聲"
+  description:
+    en: "Learn the four tones and neutral tone of Mandarin Chinese"
+    ja: "中国語の四声と軽声を学びましょう"
+    zh: "學習中文的四聲和輕聲"
+  icon: "声"
+  order: 0.1
+  level: foundation
+  type: pre-lesson
+  group:
+    en: "Pinyin"
+    ja: "ピンイン"
+    zh: "拼音"
+  estimatedMinutes: 15
+  prerequisite: null
+
+characters:
+  - id: tone1
+    char: "ā"
+    reading: "First tone (high flat)"
+    romaji: "ā"
+    tone: 1
+    tone_description:
+      en: "High and level, like singing a sustained note"
+      ja: "高くて平らな音、持続する音符のように"
+    audio_hint: "High flat pitch, like 'maaaah'"
+    examples:
+      - word: "妈"
+        reading: "mā"
+        meaning: { en: "mother", ja: "お母さん", zh: "媽媽" }
+      - word: "他"
+        reading: "tā"
+        meaning: { en: "he/him", ja: "彼", zh: "他" }
+
+  - id: tone2
+    char: "á"
+    reading: "Second tone (rising)"
+    romaji: "á"
+    tone: 2
+    tone_description:
+      en: "Rising pitch, like asking 'huh?' in surprise"
+      ja: "上昇する音、驚いて「え？」と言うように"
+    audio_hint: "Rising pitch, like a surprised 'what?'"
+    examples:
+      - word: "麻"
+        reading: "má"
+        meaning: { en: "hemp / numb", ja: "麻 / しびれ", zh: "麻" }
+      - word: "人"
+        reading: "rén"
+        meaning: { en: "person", ja: "人", zh: "人" }
+
+  - id: tone3
+    char: "ǎ"
+    reading: "Third tone (dipping)"
+    romaji: "ǎ"
+    tone: 3
+    tone_description:
+      en: "Dips low then rises, like a drawn-out 'well...'"
+      ja: "低く下がってから上がる音、「えーと…」のように"
+    audio_hint: "Low dipping pitch, like a thoughtful 'hmm'"
+    examples:
+      - word: "马"
+        reading: "mǎ"
+        meaning: { en: "horse", ja: "馬", zh: "馬" }
+      - word: "你"
+        reading: "nǐ"
+        meaning: { en: "you", ja: "あなた", zh: "你" }
+
+  - id: tone4
+    char: "à"
+    reading: "Fourth tone (falling)"
+    romaji: "à"
+    tone: 4
+    tone_description:
+      en: "Sharp falling pitch, like a firm command 'Stop!'"
+      ja: "鋭く下降する音、「やめろ！」のような命令口調"
+    audio_hint: "Sharp falling pitch, like an angry 'no!'"
+    examples:
+      - word: "骂"
+        reading: "mà"
+        meaning: { en: "to scold", ja: "叱る", zh: "罵" }
+      - word: "大"
+        reading: "dà"
+        meaning: { en: "big", ja: "大きい", zh: "大" }
+
+  - id: tone0
+    char: "a"
+    reading: "Neutral tone (light)"
+    romaji: "a"
+    tone: 0
+    tone_description:
+      en: "Light and short, unstressed — like a quick afterthought"
+      ja: "軽くて短い、アクセントのない音"
+    audio_hint: "Light and quick, no strong pitch"
+    examples:
+      - word: "吗"
+        reading: "ma"
+        meaning: { en: "question particle", ja: "疑問の助詞", zh: "嗎（疑問助詞）" }
+      - word: "的"
+        reading: "de"
+        meaning: { en: "possessive particle", ja: "の（所有格）", zh: "的（助詞）" }
+
+words: []
+
+grid:
+  columns: 5
+  groupBy: "tone"
+
+matching:
+  pairs: 5
+  modes:
+    - "char_to_reading"
+    - "audio_to_char"
+
+quiz:
+  questionsPerRound: 10
+  xpReward: 15
+  questionTypes:
+    - "char_to_reading"
+    - "reading_to_char"
+    - "audio_to_char"
+    - "tone_id"

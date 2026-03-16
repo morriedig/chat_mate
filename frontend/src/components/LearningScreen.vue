@@ -16,6 +16,7 @@ import ConversationPractice from './learning/ConversationPractice.vue'
 import CharacterCard from './learning/CharacterCard.vue'
 import CharacterGrid from './learning/CharacterGrid.vue'
 import CharacterMatchGame from './learning/CharacterMatchGame.vue'
+import TonePractice from './learning/TonePractice.vue'
 
 const { t, locale } = useI18n()
 const router = useRouter()
@@ -56,6 +57,11 @@ const isReviewMode = ref(false)
 const reviewWords = ref([])
 const isPreLessonSelected = ref(false)
 const currentCharacters = ref([])
+
+// Pre-lesson: check if current characters have tone data (Chinese pinyin)
+const hasToneData = computed(() => {
+  return currentCharacters.value.some(c => c.tone !== undefined && c.tone !== null)
+})
 
 // Pre-lesson: learned character IDs for the selected chapter
 const learnedIds = computed(() => {
@@ -527,6 +533,17 @@ onMounted(() => {
               <span class="material-symbols-outlined text-lg">quiz</span>
               {{ t('learning.modes.quiz') }}
             </button>
+            <button
+              v-if="hasToneData"
+              @click="setMode('tones')"
+              class="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+              :class="learningMode === 'tones'
+                ? 'bg-white dark:bg-slate-700 text-primary shadow-sm'
+                : 'text-text-muted dark:text-slate-400 hover:text-text-main dark:hover:text-white'"
+            >
+              <span class="material-symbols-outlined text-lg">music_note</span>
+              {{ t('prelesson.tones') }}
+            </button>
           </div>
 
           <!-- Mode Tabs: Regular chapter modes -->
@@ -598,6 +615,14 @@ onMounted(() => {
         <!-- Pre-lesson: Match Mode -->
         <CharacterMatchGame
           v-else-if="isPreLessonSelected && learningMode === 'match'"
+          :characters="currentCharacters"
+          :language="props.targetLanguage"
+          @complete="handleMatchComplete"
+        />
+
+        <!-- Pre-lesson: Tones Mode (Chinese) -->
+        <TonePractice
+          v-else-if="isPreLessonSelected && learningMode === 'tones'"
           :characters="currentCharacters"
           :language="props.targetLanguage"
           @complete="handleMatchComplete"

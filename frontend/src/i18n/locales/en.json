@@ -520,6 +520,13 @@
     "tapCharacterYouHear": "Tap the character you hear",
     "nextCharacter": "Next",
     "matchComplete": "Match Complete!",
-    "xpEarned": "+{xp} XP earned"
+    "xpEarned": "+{xp} XP earned",
+    "tone1": "1st tone (high flat)",
+    "tone2": "2nd tone (rising)",
+    "tone3": "3rd tone (dipping)",
+    "tone4": "4th tone (falling)",
+    "toneNeutral": "Neutral tone",
+    "pickTone": "Which tone did you hear?",
+    "tones": "Tones"
   }
 }

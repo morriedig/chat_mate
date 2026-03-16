@@ -1,0 +1,146 @@
+# Pre-Lesson: Pinyin Initials (Group 1)
+meta:
+  id: pinyin-02-initials
+  title:
+    en: "Pinyin Initials: b, p, m, f, d, t, n, l"
+    ja: "ピンイン声母：b, p, m, f, d, t, n, l"
+    zh: "拼音聲母：b, p, m, f, d, t, n, l"
+  description:
+    en: "Learn the 8 most common pinyin initials"
+    ja: "最も一般的な8つのピンイン声母を学びましょう"
+    zh: "學習8個最常見的拼音聲母"
+  icon: "b"
+  order: 0.2
+  level: foundation
+  type: pre-lesson
+  group:
+    en: "Pinyin"
+    ja: "ピンイン"
+    zh: "拼音"
+  estimatedMinutes: 15
+  prerequisite: pinyin-01-tones
+
+characters:
+  - id: b
+    char: "b"
+    reading: "b as in 'boy'"
+    romaji: "b"
+    audio_hint: "Like English 'b' in 'boy', but unaspirated"
+    examples:
+      - word: "爸"
+        reading: "bà"
+        meaning: { en: "father", ja: "お父さん", zh: "爸爸" }
+      - word: "不"
+        reading: "bù"
+        meaning: { en: "not / no", ja: "〜ない", zh: "不" }
+
+  - id: p
+    char: "p"
+    reading: "p as in 'park'"
+    romaji: "p"
+    audio_hint: "Like English 'p' in 'park', with a puff of air"
+    examples:
+      - word: "朋"
+        reading: "péng"
+        meaning: { en: "friend", ja: "友", zh: "朋（友）" }
+      - word: "跑"
+        reading: "pǎo"
+        meaning: { en: "to run", ja: "走る", zh: "跑" }
+
+  - id: m
+    char: "m"
+    reading: "m as in 'mother'"
+    romaji: "m"
+    audio_hint: "Like English 'm' in 'mother'"
+    examples:
+      - word: "妈"
+        reading: "mā"
+        meaning: { en: "mother", ja: "お母さん", zh: "媽媽" }
+      - word: "猫"
+        reading: "māo"
+        meaning: { en: "cat", ja: "猫", zh: "貓" }
+
+  - id: f
+    char: "f"
+    reading: "f as in 'fun'"
+    romaji: "f"
+    audio_hint: "Like English 'f' in 'fun'"
+    examples:
+      - word: "飞"
+        reading: "fēi"
+        meaning: { en: "to fly", ja: "飛ぶ", zh: "飛" }
+      - word: "饭"
+        reading: "fàn"
+        meaning: { en: "rice / meal", ja: "ご飯", zh: "飯" }
+
+  - id: d
+    char: "d"
+    reading: "d as in 'do'"
+    romaji: "d"
+    audio_hint: "Like English 'd' in 'do', but unaspirated"
+    examples:
+      - word: "大"
+        reading: "dà"
+        meaning: { en: "big", ja: "大きい", zh: "大" }
+      - word: "的"
+        reading: "de"
+        meaning: { en: "possessive particle", ja: "の（所有格）", zh: "的" }
+
+  - id: t
+    char: "t"
+    reading: "t as in 'top'"
+    romaji: "t"
+    audio_hint: "Like English 't' in 'top', with a puff of air"
+    examples:
+      - word: "他"
+        reading: "tā"
+        meaning: { en: "he / him", ja: "彼", zh: "他" }
+      - word: "天"
+        reading: "tiān"
+        meaning: { en: "sky / day", ja: "空／日", zh: "天" }
+
+  - id: "n"
+    char: "n"
+    reading: "n as in 'no'"
+    romaji: "n"
+    audio_hint: "Like English 'n' in 'no'"
+    examples:
+      - word: "你"
+        reading: "nǐ"
+        meaning: { en: "you", ja: "あなた", zh: "你" }
+      - word: "女"
+        reading: "nǚ"
+        meaning: { en: "woman / female", ja: "女", zh: "女" }
+
+  - id: l
+    char: "l"
+    reading: "l as in 'love'"
+    romaji: "l"
+    audio_hint: "Like English 'l' in 'love'"
+    examples:
+      - word: "老"
+        reading: "lǎo"
+        meaning: { en: "old", ja: "古い／老いた", zh: "老" }
+      - word: "六"
+        reading: "liù"
+        meaning: { en: "six", ja: "六", zh: "六" }
+
+words: []
+
+grid:
+  columns: 4
+  groupBy: "row"
+
+matching:
+  pairs: 5
+  modes:
+    - "char_to_reading"
+    - "audio_to_char"
+
+quiz:
+  questionsPerRound: 8
+  xpReward: 15
+  questionTypes:
+    - "char_to_reading"
+    - "reading_to_char"
+    - "audio_to_char"

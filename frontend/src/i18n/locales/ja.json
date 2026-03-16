@@ -520,6 +520,13 @@
     "tapCharacterYouHear": "聞こえた文字をタップしてください",
     "nextCharacter": "次へ",
     "matchComplete": "マッチ完了！",
-    "xpEarned": "+{xp} XP獲得"
+    "xpEarned": "+{xp} XP獲得",
+    "tone1": "第一声（高平）",
+    "tone2": "第二声（上昇）",
+    "tone3": "第三声（低回）",
+    "tone4": "第四声（下降）",
+    "toneNeutral": "軽声",
+    "pickTone": "どの声調が聞こえましたか？",
+    "tones": "声調"
   }
 }

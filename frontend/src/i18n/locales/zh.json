@@ -520,6 +520,13 @@
     "tapCharacterYouHear": "點擊你聽到的字",
     "nextCharacter": "下一個",
     "matchComplete": "配對完成！",
-    "xpEarned": "+{xp} XP 獲得"
+    "xpEarned": "+{xp} XP 獲得",
+    "tone1": "第一聲（高平）",
+    "tone2": "第二聲（上升）",
+    "tone3": "第三聲（低回）",
+    "tone4": "第四聲（下降）",
+    "toneNeutral": "輕聲",
+    "pickTone": "你聽到哪個聲調？",
+    "tones": "聲調"
   }
 }
