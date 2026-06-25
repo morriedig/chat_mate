@@ -58,7 +58,8 @@ vi.mock('../../composables/useDailyChallenge', () => ({
 vi.mock('../../composables/useNavState', () => ({
   useNavState: () => ({
     setChatState: vi.fn(),
-    setLearningState: vi.fn()
+    setLearningState: vi.fn(),
+    selectedLevel: ref(null)
   })
 }))
 
@@ -98,7 +99,9 @@ describe('SetupScreen', () => {
           WeeklyQuestsPanel: true,
           ScenarioSelector: true,
           ShareCardPanel: true,
-          AnalyticsDashboard: true
+          AnalyticsDashboard: true,
+          HomeHero: true,
+          WelcomeOnboarding: true
         }
       }
     })

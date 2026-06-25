@@ -27,7 +27,35 @@ function getDefaultProgress() {
     diaryVocabUsed: 0,
     hasWrittenLongEntry: false,
     lastDiaryDate: null,
+    // activityLog: { "YYYY-MM-DD": { messages: N, xp: N } } — last 90 days trimmed
+    activityLog: {},
   }
+}
+
+function localDateKey(d = new Date()) {
+  const y = d.getFullYear()
+  const m = String(d.getMonth() + 1).padStart(2, '0')
+  const day = String(d.getDate()).padStart(2, '0')
+  return `${y}-${m}-${day}`
+}
+
+function trimActivityLog(log, keepDays = 90) {
+  const keys = Object.keys(log || {}).sort()
+  if (keys.length <= keepDays) return log
+  const drop = keys.slice(0, keys.length - keepDays)
+  for (const k of drop) delete log[k]
+  return log
+}
+
+function recordActivity(progress, kind, xpDelta = 0) {
+  const key = localDateKey()
+  if (!progress.activityLog) progress.activityLog = {}
+  const entry = progress.activityLog[key] || { messages: 0, xp: 0, diary: 0 }
+  if (kind === 'message') entry.messages += 1
+  if (kind === 'diary') entry.diary += 1
+  if (xpDelta) entry.xp += xpDelta
+  progress.activityLog[key] = entry
+  trimActivityLog(progress.activityLog)
 }
 
 function loadProgress() {
@@ -99,6 +127,7 @@ export function useUserProgress() {
     updateStreak()
     progress.value.messagesSent += 1
     addXP(XP_REWARDS.userMessage, 'userMessage')
+    recordActivity(progress.value, 'message', XP_REWARDS.userMessage)
     saveProgress()
     checkAchievements()
   }
@@ -106,6 +135,7 @@ export function useUserProgress() {
   function onMessageReceived() {
     progress.value.messagesReceived += 1
     addXP(XP_REWARDS.systemMessage, 'systemMessage')
+    recordActivity(progress.value, 'message', XP_REWARDS.systemMessage)
     saveProgress()
     checkAchievements()
   }
@@ -174,6 +204,7 @@ export function useUserProgress() {
       progress.value.hasWrittenLongEntry = true
     }
 
+    recordActivity(progress.value, 'diary', 0)
     saveProgress()
     checkAchievements()
   }

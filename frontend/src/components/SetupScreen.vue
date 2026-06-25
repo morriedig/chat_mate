@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { characters, levels } from '../data/characters.js'
@@ -14,6 +14,8 @@ import WeeklyQuestsPanel from './WeeklyQuestsPanel.vue'
 import ScenarioSelector from './ScenarioSelector.vue'
 import ShareCardPanel from './ShareCardPanel.vue'
 import AnalyticsDashboard from './AnalyticsDashboard.vue'
+import HomeHero from './HomeHero.vue'
+import WelcomeOnboarding from './WelcomeOnboarding.vue'
 
 const { t, locale } = useI18n()
 const router = useRouter()
@@ -21,13 +23,15 @@ const { isDark, toggle: toggleDark } = useDarkMode()
 const { motherTongue, setMotherTongue } = useMotherTongue()
 const { progress } = useUserProgress()
 const { startChallenge } = useDailyChallenge()
-const { setChatState, setLearningState } = useNavState()
+const { setChatState, setLearningState, selectedLevel: navSelectedLevel } = useNavState()
 const { load: loadLastSession, saveChatSession, saveLearningSession } = useLastSession()
 
 const showWeeklyQuests = ref(false)
 const showScenarios = ref(false)
 const showShareCard = ref(false)
 const showAnalytics = ref(false)
+const showWelcome = ref(false)
+const placementBanner = ref(null)
 
 // Restore last session
 const last = loadLastSession()
@@ -35,20 +39,69 @@ const last = loadLastSession()
 // Primary mode: 'chat' or 'learning'
 const primaryMode = ref(last?.type || 'learning')
 
-// Chat mode options
+// Chat mode options — consume placement result if present
+function readPlacementResult() {
+  try {
+    const raw = localStorage.getItem('chatmate_placement_result')
+    if (!raw) return null
+    const parsed = JSON.parse(raw)
+    // Only surface banner if applied within the last 10 minutes
+    if (parsed.appliedAt && Date.now() - parsed.appliedAt < 10 * 60 * 1000) return parsed
+    return null
+  } catch {
+    return null
+  }
+}
+const placement = readPlacementResult()
+
+// Initial level: placement > nav state > last session > null
+const initialLevel = (() => {
+  if (placement?.level) {
+    const match = levels.find(l => l.id === placement.level)
+    if (match) return match
+  }
+  if (navSelectedLevel.value) return navSelectedLevel.value
+  if (last?.type === 'chat') return levels.find(l => l.id === last.levelId) || null
+  return null
+})()
+
 const selectedCharacter = ref(
   last?.type === 'chat' ? characters.find(c => c.id === last.characterId) || null : null
 )
-const selectedLevel = ref(
-  last?.type === 'chat' ? levels.find(l => l.id === last.levelId) || null : null
-)
+const selectedLevel = ref(initialLevel)
 const selectedChatMode = ref(last?.type === 'chat' ? last.mode || 'free' : 'free')
 
 // Learning mode options
 const selectedLearningLevel = ref(
-  last?.type === 'learning' ? levels.find(l => l.id === last.levelId) || null : null
+  placement?.level ? levels.find(l => l.id === placement.level) || null
+    : last?.type === 'learning' ? levels.find(l => l.id === last.levelId) || null
+    : null
 )
 const selectedTargetLanguage = ref(last?.type === 'learning' ? last.targetLanguage || null : null)
+
+onMounted(() => {
+  // First-run onboarding
+  try {
+    if (!localStorage.getItem('chatmate_onboarded')) {
+      showWelcome.value = true
+    }
+  } catch {}
+
+  // Show placement banner if we just came from the placement test
+  if (placement) {
+    placementBanner.value = placement
+    try { localStorage.removeItem('chatmate_placement_result') } catch {}
+  }
+})
+
+function handleOnboardingTakeTest() {
+  showWelcome.value = false
+  router.push('/placement-test')
+}
+
+function dismissPlacementBanner() {
+  placementBanner.value = null
+}
 
 // Available target languages (exclude mother tongue)
 const availableTargetLanguages = computed(() => {
@@ -151,10 +204,35 @@ function handleStart() {
       </div>
 
       <!-- Title -->
-      <div class="text-center mb-10">
+      <div class="text-center mb-6">
         <h1 class="text-3xl font-bold text-text-main dark:text-white mb-2">{{ t('app.title') }}</h1>
         <p class="text-text-muted dark:text-slate-400">{{ t('app.subtitle') }}</p>
       </div>
+
+      <!-- Home Hero: streak + daily goal + rank -->
+      <HomeHero />
+
+      <!-- Placement Result Banner -->
+      <Transition name="fade-slide">
+        <div
+          v-if="placementBanner"
+          class="mb-6 flex items-start gap-3 p-4 rounded-xl bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/30 dark:to-teal-900/30 border border-emerald-200 dark:border-emerald-800"
+        >
+          <span class="material-symbols-outlined text-emerald-500 shrink-0">task_alt</span>
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-semibold text-emerald-700 dark:text-emerald-300">
+              Placement test done — you're at
+              <span class="capitalize">{{ t(`levels.${placementBanner.level}.name`) }}</span>
+            </p>
+            <p class="text-xs text-emerald-600/80 dark:text-emerald-400/80 mt-0.5">
+              We've pre-selected it below. Change it any time.
+            </p>
+          </div>
+          <button @click="dismissPlacementBanner" class="shrink-0 text-emerald-500 hover:text-emerald-700 dark:hover:text-emerald-300">
+            <span class="material-symbols-outlined text-[18px]">close</span>
+          </button>
+        </div>
+      </Transition>
 
       <!-- Primary Mode Selection (Chat vs Learning vs Diary) -->
       <section class="mb-8">
@@ -443,5 +521,24 @@ function handleStart() {
 
     <!-- Analytics Dashboard -->
     <AnalyticsDashboard v-if="showAnalytics" @close="showAnalytics = false" />
+
+    <!-- First-run Welcome -->
+    <WelcomeOnboarding
+      v-if="showWelcome"
+      @close="showWelcome = false"
+      @take-test="handleOnboardingTakeTest"
+    />
   </div>
 </template>
+
+<style scoped>
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+  transition: opacity 300ms ease, transform 300ms ease;
+}
+.fade-slide-enter-from,
+.fade-slide-leave-to {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+</style>

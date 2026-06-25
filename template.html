@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LingoBot Chat</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2badee",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101c22",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#18262e",
+                        "text-main": "#0d171b",
+                        "text-muted": "#4c809a",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for Webkit */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 20px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background-color: #334155;
+        }
+        
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-filled {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-text-main dark:text-gray-100 overflow-hidden">
+<div class="flex h-screen w-full overflow-hidden">
+<!-- SideNavBar -->
+<div class="hidden md:flex w-72 flex-col border-r border-[#e7eff3] dark:border-slate-800 bg-surface-light dark:bg-surface-dark transition-colors duration-200">
+<div class="flex h-full flex-col justify-between p-4">
+<div class="flex flex-col gap-6">
+<!-- Bot Profile -->
+<div class="flex gap-3 items-center px-2 pt-2">
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-12 shadow-sm" data-alt="Abstract blue robot avatar icon" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAfPhbY9KsleBDlFqXzCqWMy7ZAgKxz23_sYwW5trKy5wP_r1gKVLgbLrSzVwhFP2p647VMutiUdgFErG9uaYTMHR8J-QlwsgBIQ9eOFRD4kuvUwJSC7nlZIPjiA32_GJXjfjA_ylMzuzj3ckhqGLao8Xg8Bnc-_hAiHJRqOuAWdmEOehw7Z7LQId6M7z4P3J9ebiQEPSyM6euL3tWyvR_Y47PR4Fkk0O1qBTSKCdA421GU8OOI5NlO2EZ7FiWhFBX13rJDNTgUKNY");'></div>
+<div class="flex flex-col">
+<h1 class="text-text-main dark:text-white text-lg font-bold leading-tight">LingoBot</h1>
+<p class="text-text-muted dark:text-slate-400 text-sm font-normal">Language Assistant</p>
+</div>
+</div>
+<!-- Navigation -->
+<div class="flex flex-col gap-2">
+<div class="flex items-center gap-3 px-3 py-3 rounded-xl bg-[#e7eff3] dark:bg-slate-700 cursor-pointer transition-colors">
+<span class="material-symbols-outlined icon-filled text-text-main dark:text-white">chat_bubble</span>
+<p class="text-text-main dark:text-white text-sm font-semibold">Chat</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-text-main dark:text-slate-300">book_2</span>
+<p class="text-text-main dark:text-slate-300 text-sm font-medium">Vocabulary</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-text-main dark:text-slate-300">history</span>
+<p class="text-text-main dark:text-slate-300 text-sm font-medium">History</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-text-main dark:text-slate-300">settings</span>
+<p class="text-text-main dark:text-slate-300 text-sm font-medium">Settings</p>
+</div>
+</div>
+</div>
+<!-- Bottom Promo/Info -->
+<div class="p-4 rounded-xl bg-primary/10 dark:bg-primary/5 border border-primary/20">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary">lightbulb</span>
+<p class="text-sm font-bold text-primary">Daily Tip</p>
+</div>
+<p class="text-xs text-text-muted dark:text-slate-400">Try using new vocabulary in your next message to improve retention!</p>
+</div>
+</div>
+</div>
+<!-- Main Content Area -->
+<div class="flex flex-1 flex-col h-full relative bg-background-light dark:bg-background-dark">
+<!-- TopNavBar -->
+<header class="flex items-center justify-between border-b border-[#e7eff3] dark:border-slate-800 px-6 py-4 bg-surface-light dark:bg-surface-dark z-10 shadow-sm">
+<div class="flex items-center gap-4 text-text-main dark:text-white">
+<div class="md:hidden">
+<span class="material-symbols-outlined cursor-pointer">menu</span>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-[-0.015em]">English Practice Session</h2>
+<span class="px-2 py-0.5 rounded-full bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 text-xs font-semibold">Online</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="hidden sm:flex h-9 px-4 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-text-main dark:text-slate-200 text-sm font-bold transition-colors">
+<span class="mr-2 material-symbols-outlined text-[18px]">delete</span>
+                        Clear Chat
+                    </button>
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-9 border-2 border-white dark:border-slate-700 shadow-sm" data-alt="User profile picture with smiling person" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCNTLrGGDvQstsnMRmzC2gHLp3SYpfx83AkSc4_pgd4p6n_u3VGHJZ2S7hUzhG78NiIAVmsotr04kfwvCelGDb8o92vgVf6O2DEmXQTASQzcc_TKUglKI-4TsFQGR1JmViHPOByoUuafe-bTmmJl8wRadsqYoYrLPaaMcd7bdxXI2IwLUaATl4d7R26q7g5qZXLcPOS1h0o74_pvQByE5r-3cpw27OTxAhcOqaFgk8Ta-gBdvcdlW1pMc0hJ7KAaH_tLbGPT5kURfA");'></div>
+</div>
+</header>
+<!-- Chat Area -->
+<div class="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 scroll-smooth" id="chat-container">
+<!-- Date Separator -->
+<div class="flex justify-center">
+<span class="text-xs font-medium text-slate-400 bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-full">Today</span>
+</div>
+<!-- Bot Message 1 -->
+<div class="flex items-end gap-3 max-w-3xl">
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-10 shrink-0 shadow-sm" data-alt="Abstract blue robot avatar icon" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDyuTkxIJTkOJ_1QRmKwdRVUm5bv6HEXnoi7xQEPHqdYOnbYTVSc1986OmRcsLQTrETqKBmXC5EhNQnx9NI2Iq0HWMOq3AJX9zIqcsRewgun0yYM-j-vACtGTbMS6A56vws-WF18BStuC_0o_72dYsWpw5efckyV9kwRp4kTc23wJkWJaf7d3vZdxBEh4DKibG1S9tndy9o9CHOMsAEUypk3qAZFx-E5-d2QjVdUZ63y_o4NB3BoP8lXYxfNwD2B9Ec5ObHPHzk5TM");'></div>
+<div class="flex flex-col gap-1 items-start">
+<span class="text-text-muted dark:text-slate-400 text-[13px] font-medium ml-1">LingoBot</span>
+<div class="p-4 rounded-2xl rounded-bl-none bg-surface-light dark:bg-surface-dark text-text-main dark:text-slate-200 shadow-sm border border-slate-100 dark:border-slate-700">
+<p class="text-base leading-relaxed">
+                                Hello! I'm your language assistant. How can I help you practice today?
+                            </p>
+</div>
+</div>
+</div>
+<!-- User Message -->
+<div class="flex items-end gap-3 justify-end">
+<div class="flex flex-col gap-1 items-end max-w-[85%] sm:max-w-xl">
+<span class="text-text-muted dark:text-slate-400 text-[13px] font-medium mr-1">You</span>
+<div class="p-4 rounded-2xl rounded-br-none bg-primary text-[#0d171b] shadow-md">
+<p class="text-base leading-relaxed font-medium">
+                                I want to talk about travel.
+                            </p>
+</div>
+</div>
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-10 shrink-0 shadow-sm" data-alt="User profile picture with smiling person" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAfDdM-f_656_baciFr16edluxeVmNF6O9U2FKXe9T6Kp39HzAFxyHWyqpeX51ZNEEuX4QhwB4_6dd_t_VKL9_iqtH9rP_2XBIMEeU6-Crx7LgZ4zfk5sjG4VcFlUdrcoztzvgPfkI43B0AV4g_HG0k6cxxOYDgnId0nS0t684CRDlrAzMnwbhNfKm7vRpf3yigavlrQ0q_LZFQLNA831g9at54O-bQpk4QwAGG7-p4FICFzzntS1T092yiiAZrgVzb4B8dDaAaG3A");'></div>
+</div>
+<!-- Bot Message 2 with Suggestions -->
+<div class="flex items-start gap-3 max-w-4xl">
+<div class="bg-center bg-no-repeat bg-cover rounded-full size-10 shrink-0 shadow-sm mt-auto" data-alt="Abstract blue robot avatar icon" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDeZCuO2PQdzYr_cWqcKHZGltK_YY_eCfZkaMQrBcANUc1tVnqpBJAVjkr9--7YLl9vAlUY1-KRzNEH2k6fmWUwIfGMgjtGLZ5gZqIzsrLL3KSi05v0gHVPRP-jHeW0YmnFrgnHV3sI_95EpuO_NqCa3NeY2ZsH_cUI1pD9aQuzXj3dKUqpjNytsl5hSMK7d1-4ySLPhBzM02xLJYQluuoeBi7FJs1CmHnvclDoTUHTQbFOBv1zbpF-iIznBHXSRe0mSJkFr6--F2E");'></div>
+<div class="flex flex-col gap-3 items-start w-full">
+<!-- The Message Bubble -->
+<div>
+<span class="text-text-muted dark:text-slate-400 text-[13px] font-medium ml-1 block mb-1">LingoBot</span>
+<div class="p-4 rounded-2xl rounded-bl-none bg-surface-light dark:bg-surface-dark text-text-main dark:text-slate-200 shadow-sm border border-slate-100 dark:border-slate-700 inline-block max-w-xl">
+<p class="text-base leading-relaxed">
+                                    That sounds exciting! Where are you planning to go? 🌍
+                                </p>
+</div>
+</div>
+<!-- Learning Card / Suggestions -->
+<div class="w-full max-w-2xl mt-1">
+<div class="flex items-center gap-2 mb-3 px-1">
+<span class="material-symbols-outlined text-primary text-sm">auto_awesome</span>
+<span class="text-xs font-bold text-primary uppercase tracking-wider">Suggested Vocabulary</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+<!-- Suggestion 1 -->
+<div class="group flex flex-col p-4 bg-white dark:bg-[#1e2930] rounded-xl border border-slate-200 dark:border-slate-700 hover:border-primary/50 dark:hover:border-primary/50 transition-all cursor-pointer shadow-sm hover:shadow-md">
+<div class="flex justify-between items-start mb-2">
+<span class="font-bold text-primary text-lg">Destination</span>
+<span class="material-symbols-outlined text-slate-300 group-hover:text-primary text-[20px]">add_circle</span>
+</div>
+<p class="text-xs text-slate-500 dark:text-slate-400 mb-2 font-medium">The place to which someone is going.</p>
+<div class="mt-auto pt-2 border-t border-slate-100 dark:border-slate-700">
+<p class="text-xs italic text-text-main dark:text-slate-300">"Paris is a popular <span class="font-semibold text-primary">destination</span>."</p>
+</div>
+</div>
+<!-- Suggestion 2 -->
+<div class="group flex flex-col p-4 bg-white dark:bg-[#1e2930] rounded-xl border border-slate-200 dark:border-slate-700 hover:border-primary/50 dark:hover:border-primary/50 transition-all cursor-pointer shadow-sm hover:shadow-md">
+<div class="flex justify-between items-start mb-2">
+<span class="font-bold text-primary text-lg">Itinerary</span>
+<span class="material-symbols-outlined text-slate-300 group-hover:text-primary text-[20px]">add_circle</span>
+</div>
+<p class="text-xs text-slate-500 dark:text-slate-400 mb-2 font-medium">A planned route or journey.</p>
+<div class="mt-auto pt-2 border-t border-slate-100 dark:border-slate-700">
+<p class="text-xs italic text-text-main dark:text-slate-300">"We need to finalize our <span class="font-semibold text-primary">itinerary</span>."</p>
+</div>
+</div>
+<!-- Suggestion 3 -->
+<div class="group flex flex-col p-4 bg-white dark:bg-[#1e2930] rounded-xl border border-slate-200 dark:border-slate-700 hover:border-primary/50 dark:hover:border-primary/50 transition-all cursor-pointer shadow-sm hover:shadow-md">
+<div class="flex justify-between items-start mb-2">
+<span class="font-bold text-primary text-lg">Excursion</span>
+<span class="material-symbols-outlined text-slate-300 group-hover:text-primary text-[20px]">add_circle</span>
+</div>
+<p class="text-xs text-slate-500 dark:text-slate-400 mb-2 font-medium">A short journey or trip.</p>
+<div class="mt-auto pt-2 border-t border-slate-100 dark:border-slate-700">
+<p class="text-xs italic text-text-main dark:text-slate-300">"We took a day <span class="font-semibold text-primary">excursion</span>."</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Spacer for scrolling -->
+<div class="h-4"></div>
+</div>
+<!-- Input Area -->
+<div class="p-4 sm:p-6 bg-surface-light dark:bg-surface-dark border-t border-[#e7eff3] dark:border-slate-800 z-10">
+<div class="flex items-end gap-3 max-w-4xl mx-auto">
+<!-- Voice Input Button -->
+<button class="shrink-0 flex items-center justify-center size-12 rounded-full border-2 border-slate-200 dark:border-slate-600 text-slate-500 dark:text-slate-400 hover:border-primary hover:text-primary hover:bg-primary/5 dark:hover:border-primary dark:hover:text-primary transition-all group" title="Voice Input">
+<span class="material-symbols-outlined text-[26px]">mic</span>
+</button>
+<!-- Text Input Field -->
+<div class="flex-1 relative">
+<textarea class="w-full resize-none rounded-2xl border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-[#1e2930] text-text-main dark:text-white px-4 py-3 pr-12 text-base focus:border-primary focus:ring-1 focus:ring-primary dark:focus:ring-primary placeholder-slate-400" placeholder="Type your message here..." rows="1" style="min-height: 50px; max-height: 150px;"></textarea>
+<!-- Formatting Icon inside Input (Optional) -->
+<div class="absolute right-3 bottom-3 flex gap-2">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">sentiment_satisfied</span>
+</button>
+</div>
+</div>
+<!-- Send Button -->
+<button class="shrink-0 flex items-center justify-center size-12 rounded-full bg-primary text-[#0d171b] shadow-lg hover:bg-primary/90 hover:scale-105 active:scale-95 transition-all">
+<span class="material-symbols-outlined icon-filled text-[24px]">send</span>
+</button>
+</div>
+<div class="text-center mt-2">
+<p class="text-[11px] text-slate-400 dark:text-slate-500">Press Enter to send, Shift+Enter for new line</p>
+</div>
+</div>
+</div>
+</div>
+</body></html>

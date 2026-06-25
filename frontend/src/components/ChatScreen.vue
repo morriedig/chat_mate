@@ -6,6 +6,7 @@ import { useChatStorage } from '../composables/useChatStorage'
 import { useChatApi } from '../composables/useChatApi'
 import { useUserProgress } from '../composables/useUserProgress'
 import { useNavState } from '../composables/useNavState'
+import { useCharacterMemory } from '../composables/useCharacterMemory'
 import ChatHeader from './chat/ChatHeader.vue'
 import ChatMessage from './chat/ChatMessage.vue'
 import ChatInput from './chat/ChatInput.vue'
@@ -18,6 +19,7 @@ import LevelUpModal from './chat/LevelUpModal.vue'
 import StreakMilestoneModal from './chat/StreakMilestoneModal.vue'
 import AchievementUnlockModal from './chat/AchievementUnlockModal.vue'
 import DailyPromptCard from './chat/DailyPromptCard.vue'
+import CharacterMemoryPanel from './chat/CharacterMemoryPanel.vue'
 import MicroReward from './MicroReward.vue'
 
 const { t } = useI18n()
@@ -71,6 +73,22 @@ const { trackChallengeMessage, getChallengeContext, isChallengeCompleted } = use
 import { useWeeklyQuests } from '../composables/useWeeklyQuests'
 const { onChatMessage: onQuestChatMessage } = useWeeklyQuests()
 
+// Scenario roleplay
+import { useScenarioRoleplay } from '../composables/useScenarioRoleplay'
+const { buildScenarioPrompt } = useScenarioRoleplay()
+
+// Character memory (moat: AI remembers you across sessions)
+const { getMemories, getMeta, addMemory, markSessionStart, buildContextString } = useCharacterMemory()
+const characterMemories = ref([])
+const characterMeta = ref({ firstMet: null, conversationCount: 0 })
+const showMemoryToast = ref(null) // { fact: string } when a new memory is saved
+
+function refreshMemoryState() {
+  if (!character.value?.id) return
+  characterMemories.value = [...getMemories(character.value.id)]
+  characterMeta.value = { ...getMeta(character.value.id) }
+}
+
 // Micro-reward
 const showMicroReward = ref(null) // null | 'sparkle' | 'confetti' | 'check'
 
@@ -82,6 +100,7 @@ const errorMessage = ref('')
 const showArticle = ref(true)
 const wordPopup = ref(null)
 const showVocabBank = ref(false)
+const showMemoryPanel = ref(false)
 const promptDismissed = ref(false)
 
 // Show daily prompt only for fresh chat conversations (not article/scenario mode)
@@ -98,6 +117,13 @@ const chatInputRef = ref(null)
 
 // Lifecycle
 onMounted(() => {
+  // Load character memory state before first AI call
+  refreshMemoryState()
+  if (character.value?.id) {
+    markSessionStart(character.value.id)
+    refreshMemoryState()
+  }
+
   const saved = storage.load()
   if (saved.messages.length > 0) {
     // Clear stale loading states from previous sessions
@@ -185,10 +211,14 @@ async function getAIResponse(isGreeting = false) {
     let challengeNote = null
     const challengeTopic = getChallengeContext()
     if (scenario.value) {
-      challengeNote = `[System: You are now in a role-play scenario. Title: "${scenario.value.title}". The user's goal: "${scenario.value.goal}". Stay in character and play out the scenario naturally. Guide the conversation toward the goal. When the user achieves the goal, acknowledge it naturally.]`
+      challengeNote = buildScenarioPrompt(scenario.value.id, level.value.id, language.value)
+        || `[System: You are now in a role-play scenario. Title: "${scenario.value.title}". The user's goal: "${scenario.value.goal}". Stay in character and play out the scenario naturally.]`
     } else if (challengeTopic && !isChallengeCompleted.value) {
       challengeNote = `[Today's conversation topic: "${challengeTopic}". Naturally guide the conversation toward this topic.]`
     }
+
+    // Inject character memory context (moat: AI remembers user across sessions)
+    const memoryContext = character.value?.id ? buildContextString(character.value.id, character.value.name) : null
 
     const result = await apiSendMessage({
       messages: messages.value,
@@ -197,7 +227,8 @@ async function getAIResponse(isGreeting = false) {
       language: language.value,
       isGreeting,
       article: isArticleMode.value ? article.value : null,
-      challengeContext: challengeNote
+      challengeContext: challengeNote,
+      memoryContext,
     })
 
     messages.value.push({
@@ -210,6 +241,16 @@ async function getAIResponse(isGreeting = false) {
 
     if (result.hints.length > 0) {
       currentHints.value = result.hints
+    }
+
+    // Save any new memory the AI extracted about the user
+    if (result.newMemory && character.value?.id) {
+      const saved = addMemory(character.value.id, result.newMemory)
+      if (saved) {
+        refreshMemoryState()
+        showMemoryToast.value = { fact: result.newMemory }
+        setTimeout(() => { showMemoryToast.value = null }, 3500)
+      }
     }
   } catch (err) {
     console.error('Chat error:', err)
@@ -262,6 +303,13 @@ function handleRenewChat() {
   getAIResponse(true)
 }
 
+function handleRetry() {
+  errorMessage.value = ''
+  const lastMsg = messages.value[messages.value.length - 1]
+  const isAfterUser = lastMsg && lastMsg.role === 'user'
+  getAIResponse(!isAfterUser && messages.value.length === 0)
+}
+
 function handleWordTap(data) {
   // Clamp position to viewport
   const x = Math.max(8, Math.min(data.position.x, window.innerWidth - 270))
@@ -293,10 +341,13 @@ function handleBack() {
         :is-article-mode="isArticleMode"
         :show-article="showArticle"
         :is-loading="isLoading"
+        :memory-count="characterMemories.length"
+        :conversation-count="characterMeta.conversationCount"
         @back="handleBack()"
         @toggle-article="handleToggleArticle"
         @renew-chat="handleRenewChat"
         @toggle-vocab-bank="showVocabBank = !showVocabBank"
+        @show-memories="showMemoryPanel = true"
       />
 
       <!-- Content Area -->
@@ -332,9 +383,27 @@ function handleBack() {
             />
 
             <!-- Error Banner -->
-            <div v-if="errorMessage" class="flex items-center justify-between p-4 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-xl">
-              <span>{{ errorMessage }}</span>
-              <button @click="errorMessage = ''" class="material-symbols-outlined text-lg">close</button>
+            <div v-if="errorMessage" class="flex items-start gap-3 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 rounded-xl">
+              <span class="material-symbols-outlined text-xl shrink-0 mt-0.5">error</span>
+              <div class="flex-1 min-w-0">
+                <p class="text-sm">{{ errorMessage }}</p>
+                <div class="flex gap-2 mt-2">
+                  <button
+                    @click="handleRetry"
+                    :disabled="isLoading"
+                    class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-red-100 dark:bg-red-900/40 hover:bg-red-200 dark:hover:bg-red-900/60 disabled:opacity-50 text-red-700 dark:text-red-300 text-xs font-semibold transition-colors"
+                  >
+                    <span class="material-symbols-outlined text-[16px]">refresh</span>
+                    Retry
+                  </button>
+                  <button
+                    @click="errorMessage = ''"
+                    class="inline-flex items-center px-3 py-1.5 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/40 text-red-700 dark:text-red-300 text-xs font-semibold transition-colors"
+                  >
+                    Dismiss
+                  </button>
+                </div>
+              </div>
             </div>
 
             <!-- Vocabulary Hints -->
@@ -392,6 +461,31 @@ function handleBack() {
       @close="showVocabBank = false"
     />
 
+    <!-- Character Memory Panel -->
+    <CharacterMemoryPanel
+      v-if="showMemoryPanel && character"
+      :character="character"
+      @close="showMemoryPanel = false"
+    />
+
+    <!-- New Memory Toast -->
+    <Transition name="memory-toast">
+      <div
+        v-if="showMemoryToast"
+        class="pointer-events-none fixed top-20 inset-x-0 z-[110] flex justify-center px-4"
+      >
+        <div class="memory-toast-inner pointer-events-auto flex items-start gap-3 p-3 rounded-xl shadow-lg bg-gradient-to-br from-amber-50 to-rose-50 dark:from-amber-900/40 dark:to-rose-900/40 border border-amber-200 dark:border-amber-800 max-w-sm w-full">
+          <span class="material-symbols-outlined text-amber-500 shrink-0 mt-0.5">favorite</span>
+          <div class="flex-1 min-w-0">
+            <p class="text-xs font-semibold text-amber-700 dark:text-amber-300 mb-0.5">
+              {{ character?.name }} will remember this
+            </p>
+            <p class="text-sm text-text-main dark:text-slate-200 truncate">{{ showMemoryToast.fact }}</p>
+          </div>
+        </div>
+      </div>
+    </Transition>
+
     <!-- Micro Reward Animation -->
     <MicroReward
       v-if="showMicroReward"
@@ -400,3 +494,23 @@ function handleBack() {
     />
   </div>
 </template>
+
+<style scoped>
+.memory-toast-enter-active .memory-toast-inner,
+.memory-toast-leave-active .memory-toast-inner {
+  transition: opacity 300ms ease, transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.memory-toast-enter-from .memory-toast-inner,
+.memory-toast-leave-to .memory-toast-inner {
+  opacity: 0;
+  transform: translateY(-20px) scale(0.95);
+}
+.memory-toast-enter-active,
+.memory-toast-leave-active {
+  transition: opacity 300ms ease;
+}
+.memory-toast-enter-from,
+.memory-toast-leave-to {
+  opacity: 0;
+}
+</style>

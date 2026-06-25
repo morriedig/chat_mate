@@ -1,42 +1,3 @@
-<template>
-  <Teleport to="body">
-    <Transition name="modal">
-      <div v-if="showAchievementUnlock && newAchievement" class="modal-overlay" @click.self="dismiss">
-        <div class="modal-content">
-          <!-- Celebration Effect -->
-          <div class="celebration">
-            <span v-for="i in 12" :key="i" class="confetti" :style="{ '--delay': `${i * 0.1}s`, '--rotation': `${Math.random() * 360}deg` }">
-              {{ ['🎉', '✨', '🌟', '⭐'][i % 4] }}
-            </span>
-          </div>
-
-          <!-- Badge Icon -->
-          <div class="badge-icon-large">
-            {{ newAchievement.icon }}
-          </div>
-
-          <!-- Title -->
-          <h2 class="modal-title">{{ $t('achievements.unlocked') }}</h2>
-
-          <!-- Achievement Info -->
-          <div class="achievement-info">
-            <h3 class="achievement-title">{{ $t(`achievements.${newAchievement.id}.title`) }}</h3>
-            <p class="achievement-desc">{{ $t(`achievements.${newAchievement.id}.description`) }}</p>
-          </div>
-
-          <!-- Category Tag -->
-          <span class="category-tag">{{ $t(`achievements.categories.${newAchievement.category}`) }}</span>
-
-          <!-- Continue Button -->
-          <button @click="dismiss" class="continue-btn">
-            {{ $t('achievements.continue') }}
-          </button>
-        </div>
-      </div>
-    </Transition>
-  </Teleport>
-</template>
-
 <script setup>
 import { useUserProgress } from '../../composables/useUserProgress'
 
@@ -47,157 +8,120 @@ function dismiss() {
 }
 </script>
 
+<template>
+  <Teleport to="body">
+    <Transition name="unlock-modal">
+      <div
+        v-if="showAchievementUnlock && newAchievement"
+        class="modal-overlay fixed inset-0 z-[120] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+        @click.self="dismiss"
+      >
+        <div class="unlock-card relative w-full max-w-sm p-8 pt-12 rounded-3xl text-center overflow-hidden shadow-2xl bg-surface-light dark:bg-surface-dark border border-amber-200/50 dark:border-amber-800/30">
+          <!-- Background glow -->
+          <div class="absolute inset-0 bg-gradient-to-br from-amber-100/40 via-transparent to-rose-100/30 dark:from-amber-500/10 dark:to-rose-500/5 pointer-events-none"></div>
+
+          <!-- Confetti -->
+          <div class="celebration absolute inset-0 pointer-events-none overflow-hidden">
+            <span
+              v-for="i in 12"
+              :key="i"
+              class="confetti confetti-piece"
+              :style="{
+                '--delay': `${i * 0.08}s`,
+                '--drift': `${(i % 2 === 0 ? 1 : -1) * (20 + (i * 5) % 60)}px`,
+                '--rotation': `${Math.random() * 720 - 360}deg`,
+                left: `${10 + (i * 6) % 80}%`
+              }"
+            >
+              {{ ['🎉', '✨', '🌟', '⭐', '🎊'][i % 5] }}
+            </span>
+          </div>
+
+          <!-- Badge -->
+          <div class="relative mb-5 inline-flex items-center justify-center">
+            <div class="absolute inset-0 rounded-full bg-amber-300/40 dark:bg-amber-500/20 blur-2xl"></div>
+            <div class="badge-icon-large relative w-24 h-24 rounded-full bg-gradient-to-br from-amber-300 via-amber-400 to-amber-500 dark:from-amber-400 dark:via-amber-500 dark:to-amber-600 flex items-center justify-center text-5xl shadow-lg badge-bounce">
+              {{ newAchievement.icon }}
+            </div>
+          </div>
+
+          <!-- Title -->
+          <p class="relative text-xs font-bold tracking-[0.25em] uppercase text-amber-600 dark:text-amber-400 mb-2">
+            {{ $t('achievements.unlocked') }}
+          </p>
+          <h2 class="relative text-2xl font-bold text-text-main dark:text-white mb-2">
+            {{ $t(`achievements.${newAchievement.id}.title`) }}
+          </h2>
+          <p class="relative text-sm text-text-muted dark:text-slate-400 mb-5 max-w-xs mx-auto leading-relaxed">
+            {{ $t(`achievements.${newAchievement.id}.description`) }}
+          </p>
+
+          <!-- Category -->
+          <span class="relative inline-flex items-center gap-1 px-3 py-1 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 text-[10px] font-bold uppercase tracking-wider mb-6">
+            <span class="material-symbols-outlined text-[14px]">workspace_premium</span>
+            {{ $t(`achievements.categories.${newAchievement.category}`) }}
+          </span>
+
+          <!-- Continue -->
+          <button
+            @click="dismiss"
+            class="continue-btn relative w-full py-3 rounded-xl font-semibold text-sm bg-gradient-to-br from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-white shadow-md hover:shadow-lg transition-all active:scale-[0.98]"
+          >
+            {{ $t('achievements.continue') }}
+          </button>
+        </div>
+      </div>
+    </Transition>
+  </Teleport>
+</template>
+
 <style scoped>
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.6);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  backdrop-filter: blur(4px);
+.unlock-modal-enter-active,
+.unlock-modal-leave-active {
+  transition: opacity 280ms ease;
 }
-
-.modal-content {
-  position: relative;
-  background: white;
-  border-radius: 24px;
-  padding: 40px 32px;
-  text-align: center;
-  max-width: 340px;
-  width: 90%;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  overflow: hidden;
+.unlock-modal-enter-active .unlock-card,
+.unlock-modal-leave-active .unlock-card {
+  transition: transform 380ms cubic-bezier(0.34, 1.56, 0.64, 1), opacity 280ms ease;
 }
-
-.dark .modal-content {
-  background: #1f2937;
-}
-
-.celebration {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  overflow: hidden;
-}
-
-.confetti {
-  position: absolute;
-  font-size: 1.5rem;
-  animation: confetti-fall 2s ease-out forwards;
-  animation-delay: var(--delay);
+.unlock-modal-enter-from,
+.unlock-modal-leave-to {
   opacity: 0;
 }
+.unlock-modal-enter-from .unlock-card,
+.unlock-modal-leave-to .unlock-card {
+  opacity: 0;
+  transform: scale(0.85) translateY(20px);
+}
 
-@keyframes confetti-fall {
+.badge-bounce {
+  animation: badge-in 700ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+@keyframes badge-in {
+  0% { transform: scale(0) rotate(-30deg); }
+  60% { transform: scale(1.15) rotate(8deg); }
+  100% { transform: scale(1) rotate(0); }
+}
+
+.confetti-piece {
+  position: absolute;
+  top: -20px;
+  font-size: 1.25rem;
+  opacity: 0;
+  animation: confetti-drift 2.2s ease-out forwards;
+  animation-delay: var(--delay);
+}
+@keyframes confetti-drift {
   0% {
-    top: -20px;
-    left: 50%;
+    opacity: 0;
+    transform: translate(0, -20px) rotate(0deg);
+  }
+  15% {
     opacity: 1;
-    transform: translateX(-50%) rotate(0deg);
   }
   100% {
-    top: 100%;
-    left: calc(50% + (var(--rotation) / 3));
     opacity: 0;
-    transform: translateX(-50%) rotate(var(--rotation));
+    transform: translate(var(--drift), 420px) rotate(var(--rotation));
   }
-}
-
-.badge-icon-large {
-  font-size: 4rem;
-  margin-bottom: 16px;
-  animation: bounce-in 0.5s ease-out;
-}
-
-@keyframes bounce-in {
-  0% { transform: scale(0); }
-  50% { transform: scale(1.2); }
-  100% { transform: scale(1); }
-}
-
-.modal-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #f59e0b;
-  margin-bottom: 16px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.achievement-info {
-  margin-bottom: 16px;
-}
-
-.achievement-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #1f2937;
-  margin-bottom: 4px;
-}
-
-.dark .achievement-title {
-  color: #f3f4f6;
-}
-
-.achievement-desc {
-  font-size: 0.9rem;
-  color: #6b7280;
-}
-
-.dark .achievement-desc {
-  color: #9ca3af;
-}
-
-.category-tag {
-  display: inline-block;
-  padding: 4px 12px;
-  background: #fef3c7;
-  color: #92400e;
-  border-radius: 999px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  margin-bottom: 24px;
-}
-
-.dark .category-tag {
-  background: #78350f;
-  color: #fde68a;
-}
-
-.continue-btn {
-  width: 100%;
-  padding: 14px 24px;
-  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-  color: white;
-  font-weight: 600;
-  font-size: 1rem;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.continue-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
-}
-
-/* Transitions */
-.modal-enter-active,
-.modal-leave-active {
-  transition: all 0.3s ease;
-}
-
-.modal-enter-from,
-.modal-leave-to {
-  opacity: 0;
-}
-
-.modal-enter-from .modal-content,
-.modal-leave-to .modal-content {
-  transform: scale(0.9);
 }
 </style>

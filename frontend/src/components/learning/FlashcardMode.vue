@@ -150,10 +150,10 @@ watch(() => props.words, (newWords) => initCards(newWords), { immediate: true })
     <!-- Flashcard -->
     <div
       @click="handleFlipCard"
-      class="w-full max-w-lg aspect-[4/3] perspective-1000 cursor-pointer"
+      class="flashcard-wrap w-full max-w-lg aspect-[4/3] perspective-1000 cursor-pointer group"
     >
       <div
-        class="relative w-full h-full transition-transform duration-500 transform-style-3d"
+        class="flashcard-inner transition-transform duration-500 relative w-full h-full transform-style-3d"
         :class="{ 'rotate-y-180': isFlipped }"
       >
         <!-- Front (Word) -->
@@ -287,7 +287,7 @@ watch(() => props.words, (newWords) => initCards(newWords), { immediate: true })
 
 <style scoped>
 .perspective-1000 {
-  perspective: 1000px;
+  perspective: 1600px;
 }
 
 .transform-style-3d {
@@ -296,9 +296,45 @@ watch(() => props.words, (newWords) => initCards(newWords), { immediate: true })
 
 .backface-hidden {
   backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.flashcard-inner {
+  transition: transform 620ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  will-change: transform;
 }
 
 .rotate-y-180 {
   transform: rotateY(180deg);
+}
+
+.flashcard-wrap {
+  transition: transform 280ms ease, filter 280ms ease;
+}
+.flashcard-wrap:hover {
+  transform: translateY(-2px);
+  filter: drop-shadow(0 10px 20px rgba(15, 23, 42, 0.08));
+}
+.flashcard-wrap:active .flashcard-inner {
+  transition-duration: 150ms;
+  transform: scale(0.98);
+}
+.flashcard-wrap:active.rotate-applied .flashcard-inner {
+  transform: rotateY(180deg) scale(0.98);
+}
+
+/* Subtle sheen that sweeps on flip */
+.flashcard-inner > div::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.2) 50%, transparent 60%);
+  opacity: 0;
+  transition: opacity 400ms ease;
+}
+.flashcard-wrap:hover .flashcard-inner > div::after {
+  opacity: 1;
 }
 </style>

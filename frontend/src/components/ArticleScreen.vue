@@ -57,6 +57,27 @@ function getPreviewText(content) {
       <h1 class="text-lg font-bold text-text-main dark:text-white">{{ t('articles.title') }}</h1>
     </header>
 
+    <!-- No level selected guard -->
+    <div v-if="!level" class="p-8 max-w-md mx-auto">
+      <div class="flex flex-col items-center text-center py-12">
+        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/10 flex items-center justify-center mb-4">
+          <span class="material-symbols-outlined text-3xl text-primary">tune</span>
+        </div>
+        <h2 class="text-lg font-semibold text-text-main dark:text-white mb-2">Pick a level first</h2>
+        <p class="text-sm text-text-muted dark:text-slate-400 mb-5">
+          Go back to the home screen and choose your level so we know which articles to show you.
+        </p>
+        <button
+          @click="router.push('/')"
+          class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-[#0d171b] font-semibold hover:bg-primary/90 transition-colors"
+        >
+          <span class="material-symbols-outlined text-[18px]">home</span>
+          Back to home
+        </button>
+      </div>
+    </div>
+
+    <template v-else>
     <!-- Level Indicator -->
     <div class="px-4 sm:px-6 py-3 bg-slate-50 dark:bg-slate-900 border-b border-[#e7eff3] dark:border-slate-800">
       <span class="text-sm text-text-muted dark:text-slate-400">
@@ -97,11 +118,22 @@ function getPreviewText(content) {
         </div>
 
         <!-- No articles -->
-        <div v-if="filteredArticles.length === 0" class="text-center py-12">
-          <span class="material-symbols-outlined text-5xl text-slate-300 dark:text-slate-600 mb-4">article</span>
-          <p class="text-text-muted dark:text-slate-400">{{ t('articles.noArticles') }}</p>
+        <div v-if="filteredArticles.length === 0" class="flex flex-col items-center justify-center py-16 text-center">
+          <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/10 flex items-center justify-center mb-4">
+            <span class="material-symbols-outlined text-3xl text-primary">article</span>
+          </div>
+          <p class="text-sm font-medium text-text-main dark:text-slate-200 mb-1">{{ t('articles.noArticles') }}</p>
+          <p class="text-xs text-text-muted dark:text-slate-400 max-w-xs mb-5">We don't have articles at this level yet — try a different one from the home screen.</p>
+          <button
+            @click="router.push('/')"
+            class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-700 hover:border-primary text-text-main dark:text-slate-200 text-sm font-semibold transition-colors"
+          >
+            <span class="material-symbols-outlined text-[18px]">tune</span>
+            Change level
+          </button>
         </div>
       </div>
     </div>
+    </template>
   </div>
 </template>

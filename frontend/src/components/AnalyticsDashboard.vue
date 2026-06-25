@@ -8,26 +8,48 @@ const emit = defineEmits(['close'])
 
 const { progress, currentRank, progressToNextRank } = useUserProgress()
 
-// Generate last 30 days activity heatmap data
+function localDateKey(d) {
+  const y = d.getFullYear()
+  const m = String(d.getMonth() + 1).padStart(2, '0')
+  const day = String(d.getDate()).padStart(2, '0')
+  return `${y}-${m}-${day}`
+}
+
+// Generate last 30 days activity heatmap using real activityLog
 const heatmapData = computed(() => {
+  const log = progress.value.activityLog || {}
   const days = []
   const today = new Date()
   for (let i = 29; i >= 0; i--) {
     const date = new Date(today)
     date.setDate(date.getDate() - i)
-    const dateStr = date.toISOString().split('T')[0]
-    // Simulate activity based on streak data (in a real app, we'd track daily activity)
-    const isActive = progress.value.lastActiveDate === dateStr ||
-      (i === 0 && progress.value.currentStreak > 0)
+    const key = localDateKey(date)
+    const entry = log[key]
+    const total = entry ? (entry.messages || 0) + (entry.diary || 0) * 3 : 0
+    // 4-tier intensity: 0=none, 1=light (1-3), 2=medium (4-10), 3=heavy (11+)
+    let level = 0
+    if (total > 0) level = 1
+    if (total >= 4) level = 2
+    if (total >= 11) level = 3
     days.push({
-      date: dateStr,
+      date: key,
       day: date.getDate(),
-      active: isActive,
+      level,
+      total,
       weekday: date.getDay(),
     })
   }
   return days
 })
+
+const hasAnyActivity = computed(() => heatmapData.value.some(d => d.level > 0))
+
+function intensityClass(level) {
+  if (level === 0) return 'bg-slate-100 dark:bg-slate-800'
+  if (level === 1) return 'bg-green-200 dark:bg-green-900'
+  if (level === 2) return 'bg-green-400 dark:bg-green-600'
+  return 'bg-green-500 dark:bg-green-400'
+}
 
 const stats = computed(() => [
   { label: 'Total XP', value: progress.value.totalXP, icon: 'star', color: 'text-amber-500' },
@@ -84,16 +106,30 @@ const rankProgress = computed(() => Math.round(progressToNextRank.value * 100))
 
           <!-- 30-Day Activity -->
           <div class="mb-4">
-            <h3 class="text-sm font-semibold text-text-muted dark:text-slate-400 uppercase tracking-wider mb-3">30-Day Activity</h3>
-            <div class="grid grid-cols-10 gap-1">
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="text-sm font-semibold text-text-muted dark:text-slate-400 uppercase tracking-wider">30-Day Activity</h3>
+              <div v-if="hasAnyActivity" class="flex items-center gap-1 text-[10px] text-text-muted dark:text-slate-500">
+                <span>Less</span>
+                <span class="w-2.5 h-2.5 rounded-sm bg-slate-100 dark:bg-slate-800"></span>
+                <span class="w-2.5 h-2.5 rounded-sm bg-green-200 dark:bg-green-900"></span>
+                <span class="w-2.5 h-2.5 rounded-sm bg-green-400 dark:bg-green-600"></span>
+                <span class="w-2.5 h-2.5 rounded-sm bg-green-500 dark:bg-green-400"></span>
+                <span>More</span>
+              </div>
+            </div>
+            <div v-if="!hasAnyActivity" class="p-5 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-dashed border-slate-200 dark:border-slate-700 text-center">
+              <span class="material-symbols-outlined text-2xl text-slate-300 dark:text-slate-600 mb-1 block">timeline</span>
+              <p class="text-xs text-text-muted dark:text-slate-400">
+                Your activity heatmap fills in as you chat, study, and write diary entries.
+              </p>
+            </div>
+            <div v-else class="grid grid-cols-10 gap-1">
               <div
                 v-for="day in heatmapData"
                 :key="day.date"
                 class="aspect-square rounded-sm transition-colors"
-                :class="day.active
-                  ? 'bg-green-400 dark:bg-green-500'
-                  : 'bg-slate-100 dark:bg-slate-800'"
-                :title="day.date"
+                :class="intensityClass(day.level)"
+                :title="`${day.date} · ${day.total} ${day.total === 1 ? 'activity' : 'activities'}`"
               />
             </div>
           </div>

@@ -83,24 +83,37 @@ function getScoreBarBg(score) {
 </script>
 
 <template>
-  <!-- Loading State -->
-  <div v-if="loading" class="py-6">
-    <div class="flex items-end gap-2 sm:gap-3 max-w-full">
-      <div class="flex items-center justify-center rounded-full size-8 sm:size-10 shrink-0 shadow-sm bg-slate-100 dark:bg-slate-800 text-xl sm:text-2xl">
+  <!-- Loading State (skeleton) -->
+  <div v-if="loading" class="py-6 space-y-4">
+    <!-- Character header -->
+    <div class="flex items-center gap-3">
+      <div class="size-10 rounded-full bg-slate-100 dark:bg-slate-800 shadow-sm flex items-center justify-center text-2xl diary-skel-breathe">
         {{ character.avatar }}
       </div>
-      <div class="flex flex-col gap-1 items-start">
-        <span class="text-text-muted dark:text-slate-400 text-[13px] font-medium ml-1">{{ character.name }}</span>
-        <div class="p-3 sm:p-4 rounded-2xl rounded-bl-none bg-surface-light dark:bg-surface-dark shadow-sm border border-slate-100 dark:border-slate-700">
-          <div class="flex items-center gap-2 text-sm text-text-muted dark:text-slate-400">
-            <div class="flex gap-1">
-              <span class="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style="animation-delay: 0ms"></span>
-              <span class="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style="animation-delay: 150ms"></span>
-              <span class="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style="animation-delay: 300ms"></span>
-            </div>
-            <span class="ml-1">{{ t('diary.submitting') }}</span>
-          </div>
-        </div>
+      <div class="flex flex-col gap-1">
+        <span class="text-sm font-semibold text-text-main dark:text-slate-200">{{ character.name }}</span>
+        <span class="text-xs text-text-muted dark:text-slate-400">{{ t('diary.submitting') }}</span>
+      </div>
+    </div>
+    <!-- Reaction skeleton -->
+    <div class="p-4 rounded-2xl border border-slate-100 dark:border-slate-700 bg-surface-light dark:bg-surface-dark space-y-2">
+      <div class="diary-skel-bar h-3 w-5/6 rounded"></div>
+      <div class="diary-skel-bar h-3 w-full rounded"></div>
+      <div class="diary-skel-bar h-3 w-4/6 rounded"></div>
+    </div>
+    <!-- Score skeletons -->
+    <div class="grid grid-cols-4 gap-2">
+      <div v-for="i in 4" :key="i" class="p-3 rounded-xl border border-slate-100 dark:border-slate-700">
+        <div class="diary-skel-bar h-2 w-2/3 rounded mb-2"></div>
+        <div class="diary-skel-bar h-5 w-full rounded"></div>
+      </div>
+    </div>
+    <!-- Corrections skeletons -->
+    <div class="space-y-2">
+      <div class="diary-skel-bar h-4 w-32 rounded"></div>
+      <div class="p-3 rounded-xl border-l-2 border-l-slate-200 dark:border-l-slate-700 bg-slate-50 dark:bg-slate-900/40 space-y-2">
+        <div class="diary-skel-bar h-3 w-1/2 rounded"></div>
+        <div class="diary-skel-bar h-3 w-full rounded"></div>
       </div>
     </div>
   </div>
@@ -345,3 +358,36 @@ function getScoreBarBg(score) {
     </div>
   </div>
 </template>
+
+<style scoped>
+.diary-skel-bar {
+  background: linear-gradient(
+    90deg,
+    rgb(226 232 240) 0%,
+    rgb(241 245 249) 50%,
+    rgb(226 232 240) 100%
+  );
+  background-size: 200% 100%;
+  animation: diary-shimmer 1.4s ease-in-out infinite;
+}
+:global(.dark) .diary-skel-bar {
+  background: linear-gradient(
+    90deg,
+    rgb(30 41 59) 0%,
+    rgb(51 65 85) 50%,
+    rgb(30 41 59) 100%
+  );
+  background-size: 200% 100%;
+}
+@keyframes diary-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+.diary-skel-breathe {
+  animation: diary-breathe 2s ease-in-out infinite;
+}
+@keyframes diary-breathe {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.04); opacity: 1; }
+}
+</style>

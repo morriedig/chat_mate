@@ -112,15 +112,27 @@ const showAchievements = ref(false)
     <!-- Achievements Panel Popup -->
     <Teleport to="body">
       <Transition name="panel">
-        <div v-if="showAchievements" class="achievements-overlay" @click.self="showAchievements = false">
-          <div class="achievements-popup">
-            <div class="popup-header">
-              <h2 class="popup-title">🏆 {{ $t('achievements.unlocked') }}</h2>
-              <button @click="showAchievements = false" class="close-btn">
+        <div
+          v-if="showAchievements"
+          class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+          @click.self="showAchievements = false"
+        >
+          <div class="achievements-popup-inner bg-surface-light dark:bg-surface-dark rounded-3xl w-full max-w-md max-h-[85vh] overflow-hidden flex flex-col shadow-2xl">
+            <div class="flex items-center justify-between p-5 pb-3 border-b border-slate-200 dark:border-slate-700">
+              <h2 class="text-base font-bold text-text-main dark:text-white flex items-center gap-2">
+                <span class="text-xl">🏆</span>
+                {{ $t('achievements.unlocked') }}
+              </h2>
+              <button
+                @click="showAchievements = false"
+                class="p-1 rounded-lg text-text-muted dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+              >
                 <span class="material-symbols-outlined">close</span>
               </button>
             </div>
-            <AchievementsPanel />
+            <div class="flex-1 overflow-y-auto">
+              <AchievementsPanel />
+            </div>
           </div>
         </div>
       </Transition>
@@ -158,87 +170,22 @@ const showAchievements = ref(false)
   }
 }
 
-/* Achievements Panel */
-.achievements-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  backdrop-filter: blur(4px);
-}
-
-.achievements-popup {
-  background: white;
-  border-radius: 16px;
-  width: 90%;
-  max-width: 400px;
-  max-height: 80vh;
-  overflow: hidden;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-}
-
-.dark .achievements-popup {
-  background: #1f2937;
-}
-
-.popup-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 20px;
-  border-bottom: 1px solid #e5e7eb;
-}
-
-.dark .popup-header {
-  border-bottom-color: #374151;
-}
-
-.popup-title {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #1f2937;
-}
-
-.dark .popup-title {
-  color: #f3f4f6;
-}
-
-.close-btn {
-  padding: 4px;
-  border-radius: 8px;
-  color: #6b7280;
-  transition: background 0.2s;
-}
-
-.close-btn:hover {
-  background: #f3f4f6;
-}
-
-.dark .close-btn:hover {
-  background: #374151;
-}
-
-.achievements-popup :deep(.achievements-panel) {
-  max-height: calc(80vh - 60px);
-  overflow-y: auto;
-}
-
 /* Panel transitions */
 .panel-enter-active,
 .panel-leave-active {
-  transition: all 0.3s ease;
+  transition: opacity 260ms ease;
 }
-
+.panel-enter-active .achievements-popup-inner,
+.panel-leave-active .achievements-popup-inner {
+  transition: transform 320ms cubic-bezier(0.34, 1.56, 0.64, 1), opacity 260ms ease;
+}
 .panel-enter-from,
 .panel-leave-to {
   opacity: 0;
 }
-
-.panel-enter-from .achievements-popup,
-.panel-leave-to .achievements-popup {
-  transform: scale(0.95);
+.panel-enter-from .achievements-popup-inner,
+.panel-leave-to .achievements-popup-inner {
+  opacity: 0;
+  transform: scale(0.92) translateY(10px);
 }
 </style>

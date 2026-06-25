@@ -57,11 +57,25 @@ function handleRemove(id) {
 
           <!-- Word List -->
           <div class="flex-1 overflow-y-auto p-3 space-y-2">
-            <div v-if="filteredWords.length === 0" class="text-center py-8">
-              <span class="material-symbols-outlined text-4xl text-slate-300 dark:text-slate-600 mb-2">book</span>
-              <p class="text-sm text-text-muted dark:text-slate-400">
-                {{ searchQuery ? t('vocabBank.noResults') : t('vocabBank.empty') }}
+            <!-- Empty (no search) -->
+            <div v-if="filteredWords.length === 0 && !searchQuery" class="flex flex-col items-center justify-center py-12 px-4 text-center">
+              <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/10 flex items-center justify-center mb-4">
+                <span class="material-symbols-outlined text-3xl text-primary">bookmark_add</span>
+              </div>
+              <h3 class="text-sm font-semibold text-text-main dark:text-slate-200 mb-1">
+                {{ t('vocabBank.empty') }}
+              </h3>
+              <p class="text-xs text-text-muted dark:text-slate-400 max-w-xs leading-relaxed">
+                Tap any word in a chat message to save it here. Your saved words come back for spaced-repetition review in Learning mode.
               </p>
+            </div>
+            <!-- Empty (with search) -->
+            <div v-else-if="filteredWords.length === 0 && searchQuery" class="text-center py-10">
+              <span class="material-symbols-outlined text-4xl text-slate-300 dark:text-slate-600 mb-2 block">search_off</span>
+              <p class="text-sm text-text-muted dark:text-slate-400">
+                {{ t('vocabBank.noResults') }}
+              </p>
+              <button @click="searchQuery = ''" class="mt-2 text-xs text-primary hover:underline">Clear search</button>
             </div>
 
             <div

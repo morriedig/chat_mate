@@ -4,10 +4,11 @@ import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { usePlacementTest } from '../composables/usePlacementTest'
 import { useNavState } from '../composables/useNavState'
+import { levels } from '../data/characters'
 
 const { t, locale } = useI18n()
 const router = useRouter()
-const { selectedLanguage } = useNavState()
+const { selectedLanguage, selectedLevel } = useNavState()
 const language = computed(() => selectedLanguage.value || locale.value || 'en')
 
 const { getQuestions, calculateLevel, result } = usePlacementTest()
@@ -49,6 +50,18 @@ function retake() {
 }
 
 function handleDone() {
+  // Auto-apply the tested level to global nav state so home shows it pre-selected
+  if (result.value?.level) {
+    const matched = levels.find(l => l.id === result.value.level)
+    if (matched) selectedLevel.value = matched
+    try {
+      localStorage.setItem('chatmate_placement_result', JSON.stringify({
+        level: result.value.level,
+        score: result.value.score,
+        appliedAt: Date.now(),
+      }))
+    } catch {}
+  }
   router.push('/')
 }
 </script>

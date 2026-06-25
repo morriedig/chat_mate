@@ -83,7 +83,7 @@ export function useChatApi() {
   const error = ref(null)
 
   async function sendMessage(config) {
-    const { messages, characterId, levelId, language, isGreeting, article, challengeContext } = config
+    const { messages, characterId, levelId, language, isGreeting, article, challengeContext, memoryContext } = config
 
     isLoading.value = true
     error.value = null
@@ -98,7 +98,7 @@ export function useChatApi() {
           isGreeting,
           articleTitle: article?.title
         })
-        return { reply, hints: [] }
+        return { reply, hints: [], newMemory: null }
       }
 
       // Get auth token (request if needed)
@@ -117,6 +117,10 @@ export function useChatApi() {
 
       if (challengeContext) {
         requestBody.challengeContext = challengeContext
+      }
+
+      if (memoryContext) {
+        requestBody.memoryContext = memoryContext
       }
 
       if (article) {
@@ -158,7 +162,8 @@ export function useChatApi() {
             if (retryData.success) {
               return {
                 reply: retryData.reply,
-                hints: retryData.hints || []
+                hints: retryData.hints || [],
+                newMemory: retryData.newMemory || null,
               }
             }
           }
@@ -168,7 +173,8 @@ export function useChatApi() {
 
       return {
         reply: data.reply,
-        hints: data.hints || []
+        hints: data.hints || [],
+        newMemory: data.newMemory || null,
       }
     } catch (err) {
       error.value = err

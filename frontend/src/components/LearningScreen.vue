@@ -468,10 +468,19 @@ onMounted(() => {
         </div>
 
         <!-- Empty State -->
-        <div v-if="availableChapters.length === 0 && preLessons.length === 0" class="text-center py-12">
-          <span class="text-6xl block mb-4">📚</span>
+        <div v-if="availableChapters.length === 0 && preLessons.length === 0" class="flex flex-col items-center justify-center py-16 px-6 text-center">
+          <div class="w-20 h-20 rounded-3xl bg-gradient-to-br from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/10 flex items-center justify-center mb-4 shadow-sm">
+            <span class="material-symbols-outlined text-4xl text-primary">auto_stories</span>
+          </div>
           <h3 class="text-lg font-semibold text-text-main dark:text-white mb-2">{{ t('learning.noChapters') }}</h3>
-          <p class="text-text-muted dark:text-slate-400">{{ t('learning.noChaptersDescription') }}</p>
+          <p class="text-sm text-text-muted dark:text-slate-400 max-w-md leading-relaxed mb-5">{{ t('learning.noChaptersDescription') }}</p>
+          <button
+            @click="$router.push('/')"
+            class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-700 hover:border-primary text-text-main dark:text-slate-200 text-sm font-semibold transition-colors"
+          >
+            <span class="material-symbols-outlined text-[18px]">tune</span>
+            Try a different level
+          </button>
         </div>
       </template>
 

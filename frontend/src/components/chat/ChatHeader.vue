@@ -7,7 +7,7 @@ import DailyGoalRing from './DailyGoalRing.vue'
 const { t } = useI18n()
 const { isDark, toggle: toggleDark } = useDarkMode()
 
-defineProps({
+const props = defineProps({
   character: {
     type: Object,
     required: true
@@ -27,10 +27,18 @@ defineProps({
   isLoading: {
     type: Boolean,
     default: false
+  },
+  memoryCount: {
+    type: Number,
+    default: 0
+  },
+  conversationCount: {
+    type: Number,
+    default: 0
   }
 })
 
-const emit = defineEmits(['back', 'toggle-article', 'renew-chat', 'toggle-vocab-bank'])
+const emit = defineEmits(['back', 'toggle-article', 'renew-chat', 'toggle-vocab-bank', 'show-memories'])
 </script>
 
 <template>
@@ -44,10 +52,22 @@ const emit = defineEmits(['back', 'toggle-article', 'renew-chat', 'toggle-vocab-
       </div>
       <div class="flex flex-col min-w-0">
         <h2 class="text-sm sm:text-base font-bold leading-tight tracking-[-0.015em] truncate">{{ character.name }}</h2>
-        <span class="text-xs text-text-muted dark:text-slate-400 truncate">{{ t(`levels.${level.id}.name`) }}</span>
+        <span class="text-xs text-text-muted dark:text-slate-400 truncate">
+          {{ t(`levels.${level.id}.name`) }}
+          <span v-if="conversationCount > 1" class="ml-1">· chat #{{ conversationCount }}</span>
+        </span>
       </div>
       <span class="hidden sm:inline px-2 py-0.5 rounded-full bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 text-xs font-semibold shrink-0">Online</span>
       <span v-if="isArticleMode" class="hidden sm:inline px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 text-xs font-semibold shrink-0">{{ t('chat.articleMode') }}</span>
+      <button
+        v-if="memoryCount > 0"
+        @click="emit('show-memories')"
+        class="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 text-xs font-semibold shrink-0 hover:bg-amber-200 dark:hover:bg-amber-900/60 transition-colors"
+        :title="`${character.name} remembers ${memoryCount} thing${memoryCount === 1 ? '' : 's'} about you`"
+      >
+        <span class="material-symbols-outlined text-[14px]">favorite</span>
+        {{ memoryCount }}
+      </button>
     </div>
     <div class="flex items-center gap-1 sm:gap-2 relative">
       <DailyGoalRing />

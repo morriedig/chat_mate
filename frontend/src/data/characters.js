@@ -1,3 +1,8 @@
+// Characters are defined here with lightweight frontend metadata only.
+// Rich personality, backstory, signature phrases, and evolving weekly arcs
+// live in backend/server.js + Code.gs (getCharacterPrompt, generateDailyContext).
+// This split keeps prompts hidden from the client (small defensibility win).
+
 export const characters = [
   {
     id: 'emma',
@@ -6,8 +11,11 @@ export const characters = [
     location: 'Seattle',
     occupation: 'Graphic Designer',
     avatar: '👩‍🎨',
+    accentColor: '#f5a9a9',
     tagline: 'Warm, curious, loves coffee and her cat Mochi',
     traits: ['friendly', 'creative', 'casual'],
+    languages: ['en'],
+    recommendedFor: 'beginner',
   },
   {
     id: 'marcus',
@@ -16,8 +24,11 @@ export const characters = [
     location: 'Tokyo',
     occupation: 'Software Developer',
     avatar: '👨‍💻',
+    accentColor: '#8fb6d9',
     tagline: 'Laid-back Brit in Tokyo, foodie and gamer',
     traits: ['relaxed', 'witty', 'thoughtful'],
+    languages: ['en', 'ja'],
+    recommendedFor: 'intermediate',
   },
   {
     id: 'sophia',
@@ -26,8 +37,11 @@ export const characters = [
     location: 'Paris',
     occupation: 'Pastry Chef',
     avatar: '👩‍🍳',
+    accentColor: '#e8c4a0',
     tagline: 'Passionate about baking and French culture',
     traits: ['enthusiastic', 'warm', 'expressive'],
+    languages: ['en'],
+    recommendedFor: 'intermediate',
   },
   {
     id: 'james',
@@ -36,8 +50,11 @@ export const characters = [
     location: 'New York',
     occupation: 'Journalist',
     avatar: '👨‍💼',
+    accentColor: '#a8c0a0',
     tagline: 'Curious storyteller, loves jazz and coffee',
     traits: ['inquisitive', 'articulate', 'friendly'],
+    languages: ['en'],
+    recommendedFor: 'advanced',
   },
   {
     id: 'yuki',
@@ -46,8 +63,11 @@ export const characters = [
     location: 'Osaka',
     occupation: 'University Student',
     avatar: '👩‍🎓',
+    accentColor: '#d4a9d9',
     tagline: 'Studying abroad, anime fan and foodie',
     traits: ['cheerful', 'curious', 'casual'],
+    languages: ['en', 'ja'],
+    recommendedFor: 'beginner',
   },
 ]
 

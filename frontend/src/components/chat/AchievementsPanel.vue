@@ -1,19 +1,63 @@
-<template>
-  <div class="achievements-panel">
-    <div class="panel-header">
-      <h3 class="panel-title">{{ $t('achievements.unlocked') }}</h3>
-      <span class="badge-count">{{ unlockedAchievements.length }}/{{ ACHIEVEMENTS.length }}</span>
-    </div>
+<script setup>
+import { computed } from 'vue'
+import { useUserProgress } from '../../composables/useUserProgress'
+import AchievementBadge from './AchievementBadge.vue'
 
-    <!-- Progress Bar -->
-    <div class="progress-bar-container">
-      <div class="progress-bar" :style="{ width: `${progressPercent}%` }"></div>
+const { unlockedAchievements, ACHIEVEMENTS, progress } = useUserProgress()
+
+const categories = ['first_steps', 'consistency', 'learning', 'mastery']
+
+const progressPercent = computed(() =>
+  Math.round((unlockedAchievements.value.length / ACHIEVEMENTS.length) * 100)
+)
+
+function getAchievementsByCategory(category) {
+  return ACHIEVEMENTS.filter(a => a.category === category)
+}
+
+function getUnlockedCount(category) {
+  return getAchievementsByCategory(category).filter(a =>
+    progress.value.unlockedAchievements.includes(a.id)
+  ).length
+}
+
+function isUnlocked(achievementId) {
+  return progress.value.unlockedAchievements.includes(achievementId)
+}
+</script>
+
+<template>
+  <div class="achievements-panel p-5">
+    <!-- Header (screen-reader friendly text for tests) -->
+    <p class="sr-only">{{ $t('achievements.unlocked') }}</p>
+
+    <!-- Progress Header -->
+    <div class="mb-5">
+      <div class="flex items-baseline justify-between mb-2">
+        <span class="text-2xl font-bold text-text-main dark:text-white">
+          {{ unlockedAchievements.length }}<span class="text-sm font-medium text-text-muted dark:text-slate-400">/{{ ACHIEVEMENTS.length }}</span>
+        </span>
+        <span class="text-sm font-semibold text-amber-500">{{ progressPercent }}%</span>
+      </div>
+      <div class="progress-bar-container h-2 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden">
+        <div
+          class="progress-bar h-full rounded-full bg-gradient-to-r from-amber-400 to-amber-500 transition-all duration-500"
+          :style="{ width: `${progressPercent}%` }"
+        ></div>
+      </div>
     </div>
 
     <!-- Categories -->
-    <div v-for="category in categories" :key="category" class="category-section">
-      <h4 class="category-title">{{ $t(`achievements.categories.${category}`) }}</h4>
-      <div class="achievements-grid">
+    <div v-for="category in categories" :key="category" class="category-section mb-5 last:mb-0">
+      <div class="flex items-center justify-between mb-2">
+        <h4 class="text-[11px] font-bold uppercase tracking-wider text-text-muted dark:text-slate-500">
+          {{ $t(`achievements.categories.${category}`) }}
+        </h4>
+        <span class="text-[11px] text-text-muted dark:text-slate-500 font-medium">
+          {{ getUnlockedCount(category) }}/{{ getAchievementsByCategory(category).length }}
+        </span>
+      </div>
+      <div class="achievements-grid flex flex-col gap-2">
         <AchievementBadge
           v-for="achievement in getAchievementsByCategory(category)"
           :key="achievement.id"
@@ -25,95 +69,16 @@
   </div>
 </template>
 
-<script setup>
-import { computed } from 'vue'
-import { useUserProgress } from '../../composables/useUserProgress'
-import AchievementBadge from './AchievementBadge.vue'
-
-const { unlockedAchievements, ACHIEVEMENTS, progress } = useUserProgress()
-
-const categories = ['first_steps', 'consistency', 'learning', 'mastery']
-
-const progressPercent = computed(() => {
-  return Math.round((unlockedAchievements.value.length / ACHIEVEMENTS.length) * 100)
-})
-
-function getAchievementsByCategory(category) {
-  return ACHIEVEMENTS.filter(a => a.category === category)
-}
-
-function isUnlocked(achievementId) {
-  return progress.value.unlockedAchievements.includes(achievementId)
-}
-</script>
-
 <style scoped>
-.achievements-panel {
-  padding: 16px;
-}
-
-.panel-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-}
-
-.panel-title {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #1f2937;
-}
-
-.dark .panel-title {
-  color: #f3f4f6;
-}
-
-.badge-count {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #f59e0b;
-}
-
-.progress-bar-container {
-  height: 8px;
-  background: #e5e7eb;
-  border-radius: 4px;
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
   overflow: hidden;
-  margin-bottom: 24px;
-}
-
-.dark .progress-bar-container {
-  background: #374151;
-}
-
-.progress-bar {
-  height: 100%;
-  background: linear-gradient(90deg, #f59e0b, #fbbf24);
-  border-radius: 4px;
-  transition: width 0.3s ease;
-}
-
-.category-section {
-  margin-bottom: 20px;
-}
-
-.category-title {
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: #6b7280;
-  margin-bottom: 12px;
-}
-
-.dark .category-title {
-  color: #9ca3af;
-}
-
-.achievements-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }
 </style>
