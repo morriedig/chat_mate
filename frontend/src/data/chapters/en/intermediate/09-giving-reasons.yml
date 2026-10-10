@@ -1,0 +1,455 @@
+# Chapter: Week 9 - Giving Reasons
+# Connectors for explaining the "why" behind an opinion.
+# Structure: state your view -> give a reason -> wrap up or ask back.
+meta:
+  id: giving-reasons
+  title:
+    en: "Giving Reasons"
+    ja: "理由を伝える"
+    zh: "說出你的理由"
+  description:
+    en: "Back up your opinions with clear reasons using connectors like because, since, due to, so that and on top of that."
+    ja: "because、since、due to、so that、on top of that などのつなぎ言葉で、意見に理由を添えて伝えましょう。"
+    zh: "用 because、since、due to、so that、on top of that 等連接詞，讓你的看法有理由、有條理。"
+  icon: "💡"
+  order: 9
+  level: intermediate
+
+words:
+  # Structure
+  - id: opinion-reason-wrap-up
+    word:
+      en: "Opinion → Reason → Wrap-up"
+      ja: "意見 → 理由 → まとめ"
+      zh: "看法 → 理由 → 收尾"
+    reading: "uh-PIN-yuhn, REE-zuhn, RAP-uhp"
+    phonetic: "/əˈpɪnjən ˈriːzən ˈræpʌp/"
+    description:
+      en: "A simple three-step structure: state your view, explain why, then wrap up or ask the other person."
+      ja: "3ステップの型：意見を言う → 理由を説明する → まとめるか相手に聞き返す。"
+      zh: "三步驟：先講看法，再說理由，最後收尾或反問對方。"
+    sentence:
+      en: "I think we should move the launch to May, because the testing isn't finished yet. What do you think?"
+      ja: "テストがまだ終わっていないので、リリースは5月にずらすべきだと思います。どう思いますか？"
+      zh: "我覺得上線應該延到五月，因為測試還沒做完。你覺得呢？"
+
+  # Cause
+  - id: because
+    word:
+      en: because
+      ja: なぜなら・〜だから
+      zh: 因為
+    reading: "bih-KAWZ"
+    phonetic: "/bɪˈkɔːz/"
+    description:
+      en: "The most common way to give a reason. Followed by a full clause (subject + verb)."
+      ja: "理由を言う最も一般的な言い方。後ろには文（主語＋動詞）が続く。"
+      zh: "最常用的理由連接詞。後面接完整句子（主詞＋動詞）。"
+    sentence:
+      en: "I prefer working from home because I can focus better."
+      ja: "集中しやすいので、在宅勤務のほうが好きです。"
+      zh: "我比較喜歡在家工作，因為比較能專心。"
+
+  - id: since
+    word:
+      en: since
+      ja: 〜なので（明らかな理由）
+      zh: 既然・由於（理由很明顯）
+    reading: "sins"
+    phonetic: "/sɪns/"
+    description:
+      en: "Gives a reason that is already clear or known to everyone. Often starts the sentence."
+      ja: "誰もがすでにわかっている理由を言うときに使う。文頭に来ることが多い。"
+      zh: "用在大家都已經知道、很明顯的理由。常放在句首。"
+    sentence:
+      en: "Since everyone is here, let's start the meeting."
+      ja: "全員そろったので、会議を始めましょう。"
+      zh: "既然大家都到了，我們開始開會吧。"
+
+  - id: due-to
+    word:
+      en: due to
+      ja: 〜が原因で（フォーマル）
+      zh: 由於（較正式）
+    reading: "DOO too"
+    phonetic: "/ˈduː tuː/"
+    description:
+      en: "Formal. Must be followed by a noun, not a clause. ✗ due to it rained → ✓ due to the rain."
+      ja: "フォーマル。後ろは名詞のみで、文は続かない。✗ due to it rained → ✓ due to the rain"
+      zh: "較正式。後面只能接名詞，不能接句子。✗ due to it rained → ✓ due to the rain"
+    sentence:
+      en: "The flight was delayed due to bad weather."
+      ja: "悪天候のため、フライトが遅れました。"
+      zh: "班機因為天候不佳而延誤。"
+
+  - id: because-of
+    word:
+      en: because of
+      ja: 〜のせいで・〜のおかげで
+      zh: 因為（後接名詞）
+    reading: "bih-KAWZ uhv"
+    phonetic: "/bɪˈkɔːz əv/"
+    description:
+      en: "Same grammar as due to (noun after it), but more casual. ✗ because of I was tired → ✓ because I was tired."
+      ja: "due to と同じく後ろは名詞。より口語的。✗ because of I was tired → ✓ because I was tired"
+      zh: "跟 due to 一樣後面接名詞，但比較口語。✗ because of I was tired → ✓ because I was tired"
+    sentence:
+      en: "We stayed inside because of the typhoon."
+      ja: "台風のせいで家の中にいました。"
+      zh: "因為颱風，我們待在室內。"
+
+  - id: as
+    word:
+      en: as
+      ja: 〜なので
+      zh: 由於・因為
+    reading: "az"
+    phonetic: "/æz/"
+    description:
+      en: "A slightly formal way to give a reason, usually at the start of the sentence, with the result after it."
+      ja: "やや改まった理由の言い方。文頭に置き、後ろに結果が来ることが多い。"
+      zh: "稍微正式的說理由方式，通常放句首，後面接結果。"
+    sentence:
+      en: "As the office is closed on Friday, we'll meet online."
+      ja: "金曜日はオフィスが閉まっているので、オンラインで会いましょう。"
+      zh: "由於週五辦公室不開，我們改成線上開會。"
+
+  # Result
+  - id: so
+    word:
+      en: so
+      ja: だから・それで
+      zh: 所以
+    reading: "soh"
+    phonetic: "/soʊ/"
+    description:
+      en: "Shows the result. Reason first, then 'so', then what happened."
+      ja: "結果を示す。理由 → so → 起きたこと、の順。"
+      zh: "帶出結果。先講原因，再用 so 接結果。"
+    sentence:
+      en: "The client loved the demo, so we got the contract."
+      ja: "クライアントがデモを気に入ったので、契約が取れました。"
+      zh: "客戶很喜歡展示，所以我們拿到合約了。"
+
+  - id: which-is-why
+    word:
+      en: which is why
+      ja: だからこそ
+      zh: 這就是為什麼
+    reading: "wich iz wy"
+    phonetic: "/wɪtʃ ɪz waɪ/"
+    description:
+      en: "Links a fact to its result in one smooth sentence. Sounds natural in meetings."
+      ja: "事実とその結果を一文でなめらかにつなぐ。会議でも自然。"
+      zh: "把一件事和它的結果接成一句，開會時聽起來很自然。"
+    sentence:
+      en: "Our users are mostly on phones, which is why we redesigned the mobile app first."
+      ja: "ユーザーのほとんどがスマホなので、まずモバイルアプリを作り直しました。"
+      zh: "我們的使用者大多用手機，這就是為什麼我們先重新設計手機版。"
+
+  # Purpose
+  - id: in-order-to
+    word:
+      en: in order to
+      ja: 〜するために（フォーマル）
+      zh: 為了（較正式）
+    reading: "in OR-der too"
+    phonetic: "/ɪn ˈɔːrdər tuː/"
+    description:
+      en: "Formal way to show your purpose. Followed by a base verb."
+      ja: "目的を表すフォーマルな言い方。後ろは動詞の原形。"
+      zh: "表達目的的正式說法，後面接原形動詞。"
+    sentence:
+      en: "We cut the meeting to 30 minutes in order to save time."
+      ja: "時間を節約するために、会議を30分に短縮しました。"
+      zh: "為了節省時間，我們把會議縮短成 30 分鐘。"
+
+  - id: to-purpose
+    word:
+      en: to (purpose)
+      ja: 〜するために（口語）
+      zh: 為了（口語）
+    reading: "too"
+    phonetic: "/tuː/"
+    description:
+      en: "The everyday version of 'in order to'. Same meaning, shorter."
+      ja: "in order to の日常会話版。意味は同じで短い。"
+      zh: "in order to 的口語版，意思一樣，比較短。"
+    sentence:
+      en: "I joined a running club to meet new people."
+      ja: "新しい人と知り合うためにランニングクラブに入りました。"
+      zh: "我加入跑步社是為了認識新朋友。"
+
+  - id: so-that
+    word:
+      en: so that
+      ja: 〜できるように
+      zh: 為了能夠・以便
+    reading: "soh that"
+    phonetic: "/soʊ ðæt/"
+    description:
+      en: "Shows the goal you intended. Compare: 'so that' = what you planned; 'so' = what happened as a result."
+      ja: "意図した目的を表す。so that ＝意図、so ＝結果として起きたこと。"
+      zh: "表達原本想達成的目的。比較：so that＝本來的打算；so＝事後的結果。"
+    sentence:
+      en: "I sent the slides early so that everyone could prepare questions."
+      ja: "みんなが質問を準備できるように、スライドを早めに送りました。"
+      zh: "我提早寄出簡報，好讓大家可以先準備問題。"
+
+  # Adding reasons
+  - id: another-reason-is
+    word:
+      en: another reason is
+      ja: もう一つの理由は
+      zh: 另一個原因是
+    reading: "uh-NUH-ther REE-zuhn iz"
+    phonetic: "/əˈnʌðər ˈriːzən ɪz/"
+    description:
+      en: "Adds a second, separate reason. Use it at the start of a sentence."
+      ja: "別の理由を追加する。文頭で使う。"
+      zh: "加上第二個理由。放在句首。"
+    sentence:
+      en: "I like this neighborhood because it's quiet. Another reason is that the rent is reasonable."
+      ja: "静かなのでこの地域が好きです。もう一つの理由は家賃が手頃なことです。"
+      zh: "我喜歡這一區，因為很安靜。另一個原因是房租還算合理。"
+
+  - id: plus
+    word:
+      en: plus
+      ja: それに
+      zh: 而且・再加上
+    reading: "pluhs"
+    phonetic: "/plʌs/"
+    description:
+      en: "A casual way to add one more point."
+      ja: "もう一つ付け加えるカジュアルな言い方。"
+      zh: "口語地再補一個理由。"
+    sentence:
+      en: "This café is great. The coffee is strong, plus the Wi-Fi is fast."
+      ja: "このカフェはいいよ。コーヒーが濃いし、それにWi-Fiも速い。"
+      zh: "這家咖啡廳很棒，咖啡很濃，而且 Wi-Fi 很快。"
+
+  - id: also
+    word:
+      en: also
+      ja: また
+      zh: 也・另外
+    reading: "AWL-soh"
+    phonetic: "/ˈɔːlsoʊ/"
+    description:
+      en: "Neutral and very common. Works in both casual and work conversations."
+      ja: "中立的でよく使う。日常でも仕事でも使える。"
+      zh: "中性、最常用，聊天和工作都適合。"
+    sentence:
+      en: "The new schedule is more flexible. Also, it reduces overtime."
+      ja: "新しいスケジュールはより柔軟です。また、残業も減ります。"
+      zh: "新的排班比較有彈性，另外也能減少加班。"
+
+  - id: on-top-of-that
+    word:
+      en: on top of that
+      ja: その上
+      zh: 更棒的是・除此之外
+    reading: "on TOP uhv that"
+    phonetic: "/ɑːn ˈtɑːp əv ðæt/"
+    description:
+      en: "Adds an extra point with emphasis, often something surprising. Use it at the start of a sentence."
+      ja: "強調して追加する。意外な点によく使う。文頭で使う。"
+      zh: "加強語氣再補一點，常用來帶出令人意外的好處。放在句首。"
+    sentence:
+      en: "The hotel was close to the station. On top of that, they upgraded our room for free."
+      ja: "ホテルは駅に近かった。その上、部屋を無料でアップグレードしてくれた。"
+      zh: "飯店離車站很近，更棒的是還免費幫我們升級房間。"
+
+  # Wrap-up
+  - id: whats-your-take
+    word:
+      en: "What's your take?"
+      ja: あなたの意見は？
+      zh: 你怎麼看？
+    reading: "wuts yor TAYK"
+    phonetic: "/wʌts jɔːr teɪk/"
+    description:
+      en: "Invites the other person to share their view after you give yours. Keeps the conversation going."
+      ja: "自分の意見を言った後、相手に意見を求める。会話が続く。"
+      zh: "講完自己的看法後，邀請對方分享，讓對話繼續。"
+    sentence:
+      en: "I'd keep the current design, since users already know it. What's your take?"
+      ja: "ユーザーがもう慣れているので、今のデザインを残したいです。あなたはどう思いますか？"
+      zh: "我會保留現在的設計，因為使用者已經習慣了。你怎麼看？"
+
+chat:
+  conversations:
+    - id: reasons-1-team-meeting
+      title:
+        en: "Team Meeting: Moving a Deadline"
+        ja: "チーム会議：締め切りの変更"
+        zh: "團隊會議：要不要延後期限"
+      messages:
+        - role: partner
+          text:
+            en: "We're planning to release the new feature next Friday. Any concerns?"
+            ja: "来週の金曜日に新機能をリリースする予定です。何か懸念はありますか？"
+            zh: "我們打算下週五上線新功能。有什麼顧慮嗎？"
+        - role: user
+          text:
+            en: "I think we should move it to the following week, because we haven't finished testing on older phones."
+            ja: "古いスマホでのテストが終わっていないので、翌週にずらすべきだと思います。"
+            zh: "我覺得應該延到下一週，因為舊手機的測試還沒做完。"
+        - role: partner
+          text:
+            en: "Hmm, but marketing has already announced the date."
+            ja: "うーん、でもマーケティングがもう日付を発表しているんだ。"
+            zh: "嗯，但行銷已經公布日期了。"
+        - role: user
+          text:
+            en: "I understand. Another reason is that support is short-staffed next week due to the holiday."
+            ja: "わかります。もう一つの理由は、祝日のせいで来週はサポートの人手が足りないことです。"
+            zh: "我了解。另一個原因是下週因為連假，客服人力不足。"
+        - role: partner
+          text:
+            en: "That's a fair point. So what would you suggest?"
+            ja: "それはもっともだね。じゃあ、どうすればいいと思う？"
+            zh: "有道理。那你建議怎麼做？"
+        - role: user
+          text:
+            en: "We could release it to 10% of users first so that we can catch problems early. What's your take?"
+            ja: "問題を早く見つけられるように、まず10%のユーザーに公開するのはどうでしょう。どう思いますか？"
+            zh: "我們可以先開放給 10% 的使用者，這樣才能及早發現問題。你怎麼看？"
+
+    - id: reasons-2-movie-night
+      title:
+        en: "Chatting About a Movie"
+        ja: "映画について話す"
+        zh: "跟朋友聊電影"
+      messages:
+        - role: partner
+          text:
+            en: "So, did you like the movie? I couldn't tell during the ending!"
+            ja: "で、映画はどうだった？ラストのとき、表情からわからなかったよ！"
+            zh: "所以你喜歡那部電影嗎？結局的時候我看不出你的反應！"
+        - role: user
+          text:
+            en: "I really liked it, because the main character felt so real."
+            ja: "すごく良かった。主人公がとてもリアルに感じられたから。"
+            zh: "我很喜歡，因為主角感覺很真實。"
+        - role: partner
+          text:
+            en: "Really? I thought the story was a bit slow."
+            ja: "本当？ストーリーがちょっと遅いと思ったけど。"
+            zh: "真的嗎？我覺得劇情有點慢。"
+        - role: user
+          text:
+            en: "Maybe, but the music was amazing. Plus, the last scene was filmed in my hometown!"
+            ja: "そうかもね。でも音楽が最高だった。それに、ラストシーンは私の地元で撮影されたんだよ！"
+            zh: "可能吧，但配樂超棒。而且最後一幕是在我家鄉拍的！"
+        - role: partner
+          text:
+            en: "No way! That's why you were smiling at the end."
+            ja: "うそ！だから最後に笑ってたんだ。"
+            zh: "真的假的！難怪你最後在笑。"
+        - role: user
+          text:
+            en: "Exactly. I'd watch it again. What did you think of the music?"
+            ja: "そうなの。もう一回観たいな。音楽はどう思った？"
+            zh: "沒錯。我會想再看一次。你覺得配樂怎麼樣？"
+
+    - id: reasons-3-why-english
+      title:
+        en: "Why Are You Learning English?"
+        ja: "なぜ英語を学んでいるの？"
+        zh: "你為什麼學英文？"
+      messages:
+        - role: partner
+          text:
+            en: "I'm curious — why did you start learning English?"
+            ja: "気になるんだけど、なんで英語を勉強し始めたの？"
+            zh: "我很好奇，你為什麼開始學英文？"
+        - role: user
+          text:
+            en: "Mostly for work. I started taking lessons so that I could speak up more in meetings."
+            ja: "主に仕事のため。会議でもっと発言できるように、レッスンを受け始めたんだ。"
+            zh: "主要是為了工作。我開始上課，是為了在開會時能多發言。"
+        - role: partner
+          text:
+            en: "That makes sense. Is it working?"
+            ja: "なるほど。効果はある？"
+            zh: "有道理。有效果嗎？"
+        - role: user
+          text:
+            en: "Slowly! Since my team is international now, I practice every day. On top of that, I watch shows without subtitles."
+            ja: "少しずつね！チームが国際的になったので、毎日練習してる。その上、字幕なしで番組も観てるよ。"
+            zh: "慢慢有！既然現在團隊是跨國的，我每天都練習。除此之外，我也會看沒字幕的影集。"
+        - role: partner
+          text:
+            en: "Wow, no subtitles? That's impressive."
+            ja: "えっ、字幕なし？すごいね。"
+            zh: "哇，沒有字幕？好厲害。"
+        - role: user
+          text:
+            en: "Well, sometimes I turn them back on! What about you — are you learning anything new?"
+            ja: "まあ、たまに字幕をつけ直すけどね！あなたは？何か新しいことを学んでる？"
+            zh: "嗯，有時候還是會把字幕打開啦！你呢？最近有在學什麼新東西嗎？"
+
+quiz:
+  questionsPerRound: 5
+  xpReward: 25
+  # Optional fill-in-the-blank questions. Prototypes may use these; the
+  # default quiz ignores them and generates meaning → word questions.
+  cloze:
+    - sentence: "I was late ___ the traffic."
+      options: ["due to", "because", "so that", "plus"]
+      answer: "due to"
+      explain:
+        en: "'the traffic' is a noun, so use 'due to' (or 'because of'). 'because' needs a full clause."
+        ja: "the traffic は名詞なので due to（または because of）。because の後ろには文が必要。"
+        zh: "the traffic 是名詞，所以用 due to（或 because of）。because 後面要接完整句子。"
+    - sentence: "I was late ___ the train stopped for an hour."
+      options: ["because", "due to", "because of", "in order to"]
+      answer: "because"
+      explain:
+        en: "'the train stopped…' is a full clause (subject + verb), so use 'because'."
+        ja: "the train stopped… は文（主語＋動詞）なので because。"
+        zh: "the train stopped… 是完整句子（主詞＋動詞），所以用 because。"
+    - sentence: "___ it's already 6 p.m., let's finish this tomorrow."
+      options: ["Since", "Due to", "So that", "Plus"]
+      answer: "Since"
+      explain:
+        en: "The reason is obvious to everyone (it's 6 p.m.), and it starts the sentence — 'Since' fits best."
+        ja: "誰が見ても明らかな理由で文頭にあるので Since が自然。"
+        zh: "理由大家都知道（已經六點了），又放在句首，用 Since 最自然。"
+    - sentence: "I left early ___ I could catch the last bus."
+      options: ["so that", "so", "because of", "plus"]
+      answer: "so that"
+      explain:
+        en: "Catching the bus was your goal when you decided to leave — that's purpose, so 'so that'."
+        ja: "バスに間に合うことが出発時の目的なので so that。"
+        zh: "趕上公車是你提早走的目的，表達目的用 so that。"
+    - sentence: "It rained all weekend, ___ we stayed home and watched movies."
+      options: ["so", "so that", "in order to", "due to"]
+      answer: "so"
+      explain:
+        en: "Staying home is the result of the rain, not a plan — use 'so'."
+        ja: "家にいたのは雨の結果で、目的ではないので so。"
+        zh: "待在家是下雨造成的結果，不是原本的目的，所以用 so。"
+    - sentence: "We moved the meeting online ___ save travel time."
+      options: ["to", "so", "because", "since"]
+      answer: "to"
+      explain:
+        en: "Purpose + base verb (save) → 'to' or 'in order to'."
+        ja: "目的＋動詞の原形（save）なので to（または in order to）。"
+        zh: "目的＋原形動詞（save），用 to（或 in order to）。"
+    - sentence: "The apartment is near my office. ___, the rent is cheap."
+      options: ["On top of that", "Due to", "So that", "Because of"]
+      answer: "On top of that"
+      explain:
+        en: "You're adding a second, extra point at the start of a sentence — 'On top of that'."
+        ja: "文頭でもう一つ良い点を追加しているので On top of that。"
+        zh: "在句首再補一個優點，用 On top of that。"
+    - sentence: "Our biggest users are students, ___ we offer a discount in September."
+      options: ["which is why", "so that", "due to", "in order to"]
+      answer: "which is why"
+      explain:
+        en: "The second part is the result of the first fact — 'which is why' links them in one sentence."
+        ja: "後半は前半の事実の結果なので which is why でつなぐ。"
+        zh: "後半是前半事實造成的結果，用 which is why 接成一句。"
