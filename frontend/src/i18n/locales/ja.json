@@ -528,5 +528,28 @@
     "toneNeutral": "軽声",
     "pickTone": "どの声調が聞こえましたか？",
     "tones": "声調"
+  },
+  "opinionChat": {
+    "homeTitle": "友だちと意見をおしゃべりしよう",
+    "homeDesc": "日常や仕事の話題で、because・since・so that… を使って理由を伝える練習",
+    "topicLabel": "今日の話題",
+    "endChat": "チャットを終える",
+    "hintsLabel": "理由を伝える言い方",
+    "hideHints": "ヒントを隠す",
+    "showHints": "つなぎ言葉のヒントを表示",
+    "offerText": "もう {count} 回話したね、いい感じ！今回の言い方をふり返ってみる？",
+    "offerButton": "見てみる",
+    "offerLater": "まだ話す",
+    "summaryTitle": "楽しかった！",
+    "summaryIntro": "{name} はあなたの考えを聞けてうれしかったよ。今回は {count} 回話したね。",
+    "summaryUsed": "こんなふうに理由を伝えていたよ",
+    "summaryNoneUsed": "今回はつなぎ言葉なしでも大丈夫。次はこれを使ってみよう",
+    "summaryTryNext": "次はこれを試してみて",
+    "summaryBest": "とっておきの一文",
+    "saveSentence": "単語帳に保存",
+    "saved": "単語帳に保存したよ",
+    "newTopic": "別の話題でもう一回",
+    "keepChatting": "続けて話す",
+    "backHome": "ホームへ"
   }
 }

@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
 import ChatMessage from '../../components/chat/ChatMessage.vue'
+import { CONNECTOR_TARGETS } from '../../data/opinionChat'
 
 // Mock vue-i18n
 vi.mock('vue-i18n', () => ({
@@ -140,6 +141,34 @@ describe('ChatMessage', () => {
 
       expect(wrapper.text()).toContain('🎌')
       expect(wrapper.text()).toContain('Kenji')
+    })
+  })
+  describe('connector highlights', () => {
+    it('highlights connectors in user messages when targets are given', () => {
+      const wrapper = createWrapper({
+        message: { role: 'user', content: 'I left early so that I could rest.' },
+        highlightTargets: CONNECTOR_TARGETS
+      })
+      const marks = wrapper.findAll('.connector-mark')
+      expect(marks).toHaveLength(1)
+      expect(marks[0].text()).toBe('so that')
+      expect(marks[0].attributes('data-connector')).toBe('so-that')
+      expect(wrapper.text()).toContain('I left early so that I could rest.')
+    })
+
+    it('does not highlight without targets', () => {
+      const wrapper = createWrapper({
+        message: { role: 'user', content: 'I agree because it is fun.' }
+      })
+      expect(wrapper.findAll('.connector-mark')).toHaveLength(0)
+    })
+
+    it('does not highlight assistant messages', () => {
+      const wrapper = createWrapper({
+        message: { role: 'assistant', content: 'Me too, because it is fun.' },
+        highlightTargets: CONNECTOR_TARGETS
+      })
+      expect(wrapper.findAll('.connector-mark')).toHaveLength(0)
     })
   })
 })

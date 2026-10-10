@@ -1,7 +1,8 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import FeedbackPanel from './FeedbackPanel.vue'
+import { splitByConnectors } from '../../utils/connectorDetect'
 
 const { t } = useI18n()
 
@@ -13,12 +14,22 @@ const props = defineProps({
   character: {
     type: Object,
     required: true
+  },
+  // Connector targets to highlight in user messages (opinion chat)
+  highlightTargets: {
+    type: Array,
+    default: null
   }
 })
 
 const emit = defineEmits(['explain', 'word-tap'])
 
 const showFeedback = ref(false)
+
+const userSegments = computed(() => {
+  if (props.message.role !== 'user' || !props.highlightTargets) return null
+  return splitByConnectors(props.message.content, props.highlightTargets)
+})
 
 function handleWordClick(event) {
   // Use caretRangeFromPoint to find the word at click position
@@ -98,7 +109,12 @@ function toggleFeedback() {
     <div class="flex flex-col gap-1 items-end min-w-0 max-w-[80%] sm:max-w-xl">
       <span class="text-text-muted dark:text-slate-400 text-[13px] font-medium mr-1">{{ t('feedback.you') }}</span>
       <div class="p-3 sm:p-4 rounded-2xl rounded-br-none bg-primary text-[#0d171b] shadow-md">
-        <p class="text-sm sm:text-base leading-relaxed font-medium whitespace-pre-wrap break-words">{{ message.content }}</p>
+        <p v-if="userSegments" class="text-sm sm:text-base leading-relaxed font-medium whitespace-pre-wrap break-words"><template v-for="(seg, i) in userSegments" :key="i"><span
+          v-if="seg.id"
+          class="connector-mark font-bold rounded px-0.5 bg-white/50 underline decoration-2 underline-offset-2 decoration-[#0d171b]/50"
+          :data-connector="seg.id"
+        >{{ seg.text }}</span><template v-else>{{ seg.text }}</template></template></p>
+        <p v-else class="text-sm sm:text-base leading-relaxed font-medium whitespace-pre-wrap break-words">{{ message.content }}</p>
       </div>
 
       <!-- Explain Button -->

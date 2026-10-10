@@ -9,6 +9,7 @@ import { useDailyChallenge } from '../composables/useDailyChallenge'
 import { useUserProgress } from '../composables/useUserProgress'
 import { useNavState } from '../composables/useNavState'
 import { useLastSession } from '../composables/useLastSession'
+import { useOpinionChat } from '../composables/useOpinionChat'
 import DailyChallengeCard from './DailyChallengeCard.vue'
 import WeeklyQuestsPanel from './WeeklyQuestsPanel.vue'
 import ScenarioSelector from './ScenarioSelector.vue'
@@ -119,6 +120,20 @@ function handleMotherTongueChange(langId) {
 
 const canStartChat = computed(() => selectedCharacter.value && selectedLevel.value)
 const canStartLearning = computed(() => selectedLearningLevel.value && selectedTargetLanguage.value)
+
+// Opinion chat entry (chat-first prototype): always English, intermediate level
+const { topic: opinionTopic } = useOpinionChat()
+const opinionCharacter = computed(() => selectedCharacter.value || characters[0])
+
+function handleStartOpinionChat() {
+  setChatState({
+    character: opinionCharacter.value,
+    level: levels.find(l => l.id === 'intermediate'),
+    language: 'en',
+    mode: 'opinion',
+  })
+  router.push('/chat')
+}
 
 function handleScenarioSelect(scenario) {
   showScenarios.value = false
@@ -233,6 +248,30 @@ function handleStart() {
           </button>
         </div>
       </Transition>
+
+      <!-- Opinion Chat Entry (grid wrapper stretches the card full width) -->
+      <div class="grid mb-6">
+        <button
+          type="button"
+          @click="handleStartOpinionChat"
+          class="opinion-chat-entry flex min-w-0 items-center gap-4 p-4 sm:p-5 rounded-2xl text-left border-2 border-primary/40 hover:border-primary bg-gradient-to-br from-primary/15 via-primary/5 to-amber-50 dark:from-primary/25 dark:via-primary/10 dark:to-amber-900/10 shadow-sm hover:shadow-md active:scale-[0.99] transition-all"
+        >
+          <div class="relative shrink-0">
+            <div class="flex items-center justify-center rounded-full size-14 shadow-md bg-white dark:bg-slate-800 text-3xl">
+              {{ opinionCharacter.avatar }}
+            </div>
+            <span class="absolute -bottom-1 -right-1 flex items-center justify-center size-6 rounded-full bg-primary text-[#0d171b] shadow">
+              <span class="material-symbols-outlined text-[16px]">forum</span>
+            </span>
+          </div>
+          <div class="flex-1 min-w-0">
+            <h2 class="font-bold text-text-main dark:text-white text-base sm:text-lg leading-tight">{{ t('opinionChat.homeTitle') }}</h2>
+            <p class="text-xs sm:text-sm text-text-muted dark:text-slate-400 mt-0.5">{{ t('opinionChat.homeDesc') }}</p>
+            <p class="text-xs text-primary font-medium mt-1.5 truncate">“{{ opinionTopic.en }}”</p>
+          </div>
+          <span class="material-symbols-outlined text-primary shrink-0">arrow_forward</span>
+        </button>
+      </div>
 
       <!-- Primary Mode Selection (Chat vs Learning vs Diary) -->
       <section class="mb-8">
