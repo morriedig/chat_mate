@@ -196,6 +196,7 @@ chat_mate/
 | `/learning` | LearningScreen | Vocabulary learning hub |
 | `/settings` | SettingsScreen | User preferences |
 | `/diary` | DiaryScreen | Daily diary writing + AI feedback |
+| `/daily-opinion` | DailyOpinionScreen | Daily opinion drill (Opinion → Reason → Wrap-up) |
 | `/placement-test` | PlacementTestScreen | Level placement |
 
 Router uses **hash mode** (`/#/chat`) for GitHub Pages compatibility.
@@ -304,6 +305,7 @@ All user progress stored in localStorage:
 - `chatmate_diary_entry_{id}` - Individual diary entries with feedback
 - `chatmate_diary_draft` - Auto-saved diary draft
 - `chatmate_diary_pending_feedback` - Offline feedback queue
+- `chatmate_daily_opinion` - Daily opinion drill: per-day answer, connectors used, feedback
 
 ### Composable Patterns
 - **Singleton state**: `useNavState` uses module-level refs shared across components

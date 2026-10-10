@@ -15,6 +15,7 @@ import ScenarioSelector from './ScenarioSelector.vue'
 import ShareCardPanel from './ShareCardPanel.vue'
 import AnalyticsDashboard from './AnalyticsDashboard.vue'
 import HomeHero from './HomeHero.vue'
+import DailyOpinionCard from './DailyOpinionCard.vue'
 import WelcomeOnboarding from './WelcomeOnboarding.vue'
 
 const { t, locale } = useI18n()
@@ -211,6 +212,11 @@ function handleStart() {
 
       <!-- Home Hero: streak + daily goal + rank -->
       <HomeHero />
+
+      <!-- Daily Opinion drill (3 min) -->
+      <section class="mb-6">
+        <DailyOpinionCard @open="router.push('/daily-opinion')" />
+      </section>
 
       <!-- Placement Result Banner -->
       <Transition name="fade-slide">
