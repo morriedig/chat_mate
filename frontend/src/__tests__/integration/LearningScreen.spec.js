@@ -108,7 +108,9 @@ vi.mock('../../data/chapterLoader', () => ({
   getChapterConversations: () => [],
   getPreLessons: () => [],
   getChapterCharacters: () => [],
-  isPreLesson: () => false
+  isPreLesson: () => false,
+  getChapterCloze: () => [],
+  getChapterConnectors: () => []
 }))
 
 // Mock usePreLessonProgress

@@ -434,7 +434,11 @@
         "start": "話してみる！",
         "skip": "また今度"
       }
-    }
+    },
+    "fillBlank": "空欄に入る言葉を選ぼう",
+    "whyLabel": "なぜ？",
+    "useInChat": "チャットで使ってみよう",
+    "useInChatHint": "友だちと意見を話しながら、つなぎ言葉を3つ使ってみよう。"
   },
   "diary": {
     "title": "毎日の日記",
@@ -528,5 +532,11 @@
     "toneNeutral": "軽声",
     "pickTone": "どの声調が聞こえましたか？",
     "tones": "声調"
+  },
+  "mission": {
+    "title": "使ってみよう",
+    "nice": "「{phrase}」、自然に使えてたね！",
+    "complete": "3つとも使えた！理由がしっかり伝わってるよ。",
+    "backToLearning": "学習に戻る"
   }
 }

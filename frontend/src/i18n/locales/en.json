@@ -434,7 +434,11 @@
         "start": "Let's Chat!",
         "skip": "Maybe Later"
       }
-    }
+    },
+    "fillBlank": "Fill in the blank",
+    "whyLabel": "Why?",
+    "useInChat": "Use it in chat",
+    "useInChatHint": "Chat with a friend about something you have an opinion on, and try to slip in 3 of these connectors."
   },
   "diary": {
     "title": "Daily Diary",
@@ -528,5 +532,11 @@
     "toneNeutral": "Neutral tone",
     "pickTone": "Which tone did you hear?",
     "tones": "Tones"
+  },
+  "mission": {
+    "title": "Try to use these",
+    "nice": "Nice, “{phrase}” sounded really natural!",
+    "complete": "All three used — your reasons came through clearly!",
+    "backToLearning": "Back to lessons"
   }
 }

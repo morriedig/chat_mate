@@ -1,5 +1,5 @@
 <script setup>
-import { watch } from 'vue'
+import { computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useQuiz } from '../../composables/useQuiz'
 import { useLearningProgress } from '../../composables/useLearningProgress'
@@ -21,10 +21,18 @@ const props = defineProps({
   chapterId: {
     type: String,
     default: null
+  },
+  // Optional fill-in-the-blank questions (from getChapterCloze); when given
+  // they replace the meaning → word questions
+  cloze: {
+    type: Array,
+    default: () => []
   }
 })
 
-const emit = defineEmits(['complete'])
+const emit = defineEmits(['complete', 'use-in-chat'])
+
+const isClozeMode = computed(() => props.cloze.length > 0)
 
 // Use quiz composable (SRP: component only handles UI)
 const {
@@ -59,8 +67,12 @@ function handleNextQuestion() {
       markQuizCompleted(props.chapterId, result.score, result.total)
     }
 
-    // Record per-word results for SRS scheduling
-    recordQuizResults(answers.value)
+    // Record per-word results for SRS scheduling (cloze → the word it practices)
+    recordQuizResults(isClozeMode.value
+      ? answers.value
+        .filter(a => a.word.targetId)
+        .map(a => ({ ...a, word: { id: a.word.targetId } }))
+      : answers.value)
 
     // DIP: Emit event instead of calling XP system directly
     emit('complete', {
@@ -73,7 +85,20 @@ function handleNextQuestion() {
 }
 
 function handleRestartQuiz() {
-  restartQuiz(props.words)
+  restartQuiz(props.words, props.cloze)
+}
+
+// Bridge to chat: hand over which connectors were missed vs. got right
+function handleUseInChat() {
+  const missed = answers.value.filter(a => !a.isCorrect).map(a => a.word.targetId).filter(Boolean)
+  const practiced = answers.value.filter(a => a.isCorrect).map(a => a.word.targetId).filter(Boolean)
+  emit('use-in-chat', { missedTargetIds: missed, practicedTargetIds: practiced })
+}
+
+// Split "I was late ___ the traffic." around the blank for rendering
+function sentenceParts(sentence) {
+  const [before, ...rest] = String(sentence || '').split('___')
+  return { before, after: rest.join('___') }
 }
 
 function getOptionClass(option) {
@@ -92,8 +117,8 @@ function getOptionClass(option) {
   return 'border-slate-200 dark:border-slate-700 opacity-50'
 }
 
-// Initialize on mount and when words change
-watch(() => props.words, (newWords) => initQuiz(newWords), { immediate: true })
+// Initialize on mount and when words / cloze questions change
+watch([() => props.words, () => props.cloze], () => initQuiz(props.words, props.cloze), { immediate: true })
 </script>
 
 <template>
@@ -117,8 +142,19 @@ watch(() => props.words, (newWords) => initQuiz(newWords), { immediate: true })
         </div>
       </div>
 
+      <!-- Question Card: Cloze -->
+      <div v-if="isClozeMode" class="w-full max-w-lg p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/30 dark:to-purple-900/20 border border-indigo-200 dark:border-indigo-800 mb-6">
+        <p class="text-sm text-text-muted dark:text-slate-400 mb-3">{{ t('learning.fillBlank') }}</p>
+        <p class="text-xl sm:text-2xl font-semibold leading-relaxed text-text-main dark:text-white">
+          {{ sentenceParts(currentQuestion?.sentence).before }}<span
+            class="inline-block min-w-[4.5rem] mx-1 px-2 border-b-2 text-center transition-colors"
+            :class="isAnswered ? 'border-green-500 text-green-600 dark:text-green-400' : 'border-primary text-primary'"
+          >{{ isAnswered ? currentQuestion?.answer : '\u00a0' }}</span>{{ sentenceParts(currentQuestion?.sentence).after }}
+        </p>
+      </div>
+
       <!-- Question Card -->
-      <div class="w-full max-w-lg p-8 rounded-2xl bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/30 dark:to-purple-900/20 border border-indigo-200 dark:border-indigo-800 mb-6">
+      <div v-else class="w-full max-w-lg p-8 rounded-2xl bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/30 dark:to-purple-900/20 border border-indigo-200 dark:border-indigo-800 mb-6">
         <p class="text-sm text-text-muted dark:text-slate-400 mb-2">{{ t('learning.whatMeans') }}</p>
         <h2 class="text-3xl sm:text-4xl font-bold text-text-main dark:text-white text-center">
           {{ currentQuestion?.word }}
@@ -141,7 +177,7 @@ watch(() => props.words, (newWords) => initQuiz(newWords), { immediate: true })
             <span class="flex items-center justify-center size-8 rounded-full bg-slate-100 dark:bg-slate-800 text-sm font-bold text-text-muted">
               {{ String.fromCharCode(65 + index) }}
             </span>
-            <span class="text-text-main dark:text-white">{{ option.meaning }}</span>
+            <span class="text-text-main dark:text-white">{{ isClozeMode ? option.text : option.meaning }}</span>
             <span v-if="isAnswered && isCorrectOption(option)" class="ml-auto material-symbols-outlined text-green-500">check_circle</span>
             <span v-if="isAnswered && selectedAnswer?.id === option.id && !isCorrectOption(option)" class="ml-auto material-symbols-outlined text-red-500">cancel</span>
           </div>
@@ -152,19 +188,24 @@ watch(() => props.words, (newWords) => initQuiz(newWords), { immediate: true })
       <div v-if="isAnswered" class="w-full max-w-lg mt-6">
         <div
           class="p-4 rounded-xl mb-4"
-          :class="selectedAnswer?.id === currentQuestion?.id
+          :class="isCorrectOption(selectedAnswer)
             ? 'bg-green-100 dark:bg-green-900/30 border border-green-300 dark:border-green-700'
             : 'bg-red-100 dark:bg-red-900/30 border border-red-300 dark:border-red-700'"
         >
           <div class="flex items-center gap-2 mb-2">
-            <span class="material-symbols-outlined" :class="selectedAnswer?.id === currentQuestion?.id ? 'text-green-600' : 'text-red-600'">
-              {{ selectedAnswer?.id === currentQuestion?.id ? 'celebration' : 'sentiment_dissatisfied' }}
+            <span class="material-symbols-outlined" :class="isCorrectOption(selectedAnswer) ? 'text-green-600' : 'text-red-600'">
+              {{ isCorrectOption(selectedAnswer) ? 'celebration' : 'sentiment_dissatisfied' }}
             </span>
-            <span class="font-semibold" :class="selectedAnswer?.id === currentQuestion?.id ? 'text-green-700 dark:text-green-300' : 'text-red-700 dark:text-red-300'">
-              {{ selectedAnswer?.id === currentQuestion?.id ? t('learning.correct') : t('learning.incorrect') }}
+            <span class="font-semibold" :class="isCorrectOption(selectedAnswer) ? 'text-green-700 dark:text-green-300' : 'text-red-700 dark:text-red-300'">
+              {{ isCorrectOption(selectedAnswer) ? t('learning.correct') : t('learning.incorrect') }}
             </span>
           </div>
-          <p class="text-sm text-text-muted dark:text-slate-400">
+          <!-- Cloze: explain the mistake in the user's mother tongue -->
+          <p v-if="isClozeMode && !isCorrectOption(selectedAnswer) && currentQuestion?.explain" class="text-sm text-text-main dark:text-slate-200">
+            <span class="font-semibold">{{ t('learning.whyLabel') }}</span>
+            {{ currentQuestion.explain }}
+          </p>
+          <p v-else-if="!isClozeMode" class="text-sm text-text-muted dark:text-slate-400">
             {{ currentQuestion?.example }}
           </p>
         </div>
@@ -220,17 +261,40 @@ watch(() => props.words, (newWords) => initQuiz(newWords), { immediate: true })
               >
                 {{ answer.isCorrect ? 'check_circle' : 'cancel' }}
               </span>
-              <span class="font-medium text-text-main dark:text-white">{{ answer.word.word }}</span>
-              <span class="text-text-muted dark:text-slate-400">-</span>
-              <span class="text-sm text-text-muted dark:text-slate-400 truncate flex-1">{{ answer.word.meaning }}</span>
+              <template v-if="isClozeMode">
+                <span class="font-medium text-text-main dark:text-white shrink-0">{{ answer.word.answer }}</span>
+                <span class="text-sm text-text-muted dark:text-slate-400 truncate flex-1 text-left">{{ answer.word.sentence }}</span>
+              </template>
+              <template v-else>
+                <span class="font-medium text-text-main dark:text-white">{{ answer.word.word }}</span>
+                <span class="text-text-muted dark:text-slate-400">-</span>
+                <span class="text-sm text-text-muted dark:text-slate-400 truncate flex-1">{{ answer.word.meaning }}</span>
+              </template>
             </div>
           </div>
+        </div>
+
+        <!-- Bridge: use the connectors in a real chat -->
+        <div v-if="isClozeMode" class="mb-3">
+          <button
+            @click="handleUseInChat"
+            class="w-full py-4 rounded-xl bg-primary text-[#0d171b] font-bold text-lg hover:bg-primary/90 transition-colors"
+          >
+            <span class="flex items-center justify-center gap-2">
+              <span class="material-symbols-outlined">forum</span>
+              {{ t('learning.useInChat') }}
+            </span>
+          </button>
+          <p class="mt-2 text-sm text-text-muted dark:text-slate-400">{{ t('learning.useInChatHint') }}</p>
         </div>
 
         <!-- Restart Button -->
         <button
           @click="handleRestartQuiz"
-          class="w-full py-4 rounded-xl bg-primary text-[#0d171b] font-bold text-lg hover:bg-primary/90 transition-colors"
+          class="w-full py-4 rounded-xl font-bold text-lg transition-colors"
+          :class="isClozeMode
+            ? 'border-2 border-slate-200 dark:border-slate-700 text-text-main dark:text-white hover:border-primary'
+            : 'bg-primary text-[#0d171b] hover:bg-primary/90'"
         >
           <span class="flex items-center justify-center gap-2">
             <span class="material-symbols-outlined">replay</span>
