@@ -50,12 +50,27 @@ export function useQuiz(words) {
     return shuffleArray(options)
   }
 
-  function initQuiz(wordList) {
-    const shuffled = shuffleArray(wordList)
-    quizWords.value = shuffled.map(word => ({
-      ...word,
-      options: generateOptions(word, wordList)
-    }))
+  // Cloze: options are plain strings; wrap them so the template can key them
+  function buildClozeQuestion(question) {
+    const options = question.options.map((text, i) => ({ id: `${question.id}_opt_${i}`, text }))
+    return { ...question, options: shuffleArray(options) }
+  }
+
+  /**
+   * @param {Array} wordList - Chapter words (meaning → word quiz)
+   * @param {Array} [clozeQuestions] - Optional fill-in-the-blank questions;
+   *   when non-empty they replace the generated meaning questions
+   */
+  function initQuiz(wordList, clozeQuestions = []) {
+    if (clozeQuestions?.length) {
+      quizWords.value = shuffleArray(clozeQuestions).map(buildClozeQuestion)
+    } else {
+      const shuffled = shuffleArray(wordList)
+      quizWords.value = shuffled.map(word => ({
+        ...word,
+        options: generateOptions(word, wordList)
+      }))
+    }
     currentIndex.value = 0
     selectedAnswer.value = null
     isAnswered.value = false
@@ -64,13 +79,19 @@ export function useQuiz(words) {
     answers.value = []
   }
 
+  function checkOption(option, question) {
+    if (!option || !question) return false
+    if (question.type === 'cloze') return option.text === question.answer
+    return option.id === question.id
+  }
+
   function selectAnswer(option) {
     if (isAnswered.value) return null
 
     selectedAnswer.value = option
     isAnswered.value = true
 
-    const isCorrect = option.id === currentQuestion.value.id
+    const isCorrect = checkOption(option, currentQuestion.value)
     answers.value.push({
       word: currentQuestion.value,
       selected: option,
@@ -102,13 +123,12 @@ export function useQuiz(words) {
     }
   }
 
-  function restartQuiz(wordList) {
-    initQuiz(wordList)
+  function restartQuiz(wordList, clozeQuestions = []) {
+    initQuiz(wordList, clozeQuestions)
   }
 
   function isCorrectOption(option) {
-    if (!currentQuestion.value) return false
-    return option.id === currentQuestion.value.id
+    return checkOption(option, currentQuestion.value)
   }
 
   return {

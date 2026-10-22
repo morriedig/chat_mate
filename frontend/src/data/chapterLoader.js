@@ -199,6 +199,59 @@ export function getChapterQuizSettings(chapterId, targetLanguage = 'ja') {
   return chapter?.quiz || { questionsPerRound: 5, xpReward: 20 }
 }
 
+// Strip meaning qualifiers like "to (purpose)" → "to" for matching
+function baseWord(text) {
+  return String(text || '').replace(/\s*\(.*?\)\s*/g, ' ').trim().toLowerCase()
+}
+
+/**
+ * Get fill-in-the-blank questions for a chapter (quiz.cloze), or [] if none.
+ * Each question links back to the chapter word it practices (targetId) so
+ * results can feed SRS and the "use it in chat" bridge.
+ * @param {string} chapterId - Chapter ID
+ * @param {string} targetLanguage - The language user is learning
+ * @param {string} motherTongue - Language for the wrong-answer explanation
+ */
+export function getChapterCloze(chapterId, targetLanguage = 'ja', motherTongue = 'en') {
+  const chapter = getChapter(chapterId, targetLanguage)
+  const cloze = chapter?.quiz?.cloze
+  if (!Array.isArray(cloze) || cloze.length === 0) return []
+
+  return cloze.map((q, index) => {
+    const answer = String(q.answer)
+    const word = (chapter.words || []).find(w =>
+      baseWord(w.word?.[targetLanguage] || w.word?.en) === answer.toLowerCase()
+    )
+    return {
+      id: `${chapter.meta.id}_cloze_${index}`,
+      type: 'cloze',
+      sentence: q.sentence,
+      answer,
+      options: (q.options || []).map(String),
+      explain: q.explain?.[motherTongue] || q.explain?.en || '',
+      targetId: word ? `${chapter.meta.id}_${word.id}` : null
+    }
+  })
+}
+
+/**
+ * Get the chapter's words as detectable chat targets for connectorDetect.
+ * Skips entries that can't be reliably found by string match: structure
+ * cards ("Opinion → Reason → Wrap-up") and meaning-qualified words like
+ * "to (purpose)", which would match almost every sentence.
+ * @param {string} chapterId - Chapter ID
+ * @param {string} targetLanguage - The language user is learning
+ */
+export function getChapterConnectors(chapterId, targetLanguage = 'ja') {
+  const chapter = getChapter(chapterId, targetLanguage)
+  if (!chapter?.words) return []
+
+  return chapter.words
+    .map(w => ({ id: `${chapter.meta.id}_${w.id}`, raw: String(w.word?.[targetLanguage] || w.word?.en || '') }))
+    .filter(w => w.raw && !w.raw.includes('→') && !/\(.*\)/.test(w.raw))
+    .map(w => ({ id: w.id, phrase: w.raw.replace(/[?!.]+$/, '') }))
+}
+
 /**
  * Get all available levels for a target language
  */
@@ -274,6 +327,8 @@ export const chapters = {
   getChapterWords,
   getChapterConversations,
   getChapterQuizSettings,
+  getChapterCloze,
+  getChapterConnectors,
   getAvailableLevels,
   getAvailableTargetLanguages,
   getPreLessons,

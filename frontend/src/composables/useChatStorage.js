@@ -16,10 +16,14 @@ function decompress(str) {
 
 export function useChatStorage(keyConfig) {
   function getStorageKey() {
-    const { language, characterId, levelId, isArticleMode, articleId } = keyConfig.value
+    const { language, characterId, levelId, isArticleMode, articleId, sessionTag } = keyConfig.value
     const base = `chatmate_${language}_${characterId}_${levelId}`
     if (isArticleMode && articleId) {
       return `${base}_article_${articleId}`
+    }
+    // Separate history for special sessions (e.g. connector missions)
+    if (sessionTag) {
+      return `${base}_${sessionTag}`
     }
     return base
   }

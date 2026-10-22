@@ -7,8 +7,11 @@ import { useUserProgress } from '../composables/useUserProgress'
 import { useLearningProgress } from '../composables/useLearningProgress'
 import { useSRS } from '../composables/useSRS'
 import { useNavState } from '../composables/useNavState'
-import { getChaptersByLevel, getChapterWords, getChapterConversations, getPreLessons, getChapterCharacters, isPreLesson } from '../data/chapterLoader'
+import { getChaptersByLevel, getChapterWords, getChapterConversations, getPreLessons, getChapterCharacters, isPreLesson, getChapterCloze, getChapterConnectors } from '../data/chapterLoader'
 import { usePreLessonProgress } from '../composables/usePreLessonProgress'
+import { useMotherTongue } from '../composables/useMotherTongue'
+import { pickMissionTargets, createMission } from '../composables/useConnectorMission'
+import { characters, levels } from '../data/characters.js'
 import VocabularyCard from './learning/VocabularyCard.vue'
 import FlashcardMode from './learning/FlashcardMode.vue'
 import QuizMode from './learning/QuizMode.vue'
@@ -30,7 +33,10 @@ const {
   selectedTargetLanguage,
   selectedMotherTongue,
   uiLanguage,
+  selectedCharacter: lastChatCharacter,
+  setChatState,
 } = useNavState()
+const { motherTongue } = useMotherTongue()
 
 // Redirect if missing required state
 if (!learningLevel.value) {
@@ -50,6 +56,7 @@ const selectedChapter = ref(null)
 const learningMode = ref('list') // 'list', 'flashcard', 'quiz', 'conversation'
 const currentWords = ref([])
 const currentConversations = ref([])
+const currentCloze = ref([]) // fill-in-the-blank questions (quiz.cloze), [] if none
 const showConversationPrompt = ref(false)
 const isBilingual = ref(true) // Default to bilingual for beginners
 const voiceSpeed = ref('normal') // 'normal', 'slow', 'word'
@@ -127,12 +134,15 @@ function selectChapter(chapter) {
     // Adapt characters to word format for quiz reuse
     currentWords.value = charactersAsWords(currentCharacters.value)
     currentConversations.value = []
+    currentCloze.value = []
     learningMode.value = 'cards'
   } else {
     isPreLessonSelected.value = false
     currentCharacters.value = []
     currentWords.value = getChapterWords(chapter.id, props.targetLanguage, props.motherTongue)
     currentConversations.value = getChapterConversations(chapter.id, props.targetLanguage, props.motherTongue)
+    // Explanations follow the persisted mother tongue (falls back to en in the loader)
+    currentCloze.value = getChapterCloze(chapter.id, props.targetLanguage, motherTongue.value)
     learningMode.value = 'list'
   }
 }
@@ -173,6 +183,7 @@ function startDailyReview() {
   selectedChapter.value = { id: null, title: t('srs.dailyReview'), icon: '🔄' }
   currentWords.value = reviewWords.value
   currentConversations.value = []
+  currentCloze.value = []
   learningMode.value = 'quiz'
 }
 
@@ -200,8 +211,32 @@ function handleQuizComplete(result) {
   }
   // Skip conversation prompt in review mode (no conversations for cross-chapter review)
   if (isReviewMode.value) return
+  // Cloze chapters offer the "use it in chat" bridge on the results screen instead
+  if (currentCloze.value.length > 0) return
   // Show conversation prompt after completing quiz
   showConversationPrompt.value = true
+}
+
+// Bridge: open the AI chat with 3 target connectors from this chapter
+function handleUseInChat(result) {
+  const chapter = selectedChapter.value
+  if (!chapter?.id) return
+
+  const connectors = getChapterConnectors(chapter.id, props.targetLanguage)
+  const targetIds = pickMissionTargets(connectors, result)
+  if (targetIds.length === 0) return
+
+  // Chat levels are beginner/intermediate/advanced only
+  const chatLevel = levels.find(l => l.id === props.level.id) || levels.find(l => l.id === 'intermediate')
+  setChatState({
+    character: lastChatCharacter.value || characters[0],
+    level: chatLevel,
+    // The AI friend speaks the language being practiced, not the UI language
+    language: props.targetLanguage,
+    mode: 'free',
+    scenario: createMission({ chapterId: chapter.id, title: chapter.title, connectors, targetIds }),
+  })
+  router.push('/chat')
 }
 
 // Start conversation practice
@@ -664,7 +699,9 @@ onMounted(() => {
           :words="currentWords"
           :language="props.targetLanguage"
           :chapter-id="selectedChapter.id"
+          :cloze="currentCloze"
           @complete="handleQuizComplete"
+          @use-in-chat="handleUseInChat"
         />
 
         <!-- Conversation Mode -->

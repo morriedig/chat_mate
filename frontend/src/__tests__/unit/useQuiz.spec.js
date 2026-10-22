@@ -319,6 +319,81 @@ describe('useQuiz', () => {
     })
   })
 
+  describe('cloze questions', () => {
+    const mockCloze = [
+      {
+        id: 'ch_cloze_0', type: 'cloze', sentence: 'I was late ___ the traffic.',
+        answer: 'due to', options: ['due to', 'because', 'so that', 'plus'],
+        explain: 'the traffic 是名詞', targetId: 'ch_due-to'
+      },
+      {
+        id: 'ch_cloze_1', type: 'cloze', sentence: 'I left early ___ I could catch the bus.',
+        answer: 'so that', options: ['so that', 'so', 'because of', 'plus'],
+        explain: '表達目的用 so that', targetId: 'ch_so-that'
+      }
+    ]
+
+    const pick = (text) => quiz.currentQuestion.value.options.find(o => o.text === text)
+    const wrongText = () => quiz.currentQuestion.value.options.find(o => o.text !== quiz.currentQuestion.value.answer).text
+
+    beforeEach(() => {
+      quiz.initQuiz(mockWords, mockCloze)
+    })
+
+    it('uses cloze questions instead of generated meaning questions', () => {
+      expect(quiz.totalQuestions.value).toBe(mockCloze.length)
+      expect(quiz.currentQuestion.value.type).toBe('cloze')
+      expect(quiz.currentQuestion.value.sentence).toContain('___')
+    })
+
+    it('wraps the 4 string options as keyed objects', () => {
+      const question = quiz.currentQuestion.value
+      const source = mockCloze.find(q => q.id === question.id)
+      expect(question.options).toHaveLength(4)
+      expect(question.options.map(o => o.text).sort()).toEqual([...source.options].sort())
+      expect(new Set(question.options.map(o => o.id)).size).toBe(4)
+    })
+
+    it('does not mutate the source questions', () => {
+      expect(mockCloze[0].options).toEqual(['due to', 'because', 'so that', 'plus'])
+    })
+
+    it('scores the option matching the answer as correct', () => {
+      const answer = quiz.currentQuestion.value.answer
+      expect(quiz.isCorrectOption(pick(answer))).toBe(true)
+      expect(quiz.selectAnswer(pick(answer))).toBe(true)
+      expect(quiz.score.value).toBe(1)
+    })
+
+    it('scores other options as wrong and keeps the question (with explain) in answers', () => {
+      expect(quiz.selectAnswer(pick(wrongText()))).toBe(false)
+      expect(quiz.score.value).toBe(0)
+      const recorded = quiz.answers.value[0]
+      expect(recorded.isCorrect).toBe(false)
+      expect(recorded.word.explain).toBeTruthy()
+      expect(recorded.word.targetId).toMatch(/^ch_/)
+    })
+
+    it('completes after all cloze questions', () => {
+      quiz.selectAnswer(pick(quiz.currentQuestion.value.answer))
+      expect(quiz.nextQuestion().completed).toBe(false)
+      quiz.selectAnswer(pick(wrongText()))
+      const result = quiz.nextQuestion()
+      expect(result).toMatchObject({ completed: true, score: 1, total: 2, accuracy: 50 })
+    })
+
+    it('falls back to the meaning quiz when cloze is empty', () => {
+      quiz.initQuiz(mockWords, [])
+      expect(quiz.totalQuestions.value).toBe(mockWords.length)
+      expect(quiz.currentQuestion.value.type).toBeUndefined()
+    })
+
+    it('restartQuiz keeps cloze mode when given cloze questions', () => {
+      quiz.restartQuiz(mockWords, mockCloze)
+      expect(quiz.totalQuestions.value).toBe(mockCloze.length)
+    })
+  })
+
   describe('totalQuestions', () => {
     it('should return total number of questions', () => {
       quiz.initQuiz(mockWords)

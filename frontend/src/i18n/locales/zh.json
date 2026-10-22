@@ -434,7 +434,11 @@
         "start": "開始聊！",
         "skip": "下次再說"
       }
-    }
+    },
+    "fillBlank": "選出最適合的詞填空",
+    "whyLabel": "為什麼？",
+    "useInChat": "去聊天用用看",
+    "useInChatHint": "跟朋友聊聊你的看法，試著自然地用出 3 個連接詞。"
   },
   "diary": {
     "title": "每日日記",
@@ -528,5 +532,11 @@
     "toneNeutral": "輕聲",
     "pickTone": "你聽到哪個聲調？",
     "tones": "聲調"
+  },
+  "mission": {
+    "title": "試著用出來",
+    "nice": "「{phrase}」用得很自然！",
+    "complete": "三個都用到了！你的理由講得很清楚。",
+    "backToLearning": "回到學習"
   }
 }

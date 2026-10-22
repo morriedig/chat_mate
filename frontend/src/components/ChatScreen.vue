@@ -21,6 +21,8 @@ import AchievementUnlockModal from './chat/AchievementUnlockModal.vue'
 import DailyPromptCard from './chat/DailyPromptCard.vue'
 import CharacterMemoryPanel from './chat/CharacterMemoryPanel.vue'
 import MicroReward from './MicroReward.vue'
+import ConnectorMissionBar from './chat/ConnectorMissionBar.vue'
+import { MISSION_TYPE, getUsedTargetIds } from '../composables/useConnectorMission'
 
 const { t } = useI18n()
 const router = useRouter()
@@ -41,6 +43,8 @@ if (!character.value || !level.value) {
 
 // Computed
 const isArticleMode = computed(() => mode.value === 'article' && article.value)
+// Connector mission ("use it in chat" bridge from a chapter quiz)
+const mission = computed(() => scenario.value?.type === MISSION_TYPE ? scenario.value : null)
 
 // Storage config
 const storageConfig = computed(() => ({
@@ -48,7 +52,8 @@ const storageConfig = computed(() => ({
   characterId: character.value?.id,
   levelId: level.value?.id,
   isArticleMode: isArticleMode.value,
-  articleId: article.value?.id
+  articleId: article.value?.id,
+  sessionTag: mission.value?.id
 }))
 
 // Composables
@@ -102,6 +107,10 @@ const wordPopup = ref(null)
 const showVocabBank = ref(false)
 const showMemoryPanel = ref(false)
 const promptDismissed = ref(false)
+const missionJustUsed = ref(null) // phrase of the connector just used
+
+// Mission targets used so far, derived from the user's messages
+const missionUsedIds = computed(() => getUsedTargetIds(mission.value, messages.value))
 
 // Show daily prompt only for fresh chat conversations (not article/scenario mode)
 const showDailyPrompt = computed(() =>
@@ -122,6 +131,12 @@ onMounted(() => {
   if (character.value?.id) {
     markSessionStart(character.value.id)
     refreshMemoryState()
+  }
+
+  // Each mission launch starts a fresh conversation (new targets, new topic)
+  if (mission.value?.freshStart) {
+    storage.clear()
+    mission.value.freshStart = false
   }
 
   const saved = storage.load()
@@ -178,6 +193,7 @@ async function handleSendMessage() {
   if (!text || isLoading.value) return
 
   promptDismissed.value = true
+  const usedBefore = missionUsedIds.value
 
   messages.value.push({
     role: 'user',
@@ -200,6 +216,16 @@ async function handleSendMessage() {
     showMicroReward.value = 'confetti'
   }
 
+  // Connector mission: tick newly used targets with a light celebration
+  if (mission.value) {
+    const newlyUsed = missionUsedIds.value.filter(id => !usedBefore.includes(id))
+    if (newlyUsed.length > 0) {
+      const allDone = missionUsedIds.value.length === mission.value.targets.length
+      missionJustUsed.value = mission.value.targets.find(tg => tg.id === newlyUsed[0])?.phrase || null
+      showMicroReward.value = allDone ? 'confetti' : 'sparkle'
+    }
+  }
+
   await getAIResponse()
 }
 
@@ -210,7 +236,10 @@ async function getAIResponse(isGreeting = false) {
     // Inject daily challenge or scenario context
     let challengeNote = null
     const challengeTopic = getChallengeContext()
-    if (scenario.value) {
+    if (scenario.value?.prompt) {
+      // Prebuilt scenario prompt (connector mission)
+      challengeNote = scenario.value.prompt
+    } else if (scenario.value) {
       challengeNote = buildScenarioPrompt(scenario.value.id, level.value.id, language.value)
         || `[System: You are now in a role-play scenario. Title: "${scenario.value.title}". The user's goal: "${scenario.value.goal}". Stay in character and play out the scenario naturally.]`
     } else if (challengeTopic && !isChallengeCompleted.value) {
@@ -297,6 +326,7 @@ async function handleExplain(message) {
 }
 
 function handleRenewChat() {
+  missionJustUsed.value = null
   messages.value = []
   currentHints.value = []
   storage.clear()
@@ -322,7 +352,9 @@ function handleToggleArticle() {
 }
 
 function handleBack() {
-  if (mode.value === 'article') {
+  if (mission.value) {
+    router.push('/learning')
+  } else if (mode.value === 'article') {
     clearArticle()
     router.push('/articles')
   } else {
@@ -348,6 +380,15 @@ function handleBack() {
         @renew-chat="handleRenewChat"
         @toggle-vocab-bank="showVocabBank = !showVocabBank"
         @show-memories="showMemoryPanel = true"
+      />
+
+      <!-- Connector Mission Bar -->
+      <ConnectorMissionBar
+        v-if="mission"
+        :targets="mission.targets"
+        :used-ids="missionUsedIds"
+        :just-used="missionJustUsed"
+        @back="handleBack"
       />
 
       <!-- Content Area -->
