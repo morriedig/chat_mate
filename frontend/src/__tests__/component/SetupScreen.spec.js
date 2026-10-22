@@ -331,6 +331,20 @@ describe('SetupScreen', () => {
     })
   })
 
+  describe('opinion chat entry', () => {
+    it('should show the opinion chat card', () => {
+      const wrapper = createWrapper()
+      expect(wrapper.find('.opinion-chat-entry').exists()).toBe(true)
+      expect(wrapper.text()).toContain('opinionChat.homeTitle')
+    })
+
+    it('should go straight to /chat without picking a character first', async () => {
+      const wrapper = createWrapper()
+      await wrapper.find('.opinion-chat-entry').trigger('click')
+      expect(mockPush).toHaveBeenCalledWith('/chat')
+    })
+  })
+
   describe('header controls', () => {
     it('should have dark mode toggle', () => {
       const wrapper = createWrapper()

@@ -20,6 +20,11 @@ import StreakMilestoneModal from './chat/StreakMilestoneModal.vue'
 import AchievementUnlockModal from './chat/AchievementUnlockModal.vue'
 import DailyPromptCard from './chat/DailyPromptCard.vue'
 import CharacterMemoryPanel from './chat/CharacterMemoryPanel.vue'
+import ConnectorHintStrip from './chat/ConnectorHintStrip.vue'
+import OpinionSummaryPanel from './chat/OpinionSummaryPanel.vue'
+import { useOpinionChat, getHintBatch, buildOpinionSummary } from '../composables/useOpinionChat'
+import { useMotherTongue } from '../composables/useMotherTongue'
+import { detectConnectors } from '../utils/connectorDetect'
 import MicroReward from './MicroReward.vue'
 import ConnectorMissionBar from './chat/ConnectorMissionBar.vue'
 import { MISSION_TYPE, getUsedTargetIds } from '../composables/useConnectorMission'
@@ -43,8 +48,11 @@ if (!character.value || !level.value) {
 
 // Computed
 const isArticleMode = computed(() => mode.value === 'article' && article.value)
-// Connector mission ("use it in chat" bridge from a chapter quiz)
-const mission = computed(() => scenario.value?.type === MISSION_TYPE ? scenario.value : null)
+// Opinion chat (chat-first entry from the home card)
+const isOpinionMode = computed(() => mode.value === 'opinion')
+// Connector mission ("use it in chat" bridge from a chapter quiz).
+// The two modes are exclusive: setChatState() clears the scenario for opinion chats.
+const mission = computed(() => !isOpinionMode.value && scenario.value?.type === MISSION_TYPE ? scenario.value : null)
 
 // Storage config
 const storageConfig = computed(() => ({
@@ -53,7 +61,7 @@ const storageConfig = computed(() => ({
   levelId: level.value?.id,
   isArticleMode: isArticleMode.value,
   articleId: article.value?.id,
-  sessionTag: mission.value?.id
+  sessionTag: isOpinionMode.value ? 'opinion' : (mission.value?.id || null),
 }))
 
 // Composables
@@ -80,7 +88,23 @@ const { onChatMessage: onQuestChatMessage } = useWeeklyQuests()
 
 // Scenario roleplay
 import { useScenarioRoleplay } from '../composables/useScenarioRoleplay'
-const { buildScenarioPrompt } = useScenarioRoleplay()
+const { buildScenarioPrompt, buildOpinionPrompt } = useScenarioRoleplay()
+
+// Opinion chat (chat-first prototype): connector hints, highlights and summary
+const {
+  topic: opinionTopic,
+  topicText: opinionTopicText,
+  nextTopic: nextOpinionTopic,
+  markChatTopic,
+  isChatOnCurrentTopic,
+  getConnectorInfo,
+  targets: connectorTargets,
+} = useOpinionChat()
+const { motherTongue } = useMotherTongue()
+const SUMMARY_OFFER_TURNS = 6
+const hintsDismissed = ref(false)
+const showOpinionSummary = ref(false)
+const summaryOfferDismissed = ref(false)
 
 // Character memory (moat: AI remembers you across sessions)
 const { getMemories, getMeta, addMemory, markSessionStart, buildContextString } = useCharacterMemory()
@@ -117,10 +141,40 @@ const showDailyPrompt = computed(() =>
   !promptDismissed.value
   && !isArticleMode.value
   && !scenario.value
+  && !isOpinionMode.value
   && messages.value.filter(m => m.role === 'user').length === 0
 )
 
 // Refs
+const userTurnCount = computed(() => messages.value.filter(m => m.role === 'user').length)
+
+const usedConnectorIds = computed(() => {
+  if (!isOpinionMode.value) return []
+  const ids = new Set()
+  messages.value
+    .filter(m => m.role === 'user')
+    .forEach(m => detectConnectors(m.content, connectorTargets).forEach(id => ids.add(id)))
+  return [...ids]
+})
+
+// Rotates after every user turn, favouring connectors not used yet
+const connectorHints = computed(() =>
+  getHintBatch(userTurnCount.value, usedConnectorIds.value)
+    .map(id => getConnectorInfo(id, motherTongue.value))
+)
+
+const opinionSummary = computed(() =>
+  showOpinionSummary.value ? buildOpinionSummary(messages.value, connectorTargets) : null
+)
+
+const showSummaryOffer = computed(() =>
+  isOpinionMode.value
+  && !summaryOfferDismissed.value
+  && !showOpinionSummary.value
+  && !isLoading.value
+  && userTurnCount.value >= SUMMARY_OFFER_TURNS
+)
+
 const messagesContainer = ref(null)
 const chatInputRef = ref(null)
 
@@ -137,6 +191,11 @@ onMounted(() => {
   if (mission.value?.freshStart) {
     storage.clear()
     mission.value.freshStart = false
+  }
+
+  // An opinion chat saved under an older topic starts over on the current one
+  if (isOpinionMode.value && !isChatOnCurrentTopic(character.value?.id)) {
+    storage.clear()
   }
 
   const saved = storage.load()
@@ -180,6 +239,38 @@ function focusInput() {
   nextTick(() => {
     chatInputRef.value?.focus()
   })
+}
+
+function handleInsertConnector(hint) {
+  const current = inputText.value
+  // Capitalize when starting a new sentence
+  const startsSentence = !current.trim() || /[.!?]\s*$/.test(current)
+  const text = startsSentence
+    ? hint.insert.charAt(0).toUpperCase() + hint.insert.slice(1)
+    : hint.insert
+  const spacer = current && !/\s$/.test(current) ? ' ' : ''
+  inputText.value = `${current}${spacer}${text}${text.endsWith('?') ? '' : ' '}`
+  focusInput()
+}
+
+function handleEndOpinionChat() {
+  summaryOfferDismissed.value = true
+  showOpinionSummary.value = true
+}
+
+function handleOpinionNewTopic() {
+  showOpinionSummary.value = false
+  summaryOfferDismissed.value = false
+  nextOpinionTopic()
+  messages.value = []
+  currentHints.value = []
+  storage.clear()
+  getAIResponse(true)
+}
+
+function handleOpinionHome() {
+  showOpinionSummary.value = false
+  router.push('/')
 }
 
 function handleUsePrompt(promptText) {
@@ -236,9 +327,11 @@ async function getAIResponse(isGreeting = false) {
     // Inject daily challenge or scenario context
     let challengeNote = null
     const challengeTopic = getChallengeContext()
-    if (scenario.value?.prompt) {
+    if (isOpinionMode.value) {
+      challengeNote = buildOpinionPrompt(opinionTopicText('en'))
+    } else if (mission.value?.prompt) {
       // Prebuilt scenario prompt (connector mission)
-      challengeNote = scenario.value.prompt
+      challengeNote = mission.value.prompt
     } else if (scenario.value) {
       challengeNote = buildScenarioPrompt(scenario.value.id, level.value.id, language.value)
         || `[System: You are now in a role-play scenario. Title: "${scenario.value.title}". The user's goal: "${scenario.value.goal}". Stay in character and play out the scenario naturally.]`
@@ -259,6 +352,10 @@ async function getAIResponse(isGreeting = false) {
       challengeContext: challengeNote,
       memoryContext,
     })
+
+    if (isOpinionMode.value && isGreeting) {
+      markChatTopic(character.value?.id)
+    }
 
     messages.value.push({
       role: 'assistant',
@@ -326,6 +423,10 @@ async function handleExplain(message) {
 }
 
 function handleRenewChat() {
+  if (isOpinionMode.value) {
+    handleOpinionNewTopic()
+    return
+  }
   missionJustUsed.value = null
   messages.value = []
   currentHints.value = []
@@ -365,7 +466,7 @@ function handleBack() {
 
 <template>
   <div class="flex h-screen w-full max-w-[100vw] overflow-hidden">
-    <div class="flex flex-1 flex-col h-full relative bg-background-light dark:bg-background-dark">
+    <div class="flex flex-1 flex-col min-w-0 h-full relative bg-background-light dark:bg-background-dark">
       <!-- Header -->
       <ChatHeader
         :character="character"
@@ -401,6 +502,27 @@ function handleBack() {
 
         <!-- Chat Area -->
         <div class="flex flex-col flex-1 overflow-hidden">
+          <!-- Opinion Chat Topic Bar -->
+          <div
+            v-if="isOpinionMode"
+            class="opinion-topic-bar flex items-center gap-3 px-4 py-2.5 border-b border-slate-100 dark:border-slate-800 bg-primary/5 dark:bg-primary/10"
+          >
+            <span class="material-symbols-outlined text-primary text-[20px] shrink-0">record_voice_over</span>
+            <div class="flex-1 min-w-0">
+              <p class="text-[11px] font-semibold uppercase tracking-wide text-primary">{{ t('opinionChat.topicLabel') }}</p>
+              <p class="text-sm text-text-main dark:text-slate-200 leading-snug">{{ opinionTopic.en }}</p>
+              <p v-if="motherTongue !== 'en'" class="text-xs text-text-muted dark:text-slate-400 leading-snug">{{ opinionTopicText(motherTongue) }}</p>
+            </div>
+            <button
+              @click="handleEndOpinionChat"
+              :disabled="userTurnCount === 0"
+              class="end-opinion-chat shrink-0 inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark hover:bg-slate-50 dark:hover:bg-slate-800 text-text-main dark:text-slate-200 text-xs font-semibold transition-colors disabled:opacity-40"
+            >
+              <span class="material-symbols-outlined text-[16px]">flag</span>
+              {{ t('opinionChat.endChat') }}
+            </button>
+          </div>
+
           <div ref="messagesContainer" class="flex-1 overflow-y-auto overflow-x-hidden p-4 sm:p-6 space-y-6 scroll-smooth">
             <!-- Date Separator -->
             <div class="flex justify-center">
@@ -413,6 +535,7 @@ function handleBack() {
               :key="i"
               :message="msg"
               :character="character"
+              :highlight-targets="isOpinionMode ? connectorTargets : null"
               @explain="handleExplain"
               @word-tap="handleWordTap"
             />
@@ -462,9 +585,50 @@ function handleBack() {
               @dismiss="promptDismissed = true"
             />
 
+            <!-- Opinion Chat: soft summary offer -->
+            <div
+              v-if="showSummaryOffer"
+              class="summary-offer flex items-center gap-3 p-3 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800"
+            >
+              <span class="text-2xl shrink-0">{{ character?.avatar }}</span>
+              <p class="flex-1 min-w-0 text-sm text-emerald-800 dark:text-emerald-200">
+                {{ t('opinionChat.offerText', { count: userTurnCount }) }}
+              </p>
+              <div class="flex flex-col sm:flex-row gap-1.5 shrink-0">
+                <button
+                  @click="handleEndOpinionChat"
+                  class="px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-semibold transition-colors"
+                >
+                  {{ t('opinionChat.offerButton') }}
+                </button>
+                <button
+                  @click="summaryOfferDismissed = true"
+                  class="px-3 py-1.5 rounded-lg text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 text-xs font-semibold transition-colors"
+                >
+                  {{ t('opinionChat.offerLater') }}
+                </button>
+              </div>
+            </div>
+
             <!-- Spacer -->
             <div class="h-4"></div>
           </div>
+
+          <!-- Opinion Chat: connector hints -->
+          <ConnectorHintStrip
+            v-if="isOpinionMode && !hintsDismissed"
+            :hints="connectorHints"
+            @insert="handleInsertConnector"
+            @dismiss="hintsDismissed = true"
+          />
+          <button
+            v-else-if="isOpinionMode"
+            @click="hintsDismissed = false"
+            class="show-connector-hints self-start mx-4 mt-1 inline-flex items-center gap-1 text-xs text-text-muted dark:text-slate-400 hover:text-primary transition-colors"
+          >
+            <span class="material-symbols-outlined text-[14px]">lightbulb</span>
+            {{ t('opinionChat.showHints') }}
+          </button>
 
           <!-- Input Area -->
           <ChatInput
@@ -500,6 +664,18 @@ function handleBack() {
     <VocabularyBankPanel
       v-if="showVocabBank"
       @close="showVocabBank = false"
+    />
+
+    <!-- Opinion Chat Summary -->
+    <OpinionSummaryPanel
+      v-if="showOpinionSummary && opinionSummary && character"
+      :summary="opinionSummary"
+      :character="character"
+      :topic="opinionTopic.en"
+      :mother-tongue="motherTongue"
+      @close="showOpinionSummary = false"
+      @new-topic="handleOpinionNewTopic"
+      @home="handleOpinionHome"
     />
 
     <!-- Character Memory Panel -->

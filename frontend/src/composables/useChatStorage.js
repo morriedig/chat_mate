@@ -21,7 +21,8 @@ export function useChatStorage(keyConfig) {
     if (isArticleMode && articleId) {
       return `${base}_article_${articleId}`
     }
-    // Separate history for special sessions (e.g. connector missions)
+    // Separate history for special sessions: connector missions ('mission_<chapterId>')
+    // and the opinion chat ('opinion'). Free chat keeps the plain base key.
     if (sessionTag) {
       return `${base}_${sessionTag}`
     }

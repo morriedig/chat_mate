@@ -538,5 +538,28 @@
     "nice": "「{phrase}」用得很自然！",
     "complete": "三個都用到了！你的理由講得很清楚。",
     "backToLearning": "回到學習"
+  },
+  "opinionChat": {
+    "homeTitle": "跟朋友聊聊你的看法",
+    "homeDesc": "聊生活和工作的話題，順便練習用 because、since、so that… 說出理由",
+    "topicLabel": "今天的話題",
+    "endChat": "結束聊天",
+    "hintsLabel": "說理由可以用",
+    "hideHints": "隱藏提示",
+    "showHints": "顯示連接詞提示",
+    "offerText": "已經聊了 {count} 句了，聊得不錯！要看看這次說了哪些嗎？",
+    "offerButton": "看看",
+    "offerLater": "繼續聊",
+    "summaryTitle": "聊得好開心！",
+    "summaryIntro": "{name} 很喜歡聽你的想法。這次你說了 {count} 句。",
+    "summaryUsed": "你這次這樣說出理由",
+    "summaryNoneUsed": "這次沒用到連接詞也沒關係，下次可以玩玩看這幾個",
+    "summaryTryNext": "下次可以試試",
+    "summaryBest": "值得收藏的一句",
+    "saveSentence": "存進單字庫",
+    "saved": "已存進單字庫",
+    "newTopic": "換個話題再聊",
+    "keepChatting": "繼續聊",
+    "backHome": "回首頁"
   }
 }

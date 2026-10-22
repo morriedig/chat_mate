@@ -538,5 +538,28 @@
     "nice": "Nice, “{phrase}” sounded really natural!",
     "complete": "All three used — your reasons came through clearly!",
     "backToLearning": "Back to lessons"
+  },
+  "opinionChat": {
+    "homeTitle": "Share your opinion with a friend",
+    "homeDesc": "Chat about everyday and work topics — and practice giving reasons with because, since, so that…",
+    "topicLabel": "Today's topic",
+    "endChat": "End chat",
+    "hintsLabel": "Ways to give a reason",
+    "hideHints": "Hide hints",
+    "showHints": "Show connector hints",
+    "offerText": "That's {count} replies already — nice chat! Want a quick look at what you said?",
+    "offerButton": "Show me",
+    "offerLater": "Keep going",
+    "summaryTitle": "That was fun!",
+    "summaryIntro": "{name} enjoyed hearing your take. You shared {count} replies this time.",
+    "summaryUsed": "You gave reasons like this",
+    "summaryNoneUsed": "No connectors this round — totally fine. Here are a couple to play with next time",
+    "summaryTryNext": "Maybe try these next time",
+    "summaryBest": "A sentence worth keeping",
+    "saveSentence": "Save to my word bank",
+    "saved": "Saved to word bank",
+    "newTopic": "New topic, let's chat again",
+    "keepChatting": "Keep chatting",
+    "backHome": "Back home"
   }
 }
