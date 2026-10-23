@@ -39,6 +39,11 @@ const router = createRouter({
       name: 'diary',
       component: () => import('./components/DiaryScreen.vue'),
     },
+    {
+      path: '/daily-opinion',
+      name: 'dailyOpinion',
+      component: () => import('./components/DailyOpinionScreen.vue'),
+    },
     // Catch-all redirect to setup
     {
       path: '/:pathMatch(.*)*',

@@ -16,6 +16,7 @@ import ScenarioSelector from './ScenarioSelector.vue'
 import ShareCardPanel from './ShareCardPanel.vue'
 import AnalyticsDashboard from './AnalyticsDashboard.vue'
 import HomeHero from './HomeHero.vue'
+import DailyOpinionCard from './DailyOpinionCard.vue'
 import WelcomeOnboarding from './WelcomeOnboarding.vue'
 
 const { t, locale } = useI18n()
@@ -249,8 +250,10 @@ function handleStart() {
         </div>
       </Transition>
 
-      <!-- Opinion Chat Entry (grid wrapper stretches the card full width) -->
-      <div class="grid mb-6">
+      <!-- Practice entries: Daily Opinion drill (3 min) + Opinion Chat.
+           Grid stretches each card full width and lets them shrink (no x-overflow). -->
+      <section class="grid grid-cols-1 gap-3 mb-6">
+        <DailyOpinionCard class="min-w-0" @open="router.push('/daily-opinion')" />
         <button
           type="button"
           @click="handleStartOpinionChat"
@@ -271,7 +274,7 @@ function handleStart() {
           </div>
           <span class="material-symbols-outlined text-primary shrink-0">arrow_forward</span>
         </button>
-      </div>
+      </section>
 
       <!-- Primary Mode Selection (Chat vs Learning vs Diary) -->
       <section class="mb-8">
