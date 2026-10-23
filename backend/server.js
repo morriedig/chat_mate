@@ -497,7 +497,7 @@ app.post('/chat', async (req, res) => {
       systemPrompt += '\n\n---\n\n## What you remember about this user\n\n' + memoryContext
         + '\n\nReference these details naturally when relevant — do NOT recite them. Act like someone who just remembers these things organically.';
     }
-    if (challengeContext && typeof challengeContext === 'string') {
+    if (challengeContext && typeof challengeContext === 'string' && challengeContext.length < 6000) {
       systemPrompt += '\n\n' + challengeContext;
     }
     const geminiMessages = buildGeminiMessages(systemPrompt, messages, isGreeting, article);
