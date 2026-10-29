@@ -1,4 +1,5 @@
 import { ref } from 'vue'
+import { getAuthToken, requestAuthToken, clearAuthToken } from './useChatApi'
 
 const API_URL = import.meta.env.VITE_API_URL || ''
 const PENDING_KEY = 'chatmate_diary_pending_feedback'
@@ -64,6 +65,7 @@ export function useDiaryFeedback() {
         streakDays,
         clientId: getClientId(),
         origin: window.location.origin,
+        authToken: await getAuthToken(),
       }
 
       // For GAS, add action parameter
@@ -71,14 +73,24 @@ export function useDiaryFeedback() {
         requestBody.action = 'diary-feedback'
       }
 
-      const response = await fetch(getFeedbackUrl(), {
+      const post = () => fetch(getFeedbackUrl(), {
         method: 'POST',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify(requestBody),
         redirect: 'follow',
-      })
+      }).then(r => r.json())
 
-      const data = await response.json()
+      let data = await post()
+
+      // If token error, clear token and retry once
+      if (!data.success && data.isTokenError) {
+        clearAuthToken()
+        const newToken = await requestAuthToken()
+        if (newToken) {
+          requestBody.authToken = newToken
+          data = await post()
+        }
+      }
 
       if (!data.success) {
         throw { isRateLimit: data.isRateLimit, message: data.error }

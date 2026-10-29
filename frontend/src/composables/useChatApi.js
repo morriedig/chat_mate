@@ -32,7 +32,7 @@ function getTokenUrl() {
 }
 
 // Request auth token from server
-async function requestAuthToken() {
+export async function requestAuthToken() {
   if (!API_URL) return null
 
   // Reuse existing promise if already requesting
@@ -68,13 +68,13 @@ async function requestAuthToken() {
 }
 
 // Get current token or request new one
-async function getAuthToken() {
+export async function getAuthToken() {
   if (authToken) return authToken
   return await requestAuthToken()
 }
 
 // Clear token (for when token expires)
-function clearAuthToken() {
+export function clearAuthToken() {
   authToken = null
 }
 
