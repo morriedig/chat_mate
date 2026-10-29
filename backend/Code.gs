@@ -83,18 +83,18 @@ function validateToken(token) {
 function isAllowedOrigin(origin) {
   if (!ALLOWED_ORIGINS.length) return true; // No restriction if not configured
   if (!origin) return false;
+  var originHost = getHost(origin);
+  if (!originHost) return false;
+  // Compare by host so entries work with or without scheme/path (matches server.js)
   return ALLOWED_ORIGINS.some(function(allowed) {
-    var trimmed = allowed.trim();
-    if (origin === trimmed) return true;
-    // URL origin comparison fallback (matches server.js)
-    try {
-      var originUrl = new URL(origin);
-      var allowedUrl = new URL(trimmed);
-      return originUrl.origin === allowedUrl.origin;
-    } catch (e) {
-      return false;
-    }
+    return getHost(allowed) === originHost;
   });
+}
+
+// Apps Script V8 has no URL class, so parse the host by hand
+function getHost(value) {
+  var match = String(value).trim().match(/^(?:[a-z][a-z0-9+.-]*:\/\/)?([^\/?#\s]+)/i);
+  return match ? match[1].toLowerCase() : '';
 }
 
 // === RATE LIMITING ===

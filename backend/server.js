@@ -74,16 +74,15 @@ function isAllowedOrigin(origin) {
   // In development, allow all origins if ALLOWED_ORIGINS is not set
   if (!ALLOWED_ORIGINS.length) return true;
   if (!origin) return false;
-  return ALLOWED_ORIGINS.some(allowed => {
-    const trimmed = allowed.trim();
-    // Exact match or match using URL origin comparison
-    if (origin === trimmed) return true;
-    try {
-      return new URL(origin).origin === new URL(trimmed).origin;
-    } catch {
-      return false;
-    }
-  });
+  const originHost = getHost(origin);
+  if (!originHost) return false;
+  // Compare by host so entries work with or without scheme/path (matches Code.gs)
+  return ALLOWED_ORIGINS.some(allowed => getHost(allowed) === originHost);
+}
+
+function getHost(value) {
+  const match = String(value).trim().match(/^(?:[a-z][a-z0-9+.-]*:\/\/)?([^/?#\s]+)/i);
+  return match ? match[1].toLowerCase() : '';
 }
 
 function checkTokenRateLimit(origin) {
