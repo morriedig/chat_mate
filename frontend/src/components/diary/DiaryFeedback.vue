@@ -165,7 +165,11 @@ function getScoreBarBg(score) {
           class="flex items-start gap-2 p-3 rounded-xl bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800"
         >
           <span class="material-symbols-outlined text-green-500 text-[18px] shrink-0 mt-0.5">check_circle</span>
-          <p class="text-sm text-text-main dark:text-slate-200">{{ item }}</p>
+          <p v-if="typeof item === 'string'" class="text-sm text-text-main dark:text-slate-200">{{ item }}</p>
+          <div v-else class="text-sm">
+            <p class="font-medium text-text-main dark:text-slate-200">"{{ item.text }}"</p>
+            <p v-if="item.comment" class="text-text-muted dark:text-slate-400 mt-0.5">{{ item.comment }}</p>
+          </div>
         </div>
       </div>
     </div>
