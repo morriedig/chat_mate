@@ -20,4 +20,5 @@ Team ID and App Store Connect API key values stay outside the repo.
 
 - Bundle ID: `com.morrie.chatmate`
 - iPhone only, portrait, iOS 15+
+- Capacitor 8+ is required: apps built with the iOS 27 SDK must use the UIScene life cycle (`SceneDelegate.swift`), and the Capacitor 7 template crashes on launch without it
 - The App Store Connect app record has to be created once on the website; the API cannot create it.
