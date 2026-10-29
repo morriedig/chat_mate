@@ -23,9 +23,15 @@
 1. Click ⚙️ **Project Settings** (gear icon on left)
 2. Scroll to **Script Properties**
 3. Click **Add Script Property**
-4. Property: `GEMINI_API_KEY`
-5. Value: Your API key from Step 1
+4. Property: `GEMINI_API_KEYS`
+5. Value: Your API key from Step 1 (comma-separate several keys to rotate on rate limits)
 6. Click **Save**
+
+### Optional: use Claude instead of Gemini
+
+Add a second script property `ANTHROPIC_API_KEY` with a key from https://platform.claude.com/settings/keys .
+When it is set, chat uses `claude-haiku-5-5` and grammar / diary feedback use `claude-sonnet-5-5`.
+Delete the property to switch back to Gemini; no redeploy is needed.
 
 ## Step 5: Deploy as Web App
 

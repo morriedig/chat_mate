@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import crypto from 'crypto';
 import 'dotenv/config';
+import Anthropic from '@anthropic-ai/sdk';
 
 const app = express();
 
@@ -38,6 +39,11 @@ const SKIP_AUTH = process.env.SKIP_AUTH === 'true'; // For local development
 
 let currentKeyIndex = 0;
 const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
+
+// Claude is used instead of Gemini when ANTHROPIC_API_KEY is set (matches Code.gs)
+const anthropic = process.env.ANTHROPIC_API_KEY ? new Anthropic() : null;
+const CLAUDE_CHAT_MODEL = 'claude-haiku-5-5';
+const CLAUDE_FEEDBACK_MODEL = 'claude-sonnet-5-5';
 
 // Track exhausted keys with cooldown
 const exhaustedKeys = new Map(); // keyIndex -> exhaustedUntil timestamp
@@ -297,6 +303,55 @@ function isRateLimitError(response, data) {
   return false;
 }
 
+// Claude structured outputs need every object closed and every property required
+function toClaudeSchema(schema) {
+  if (Array.isArray(schema)) return schema.map(toClaudeSchema);
+  if (!schema || typeof schema !== 'object') return schema;
+  const out = Object.fromEntries(Object.entries(schema).map(([key, value]) => [key, toClaudeSchema(value)]));
+  if (schema.type === 'object' && schema.properties) {
+    out.additionalProperties = false;
+    out.required = Object.keys(schema.properties);
+  }
+  return out;
+}
+
+// Sends a Gemini-format request body to Claude (when configured) or Gemini, and returns the JSON text
+async function generateJson(body, { model, effort }) {
+  if (anthropic) {
+    let response;
+    try {
+      response = await anthropic.messages.create({
+        model,
+        max_tokens: 16000,
+        messages: body.contents.map(m => ({
+          role: m.role === 'model' ? 'assistant' : 'user',
+          content: m.parts.map(part => part.text).join('\n'),
+        })),
+        output_config: {
+          effort,
+          format: { type: 'json_schema', schema: toClaudeSchema(body.generationConfig.responseSchema) },
+        },
+      });
+    } catch (error) {
+      if (error instanceof Anthropic.RateLimitError || error.status === 529) {
+        throw new Error(`Claude rate limit (${error.status})`);
+      }
+      throw error;
+    }
+    if (response.stop_reason === 'refusal') throw new Error('Claude declined the request');
+    if (response.stop_reason === 'max_tokens') throw new Error('Claude response was cut off');
+    const text = response.content.filter(block => block.type === 'text').map(block => block.text).join('');
+    if (!text) throw new Error('Invalid response from AI model');
+    return text;
+  }
+
+  const data = await callGeminiWithFallback(body);
+  if (!data?.candidates?.[0]?.content?.parts?.[0]?.text) {
+    throw new Error('Invalid response from AI model');
+  }
+  return data.candidates[0].content.parts[0].text;
+}
+
 async function callGeminiWithFallback(body) {
   console.log(`Total API keys loaded: ${API_KEYS.length}`);
 
@@ -501,7 +556,7 @@ app.post('/chat', async (req, res) => {
     }
     const geminiMessages = buildGeminiMessages(systemPrompt, messages, isGreeting, article);
 
-    const data = await callGeminiWithFallback({
+    const rawText = await generateJson({
       contents: geminiMessages,
       generationConfig: {
         temperature: 0.9,
@@ -542,14 +597,7 @@ app.post('/chat', async (req, res) => {
         { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_ONLY_HIGH' },
         { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_ONLY_HIGH' },
       ],
-    });
-
-    // Validate Gemini response structure
-    if (!data?.candidates?.[0]?.content?.parts?.[0]?.text) {
-      throw new Error('Invalid response from AI model');
-    }
-
-    const rawText = data.candidates[0].content.parts[0].text;
+    }, { model: CLAUDE_CHAT_MODEL, effort: 'low' });
     let parsed;
     try {
       parsed = JSON.parse(rawText);
@@ -1232,7 +1280,7 @@ app.post('/feedback', async (req, res) => {
 
     const feedbackPrompt = buildFeedbackPrompt(userMessage, context, level, language);
 
-    const data = await callGeminiWithFallback({
+    const rawText = await generateJson({
       contents: feedbackPrompt,
       generationConfig: {
         temperature: 0.3,
@@ -1288,13 +1336,7 @@ app.post('/feedback', async (req, res) => {
         { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_ONLY_HIGH' },
         { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_ONLY_HIGH' },
       ],
-    });
-
-    if (!data?.candidates?.[0]?.content?.parts?.[0]?.text) {
-      throw new Error('Invalid response from AI model');
-    }
-
-    const rawText = data.candidates[0].content.parts[0].text;
+    }, { model: CLAUDE_FEEDBACK_MODEL, effort: 'low' });
     let parsed;
     try {
       parsed = JSON.parse(rawText);
@@ -1483,7 +1525,7 @@ app.post('/diary-feedback', async (req, res) => {
       required: ['reaction', 'didWell', 'corrections', 'betterExpressions', 'newVocabulary', 'encouragement', 'score']
     };
 
-    const data = await callGeminiWithFallback({
+    const rawText = await generateJson({
       contents: geminiMessages,
       generationConfig: {
         temperature: 0.7,
@@ -1498,13 +1540,7 @@ app.post('/diary-feedback', async (req, res) => {
         { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_ONLY_HIGH' },
         { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_ONLY_HIGH' },
       ],
-    });
-
-    if (!data?.candidates?.[0]?.content?.parts?.[0]?.text) {
-      throw new Error('Invalid response from AI model');
-    }
-
-    const rawText = data.candidates[0].content.parts[0].text;
+    }, { model: CLAUDE_FEEDBACK_MODEL, effort: 'medium' });
     let parsed;
     try {
       parsed = JSON.parse(rawText);
@@ -1642,7 +1678,7 @@ ${languageSpecificRules}
    - effort: Length, detail, and ambition of the writing`;
 }
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Backend running at http://localhost:${PORT}`);
 });

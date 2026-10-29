@@ -6,7 +6,7 @@ A conversational language learning app where users practice with AI characters. 
 
 - **Frontend**: Vue 3 (Composition API) + Vite + Tailwind CSS
 - **Backend**: Node.js Express server OR Google Apps Script (Code.gs)
-- **AI**: Google Gemini API (gemini-2.5-flash)
+- **AI**: Claude (claude-haiku-5-5 for chat, claude-sonnet-5-5 for feedback) when `ANTHROPIC_API_KEY` is set; otherwise Google Gemini API (gemini-2.5-flash)
 - **Storage**: localStorage (user progress), no database
 - **Deployment**: GitHub Pages (frontend) + Google Apps Script (backend)
 - **PWA**: VitePWA + Workbox for offline support
@@ -174,7 +174,7 @@ chat_mate/
 ├── backend/
 │   ├── server.js                       # Node.js Express server
 │   ├── Code.gs                         # Google Apps Script version (same logic)
-│   ├── .env                            # GEMINI_API_KEYS, MOCK_API, SKIP_AUTH
+│   ├── .env                            # ANTHROPIC_API_KEY, GEMINI_API_KEYS, MOCK_API, SKIP_AUTH
 │   └── SETUP.md
 │
 └── docs/
@@ -278,7 +278,9 @@ GET /status
 ## Environment Variables (backend/.env)
 
 ```
-GEMINI_API_KEYS=key1,key2,key3    # Comma-separated, auto-rotates on rate limit
+ANTHROPIC_API_KEY=sk-ant-...      # When set, chat/feedback use Claude instead of Gemini
+GEMINI_API_KEYS=key1,key2,key3    # Comma-separated, auto-rotates on rate limit (used when no Claude key)
+PORT=3000                         # Optional
 MOCK_API=false                    # Use mock responses for testing
 SKIP_AUTH=true                    # Skip authentication
 ```

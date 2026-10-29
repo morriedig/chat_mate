@@ -7,6 +7,10 @@
 const GEMINI_API_KEYS = (PropertiesService.getScriptProperties().getProperty('GEMINI_API_KEYS') || '').split(',').filter(k => k.trim());
 const ALLOWED_ORIGINS = (PropertiesService.getScriptProperties().getProperty('ALLOWED_ORIGINS') || '').split(',').filter(o => o.trim());
 const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
+const ANTHROPIC_API_KEY = (PropertiesService.getScriptProperties().getProperty('ANTHROPIC_API_KEY') || '').trim();
+const CLAUDE_URL = 'https://api.anthropic.com/v1/messages';
+const CLAUDE_CHAT_MODEL = 'claude-haiku-5-5';
+const CLAUDE_FEEDBACK_MODEL = 'claude-sonnet-5-5';
 const TOKEN_EXPIRY_SECONDS = 3600; // 1 hour
 const KEY_COOLDOWN_SECONDS = 60; // 1 minute cooldown for exhausted keys
 let currentKeyIndex = 0;
@@ -287,8 +291,214 @@ function createResponse(data) {
     .setMimeType(ContentService.MimeType.JSON);
 }
 
+// === RESPONSE SCHEMAS (shared by Gemini and Claude) ===
+const CHAT_RESPONSE_SCHEMA = {
+    type: 'object',
+    properties: {
+      message: {
+        type: 'string',
+        description: 'Your conversational message to the user'
+      },
+      hints: {
+        type: 'array',
+        description: '3 words/phrases the user could use to respond',
+        items: {
+          type: 'object',
+          properties: {
+            word: { type: 'string', description: 'The word or short phrase' },
+            description: { type: 'string', description: 'Brief explanation (2-4 words)' },
+            example: { type: 'string', description: 'Short example sentence using this word' }
+          },
+          required: ['word', 'description', 'example']
+        }
+      },
+      newMemory: {
+        type: 'string',
+        description: 'If and only if the user shared something meaningful you want to remember for future conversations (their name, where they live or work, a hobby or interest, an ongoing concern or goal, a pet, a relationship, a preference, a specific event in their life), write ONE concise fact about them here as a statement starting with "User" — e.g. "User lives in Taipei", "User is learning Japanese for a trip to Kyoto in June", "User has a dog named Mochi". Keep under 100 characters. Return an EMPTY STRING if nothing new was shared. Do NOT repeat things you already know.'
+      }
+    },
+    required: ['message', 'hints']
+  };
+
+const FEEDBACK_RESPONSE_SCHEMA = {
+    type: 'object',
+    properties: {
+      grammar: {
+        type: 'object',
+        properties: {
+          score: { type: 'integer', description: 'Grammar score 0-100' },
+          corrections: { type: 'array', items: { type: 'string' }, description: 'Grammar corrections' }
+        },
+        required: ['score', 'corrections']
+      },
+      vocabulary: {
+        type: 'object',
+        properties: {
+          score: { type: 'integer', description: 'Vocabulary usage score 0-100' }
+        },
+        required: ['score']
+      },
+      naturalness: {
+        type: 'object',
+        properties: {
+          score: { type: 'integer', description: 'Naturalness score 0-100' },
+          tips: { type: 'array', items: { type: 'string' }, description: 'Tips for natural expression' }
+        },
+        required: ['score', 'tips']
+      },
+      alternatives: {
+        type: 'array',
+        items: { type: 'string' },
+        description: 'Alternative phrasings'
+      }
+    },
+    required: ['grammar', 'vocabulary', 'naturalness', 'alternatives']
+  };
+
+const DIARY_FEEDBACK_SCHEMA = {
+    type: 'object',
+    properties: {
+      reaction: { type: 'string', description: 'Friend-like comment on the content (2-4 sentences + follow-up question)' },
+      didWell: {
+        type: 'array',
+        description: 'Specific things the user did well',
+        items: {
+          type: 'object',
+          properties: {
+            text: { type: 'string', description: 'The phrase or aspect done well' },
+            comment: { type: 'string', description: 'Why it was good' }
+          },
+          required: ['text', 'comment']
+        }
+      },
+      corrections: {
+        type: 'array',
+        description: 'Language corrections',
+        items: {
+          type: 'object',
+          properties: {
+            original: { type: 'string', description: 'Original text' },
+            corrected: { type: 'string', description: 'Corrected version' },
+            explanation: { type: 'string', description: 'Brief explanation' },
+            severity: { type: 'string', description: 'minor, moderate, or major' }
+          },
+          required: ['original', 'corrected', 'explanation', 'severity']
+        }
+      },
+      betterExpressions: {
+        type: 'array',
+        description: 'More natural ways to express something',
+        items: {
+          type: 'object',
+          properties: {
+            original: { type: 'string', description: 'Original expression' },
+            upgraded: { type: 'string', description: 'More natural alternative' },
+            context: { type: 'string', description: 'When to use the upgraded version' }
+          },
+          required: ['original', 'upgraded', 'context']
+        }
+      },
+      newVocabulary: {
+        type: 'array',
+        description: 'New vocabulary related to the diary topic',
+        items: {
+          type: 'object',
+          properties: {
+            word: { type: 'string', description: 'The word or phrase' },
+            meaning: { type: 'string', description: 'Meaning' },
+            example: { type: 'string', description: 'Example sentence' },
+            relevance: { type: 'string', description: 'Why this word is relevant to their diary' }
+          },
+          required: ['word', 'meaning', 'example', 'relevance']
+        }
+      },
+      encouragement: { type: 'string', description: 'Warm closing message' },
+      score: {
+        type: 'object',
+        properties: {
+          grammar: { type: 'integer', description: 'Grammar score 1-5' },
+          vocabulary: { type: 'integer', description: 'Vocabulary score 1-5' },
+          naturalness: { type: 'integer', description: 'Naturalness score 1-5' },
+          effort: { type: 'integer', description: 'Effort score 1-5' }
+        },
+        required: ['grammar', 'vocabulary', 'naturalness', 'effort']
+      }
+    },
+    required: ['reaction', 'didWell', 'corrections', 'betterExpressions', 'newVocabulary', 'encouragement', 'score']
+  };
+
+// === CLAUDE API ===
+// Used instead of Gemini when the ANTHROPIC_API_KEY script property is set.
+// Remove that property to fall back to Gemini without redeploying.
+
+// Claude structured outputs need every object closed and every property required
+function toClaudeSchema(schema) {
+  if (Array.isArray(schema)) return schema.map(toClaudeSchema);
+  if (!schema || typeof schema !== 'object') return schema;
+  var out = {};
+  Object.keys(schema).forEach(function(key) {
+    out[key] = toClaudeSchema(schema[key]);
+  });
+  if (schema.type === 'object' && schema.properties) {
+    out.additionalProperties = false;
+    out.required = Object.keys(schema.properties);
+  }
+  return out;
+}
+
+// Takes Gemini-format messages ({role: 'user'|'model', parts: [{text}]}) and returns the JSON text
+function callClaude(model, geminiMessages, schema, effort) {
+  var messages = geminiMessages.map(function(m) {
+    return {
+      role: m.role === 'model' ? 'assistant' : 'user',
+      content: m.parts.map(function(part) { return part.text; }).join('\n')
+    };
+  });
+
+  var response = UrlFetchApp.fetch(CLAUDE_URL, {
+    method: 'POST',
+    contentType: 'application/json',
+    headers: { 'x-api-key': ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
+    payload: JSON.stringify({
+      model: model,
+      max_tokens: 16000,
+      messages: messages,
+      output_config: { effort: effort, format: { type: 'json_schema', schema: toClaudeSchema(schema) } }
+    }),
+    muteHttpExceptions: true,
+  });
+
+  var responseCode = response.getResponseCode();
+  if (responseCode === 429 || responseCode === 529) {
+    throw new Error('Claude rate limit (' + responseCode + ')');
+  }
+  var result = JSON.parse(response.getContentText());
+  if (result.error) {
+    throw new Error('Claude API error: ' + result.error.message);
+  }
+  if (result.stop_reason === 'refusal') {
+    throw new Error('Claude declined the request');
+  }
+  if (result.stop_reason === 'max_tokens') {
+    throw new Error('Claude response was cut off');
+  }
+
+  var text = (result.content || [])
+    .filter(function(block) { return block.type === 'text'; })
+    .map(function(block) { return block.text; })
+    .join('');
+  if (!text) {
+    throw new Error('Invalid response from AI model');
+  }
+  return text;
+}
+
 // === GEMINI API ===
 function callGemini(messages) {
+  if (ANTHROPIC_API_KEY) {
+    return callClaude(CLAUDE_CHAT_MODEL, messages, CHAT_RESPONSE_SCHEMA, 'low');
+  }
+
   console.log('Total API keys: ' + GEMINI_API_KEYS.length);
   console.log('Available keys: ' + getAvailableKeyCount() + '/' + GEMINI_API_KEYS.length);
 
@@ -304,33 +514,7 @@ function callGemini(messages) {
       maxOutputTokens: 4096,
       topP: 0.95,
       responseMimeType: 'application/json',
-      responseSchema: {
-        type: 'object',
-        properties: {
-          message: {
-            type: 'string',
-            description: 'Your conversational message to the user'
-          },
-          hints: {
-            type: 'array',
-            description: '3 words/phrases the user could use to respond',
-            items: {
-              type: 'object',
-              properties: {
-                word: { type: 'string', description: 'The word or short phrase' },
-                description: { type: 'string', description: 'Brief explanation (2-4 words)' },
-                example: { type: 'string', description: 'Short example sentence using this word' }
-              },
-              required: ['word', 'description', 'example']
-            }
-          },
-          newMemory: {
-            type: 'string',
-            description: 'If and only if the user shared something meaningful you want to remember for future conversations (their name, where they live or work, a hobby or interest, an ongoing concern or goal, a pet, a relationship, a preference, a specific event in their life), write ONE concise fact about them here as a statement starting with "User" — e.g. "User lives in Taipei", "User is learning Japanese for a trip to Kyoto in June", "User has a dog named Mochi". Keep under 100 characters. Return an EMPTY STRING if nothing new was shared. Do NOT repeat things you already know.'
-          }
-        },
-        required: ['message', 'hints']
-      }
+      responseSchema: CHAT_RESPONSE_SCHEMA
     },
     safetySettings: [
       { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_ONLY_HIGH' },
@@ -1090,6 +1274,10 @@ function handleFeedback(data) {
 }
 
 function callGeminiFeedback(messages) {
+  if (ANTHROPIC_API_KEY) {
+    return callClaude(CLAUDE_FEEDBACK_MODEL, messages, FEEDBACK_RESPONSE_SCHEMA, 'low');
+  }
+
   console.log('Total API keys: ' + GEMINI_API_KEYS.length);
   console.log('Available keys: ' + getAvailableKeyCount() + '/' + GEMINI_API_KEYS.length);
 
@@ -1104,40 +1292,7 @@ function callGeminiFeedback(messages) {
       maxOutputTokens: 2048,
       topP: 0.9,
       responseMimeType: 'application/json',
-      responseSchema: {
-        type: 'object',
-        properties: {
-          grammar: {
-            type: 'object',
-            properties: {
-              score: { type: 'integer', description: 'Grammar score 0-100' },
-              corrections: { type: 'array', items: { type: 'string' }, description: 'Grammar corrections' }
-            },
-            required: ['score', 'corrections']
-          },
-          vocabulary: {
-            type: 'object',
-            properties: {
-              score: { type: 'integer', description: 'Vocabulary usage score 0-100' }
-            },
-            required: ['score']
-          },
-          naturalness: {
-            type: 'object',
-            properties: {
-              score: { type: 'integer', description: 'Naturalness score 0-100' },
-              tips: { type: 'array', items: { type: 'string' }, description: 'Tips for natural expression' }
-            },
-            required: ['score', 'tips']
-          },
-          alternatives: {
-            type: 'array',
-            items: { type: 'string' },
-            description: 'Alternative phrasings'
-          }
-        },
-        required: ['grammar', 'vocabulary', 'naturalness', 'alternatives']
-      }
+      responseSchema: FEEDBACK_RESPONSE_SCHEMA
     },
     safetySettings: [
       { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_ONLY_HIGH' },
@@ -1306,6 +1461,10 @@ function handleDiaryFeedback(data) {
 }
 
 function callGeminiDiaryFeedback(messages) {
+  if (ANTHROPIC_API_KEY) {
+    return callClaude(CLAUDE_FEEDBACK_MODEL, messages, DIARY_FEEDBACK_SCHEMA, 'medium');
+  }
+
   console.log('Total API keys: ' + GEMINI_API_KEYS.length);
   console.log('Available keys: ' + getAvailableKeyCount() + '/' + GEMINI_API_KEYS.length);
 
@@ -1320,77 +1479,7 @@ function callGeminiDiaryFeedback(messages) {
       maxOutputTokens: 4096,
       topP: 0.95,
       responseMimeType: 'application/json',
-      responseSchema: {
-        type: 'object',
-        properties: {
-          reaction: { type: 'string', description: 'Friend-like comment on the content (2-4 sentences + follow-up question)' },
-          didWell: {
-            type: 'array',
-            description: 'Specific things the user did well',
-            items: {
-              type: 'object',
-              properties: {
-                text: { type: 'string', description: 'The phrase or aspect done well' },
-                comment: { type: 'string', description: 'Why it was good' }
-              },
-              required: ['text', 'comment']
-            }
-          },
-          corrections: {
-            type: 'array',
-            description: 'Language corrections',
-            items: {
-              type: 'object',
-              properties: {
-                original: { type: 'string', description: 'Original text' },
-                corrected: { type: 'string', description: 'Corrected version' },
-                explanation: { type: 'string', description: 'Brief explanation' },
-                severity: { type: 'string', description: 'minor, moderate, or major' }
-              },
-              required: ['original', 'corrected', 'explanation', 'severity']
-            }
-          },
-          betterExpressions: {
-            type: 'array',
-            description: 'More natural ways to express something',
-            items: {
-              type: 'object',
-              properties: {
-                original: { type: 'string', description: 'Original expression' },
-                upgraded: { type: 'string', description: 'More natural alternative' },
-                context: { type: 'string', description: 'When to use the upgraded version' }
-              },
-              required: ['original', 'upgraded', 'context']
-            }
-          },
-          newVocabulary: {
-            type: 'array',
-            description: 'New vocabulary related to the diary topic',
-            items: {
-              type: 'object',
-              properties: {
-                word: { type: 'string', description: 'The word or phrase' },
-                meaning: { type: 'string', description: 'Meaning' },
-                example: { type: 'string', description: 'Example sentence' },
-                relevance: { type: 'string', description: 'Why this word is relevant to their diary' }
-              },
-              required: ['word', 'meaning', 'example', 'relevance']
-            }
-          },
-          encouragement: { type: 'string', description: 'Warm closing message' },
-          score: {
-            type: 'object',
-            properties: {
-              grammar: { type: 'integer', description: 'Grammar score 1-5' },
-              vocabulary: { type: 'integer', description: 'Vocabulary score 1-5' },
-              naturalness: { type: 'integer', description: 'Naturalness score 1-5' },
-              effort: { type: 'integer', description: 'Effort score 1-5' }
-            },
-            required: ['grammar', 'vocabulary', 'naturalness', 'effort']
-          }
-        },
-        required: ['reaction', 'didWell', 'corrections', 'betterExpressions', 'newVocabulary', 'encouragement', 'score']
-      }
+      responseSchema: DIARY_FEEDBACK_SCHEMA
     },
     safetySettings: [
       { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_ONLY_HIGH' },
