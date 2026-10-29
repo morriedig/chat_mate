@@ -1,0 +1,13 @@
+{
+  "appId": "com.morrie.chatmate",
+  "appName": "Chat Mate",
+  "webDir": "dist",
+  "server": {
+    "url": "https://morriedig.github.io/chat_mate/",
+    "allowNavigation": ["morriedig.github.io", "script.google.com", "script.googleusercontent.com"]
+  },
+  "ios": {
+    "contentInset": "never",
+    "backgroundColor": "#101c22"
+  }
+}
