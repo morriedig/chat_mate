@@ -79,7 +79,8 @@ const selectedLearningLevel = ref(
     : last?.type === 'learning' ? levels.find(l => l.id === last.levelId) || null
     : null
 )
-const selectedTargetLanguage = ref(last?.type === 'learning' ? last.targetLanguage || null : null)
+const lastTargetLanguage = last?.type === 'learning' ? last.targetLanguage : null
+const selectedTargetLanguage = ref(supportedLanguages.some(l => l.id === lastTargetLanguage) ? lastTargetLanguage : null)
 
 onMounted(() => {
   // First-run onboarding
@@ -122,6 +123,9 @@ function handleMotherTongueChange(langId) {
 const canStartChat = computed(() => selectedCharacter.value && selectedLevel.value)
 const canStartLearning = computed(() => selectedLearningLevel.value && selectedTargetLanguage.value)
 
+// The AI friend always speaks English while the app focuses on English
+const CHAT_LANGUAGE = 'en'
+
 // Opinion chat entry (chat-first prototype): always English, intermediate level
 const { topic: opinionTopic } = useOpinionChat()
 const opinionCharacter = computed(() => selectedCharacter.value || characters[0])
@@ -130,7 +134,7 @@ function handleStartOpinionChat() {
   setChatState({
     character: opinionCharacter.value,
     level: levels.find(l => l.id === 'intermediate'),
-    language: 'en',
+    language: CHAT_LANGUAGE,
     mode: 'opinion',
   })
   router.push('/chat')
@@ -142,11 +146,11 @@ function handleScenarioSelect(scenario) {
     setChatState({
       character: selectedCharacter.value,
       level: selectedLevel.value,
-      language: locale.value,
+      language: CHAT_LANGUAGE,
       mode: 'free',
       scenario,
     })
-    saveChatSession({ characterId: selectedCharacter.value.id, levelId: selectedLevel.value.id, language: locale.value, mode: 'free' })
+    saveChatSession({ characterId: selectedCharacter.value.id, levelId: selectedLevel.value.id, language: CHAT_LANGUAGE, mode: 'free' })
     router.push('/chat')
   }
 }
@@ -156,10 +160,10 @@ function handleStart() {
     setChatState({
       character: selectedCharacter.value,
       level: selectedLevel.value,
-      language: locale.value,
+      language: CHAT_LANGUAGE,
       mode: selectedChatMode.value,
     })
-    saveChatSession({ characterId: selectedCharacter.value.id, levelId: selectedLevel.value.id, language: locale.value, mode: selectedChatMode.value })
+    saveChatSession({ characterId: selectedCharacter.value.id, levelId: selectedLevel.value.id, language: CHAT_LANGUAGE, mode: selectedChatMode.value })
     if (selectedChatMode.value === 'article') {
       router.push('/articles')
     } else {
