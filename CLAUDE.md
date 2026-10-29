@@ -324,8 +324,10 @@ All user progress stored in localStorage:
 
 ### GitHub Pages (Automatic)
 Push to `master` triggers `.github/workflows/deploy.yml`:
-1. Build frontend with `GITHUB_PAGES=true` (sets base path to `/chat_mate/`)
-2. Deploy `frontend/dist/` to `gh-pages` branch
+1. Build frontend with `GITHUB_PAGES=true` (sets base path to `/chat_mate/app/`)
+2. Publish `frontend/landing/` at `/chat_mate/` and `frontend/dist/` at `/chat_mate/app/` to the `gh-pages` branch
+
+The iOS app is the primary client (see `docs/ios.md`): it loads `/chat_mate/app/`, so web pushes reach the app without a new build. In a normal browser `/chat_mate/app/` redirects to the landing page; add `?web=1` once to use the app in a browser for testing.
 
 ### Backend
 - **Production**: Google Apps Script (`Code.gs`) deployed as web app
