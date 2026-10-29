@@ -1,21 +1,74 @@
 <!doctype html>
-<html lang="en" class="light">
+<html lang="zh-Hant">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💬</text></svg>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#2badee" />
-    <meta name="description" content="Practice languages with AI friends" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
     <title>Chat Mate</title>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <script type="module" crossorigin src="/chat_mate/assets/index-C4MW2a-Q.js"></script>
-    <link rel="stylesheet" crossorigin href="/chat_mate/assets/index-D9ewscjF.css">
-  <link rel="manifest" href="/chat_mate/manifest.webmanifest"></head>
-  <body class="bg-background-light dark:bg-background-dark font-display text-text-main dark:text-gray-100">
-    <div id="app"></div>
+    <meta name="description" content="和 AI 朋友用英文聊天，練習說出你的看法和理由。" />
+    <meta name="theme-color" content="#2badee" />
+    <link rel="icon" href="app/icons/icon-192x192.png" />
+    <link rel="apple-touch-icon" href="app/icons/apple-touch-icon.png" />
+    <script>
+      // Inside the iOS app (older builds load this URL), go straight to the app
+      if (window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform()) {
+        location.replace('app/' + location.hash)
+      }
+    </script>
+    <style>
+      :root {
+        --bg: #f6f8f9;
+        --surface: #ffffff;
+        --text: #0d171b;
+        --muted: #4c6b7a;
+        --primary: #2badee;
+        --border: #e2eaee;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #101c22;
+          --surface: #17252d;
+          --text: #eef4f7;
+          --muted: #9db3bf;
+          --border: #24363f;
+        }
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Noto Sans TC", "Segoe UI", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.6;
+      }
+      main { max-width: 560px; margin: 0 auto; padding: 48px 16px calc(48px + env(safe-area-inset-bottom)); }
+      .icon { width: 88px; height: 88px; border-radius: 20px; display: block; margin: 0 auto 16px; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); }
+      h1 { text-align: center; font-size: 32px; margin: 0; letter-spacing: -0.02em; }
+      .tagline { text-align: center; color: var(--muted); margin: 8px 0 32px; font-size: 17px; }
+      .features { list-style: none; padding: 0; margin: 0 0 32px; display: grid; gap: 12px; }
+      .features li { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 14px 16px; }
+      .features strong { display: block; font-size: 16px; }
+      .features span { color: var(--muted); font-size: 14px; }
+      .cta {
+        display: block; text-align: center; text-decoration: none; font-weight: 600; font-size: 17px;
+        background: var(--primary); color: #fff; padding: 14px 20px; border-radius: 14px;
+      }
+      .note { text-align: center; color: var(--muted); font-size: 13px; margin-top: 12px; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <img class="icon" src="app/icons/icon-512x512.png" alt="" />
+      <h1>Chat Mate</h1>
+      <p class="tagline">和 AI 朋友用英文聊天，練習說出你的看法和理由。</p>
+
+      <ul class="features">
+        <li><strong>每日練習</strong><span>每天 3 個句型、5 個單字，依你的程度排好，自己造句還有朋友幫你看。</span></li>
+        <li><strong>語音對話</strong><span>先聽再說，像真的跟外國朋友聊天一樣一來一往。</span></li>
+        <li><strong>朋友語氣的回饋</strong><span>用中文告訴你哪裡可以更自然，不像上課。</span></li>
+      </ul>
+
+      <a class="cta" href="https://apps.apple.com/app/testflight/id899247664">用 TestFlight 安裝 iPhone App</a>
+      <p class="note">目前是邀請制測試版：收到邀請信後，在 TestFlight 裡安裝 Chat Mate。</p>
+    </main>
   </body>
 </html>
