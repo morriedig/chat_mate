@@ -1,0 +1,497 @@
+level: beginner
+patterns:
+  - id: like-to
+    pack: daily
+    pattern: "I'd like ..."
+    meaning: "我想要……（比 I want 禮貌）"
+    when: "點餐、請求、表達想做的事時用，聽起來比 I want 客氣。後面可接名詞，或 to + 動詞。"
+    examples:
+      - en: "I'd like a bowl of beef noodles, please."
+        zh: "請給我一碗牛肉麵。"
+      - en: "I'd like to talk about the project schedule."
+        zh: "我想談一下專案的時程。"
+    choice:
+      situation: "在咖啡店，你想點一杯大杯拿鐵。"
+      options:
+        - "I'd like a large latte, please."
+        - "I want to a large latte."
+        - "Give me large latte."
+      answer: 0
+      explain: "I'd like 後面可以直接接名詞；want to 後面要接動詞。Give me 對店員來說太直接，也少了 a。"
+    task: "用這個句型說：週末你想做什麼？"
+    match: ["i'd like"]
+    mistake:
+      wrong: "I want to a coffee."
+      right: "I'd like a coffee. / I want a coffee."
+      why: "want to 後面要接動詞，接名詞時不用 to。"
+
+  - id: want-to
+    pack: daily
+    pattern: "I want to ..."
+    meaning: "我想（做某事）"
+    when: "跟朋友、家人說自己想做什麼時用；對陌生人或店員說 I'd like 比較客氣。"
+    examples:
+      - en: "I want to sleep in this Saturday."
+        zh: "這個星期六我想睡晚一點。"
+      - en: "I want to learn more about data analysis."
+        zh: "我想多學一點資料分析。"
+    choice:
+      situation: "朋友問你週末想做什麼，你想去看電影。"
+      options:
+        - "I want go to see a movie."
+        - "I want to watching a movie."
+        - "I want to see a movie."
+      answer: 2
+      explain: "want to 後面接原形動詞：不能省略 to，也不能接 -ing。"
+    task: "用這個句型說：今年你最想做的一件事。"
+    match: ["want to"]
+    mistake:
+      wrong: "I want go home."
+      right: "I want to go home."
+      why: "中文「我想回家」中間沒有字，但英文 want 後面接動詞時一定要有 to。"
+
+  - id: need-to
+    pack: daily
+    pattern: "I need to ..."
+    meaning: "我得……／我必須……"
+    when: "說自己有必要做的事時用，比 I must 口語、自然。"
+    examples:
+      - en: "I need to buy some milk on the way home."
+        zh: "我回家路上得買點牛奶。"
+      - en: "I need to finish this report by Friday."
+        zh: "我得在星期五前完成這份報告。"
+    choice:
+      situation: "你明天要搭早上七點的高鐵，得早起。"
+      options:
+        - "I must to get up early tomorrow."
+        - "I need to get up early tomorrow."
+        - "I need get up early tomorrow."
+      answer: 1
+      explain: "need to + 原形動詞；must 後面直接接動詞，不加 to。日常對話用 need to 比 must 自然。"
+    task: "用這個句型說：今天下班或放學後你得做什麼？"
+    match: ["need to"]
+    mistake:
+      wrong: "I need go to the bank."
+      right: "I need to go to the bank."
+      why: "need 後面接動詞時要加 to。"
+
+  - id: can-i
+    pack: daily
+    pattern: "Can I ...?"
+    meaning: "我可以……嗎？"
+    when: "請求許可時用，例如借東西、坐位子、用設備。"
+    examples:
+      - en: "Can I sit here?"
+        zh: "我可以坐這裡嗎？"
+      - en: "Can I leave a little early today?"
+        zh: "我今天可以早一點走嗎？"
+    choice:
+      situation: "在朋友家，你想借用一下廁所。"
+      options:
+        - "I can use the bathroom?"
+        - "Can I use the bathroom is OK?"
+        - "Can I use your bathroom?"
+      answer: 2
+      explain: "問句要把 can 放到句首；中文「可以嗎」的「嗎」已經包含在 Can I 裡，不用再加 is OK。"
+    task: "用這個句型在辦公室或教室裡提出一個請求。"
+    match: ["can i"]
+    mistake:
+      wrong: "I can sit here?"
+      right: "Can I sit here?"
+      why: "直述句加問號在口語中聽起來像驚訝，正式的請求要把 can 移到前面。"
+
+  - id: could-you
+    pack: daily
+    pattern: "Could you ...?"
+    meaning: "可以請你……嗎？（客氣的請求）"
+    when: "請別人幫忙時用，比 Can you 更有禮貌，對同事、店員、陌生人都適合。"
+    examples:
+      - en: "Could you pass me the salt?"
+        zh: "可以請你把鹽遞給我嗎？"
+      - en: "Could you send me the file again?"
+        zh: "可以請你再寄一次檔案給我嗎？"
+    choice:
+      situation: "同事講太快，你沒聽懂，想請他再說一次。"
+      options:
+        - "Could you say that again, please?"
+        - "Could you repeat again?"
+        - "Can you speak again?"
+      answer: 0
+      explain: "repeat 本身就是「再說一次」，不用再加 again；speak again 是「再發言一次」，意思不對。"
+    task: "用這個句型請朋友或同事幫你一個小忙。"
+    match: ["could you"]
+    mistake:
+      wrong: "Could you repeat again?"
+      right: "Could you say that again? / Could you repeat that?"
+      why: "中文「再重複一次」很自然，但英文 repeat 已經有「再」的意思。"
+
+  - id: do-you
+    pack: smalltalk
+    pattern: "Do you ...?"
+    meaning: "你（平常）……嗎？"
+    when: "問對方的習慣、喜好時用，是聊天最常用的開頭。"
+    examples:
+      - en: "Do you cook at home?"
+        zh: "你會在家煮飯嗎？"
+      - en: "Do you take the MRT to work?"
+        zh: "你搭捷運上班嗎？"
+    choice:
+      situation: "你想知道新同學喜不喜歡喝咖啡。"
+      options:
+        - "Are you like coffee?"
+        - "Do you like coffee?"
+        - "You like coffee or not?"
+      answer: 1
+      explain: "like 是一般動詞，問句用 Do，不用 Are；「喜不喜歡」不要直翻成 or not，聽起來很不客氣。"
+    task: "用這個句型問一個朋友的生活習慣。"
+    match: ["do you"]
+    mistake:
+      wrong: "Are you like spicy food?"
+      right: "Do you like spicy food?"
+      why: "句子裡已經有動詞 like，就不能再用 be 動詞 are 來問。"
+
+  - id: what-do-you-think-of
+    pack: opinion
+    pattern: "What do you think of ...?"
+    meaning: "你覺得……怎麼樣？"
+    when: "問別人對某個東西、地方、想法的看法時用。"
+    examples:
+      - en: "What do you think of this jacket?"
+        zh: "你覺得這件外套怎麼樣？"
+      - en: "What do you think of the new teacher?"
+        zh: "你覺得新老師怎麼樣？"
+    choice:
+      situation: "你想問朋友覺得新開的拉麵店怎麼樣。"
+      options:
+        - "How do you think of the new ramen place?"
+        - "What do you feel the new ramen place?"
+        - "What do you think of the new ramen place?"
+      answer: 2
+      explain: "中文「怎麼樣」容易讓人用 how，但英文要說 What do you think of…。也可以說 How do you like…?"
+    task: "用這個句型問朋友對一部電影或一家店的看法。"
+    match: ["what do you think"]
+    mistake:
+      wrong: "How do you think about it?"
+      right: "What do you think about it?"
+      why: "think 問「想法內容」用 what；how 問的是「用什麼方式想」。"
+
+  - id: think-because
+    pack: opinion
+    pattern: "I think ... because ..."
+    meaning: "我覺得……，因為……"
+    when: "說出自己的看法並加上理由，讓對話不會只停在一句。"
+    examples:
+      - en: "I think summer is the best because I love the beach."
+        zh: "我覺得夏天最棒，因為我喜歡海邊。"
+      - en: "I think we need more time because the task is big."
+        zh: "我覺得我們需要更多時間，因為這個工作量很大。"
+    choice:
+      situation: "朋友問你喜歡夏天還是冬天，你喜歡冬天，因為可以吃火鍋。"
+      options:
+        - "I think winter is better because I can eat hot pot."
+        - "Because I can eat hot pot, so I think winter is better."
+        - "I think winter is better, because of I can eat hot pot."
+      answer: 0
+      explain: "英文 because 和 so 不能同時用；because of 後面接名詞，不接句子。"
+    task: "用這個句型說：你比較喜歡在家還是出門？為什麼？"
+    match: ["i think", "because"]
+    mistake:
+      wrong: "Because it's raining, so I stay home."
+      right: "Because it's raining, I'm staying home. / It's raining, so I'm staying home."
+      why: "中文「因為……所以……」會一起出現，英文只能選一個。"
+
+  - id: going-to
+    pack: daily
+    pattern: "I'm going to ..."
+    meaning: "我要／我打算……（已經決定的事）"
+    when: "說已經決定好的計畫時用。"
+    examples:
+      - en: "I'm going to visit my grandma this weekend."
+        zh: "這個週末我要去看奶奶。"
+      - en: "I'm going to start the new project on Monday."
+        zh: "我星期一要開始新專案。"
+    choice:
+      situation: "你已經決定今晚要去逛夜市。"
+      options:
+        - "I will going to the night market tonight."
+        - "I'm going to go to the night market tonight."
+        - "I'm going to going to the night market tonight."
+      answer: 1
+      explain: "be going to 後面接原形動詞；will 後面也一定接原形動詞，不能接 -ing。"
+    task: "用這個句型說：明天你要做什麼？"
+    match: ["going to"]
+    mistake:
+      wrong: "I going to call her later."
+      right: "I'm going to call her later."
+      why: "going to 前面要有 be 動詞（am / is / are），中文沒有對應的字所以常被漏掉。"
+
+  - id: planning-to
+    pack: daily
+    pattern: "I'm planning to ..."
+    meaning: "我正在計畫／打算……"
+    when: "說還在安排中、還沒完全確定的計畫時用。"
+    examples:
+      - en: "I'm planning to visit Japan next spring."
+        zh: "我打算明年春天去日本玩。"
+      - en: "I'm planning to take an English class after work."
+        zh: "我打算下班後去上英文課。"
+    choice:
+      situation: "你打算明年去日本玩，但還沒訂機票。"
+      options:
+        - "I'm planning go to Japan next year."
+        - "I plan going to Japan next year."
+        - "I'm planning to visit Japan next year."
+      answer: 2
+      explain: "plan 後面接動詞要用 to + 原形動詞，不能省略 to，也不接 -ing。"
+    task: "用這個句型說：下個假期你打算做什麼？"
+    match: ["planning to"]
+
+  - id: never-done
+    pack: smalltalk
+    pattern: "I've never ..."
+    meaning: "我從來沒有……過"
+    when: "說自己到現在為止沒有過的經驗。"
+    examples:
+      - en: "I've never tried durian."
+        zh: "我從來沒吃過榴槤。"
+      - en: "I've never given a talk in English."
+        zh: "我從來沒用英文上台報告過。"
+    choice:
+      situation: "同事問你有沒有滑過雪，你從來沒滑過。"
+      options:
+        - "I've never been skiing."
+        - "I never ski before."
+        - "I haven't never skied."
+      answer: 0
+      explain: "講「到現在為止的經驗」用 have + 過去分詞；never 已經是否定，不能再加 not。"
+    task: "用這個句型說一件你從來沒做過、但想試試的事。"
+    match: ["never"]
+    mistake:
+      wrong: "I never go to Japan before."
+      right: "I've never been to Japan."
+      why: "「去過／沒去過」是經驗，要用現在完成式 have been to。"
+
+  - id: have-you-ever
+    pack: smalltalk
+    pattern: "Have you ever ...?"
+    meaning: "你有沒有……過？"
+    when: "問對方的經驗，很適合用來開啟話題。"
+    examples:
+      - en: "Have you ever been to Hualien?"
+        zh: "你去過花蓮嗎？"
+      - en: "Have you ever worked from home?"
+        zh: "你有在家工作過嗎？"
+    choice:
+      situation: "你想問外國朋友有沒有吃過臭豆腐。"
+      options:
+        - "Did you ever ate stinky tofu?"
+        - "Have you ever tried stinky tofu?"
+        - "Have you ever try stinky tofu?"
+      answer: 1
+      explain: "Have you ever 後面接過去分詞（tried、eaten、been），不接原形；did 後面則要接原形。"
+    task: "用這個句型問朋友一個經驗。"
+    match: ["have you ever"]
+    mistake:
+      wrong: "Have you ever went to Tainan?"
+      right: "Have you ever been to Tainan?"
+      why: "went 是過去式，這裡要用過去分詞；說「去過某地」習慣用 been to。"
+
+  - id: usually
+    pack: daily
+    pattern: "I usually ..."
+    meaning: "我通常……"
+    when: "說自己的習慣或日常安排。"
+    examples:
+      - en: "I usually have toast for breakfast."
+        zh: "我早餐通常吃吐司。"
+      - en: "I usually check my email first at work."
+        zh: "我上班通常先看電子郵件。"
+    choice:
+      situation: "朋友問你平常怎麼上班，你通常搭捷運。"
+      options:
+        - "I usually am take the MRT to work."
+        - "I'm usually take the MRT."
+        - "I usually take the MRT to work."
+      answer: 2
+      explain: "usually 直接放在一般動詞前面，句子裡不需要再加 am。"
+    task: "用這個句型說：你週末通常做什麼？"
+    match: ["usually"]
+    mistake:
+      wrong: "I usually am go to bed at 12."
+      right: "I usually go to bed at 12."
+      why: "一個句子已經有動詞 go，就不用再放 be 動詞。"
+
+  - id: lets
+    pack: suggest
+    pattern: "Let's ..."
+    meaning: "我們來……吧"
+    when: "提議大家一起做某件事。"
+    examples:
+      - en: "Let's grab some bubble tea."
+        zh: "我們去買杯珍奶吧。"
+      - en: "Let's take a short break."
+        zh: "我們休息一下吧。"
+    choice:
+      situation: "下課了，你想約同學一起去吃午餐。"
+      options:
+        - "Let's to get lunch together."
+        - "Let's get lunch together."
+        - "Let's going to lunch."
+      answer: 1
+      explain: "Let's 後面直接接原形動詞，不加 to，也不接 -ing。"
+    task: "用這個句型約朋友這個週末一起做一件事。"
+    match: ["let's"]
+    mistake:
+      wrong: "Let's to go!"
+      right: "Let's go!"
+      why: "Let's = Let us，let 後面的動詞不加 to。"
+
+  - id: how-about
+    pack: suggest
+    pattern: "How about ...?"
+    meaning: "……怎麼樣？（提出建議）"
+    when: "提出一個選項讓對方考慮。後面接名詞或 V-ing。"
+    examples:
+      - en: "How about pizza for dinner?"
+        zh: "晚餐吃披薩怎麼樣？"
+      - en: "How about meeting at three o'clock?"
+        zh: "三點開會怎麼樣？"
+    choice:
+      situation: "朋友問今晚吃什麼，你提議吃火鍋。"
+      options:
+        - "How about hot pot tonight?"
+        - "How about eat hot pot tonight?"
+        - "How about we eating hot pot?"
+      answer: 0
+      explain: "How about 後面接名詞或 V-ing（How about having hot pot?），不接原形動詞。"
+    task: "用這個句型提議一個週末的活動。"
+    match: ["how about"]
+    mistake:
+      wrong: "How about go to the beach?"
+      right: "How about going to the beach?"
+      why: "about 是介系詞，後面的動詞要改成 -ing。"
+
+  - id: me-neither
+    pack: agree
+    pattern: "Me neither. / I don't either."
+    meaning: "我也不……（附和否定的說法）"
+    when: "對方說了否定句（I don't…、I can't…），你也一樣時用。對方說肯定句才用 Me too。"
+    examples:
+      - en: "A: I don't like durian. B: Me neither."
+        zh: "A：我不喜歡榴槤。B：我也不喜歡。"
+      - en: "A: I didn't finish the homework. B: Me neither."
+        zh: "A：我作業沒寫完。B：我也沒有。"
+    choice:
+      situation: "朋友說 I don't like horror movies. 你也不喜歡。"
+      options:
+        - "Me too."
+        - "I don't like too."
+        - "Me neither."
+      answer: 2
+      explain: "附和否定句要用 Me neither 或 I don't either；Me too 用在附和肯定句（口語中偶爾聽得到，但不是標準用法）。"
+    task: "朋友說 I can't cook. 用這個句型回應，再多說一句。"
+    match: ["neither"]
+    mistake:
+      wrong: "A: I can't swim. B: Me too."
+      right: "Me neither. / I can't either."
+      why: "中文不論肯定否定都說「我也是」，英文要跟著對方的句子換說法。"
+
+  - id: dont-think
+    pack: disagree
+    pattern: "I don't think ..."
+    meaning: "我不覺得……／我認為不……"
+    when: "委婉表達不同意或否定的看法。英文習慣把 not 放在 think 這邊。"
+    examples:
+      - en: "I don't think it will rain today."
+        zh: "我覺得今天不會下雨。"
+      - en: "I don't think we need another meeting."
+        zh: "我覺得我們不需要再開一次會。"
+    choice:
+      situation: "朋友說這部電影很好看，你覺得不怎麼樣，想委婉地說。"
+      options:
+        - "I think it's not very good."
+        - "I don't think it's very good."
+        - "I'm not think it's good."
+      answer: 1
+      explain: "英文習慣說 I don't think…，比 I think it's not… 自然；think 是一般動詞，否定用 don't 不用 I'm not。"
+    task: "用這個句型委婉地不同意一個說法。"
+    match: ["i don't think"]
+    mistake:
+      wrong: "I think it's not a good idea."
+      right: "I don't think it's a good idea."
+      why: "中文說「我覺得不好」，英文習慣把否定提前到 think，聽起來比較委婉。"
+
+  - id: sorry-i
+    pack: daily
+    pattern: "Sorry, I ..."
+    meaning: "抱歉，我……"
+    when: "為自己做的事或狀況道歉，後面直接說明原因。"
+    examples:
+      - en: "Sorry, I forgot to call you back."
+        zh: "抱歉，我忘了回你電話。"
+      - en: "Sorry, I didn't see your message."
+        zh: "抱歉，我沒看到你的訊息。"
+    choice:
+      situation: "你開會遲到了五分鐘，進會議室時道歉。"
+      options:
+        - "Sorry, I'm late."
+        - "Sorry for late."
+        - "Sorry, I late."
+      answer: 0
+      explain: "late 是形容詞，前面要有 be 動詞：I'm late；也可以說 Sorry for being late。"
+    task: "用這個句型為一件小事道歉，並說明原因。"
+    match: ["sorry"]
+    mistake:
+      wrong: "Sorry for late."
+      right: "Sorry I'm late. / Sorry for being late."
+      why: "for 後面要接名詞或 V-ing，late 是形容詞不能直接放。"
+
+  - id: thanks-for
+    pack: daily
+    pattern: "Thanks for ..."
+    meaning: "謝謝你（做了）……"
+    when: "具體說出要謝什麼，比只說 Thank you 更有誠意。後面接名詞或 V-ing。"
+    examples:
+      - en: "Thanks for the birthday cake!"
+        zh: "謝謝你的生日蛋糕！"
+      - en: "Thanks for explaining the problem to me."
+        zh: "謝謝你跟我解釋這個問題。"
+    choice:
+      situation: "同事幫你搬了一箱資料，你想謝謝他。"
+      options:
+        - "Thanks for help me."
+        - "Thank you for your helping."
+        - "Thanks for helping me."
+      answer: 2
+      explain: "for 是介系詞，後面接 V-ing（helping）或名詞（your help），不能接原形動詞。"
+    task: "用這個句型謝謝最近幫過你的人。"
+    match: ["thanks for"]
+    mistake:
+      wrong: "Thank you for invite me."
+      right: "Thank you for inviting me."
+      why: "for 後面的動詞要加 -ing。"
+
+  - id: how-was-your
+    pack: smalltalk
+    pattern: "How was your ...?"
+    meaning: "你的……過得怎麼樣？"
+    when: "問對方已經結束的事情：週末、假期、旅行、考試。"
+    examples:
+      - en: "How was your trip to Kenting?"
+        zh: "你去墾丁玩得怎麼樣？"
+      - en: "How was your job interview?"
+        zh: "你的面試順利嗎？"
+    choice:
+      situation: "星期一早上，你想問同事週末過得怎麼樣。"
+      options:
+        - "How is your weekend?"
+        - "How was your weekend?"
+        - "How did your weekend?"
+      answer: 1
+      explain: "週末已經過去了，要用過去式 was；How did 後面一定要接動詞。"
+    task: "用這個句型問朋友最近一件已經結束的事。"
+    match: ["how was"]
+    mistake:
+      wrong: "How is your trip? (旅行已經結束)"
+      right: "How was your trip?"
+      why: "中文不分時態，英文問已經結束的事要用 was。"

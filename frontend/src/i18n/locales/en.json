@@ -590,5 +590,41 @@
     "cheerOne": "You used {a} — nice! Try the other one tomorrow too.",
     "cheerOther": "You used {a} — good connector, even if it wasn't today's target.",
     "cheerNone": "No connectors spotted yet. Next time try adding a \"because…\" after your opinion."
+  },
+  "dailyPractice": {
+    "title": "Today's practice",
+    "back": "Back",
+    "progress": "{done} / {total} done",
+    "newPattern": "New pattern",
+    "reviewPattern": "Review",
+    "newWord": "New word",
+    "reviewWord": "Review word",
+    "listen": "Listen",
+    "startPractice": "Practice it",
+    "correct": "Nice, that's the natural one!",
+    "notQuite": "Not quite — here's why:",
+    "next": "Next",
+    "check": "Ask my friend",
+    "checking": "Checking…",
+    "skip": "Skip",
+    "usedPattern": "You used the pattern ✓",
+    "missedPattern": "The pattern isn't in your sentence yet.",
+    "corrected": "Fixed: ",
+    "better": "Another way: ",
+    "checkUnavailable": "(Your friend can't check right now.)",
+    "howWell": "How well do you know it now?",
+    "rating": {
+      "hard": "Not yet",
+      "ok": "Getting there",
+      "easy": "Got it"
+    },
+    "doneTitle": "Done for today!",
+    "doneSummary": "{patterns} patterns and {words} words practiced.",
+    "useThemHint": "Try using today's patterns for real:",
+    "writeOpinion": "Write today's opinion",
+    "backHome": "Back home",
+    "cardTitle": "Today's practice",
+    "cardSubtitle": "{patterns} patterns + {words} words, about 10 minutes",
+    "cardDone": "Done today — see you tomorrow"
   }
 }

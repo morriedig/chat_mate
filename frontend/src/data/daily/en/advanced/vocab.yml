@@ -1,0 +1,634 @@
+level: advanced
+words:
+  - id: nuance
+    word: nuance
+    pos: n.
+    phonetic: "/ˈnuːɑːns/"
+    meaning: "細微差別、微妙之處"
+    example:
+      en: "Machine translation still misses a lot of the nuance in casual Chinese."
+      zh: "機器翻譯還是會漏掉口語中文裡很多細微的意思。"
+    collocations: ["subtle nuance", "the nuances of", "miss the nuance"]
+    note: "形容詞 nuanced 也很常用：a nuanced view（有層次、不非黑即白的看法）。"
+
+  - id: trade-off
+    word: trade-off
+    pos: n.
+    phonetic: "/ˈtreɪd ɔːf/"
+    meaning: "取捨、權衡（為了得到一樣而犧牲另一樣）"
+    example:
+      en: "There's always a trade-off between speed and quality."
+      zh: "速度和品質之間總是要有所取捨。"
+    collocations: ["a trade-off between A and B", "make a trade-off"]
+    note: "常跟 between A and B 一起用。"
+
+  - id: implication
+    word: implication
+    pos: n.
+    phonetic: "/ˌɪmplɪˈkeɪʃən/"
+    meaning: "（可能的）影響、後果；言外之意"
+    example:
+      en: "Have we thought through the legal implications of storing users' voice recordings?"
+      zh: "我們有沒有想清楚儲存使用者錄音在法律上可能帶來的影響？"
+    collocations: ["have implications for", "the implications of", "serious implications"]
+    note: "講「影響」時常用複數 implications，比 effect 更強調「連帶的後果」。"
+
+  - id: rationale
+    word: rationale
+    pos: n.
+    phonetic: "/ˌræʃəˈnæl/"
+    meaning: "根本理由、背後的邏輯"
+    example:
+      en: "Could you walk us through the rationale behind the new pricing?"
+      zh: "可以跟我們說明一下新定價背後的理由嗎？"
+    collocations: ["the rationale behind", "the rationale for"]
+    note: "比 reason 正式，指一個決定背後整套的思考邏輯。"
+
+  - id: caveat
+    word: caveat
+    pos: n.
+    phonetic: "/ˈkæviæt/"
+    meaning: "附帶條件、但書、需要注意的地方"
+    example:
+      en: "The plan works, with one caveat: we'd need the client's data by Friday."
+      zh: "這個計畫可行，但有一個前提：我們週五前要拿到客戶的資料。"
+    collocations: ["with one caveat", "add a caveat"]
+
+  - id: bottleneck
+    word: bottleneck
+    pos: n.
+    phonetic: "/ˈbɑːtlnek/"
+    meaning: "瓶頸（拖慢整體進度的環節）"
+    example:
+      en: "Design reviews have become the bottleneck, so features are piling up waiting for approval."
+      zh: "設計審查變成了瓶頸，所以功能都堆著等核准。"
+    collocations: ["become a bottleneck", "remove the bottleneck"]
+
+  - id: leeway
+    word: leeway
+    pos: n.
+    phonetic: "/ˈliːweɪ/"
+    meaning: "（行動、決定上的）彈性空間、餘地"
+    example:
+      en: "My manager gives me a lot of leeway in how I organize my week."
+      zh: "主管給我很大的彈性去安排自己一週的工作。"
+    collocations: ["give someone leeway", "some leeway", "leeway to do something"]
+    note: "不可數名詞，不說 a leeway。"
+
+  - id: consensus
+    word: consensus
+    pos: n.
+    phonetic: "/kənˈsensəs/"
+    meaning: "共識"
+    example:
+      en: "We didn't reach a consensus, so we'll vote on it next week."
+      zh: "我們沒有達成共識，所以下週會投票決定。"
+    collocations: ["reach a consensus", "a broad consensus", "build consensus"]
+    note: "consensus 本身就有「大家的意見」的意思，說 general consensus 可以，但 consensus of opinion 有點重複。"
+
+  - id: premise
+    word: premise
+    pos: n.
+    phonetic: "/ˈpremɪs/"
+    meaning: "前提、立論基礎"
+    example:
+      en: "The whole plan rests on the premise that users will pay for extra storage."
+      zh: "整個計畫的前提是使用者願意為額外的儲存空間付費。"
+    collocations: ["on the premise that", "the basic premise"]
+    note: "注意和 premises（房屋、營業場所）區分。"
+
+  - id: discrepancy
+    word: discrepancy
+    pos: n.
+    phonetic: "/dɪˈskrepənsi/"
+    meaning: "（數字、說法之間的）不一致、落差"
+    example:
+      en: "There's a small discrepancy between the invoice and the order we placed."
+      zh: "發票和我們下的訂單之間有一點對不上。"
+    collocations: ["a discrepancy between A and B", "notice a discrepancy"]
+
+  - id: incentive
+    word: incentive
+    pos: n.
+    phonetic: "/ɪnˈsentɪv/"
+    meaning: "誘因、激勵"
+    example:
+      en: "Free shipping gives people an incentive to add one more item to their cart."
+      zh: "免運費讓人有誘因多放一件商品到購物車。"
+    collocations: ["an incentive to do something", "tax incentive", "have no incentive"]
+
+  - id: precedent
+    word: precedent
+    pos: n.
+    phonetic: "/ˈpresɪdənt/"
+    meaning: "先例"
+    example:
+      en: "If we give one client a discount, we set a precedent for everyone else."
+      zh: "如果給一個客戶折扣，就等於替其他所有人開了先例。"
+    collocations: ["set a precedent", "without precedent"]
+    note: "set a precedent 常帶「之後很難收回」的擔憂語氣。"
+
+  - id: leverage
+    word: leverage
+    pos: v.
+    phonetic: "/ˈlevərɪdʒ/"
+    meaning: "善用、借助（既有的資源或優勢）"
+    example:
+      en: "We could leverage our existing user base to test the new feature quickly."
+      zh: "我們可以善用現有的用戶群，快速測試新功能。"
+    collocations: ["leverage existing resources", "leverage experience"]
+    note: "職場常用，但用太多會像在講企業術語；口語可以換成 make use of。"
+
+  - id: mitigate
+    word: mitigate
+    pos: v.
+    phonetic: "/ˈmɪtɪɡeɪt/"
+    meaning: "減輕、降低（風險或負面影響）"
+    example:
+      en: "Daily backups help mitigate the risk of losing customer data."
+      zh: "每天備份有助於降低遺失客戶資料的風險。"
+    collocations: ["mitigate the risk", "mitigate the impact"]
+    note: "受詞是風險或傷害，不是問題本身；「解決問題」用 solve 或 fix。"
+
+  - id: exacerbate
+    word: exacerbate
+    pos: v.
+    phonetic: "/ɪɡˈzæsərbeɪt/"
+    meaning: "使（問題、情況）惡化"
+    example:
+      en: "Adding more people to a late project often exacerbates the delay."
+      zh: "在已經延誤的專案裡加人，常常只會讓延誤更嚴重。"
+    collocations: ["exacerbate the problem", "exacerbate tensions"]
+    note: "比 make worse 正式，受詞通常已經是負面的東西。"
+
+  - id: undermine
+    word: undermine
+    pos: v.
+    phonetic: "/ˌʌndərˈmaɪn/"
+    meaning: "逐漸削弱、破壞（信心、權威、努力）"
+    example:
+      en: "Changing the rules at the last minute undermines people's trust in the process."
+      zh: "最後一刻改規則會削弱大家對整個流程的信任。"
+    collocations: ["undermine trust", "undermine someone's authority", "undermine confidence"]
+
+  - id: reconcile
+    word: reconcile
+    pos: v.
+    phonetic: "/ˈrekənsaɪl/"
+    meaning: "調和（兩個看似衝突的東西）；使和好"
+    example:
+      en: "It's hard to reconcile a full-time job with a newborn at home."
+      zh: "要兼顧全職工作和家裡的新生兒很不容易。"
+    collocations: ["reconcile A with B", "reconcile differences"]
+    note: "財務上 reconcile the accounts 是「對帳」。"
+
+  - id: streamline
+    word: streamline
+    pos: v.
+    phonetic: "/ˈstriːmlaɪn/"
+    meaning: "簡化、精簡（流程），使更有效率"
+    example:
+      en: "We streamlined the sign-up form from eight fields down to three."
+      zh: "我們把註冊表單從八個欄位精簡到三個。"
+    collocations: ["streamline the process", "streamline operations"]
+
+  - id: articulate
+    word: articulate
+    pos: v.
+    phonetic: "/ɑːrˈtɪkjəleɪt/"
+    meaning: "清楚表達（想法、感受）"
+    example:
+      en: "She articulated exactly what the rest of us had been struggling to say."
+      zh: "她把我們其他人一直說不清楚的想法講得非常清楚。"
+    collocations: ["articulate an idea", "articulate a vision"]
+    note: "當形容詞時唸 /ɑːrˈtɪkjələt/，意思是「口條好、表達清楚的」。"
+
+  - id: scrutinize
+    word: scrutinize
+    pos: v.
+    phonetic: "/ˈskruːtənaɪz/"
+    meaning: "仔細檢查、細細審視"
+    example:
+      en: "Investors will scrutinize every number in this report, so let's double-check them."
+      zh: "投資人會仔細檢查這份報告裡的每個數字，我們再核對一次吧。"
+    collocations: ["scrutinize the details", "closely scrutinize"]
+    note: "名詞 scrutiny：under scrutiny（受到嚴格檢視）。"
+
+  - id: alleviate
+    word: alleviate
+    pos: v.
+    phonetic: "/əˈliːvieɪt/"
+    meaning: "緩解、減輕（痛苦、壓力、問題）"
+    example:
+      en: "Hiring two temps alleviated some of the pressure during the holiday rush."
+      zh: "雇了兩個臨時工，減輕了一些假期旺季的壓力。"
+    collocations: ["alleviate pressure", "alleviate symptoms", "alleviate concerns"]
+
+  - id: entail
+    word: entail
+    pos: v.
+    phonetic: "/ɪnˈteɪl/"
+    meaning: "必然包含、牽涉到"
+    example:
+      en: "Can you tell me what the role would entail day to day?"
+      zh: "可以說一下這個職位每天實際要做哪些事嗎？"
+    collocations: ["what does it entail", "entail risks"]
+    note: "面試時問 What does the job entail? 很自然。"
+
+  - id: warrant
+    word: warrant
+    pos: v.
+    phonetic: "/ˈwɔːrənt/"
+    meaning: "使有正當理由、值得（採取某行動）"
+    example:
+      en: "A two-minute delay hardly warrants an emergency meeting."
+      zh: "延遲兩分鐘根本不值得開緊急會議。"
+    collocations: ["warrant further investigation", "warrant attention"]
+
+  - id: compelling
+    word: compelling
+    pos: adj.
+    phonetic: "/kəmˈpelɪŋ/"
+    meaning: "有說服力的；引人入勝的"
+    example:
+      en: "She made a compelling case for moving the team to a four-day week."
+      zh: "她提出了很有說服力的理由，主張團隊改成一週工作四天。"
+    collocations: ["a compelling argument", "compelling evidence", "make a compelling case"]
+
+  - id: viable
+    word: viable
+    pos: adj.
+    phonetic: "/ˈvaɪəbəl/"
+    meaning: "可行的、能長久運作的"
+    example:
+      en: "Without a second investor, the project just isn't financially viable."
+      zh: "沒有第二個投資人，這個案子在財務上就是不可行。"
+    collocations: ["a viable option", "commercially viable", "financially viable"]
+    note: "比 possible 更強調「實際運作得下去」。"
+
+  - id: inherent
+    word: inherent
+    pos: adj.
+    phonetic: "/ɪnˈhɪrənt/"
+    meaning: "固有的、本身就存在的"
+    example:
+      en: "There's an inherent risk in any investment, no matter how safe it looks."
+      zh: "任何投資本身都有風險，不管看起來多安全。"
+    collocations: ["an inherent risk", "inherent in something"]
+    note: "常用 be inherent in：Risk is inherent in investing."
+
+  - id: feasible
+    word: feasible
+    pos: adj.
+    phonetic: "/ˈfiːzəbəl/"
+    meaning: "（實際上）做得到的、可行的"
+    example:
+      en: "Is it feasible to finish the redesign before the trade show?"
+      zh: "在展覽前完成改版做得到嗎？"
+    collocations: ["technically feasible", "a feasible plan"]
+
+  - id: tangible
+    word: tangible
+    pos: adj.
+    phonetic: "/ˈtændʒəbəl/"
+    meaning: "具體的、看得到的（成果、好處）"
+    example:
+      en: "After three months, we're finally seeing tangible results from the new onboarding flow."
+      zh: "三個月後，我們終於看到新手引導流程帶來的具體成果。"
+    collocations: ["tangible results", "tangible benefits"]
+
+  - id: plausible
+    word: plausible
+    pos: adj.
+    phonetic: "/ˈplɔːzəbəl/"
+    meaning: "聽起來合理的、說得通的"
+    example:
+      en: "His excuse sounded plausible, but nobody could confirm it."
+      zh: "他的理由聽起來說得通，但沒有人能證實。"
+    collocations: ["a plausible explanation", "sound plausible"]
+    note: "只是「聽起來合理」，不代表一定是真的。"
+
+  - id: pragmatic
+    word: pragmatic
+    pos: adj.
+    phonetic: "/præɡˈmætɪk/"
+    meaning: "務實的"
+    example:
+      en: "Let's be pragmatic and fix the biggest issue first instead of rewriting everything."
+      zh: "我們務實一點，先修最大的問題，而不是全部重寫。"
+    collocations: ["a pragmatic approach", "be pragmatic about"]
+
+  - id: ambiguous
+    word: ambiguous
+    pos: adj.
+    phonetic: "/æmˈbɪɡjuəs/"
+    meaning: "模稜兩可的、不明確的"
+    example:
+      en: "The email was a bit ambiguous, so I called to check what she meant."
+      zh: "那封信寫得有點模稜兩可，所以我打電話問她是什麼意思。"
+    collocations: ["deliberately ambiguous", "an ambiguous answer"]
+
+  - id: counterproductive
+    word: counterproductive
+    pos: adj.
+    phonetic: "/ˌkaʊntərprəˈdʌktɪv/"
+    meaning: "適得其反的"
+    example:
+      en: "Studying all night before an exam can be counterproductive."
+      zh: "考前熬夜讀書可能會適得其反。"
+    collocations: ["prove counterproductive", "be counterproductive"]
+
+  - id: contentious
+    word: contentious
+    pos: adj.
+    phonetic: "/kənˈtenʃəs/"
+    meaning: "有爭議的、容易引起爭論的"
+    example:
+      en: "Office seating turned out to be a surprisingly contentious topic."
+      zh: "辦公室座位安排竟然是個很有爭議的話題。"
+    collocations: ["a contentious issue", "highly contentious"]
+
+  - id: arguably
+    word: arguably
+    pos: adv.
+    phonetic: "/ˈɑːrɡjuəbli/"
+    meaning: "可以說、說不定是（提出一個有理由支持的看法）"
+    example:
+      en: "This is arguably the best ramen shop in the neighborhood."
+      zh: "這家說不定是這一帶最好吃的拉麵店。"
+    collocations: ["arguably the best", "arguably more important"]
+    note: "常被誤解成「有爭議地」；其實是「有理由可以這麼說」，常接最高級。"
+
+  - id: inevitably
+    word: inevitably
+    pos: adv.
+    phonetic: "/ɪnˈevɪtəbli/"
+    meaning: "不可避免地、必然"
+    example:
+      en: "When you launch something new, there will inevitably be a few bugs."
+      zh: "推出新東西時，難免會有幾個 bug。"
+    collocations: ["inevitably lead to", "almost inevitably"]
+
+  - id: ostensibly
+    word: ostensibly
+    pos: adv.
+    phonetic: "/ɑːˈstensəbli/"
+    meaning: "表面上、名義上（暗示實際可能不是這樣）"
+    example:
+      en: "The meeting was ostensibly about the budget, but it was really about who'd lead the team."
+      zh: "那場會議表面上是談預算，其實是在談誰要帶這個團隊。"
+    collocations: ["ostensibly to do something", "ostensibly because"]
+
+  - id: predominantly
+    word: predominantly
+    pos: adv.
+    phonetic: "/prɪˈdɑːmɪnəntli/"
+    meaning: "主要地、大部分"
+    example:
+      en: "Our customers are predominantly small businesses with fewer than twenty staff."
+      zh: "我們的客戶主要是員工不到二十人的小公司。"
+    collocations: ["predominantly female", "predominantly online"]
+    note: "比 mainly 正式，報告裡描述組成比例時很好用。"
+
+  - id: conversely
+    word: conversely
+    pos: adv.
+    phonetic: "/ˈkɑːnvɜːrsli/"
+    meaning: "反過來說、相反地"
+    example:
+      en: "Raising prices could cost us customers; conversely, cutting them could hurt our margins."
+      zh: "漲價可能會流失客戶；反過來說，降價可能會壓縮利潤。"
+    collocations: ["and conversely", "conversely, ..."]
+
+  - id: albeit
+    word: albeit
+    pos: conj.
+    phonetic: "/ɔːlˈbiːɪt/"
+    meaning: "雖然、儘管（後面接簡短的讓步補充）"
+    example:
+      en: "The trip was worth it, albeit a little expensive."
+      zh: "這趟旅行很值得，雖然有點貴。"
+    collocations: ["albeit briefly", "albeit slowly", "albeit with some changes"]
+    note: "後面接形容詞、副詞或片語，不接完整子句；要接完整子句用 although。"
+
+  - id: notwithstanding
+    word: notwithstanding
+    pos: prep.
+    phonetic: "/ˌnɑːtwɪθˈstændɪŋ/"
+    meaning: "儘管、雖然有（某事）"
+    example:
+      en: "Notwithstanding a few delays, the move to the new office went smoothly."
+      zh: "儘管有一些延誤，搬到新辦公室的過程還是很順利。"
+    collocations: ["notwithstanding the cost", "notwithstanding the fact that"]
+    note: "很正式，多用在書面或合約；口語用 despite 就好。"
+
+  - id: take-into-account
+    word: take into account
+    pos: phr.
+    phonetic: "/teɪk ˈɪntuː əˈkaʊnt/"
+    meaning: "把……考慮進去"
+    example:
+      en: "When you compare the two flats, take into account how much you'd spend on transport."
+      zh: "比較這兩間公寓時，要把交通費考慮進去。"
+    collocations: ["take something into account", "take into account the fact that"]
+    note: "受詞短時放中間：take it into account；受詞長時放後面。"
+
+  - id: be-wary-of
+    word: be wary of
+    pos: phr.
+    phonetic: "/bi ˈweri əv/"
+    meaning: "對……保持警覺、小心提防"
+    example:
+      en: "I'd be wary of any deal that promises returns that high."
+      zh: "任何承諾那麼高報酬的投資，我都會很小心。"
+    collocations: ["be wary of strangers", "be wary of doing something"]
+
+  - id: come-across-as
+    word: come across as
+    pos: phr.
+    phonetic: "/kʌm əˈkrɔːs æz/"
+    meaning: "給人……的印象"
+    example:
+      en: "I didn't want to come across as rude, so I softened the email a bit."
+      zh: "我不想給人沒禮貌的印象，所以把信的語氣改得柔和一點。"
+    collocations: ["come across as arrogant", "come across as confident"]
+    note: "中文常說「我看起來…」，但講個性、態度給人的感覺時，英文用 come across as 更自然。"
+
+  - id: at-the-expense-of
+    word: at the expense of
+    pos: phr.
+    phonetic: "/æt ði ɪkˈspens əv/"
+    meaning: "以犧牲……為代價"
+    example:
+      en: "He hit every target, but at the expense of his health."
+      zh: "他每個目標都達成了，但代價是犧牲了健康。"
+    collocations: ["at the expense of quality", "at someone's expense"]
+    note: "at someone's expense 也可以指「拿某人開玩笑」。"
+
+  - id: in-light-of
+    word: in light of
+    pos: phr.
+    phonetic: "/ɪn ˈlaɪt əv/"
+    meaning: "鑑於、考慮到（新的資訊）"
+    example:
+      en: "In light of the typhoon warning, we've moved the event online."
+      zh: "鑑於颱風警報，我們把活動改到線上。"
+    collocations: ["in light of recent events", "in light of the new data"]
+    note: "通常指「因為出現了新資訊，所以調整」。"
+
+  - id: rule-out
+    word: rule out
+    pos: phr.
+    phonetic: "/ruːl ˈaʊt/"
+    meaning: "排除（可能性）"
+    example:
+      en: "We can't rule out a second round of layoffs this year."
+      zh: "我們不能排除今年會有第二波裁員的可能。"
+    collocations: ["rule out the possibility", "rule something out"]
+
+  - id: weigh-up
+    word: weigh up
+    pos: phr.
+    phonetic: "/weɪ ˈʌp/"
+    meaning: "權衡、仔細比較（利弊）"
+    example:
+      en: "Take a few days to weigh up the pros and cons before you accept the offer."
+      zh: "接受這份 offer 之前，花幾天好好權衡一下利弊。"
+    collocations: ["weigh up the pros and cons", "weigh up the options"]
+    note: "英式較常用 weigh up；美式常直接說 weigh the options。"
+
+  - id: bring-up
+    word: bring up
+    pos: phr.
+    phonetic: "/brɪŋ ˈʌp/"
+    meaning: "提出（話題、問題）"
+    example:
+      en: "I'll bring up the parking issue at the next residents' meeting."
+      zh: "我會在下次住戶大會上提出停車的問題。"
+    collocations: ["bring up a topic", "bring something up with someone"]
+    note: "另一個意思是「養育」：I was brought up in Tainan."
+
+  - id: stem-from
+    word: stem from
+    pos: phr.
+    phonetic: "/ˈstem frʌm/"
+    meaning: "源自、起因於"
+    example:
+      en: "Most of our support tickets stem from one confusing settings page."
+      zh: "我們大部分的客服單都源自一個讓人困惑的設定頁。"
+    collocations: ["stem from a misunderstanding", "stem from the fact that"]
+    note: "不用被動，不說 be stemmed from。"
+
+  - id: play-down
+    word: play down
+    pos: phr.
+    phonetic: "/pleɪ ˈdaʊn/"
+    meaning: "淡化、輕描淡寫（某事的重要性）"
+    example:
+      en: "The company tried to play down the data leak, but customers were furious."
+      zh: "公司想淡化資料外洩的事，但客戶非常憤怒。"
+    collocations: ["play down the risk", "play down the importance of"]
+
+  - id: follow-through-on
+    word: follow through on
+    pos: phr.
+    phonetic: "/ˈfɑːloʊ θruː ɑːn/"
+    meaning: "（說到）做到、把承諾執行到底"
+    example:
+      en: "People will only trust the new policy if management follows through on it."
+      zh: "只有主管真的貫徹執行，大家才會相信這個新政策。"
+    collocations: ["follow through on a promise", "follow through on a plan"]
+    note: "和 follow up on（後續追蹤）不同：follow through 是把事情做完。"
+
+  - id: on-the-grounds-that
+    word: on the grounds that
+    pos: phr.
+    phonetic: "/ɑːn ðə ˈɡraʊndz ðæt/"
+    meaning: "以……為理由"
+    example:
+      en: "They rejected the proposal on the grounds that it was too risky."
+      zh: "他們以風險太高為由否決了這個提案。"
+    collocations: ["on the grounds of", "on what grounds"]
+    note: "grounds 一定是複數；接名詞時用 on the grounds of。"
+
+  - id: by-and-large
+    word: by and large
+    pos: phr.
+    phonetic: "/baɪ ən ˈlɑːrdʒ/"
+    meaning: "大體上、整體來說"
+    example:
+      en: "By and large, the feedback on the new menu has been positive."
+      zh: "整體來說，大家對新菜單的回饋都很正面。"
+    collocations: ["by and large, ..."]
+
+  - id: in-hindsight
+    word: in hindsight
+    pos: phr.
+    phonetic: "/ɪn ˈhaɪndsaɪt/"
+    meaning: "事後回想、事後看來"
+    example:
+      en: "In hindsight, we should have tested the payment flow on older phones."
+      zh: "事後回想，我們應該要在舊手機上測試付款流程。"
+    collocations: ["in hindsight", "with the benefit of hindsight"]
+    note: "常接 should have + 過去分詞，表示事後的檢討。"
+
+  - id: factor-in
+    word: factor in
+    pos: phr.
+    phonetic: "/ˈfæktər ɪn/"
+    meaning: "把……算進去、納入考量"
+    example:
+      en: "Don't forget to factor in tax when you work out the final price."
+      zh: "算最後價格時別忘了把稅算進去。"
+    collocations: ["factor in the cost", "factor something in"]
+
+  - id: iron-out
+    word: iron out
+    pos: phr.
+    phonetic: "/ˈaɪərn aʊt/"
+    meaning: "解決（小問題）、把細節處理好"
+    example:
+      en: "We still need to iron out a few details before we sign the contract."
+      zh: "簽約前我們還需要把幾個細節處理好。"
+    collocations: ["iron out the details", "iron out the problems"]
+
+  - id: touch-on
+    word: touch on
+    pos: phr.
+    phonetic: "/ˈtʌtʃ ɑːn/"
+    meaning: "簡單提到、稍微談到"
+    example:
+      en: "The talk only touched on pricing, so I'd like to hear more about it."
+      zh: "演講只稍微提到定價，所以我想多聽一點。"
+    collocations: ["briefly touch on", "touch on a subject"]
+
+  - id: err-on-the-side-of-caution
+    word: err on the side of caution
+    pos: phr.
+    phonetic: "/ɝː ɑːn ðə saɪd əv ˈkɔːʃən/"
+    meaning: "寧可謹慎一點、保守為上"
+    example:
+      en: "I'd err on the side of caution and bring a jacket; the mountain gets cold at night."
+      zh: "我會保守一點帶件外套，山上晚上會變冷。"
+    collocations: ["err on the side of caution"]
+
+  - id: hold-off-on
+    word: hold off on
+    pos: phr.
+    phonetic: "/hoʊld ˈɔːf ɑːn/"
+    meaning: "暫緩、先不（做某事）"
+    example:
+      en: "Let's hold off on booking the venue until we have a final headcount."
+      zh: "等最後人數確定了再訂場地，先不要訂。"
+    collocations: ["hold off on a decision", "hold off on doing something"]
+    note: "後面接名詞或 V-ing。"
+
+  - id: get-across
+    word: get across
+    pos: phr.
+    phonetic: "/ɡet əˈkrɔːs/"
+    meaning: "把（想法、訊息）傳達清楚、讓人理解"
+    example:
+      en: "A simple chart got the message across better than ten slides of text."
+      zh: "一張簡單的圖表比十張文字投影片更能把重點傳達清楚。"
+    collocations: ["get the message across", "get a point across"]

@@ -1,0 +1,724 @@
+# Daily sentence patterns - intermediate (CEFR B1-B2)
+# Source of pattern list: docs/plans/pattern-practice.md (packs A-G + common-mistake table).
+# All example sentences are original. Single connectors (because, since, due to, on top of that,
+# what's your take...) live in chapters/en/intermediate/09-giving-reasons.yml and are not repeated here.
+level: intermediate
+patterns:
+  # ---------------------------------------------------------------
+  # A. Opinion + reason (6)
+  # ---------------------------------------------------------------
+  - id: if-you-ask-me
+    pack: opinion
+    pattern: "If you ask me, ..."
+    meaning: "要我說的話，……"
+    when: "別人問你意見時用來帶出自己的看法，口氣輕鬆，也表示這只是個人觀點。"
+    examples:
+      - en: "If you ask me, the new café is nice but way overpriced."
+        zh: "要我說的話，那間新咖啡廳不錯，但真的太貴了。"
+      - en: "If you ask me, we should hire one senior engineer instead of two juniors."
+        zh: "要我說的話，我們應該請一個資深工程師，而不是兩個新手。"
+    choice:
+      situation: "同事問你：新的開放式座位安排怎麼樣？你想輕鬆地說出自己的看法。"
+      options:
+        - "If you ask me, the open seating is a bit too noisy for focused work."
+        - "According to me, the open seating is too noisy."
+        - "In my opinion, I think the open seating is too noisy."
+      answer: 0
+      explain: "According to me 不是自然的英文（according to 用來引述別人或資料）；第三句 In my opinion 和 I think 意思重複，留一個就好。"
+    task: "用這個句型說說你對「週末加班、平日補休」的看法。"
+    match: ["if you ask me"]
+    mistake:
+      wrong: "According to me, ..."
+      right: "If you ask me, ... / In my opinion, ..."
+      why: "中文「依我看」容易直翻成 according to me，但 according to 是引述別人或資料來源用的，不用在自己身上。"
+
+  - id: id-say-because
+    pack: opinion
+    pattern: "I'd say ..., because ..."
+    meaning: "我會說……，因為……"
+    when: "回答「你覺得哪個比較好」這類問題時，先給答案再補理由，是最常用的「看法＋理由」骨架。"
+    examples:
+      - en: "I'd say the train is better than driving, because you don't have to worry about parking."
+        zh: "我會說搭火車比開車好，因為不用煩惱停車。"
+      - en: "I'd say we're about 80% done, because only the payment page is left."
+        zh: "我會說我們大概完成八成了，因為只剩付款頁面。"
+    choice:
+      situation: "朋友問你：台北和台中哪裡比較適合住？你想給答案並說明理由。"
+      options:
+        - "Taichung, due to it is less crowded."
+        - "Because Taichung is less crowded, so I'd say Taichung."
+        - "I'd say Taichung, because it's less crowded and the rent is cheaper."
+      answer: 2
+      explain: "第一句 due to 後面不能接句子；第二句 because 和 so 重複了，中文「因為…所以…」英文只能留一個。"
+    task: "用這個句型回答：「在家工作和進辦公室，你覺得哪個效率比較高？」"
+    match: ["d say", "because"]
+    mistake:
+      wrong: "Because it's cheaper, so I'd say ..."
+      right: "I'd say ..., because it's cheaper. / It's cheaper, so I'd say ..."
+      why: "中文「因為…所以…」成對出現，英文 because 和 so 只能用一個。"
+
+  - id: could-be-wrong
+    pack: opinion
+    pattern: "I could be wrong, but ..."
+    meaning: "我可能說錯，但……"
+    when: "不太確定、或怕說得太武斷時，先替自己留餘地再說看法，聽起來謙虛又不失立場。"
+    examples:
+      - en: "I could be wrong, but I think the museum is closed on Mondays."
+        zh: "我可能記錯，但我記得博物館週一休館。"
+      - en: "I could be wrong, but I don't think the client has signed the contract yet."
+        zh: "我可能說錯，但我不認為客戶已經簽約了。"
+    choice:
+      situation: "開會時大家以為報告週五交，但你印象中是週四，想提醒又不想太武斷。"
+      options:
+        - "You are wrong. The deadline is Thursday."
+        - "I could be wrong, but I think the report is due on Thursday."
+        - "I could be wrong, but the deadline is on Thursday, isn't it right?"
+      answer: 1
+      explain: "第一句直接說對方錯，太衝；第三句 isn't it right 是中文「對不對」直翻，英文說 isn't it? 或 right? 就好。"
+    task: "用這個句型提出看法：你覺得公司聚餐的餐廳好像要先訂位。"
+    match: ["could be wrong"]
+
+  - id: to-be-honest
+    pack: opinion
+    pattern: "To be honest, ..."
+    meaning: "老實說，……"
+    when: "要說出真實但可能不太中聽的想法時，先用這句提醒對方，接下來是真心話。"
+    examples:
+      - en: "To be honest, I didn't enjoy the movie as much as everyone said I would."
+        zh: "老實說，那部電影我沒有像大家說的那麼喜歡。"
+      - en: "To be honest, I'm not confident we can finish the redesign by March."
+        zh: "老實說，我沒什麼把握我們能在三月前完成改版。"
+    choice:
+      situation: "朋友問你他新剪的髮型好不好看，你覺得普通，想誠實但委婉地說。"
+      options:
+        - "Honest speaking, it's not very good."
+        - "To be honest, it is ugly."
+        - "To be honest, I liked the longer style better on you."
+      answer: 2
+      explain: "第一句 honest speaking 是中文「說實話」直翻，英文沒有這種說法；第二句句型對了，但直接說 ugly 太傷人。"
+    task: "用這個句型說出你對某個流行事物（例如手搖飲、某部劇）的真實看法。"
+    match: ["to be honest"]
+    mistake:
+      wrong: "Honest speaking, ..."
+      right: "To be honest, ... / Honestly, ..."
+      why: "「說實話」容易直翻成 honest speaking，但英文只說 to be honest 或 honestly。"
+
+  - id: one-downside
+    pack: opinion
+    pattern: "One downside of ... is that ..."
+    meaning: "……的一個缺點是……"
+    when: "評估一個選項時具體點出缺點，比只說「不好」更有說服力；講好處就換成 One advantage of ... is that ...。"
+    examples:
+      - en: "One downside of living downtown is that the noise never really stops."
+        zh: "住在市中心的一個缺點是噪音從來沒真正停過。"
+      - en: "One downside of this tool is that it doesn't work offline."
+        zh: "這個工具的一個缺點是不能離線使用。"
+    choice:
+      situation: "團隊在討論要不要改用新的專案管理軟體，你想具體指出一個缺點。"
+      options:
+        - "One downside of the new software is that everyone would need training first."
+        - "One downside of the new software is everyone need training."
+        - "The new software has one bad point, it is training."
+      answer: 0
+      explain: "第二句 everyone 後面的動詞要加 s（needs），少了 that 也比較生硬；第三句 bad point 不是自然說法，英文說 downside 或 disadvantage。"
+    task: "用這個句型說出「養寵物」的一個缺點，可以再用 One advantage of ... 補一個優點。"
+    match: ["downside of", "is that"]
+
+  - id: based-on-experience
+    pack: opinion
+    pattern: "Based on my experience, ..."
+    meaning: "根據我的經驗，……"
+    when: "用自己的經歷支持看法，讓意見有根據，又不會像在下定論。"
+    examples:
+      - en: "Based on my experience, booking flights on a Tuesday is usually cheaper."
+        zh: "根據我的經驗，週二訂機票通常比較便宜。"
+      - en: "Based on my experience, clients reply faster when an email ends with a clear question."
+        zh: "根據我的經驗，信的結尾有明確的問題時，客戶回得比較快。"
+    choice:
+      situation: "新同事問你：跟這個客戶開會要準備什麼？你想用自己的經驗回答。"
+      options:
+        - "According to my experience, you must prepare numbers."
+        - "Based on my experience, it helps to bring the latest sales numbers."
+        - "On my experience, you should to prepare the numbers."
+      answer: 1
+      explain: "according to my experience 不自然，要說 based on 或 in my experience，must 也太強硬；第三句介系詞錯（in 不是 on），而且 should 後面直接接原形動詞，不加 to。"
+    task: "用這個句型給朋友一個建議，例如怎麼準備面試或怎麼挑租屋。"
+    match: ["based on my experience"]
+    mistake:
+      wrong: "According to my experience, ..."
+      right: "Based on my experience, ... / In my experience, ..."
+      why: "「根據」直覺翻成 according to，但它多用來引述別人或資料；講自己的經驗用 based on 或 in。"
+
+  # ---------------------------------------------------------------
+  # B. Polite disagreement (7)
+  # ---------------------------------------------------------------
+  - id: acknowledge-but
+    pack: disagree
+    pattern: "I see what you're saying, but ..."
+    meaning: "我懂你的意思，但是……"
+    when: "想不同意時先承認對方的觀點，語氣比直接說 No 柔和很多。"
+    examples:
+      - en: "I see what you're saying, but I think the cheaper hotel is too far from everything."
+        zh: "我懂你的意思，但我覺得便宜的那間飯店離什麼都太遠了。"
+      - en: "I see what you're saying, but moving the launch would affect three other teams."
+        zh: "我懂你的意思，但延後上線會影響另外三個團隊。"
+    choice:
+      situation: "主管提議把會議改到週五晚上，你不太同意，想委婉地說。"
+      options:
+        - "No, Friday night is bad."
+        - "I see what you're saying, but Friday evening might be hard for people with kids."
+        - "Although I understand you, but Friday night is not good."
+      answer: 1
+      explain: "第一句太直接；第三句 although…but 重複了，英文只能留一個。"
+    task: "用這個句型委婉地不同意：朋友說「出國玩一定要跟團比較省事」。"
+    match: ["see what you"]
+    mistake:
+      wrong: "Although I agree, but ..."
+      right: "Although I agree, ... / I agree, but ..."
+      why: "中文「雖然…但是…」成對，英文只能留一個。"
+
+  - id: where-youre-coming-from
+    pack: disagree
+    pattern: "I understand where you're coming from, but ..."
+    meaning: "我理解你為什麼這樣想，但……"
+    when: "對方的想法有他的道理時，先表示你懂他的出發點，再說不同的意見；比 I see what you're saying 更強調同理。"
+    examples:
+      - en: "I understand where you're coming from, but I'd rather not lend money to friends."
+        zh: "我理解你為什麼這樣想，但我不太想借錢給朋友。"
+      - en: "I understand where you're coming from, but cutting the testing phase could cause bigger problems later."
+        zh: "我理解你的考量，但砍掉測試階段可能會在之後造成更大的問題。"
+    choice:
+      situation: "同事擔心預算，提議取消年度員工旅遊。你理解他的考量，但不同意。"
+      options:
+        - "I'm not agree. The trip is important."
+        - "I understand you, but the trip is important."
+        - "I understand where you're coming from, but the trip really helps the team bond."
+      answer: 2
+      explain: "第一句文法錯（應說 I don't agree），語氣也太直接；第二句 I understand you 聽起來像「我聽得懂你說的話」，不是理解對方的立場。"
+    task: "用這個句型回應：家人說「找工作一定要選大公司比較穩」。"
+    match: ["where you", "coming from"]
+    mistake:
+      wrong: "I'm not agree."
+      right: "I don't agree. / I disagree."
+      why: "agree 是動詞，不是形容詞，不能放在 be 動詞後面；中文「我不同意」容易套成 I'm not agree。"
+
+  - id: not-sure-best-option
+    pack: disagree
+    pattern: "I'm not sure that's the best option."
+    meaning: "我不確定那是最好的選擇。"
+    when: "想否決一個提議，又不想說 No 或 That's a bad idea 時，用「不確定」把否定變軟。"
+    examples:
+      - en: "I'm not sure that's the best option, since the restaurant is usually packed on Fridays."
+        zh: "我不確定那是最好的選擇，因為那間餐廳週五通常爆滿。"
+      - en: "I'm not sure that's the best option for a small team like ours."
+        zh: "我不確定對我們這種小團隊來說，那是最好的選擇。"
+    choice:
+      situation: "同事建議所有文件都改回紙本簽核，你覺得不太好，想委婉表達。"
+      options:
+        - "I'm not sure that's the best option. Paper copies might slow down approvals."
+        - "That's a bad idea. Paper is too slow."
+        - "I'm not sure is it the best option."
+      answer: 0
+      explain: "第二句太直接，可能讓對方難堪；第三句把問句語序放進了直述句，應該是 I'm not sure (that) it's ...。"
+    task: "用這個句型委婉否決：朋友提議跨年夜開車去市區看煙火。"
+    match: ["not sure", "best"]
+    mistake:
+      wrong: "I'm not sure is it the best option."
+      right: "I'm not sure (that) it's the best option."
+      why: "中文「我不確定是不是」沒有語序變化；英文 not sure 後面接直述句，不用問句倒裝。"
+
+  - id: afraid-dont-agree
+    pack: disagree
+    pattern: "I'm afraid I don't quite agree."
+    meaning: "恐怕我不太同意。"
+    when: "正式場合需要明確表達反對時使用；I'm afraid 帶有遺憾的口氣，quite 讓語氣稍微緩和。"
+    examples:
+      - en: "I'm afraid I don't quite agree. I think the book was better than the movie."
+        zh: "恐怕我不太同意，我覺得書比電影好看。"
+      - en: "I'm afraid I don't quite agree with the new pricing. It may push away our regular customers."
+        zh: "恐怕我不太同意新的定價，這可能會讓老客戶流失。"
+    choice:
+      situation: "客戶會議上，對方主張把交期縮短一半，你必須明確但有禮貌地反對。"
+      options:
+        - "I'm scared I don't agree with you."
+        - "I'm afraid I not quite agree."
+        - "I'm afraid I don't quite agree. Cutting the timeline in half would put quality at risk."
+      answer: 2
+      explain: "第一句 scared 是真的害怕，這裡要用 I'm afraid 表示「恐怕、遺憾」；第二句少了助動詞，應是 I don't quite agree。"
+    task: "用這個句型正式地反對：有人提議會議一律改成早上八點開始。"
+    match: ["afraid", "agree"]
+
+  - id: main-concern
+    pack: disagree
+    pattern: "My main concern is ..."
+    meaning: "我主要的顧慮是……"
+    when: "不直接反對，而是說出具體的擔心，讓對方針對問題回應，討論會比較有建設性。"
+    examples:
+      - en: "My main concern is the price. Everything else about the apartment is great."
+        zh: "我主要的顧慮是價錢，公寓其他部分都很好。"
+      - en: "My main concern is that we don't have enough people to support the launch."
+        zh: "我主要的顧慮是我們沒有足夠的人力支援上線。"
+    choice:
+      situation: "主管想下週就讓新系統上線，你擔心使用者還沒受過訓練。"
+      options:
+        - "My main concern is about users haven't trained."
+        - "My main concern is that users haven't been trained yet."
+        - "I'm very worry that users don't train."
+      answer: 1
+      explain: "第一句 about 後面不能直接接句子，要用 is that + 句子；第三句 worry 是動詞，應說 I'm worried，而且使用者是「被訓練」，要用被動。"
+    task: "用這個句型說出你對「公司改成一週上班四天」的一個顧慮。"
+    match: ["concern is"]
+    mistake:
+      wrong: "My concern is about users haven't trained."
+      right: "My concern is that users haven't been trained."
+      why: "介系詞後面要接名詞，要接句子就用 that；中文「關於…」後面什麼都能接。"
+
+  - id: have-reservations
+    pack: disagree
+    pattern: "I have some reservations about ..."
+    meaning: "我對……有些保留。"
+    when: "比 concern 更正式，常用在會議或書面，表示「還沒被說服」，不等於完全反對。"
+    examples:
+      - en: "I have some reservations about moving in with a roommate I've never met."
+        zh: "要跟一個從沒見過的室友同住，我有些保留。"
+      - en: "I have some reservations about outsourcing customer support."
+        zh: "我對把客服外包有些保留。"
+    choice:
+      situation: "會議上討論要不要跟一家新的供應商合作，你還沒被說服，想正式地表達。"
+      options:
+        - "I have some reservations about working with a supplier we haven't tested."
+        - "I have some reservation to work with this supplier."
+        - "I keep my opinion about this supplier."
+      answer: 0
+      explain: "第二句這個意思的 reservations 要用複數，後面接 about + V-ing；第三句是中文「保留意見」直翻，英文不這樣說。"
+    task: "用這個句型表達保留：朋友想把全部存款拿去買單一支股票。"
+    match: ["reservations about"]
+    mistake:
+      wrong: "I keep my opinion."
+      right: "I have some reservations about ..."
+      why: "中文「我保留意見」直翻成 keep my opinion，英文母語者聽不懂；要說 I have some reservations。"
+
+  - id: not-saying
+    pack: disagree
+    pattern: "I'm not saying ...; what I'm saying is ..."
+    meaning: "我不是說……，我是說……"
+    when: "對方誤會你的意思、以為你在反對或批評時，用來澄清真正的重點。"
+    examples:
+      - en: "I'm not saying we shouldn't travel; what I'm saying is we should go in the off-season."
+        zh: "我不是說我們不該去旅行，我是說我們應該淡季去。"
+      - en: "I'm not saying the design is bad; what I'm saying is it needs one more round of user testing."
+        zh: "我不是說設計不好，我是說它還需要再一輪使用者測試。"
+    choice:
+      situation: "你說報告的數字可能有誤，同事以為你在怪他。你想澄清你的重點。"
+      options:
+        - "I don't mean that. I mean the numbers wrong."
+        - "You misunderstand me. Your numbers are wrong."
+        - "I'm not saying it's your fault; what I'm saying is we should double-check the numbers."
+      answer: 2
+      explain: "第一句 the numbers wrong 少了動詞 are；第二句說對方誤會、又直接說他錯，只會讓氣氛更僵。"
+    task: "用這個句型澄清：你建議室友少叫外送，他以為你嫌他亂花錢。"
+    match: ["not saying", "what i"]
+
+  # ---------------------------------------------------------------
+  # C. Suggesting (4)
+  # ---------------------------------------------------------------
+  - id: what-if-we
+    pack: suggest
+    pattern: "What if we ...?"
+    meaning: "如果我們……呢？"
+    when: "提出建議或替代方案時，用問句邀對方一起想，比 We have to ... 柔和很多。"
+    examples:
+      - en: "What if we left a bit earlier to avoid the traffic?"
+        zh: "我們早一點出發避開車潮如何？"
+      - en: "What if we split the project into two smaller releases?"
+        zh: "如果我們把專案拆成兩次比較小的上線呢？"
+    choice:
+      situation: "團隊一直趕不上進度，你想提議每天早上開個十分鐘的站立會議。"
+      options:
+        - "We have to do a daily meeting."
+        - "What if we had a quick ten-minute check-in every morning?"
+        - "How about we must have a daily meeting?"
+      answer: 1
+      explain: "第一句 have to 語氣太強，聽起來像命令；第三句 how about 是在提建議，後面再加 must 互相矛盾。"
+    task: "用這個句型向家人提議：今年過年不回老家，改成全家出國。"
+    match: ["what if we"]
+    mistake:
+      wrong: "We have to change the plan.（其實只是建議）"
+      right: "What if we changed the plan? / We could change the plan."
+      why: "中文「我們要…」常常只是建議，直翻成 have to 聽起來像命令。"
+
+  - id: how-about-ing
+    pack: suggest
+    pattern: "How about + V-ing ...?"
+    meaning: "……怎麼樣？"
+    when: "輕鬆地提出建議，生活和工作都常用；後面接動名詞（V-ing）或名詞。"
+    examples:
+      - en: "How about grabbing dinner after the movie?"
+        zh: "看完電影一起吃個晚餐怎麼樣？"
+      - en: "How about sending the client a short demo video first?"
+        zh: "先寄一支簡短的展示影片給客戶怎麼樣？"
+    choice:
+      situation: "朋友說週末不知道要做什麼，你想提議去爬山。"
+      options:
+        - "How about going hiking this Saturday?"
+        - "How about to go hiking this Saturday?"
+        - "How about go to hiking this Saturday?"
+      answer: 0
+      explain: "how about 後面接 V-ing 或名詞，不接 to + 原形動詞；第三句 go hiking 中間也不加 to。"
+    task: "用這個句型提議一個週五下班後的活動。"
+    match: ["how about"]
+    mistake:
+      wrong: "How about to go ...?"
+      right: "How about going ...?"
+      why: "中文「去…怎麼樣」動詞不變形；英文 about 是介系詞，後面要接 V-ing。"
+
+  - id: one-option
+    pack: suggest
+    pattern: "One option would be to ..."
+    meaning: "其中一個做法是……"
+    when: "提出幾個可能方案中的一個，語氣中立、不強迫，適合正式討論。"
+    examples:
+      - en: "One option would be to take the night bus and save on a hotel."
+        zh: "其中一個做法是搭夜車，省下一晚住宿。"
+      - en: "One option would be to hire a freelancer for the busy season."
+        zh: "其中一個做法是旺季時找接案的人幫忙。"
+    choice:
+      situation: "會議上大家在想怎麼處理客服信件爆量，你想提出一個可能的方案。"
+      options:
+        - "You should hire more people."
+        - "One option would be hire part-time staff."
+        - "One option would be to set up an FAQ page so customers can find answers themselves."
+      answer: 2
+      explain: "第一句 you should 把事情丟給別人，在會議上聽起來像在指揮；第二句 would be 後面要接 to + 原形動詞。"
+    task: "用這個句型給一個建議：朋友想學英文，但說自己沒時間。"
+    match: ["one option"]
+
+  - id: been-thinking
+    pack: suggest
+    pattern: "Here's what I've been thinking: ..."
+    meaning: "我一直在想的是……"
+    when: "要提出一個想了一陣子的點子時，先預告，讓大家注意聽；開會或家庭討論都適用。"
+    examples:
+      - en: "Here's what I've been thinking: we could rent a bigger place together and share the costs."
+        zh: "我一直在想：我們可以一起租大一點的地方，分攤費用。"
+      - en: "Here's what I've been thinking: we could move the weekly report to a shared dashboard."
+        zh: "我一直在想的是，我們可以把週報改成共用的儀表板。"
+    choice:
+      situation: "會議快結束時，你想提出一個醞釀很久的流程改善點子。"
+      options:
+        - "I have an idea. You all listen."
+        - "Here's what I've been thinking: we could automate the monthly invoices."
+        - "I always think that we can automatic the invoices."
+      answer: 1
+      explain: "第一句 you all listen 像在下命令；第三句 always think 是「一直都這樣認為」，而且 automatic 是形容詞，動詞是 automate。"
+    task: "用這個句型向朋友提出一個你最近在想的計畫（例如一起報名課程）。"
+    match: ["been thinking"]
+
+  # ---------------------------------------------------------------
+  # D. Agreeing / building on (3)
+  # ---------------------------------------------------------------
+  - id: fair-point
+    pack: agree
+    pattern: "That's a fair point."
+    meaning: "你說得有道理。"
+    when: "承認對方說得對，即使不完全同意也可以用；後面常接 and 補充，或接 but 再提自己的看法。"
+    examples:
+      - en: "That's a fair point. A smaller apartment would be easier to clean."
+        zh: "你說得有道理，小一點的公寓比較好打掃。"
+      - en: "That's a fair point, but we still need the client's approval first."
+        zh: "你說得有道理，但我們還是要先拿到客戶的同意。"
+    choice:
+      situation: "同事指出你的報價沒算到運費，你覺得他說得對。"
+      options:
+        - "That's a fair point. I'll add shipping costs to the estimate."
+        - "You are right point."
+        - "Your saying is reasonable."
+      answer: 0
+      explain: "第二句把 You're right 和 good point 混在一起了；第三句是中文「你的說法很合理」直翻，英文不會說 your saying。"
+    task: "用這個句型回應：朋友說「買房不如租房，因為比較有彈性」。"
+    match: ["fair point"]
+
+  - id: that-could-work
+    pack: agree
+    pattern: "That could work, as long as ..."
+    meaning: "那應該可行，只要……"
+    when: "同意一個提議時順便加上條件，表示你有認真考慮，而不是隨便附和。"
+    examples:
+      - en: "That could work, as long as we book the tickets this week."
+        zh: "那應該可行，只要我們這週把票訂好。"
+      - en: "That could work, as long as legal reviews the contract first."
+        zh: "那應該行得通，只要法務先看過合約。"
+    choice:
+      situation: "主管提議你下個月開始每週遠端工作兩天，你同意，但希望網路費能報帳。"
+      options:
+        - "OK, can. But the internet fee you pay."
+        - "That can work if the internet fee will be covered."
+        - "That could work, as long as the company covers the internet costs."
+      answer: 2
+      explain: "第一句是中文「可以啊」直翻，叫主管付錢也太直接；第二句 if 子句不用 will，應說 if the fee is covered。"
+    task: "用這個句型有條件地同意：朋友提議下次旅行住民宿。"
+    match: ["could work"]
+    mistake:
+      wrong: "If the fee will be covered, ..."
+      right: "If the fee is covered, ..."
+      why: "中文「如果之後會…」容易直翻成 if…will，但英文條件句用現在式表示未來。"
+
+  - id: building-on
+    pack: agree
+    pattern: "I liked ...'s point about ..., because ..."
+    meaning: "我很認同某某提到的……，因為……"
+    when: "開會時接別人的話：先點名肯定對方的觀點再延伸，讓討論連貫，也讓同事覺得被聽見。"
+    examples:
+      - en: "I liked Amy's point about eating out less, because we'd also eat healthier."
+        zh: "我很認同 Amy 說要少外食，因為這樣我們也會吃得比較健康。"
+      - en: "I liked Kevin's point about simplifying the sign-up form, because that's where most users drop off."
+        zh: "我很認同 Kevin 說要簡化註冊表單，因為大部分使用者就是在那裡流失的。"
+    choice:
+      situation: "會議上 Lisa 提議把客戶問卷縮短，你想接她的話並補充理由。"
+      options:
+        - "Lisa said it. I also same."
+        - "I liked Lisa's point about shortening the survey, because long surveys get fewer responses."
+        - "I agree Lisa's point, because long surveys is bad."
+      answer: 1
+      explain: "第一句是中文「我也一樣」直翻；第三句 agree 後面要加 with，而且 surveys 是複數，動詞要用 are。"
+    task: "用這個句型接話：朋友剛說「旅行時行程少排一點比較好玩」，你同意並補充理由。"
+    match: ["point about"]
+    mistake:
+      wrong: "I agree Lisa's point."
+      right: "I agree with Lisa's point."
+      why: "中文「同意某人」不需要介系詞，英文 agree 後面要接 with + 人或觀點。"
+
+  # ---------------------------------------------------------------
+  # E. Clarifying (4)
+  # ---------------------------------------------------------------
+  - id: what-i-mean-is
+    pack: clarify
+    pattern: "What I mean is ..."
+    meaning: "我的意思是……"
+    when: "發現對方沒聽懂、或自己說得不夠清楚時，用來重新說明重點。"
+    examples:
+      - en: "What I mean is, I'm happy to cook, but I need someone else to do the dishes."
+        zh: "我的意思是，我很樂意煮飯，但需要別人來洗碗。"
+      - en: "What I mean is, the feature works, but it's too slow for daily use."
+        zh: "我的意思是，功能可以用，但太慢了，沒辦法每天用。"
+    choice:
+      situation: "你說「這個方案有點問題」，同事以為你要整個推翻。你想說清楚只是要改一小部分。"
+      options:
+        - "What I mean is, we only need to change the pricing part."
+        - "My meaning is we change only the price part."
+        - "I mean is we only change the price."
+      answer: 0
+      explain: "第二句 my meaning is 是中文「我的意思是」直翻，不自然；第三句把 I mean 和 What I mean is 混在一起了。"
+    task: "用這個句型澄清：你說「我不太想去聚餐」，朋友以為你討厭大家，其實你只是太累。"
+    match: ["what i mean"]
+    mistake:
+      wrong: "My meaning is ..."
+      right: "What I mean is ... / I mean, ..."
+      why: "中文「我的意思是」直翻成 my meaning is，英文母語者不這樣說。"
+
+  - id: in-other-words
+    pack: clarify
+    pattern: "In other words, ..."
+    meaning: "換句話說，……"
+    when: "把剛剛說的內容換個更簡單或更直接的方式講，常用來下結論或幫對方抓重點。"
+    examples:
+      - en: "The store opens at ten and the drive takes an hour. In other words, we can sleep in."
+        zh: "店十點才開，開車一小時。換句話說，我們可以睡晚一點。"
+      - en: "Sales went up, but costs went up even more. In other words, we lost money this quarter."
+        zh: "業績有成長，但成本漲得更多。換句話說，我們這一季虧錢了。"
+    choice:
+      situation: "你剛解釋了一長串新的請假規定，想用一句話幫大家總結。"
+      options:
+        - "In another word, you must apply three days early."
+        - "Other words, you need to apply three days early."
+        - "In other words, you need to request time off at least three days ahead."
+      answer: 2
+      explain: "固定說法是 in other words：要有 in，words 也要加 s。"
+    task: "先說兩句關於你通勤的事實，再用 In other words 總結。"
+    match: ["in other words"]
+
+  - id: put-it-this-way
+    pack: clarify
+    pattern: "Let me put it this way: ..."
+    meaning: "我換個方式說：……"
+    when: "直接解釋說不清楚時，改用比喻、例子或更直白的說法；也常用來委婉帶出真話。"
+    examples:
+      - en: "Let me put it this way: if the hotel room were any smaller, we'd be sleeping in the hallway."
+        zh: "我換個方式說：那間飯店房間要是再小一點，我們就要睡走廊了。"
+      - en: "Let me put it this way: if this bug reaches users, we'll get a lot of angry emails."
+        zh: "我換個方式說：要是這個 bug 被使用者遇到，我們會收到一堆生氣的信。"
+    choice:
+      situation: "你解釋為什麼要先備份資料，主管似乎覺得不重要。你想換個更直白的說法。"
+      options:
+        - "I say again: backup is important."
+        - "Let me put it this way: if the server crashes tonight, we lose a month of work."
+        - "Let me say by another way: backup is important."
+      answer: 1
+      explain: "第一句只是重複一次，沒有換方式說明；第三句 say by another way 是中文「換個方式說」直翻，英文說 put it another way 或 put it this way。"
+    task: "用這個句型向朋友解釋你為什麼不想養貓。"
+    match: ["put it this way"]
+
+  - id: so-youre-saying
+    pack: clarify
+    pattern: "So what you're saying is ..., right?"
+    meaning: "所以你的意思是……，對嗎？"
+    when: "用自己的話重述對方的意思來確認理解，避免誤會，開會時特別好用。"
+    examples:
+      - en: "So what you're saying is the party is at your place, not the restaurant, right?"
+        zh: "所以你的意思是派對在你家，不是在餐廳，對嗎？"
+      - en: "So what you're saying is we need the final files by Wednesday, right?"
+        zh: "所以你的意思是我們週三前要交最終檔案，對嗎？"
+    choice:
+      situation: "客戶講了很久，你理解的重點是他想延後兩週付款，你想確認。"
+      options:
+        - "You mean delay two weeks, yes or no?"
+        - "So you are saying is you want to pay later?"
+        - "So what you're saying is you'd like to delay the payment by two weeks, right?"
+      answer: 2
+      explain: "第一句 yes or no 像在逼問，對客戶不禮貌；第二句 you are saying 和 is 重複了，要嘛說 So you're saying ...，要嘛說 So what you're saying is ...。"
+    task: "用這個句型確認：朋友說他下個月可能要搬到高雄，但還沒決定。"
+    match: ["so what you", "saying"]
+
+  # ---------------------------------------------------------------
+  # F. Meetings (3)
+  # ---------------------------------------------------------------
+  - id: sorry-to-interrupt
+    pack: meeting
+    pattern: "Sorry to interrupt, but ..."
+    meaning: "不好意思打斷一下，……"
+    when: "別人正在說話，但你有急事或重要資訊必須插進來時使用：先道歉，再說重點。"
+    examples:
+      - en: "Sorry to interrupt, but your phone has been ringing for a while."
+        zh: "不好意思打斷一下，你的手機響一陣子了。"
+      - en: "Sorry to interrupt, but the client just joined the call."
+        zh: "不好意思打斷一下，客戶剛剛加入通話了。"
+    choice:
+      situation: "同事正在報告，你發現他投影的是舊版數字，必須馬上提醒。"
+      options:
+        - "Sorry to interrupt, but I think those are last month's numbers."
+        - "Wait wait, wrong numbers!"
+        - "Excuse me to interrupt, the numbers are old."
+      answer: 0
+      explain: "第二句太急躁，在會議上很失禮；第三句 excuse me to interrupt 不是英文說法，要說 sorry to interrupt 或 excuse me for interrupting。"
+    task: "用這個句型打斷：家人正在聊天，你要提醒大家計程車已經到了。"
+    match: ["sorry to interrupt"]
+
+  - id: jump-in
+    pack: meeting
+    pattern: "Can I jump in here?"
+    meaning: "我可以插個話嗎？"
+    when: "討論熱烈時想加入發言，用這句徵求同意；比直接插話有禮貌，又比 Sorry to interrupt 輕鬆。"
+    examples:
+      - en: "Can I jump in here? I actually went to that beach last summer."
+        zh: "我可以插個話嗎？我去年夏天剛好去過那個海灘。"
+      - en: "Can I jump in here? We tried a similar campaign last year, and the results were mixed."
+        zh: "我可以插個話嗎？我們去年試過類似的活動，結果好壞參半。"
+    choice:
+      situation: "大家在討論要不要換廠商，你剛好跟其中一家合作過，想加入討論。"
+      options:
+        - "Let me say! I worked with them before."
+        - "Can I jump in here? I've worked with that vendor before."
+        - "Can I insert a word? I have worked with them last year."
+      answer: 1
+      explain: "第一句太突兀；第三句 insert a word 是中文「插話」直翻，而且有 last year 這種明確的過去時間，要用過去式 worked，不用 have worked。"
+    task: "用這個句型加入討論：朋友在聊日本自由行，你想分享你的訂房經驗。"
+    match: ["jump in"]
+    mistake:
+      wrong: "I have worked with them last year."
+      right: "I worked with them last year."
+      why: "中文「有…過」容易對應到現在完成式；但句子裡有明確的過去時間（last year）就要用過去式。"
+
+  - id: status-update
+    pack: meeting
+    pattern: "So far we've ... The next step is ..."
+    meaning: "目前我們已經……，下一步是……"
+    when: "報告進度時先說已完成的、再說接下來要做的，聽的人很快就能掌握狀況；有落後的話，開頭先講結論（We're on track / We're a week behind because ...）。"
+    examples:
+      - en: "So far we've booked the flights and the hotel. The next step is planning what to do each day."
+        zh: "目前我們已經訂好機票和飯店，下一步是排每天的行程。"
+      - en: "So far we've finished the design and half of the coding. The next step is internal testing."
+        zh: "目前設計已經完成，程式也寫了一半，下一步是內部測試。"
+    choice:
+      situation: "週會上主管問你負責的網站改版進度如何。"
+      options:
+        - "Now we have done design. Next we will do testing maybe."
+        - "We are a week behind due to the vendor was late."
+        - "We're on track. So far we've finished the design, and the next step is user testing."
+      answer: 2
+      explain: "第一句 now we have done 不自然，結尾的 maybe 也讓進度聽起來很不確定；第二句 due to 後面不能接句子，要說 because the vendor was late 或 due to the vendor's delay。"
+    task: "用這個句型報告一件你正在進行的事的進度（工作、搬家、準備考試都可以）。"
+    match: ["so far", "next step"]
+    mistake:
+      wrong: "We're behind due to the vendor was late."
+      right: "We're behind because the vendor was late. / ... due to the vendor's delay."
+      why: "中文「因為」後面什麼都能接，但英文 due to 後面只能接名詞。"
+
+  # ---------------------------------------------------------------
+  # G. Small talk (3)
+  # ---------------------------------------------------------------
+  - id: been-up-to
+    pack: smalltalk
+    pattern: "What have you been up to lately?"
+    meaning: "你最近在忙什麼？"
+    when: "跟一陣子沒見的朋友或同事開啟閒聊；開放式問題讓對方好接話，比 How are you? 更容易聊下去。"
+    examples:
+      - en: "Hey, it's been ages! What have you been up to lately?"
+        zh: "嘿，好久不見！你最近在忙什麼？"
+      - en: "What have you been up to since you moved to the marketing team?"
+        zh: "你調到行銷部之後都在忙些什麼？"
+    choice:
+      situation: "在電梯遇到很久沒聊的前同事，你想自然地開啟話題。"
+      options:
+        - "Hey! What have you been up to lately?"
+        - "Hey! Are you busy recently?"
+        - "Hey! What are you busy recently?"
+      answer: 0
+      explain: "第二句是中文「最近忙嗎」直翻，只能回答 yes 或 no，很難聊下去；第三句文法錯，應是 What have you been busy with?。"
+    task: "用這個句型開啟閒聊，再追問一個細節（例如 What made you decide to ...?）。"
+    match: ["been up to"]
+
+  - id: got-you-into
+    pack: smalltalk
+    pattern: "What got you into ...?"
+    meaning: "你是怎麼開始接觸……的？"
+    when: "對方提到興趣或工作時，用這句追問來龍去脈，讓對方多說一點，閒聊就會自然延伸。"
+    examples:
+      - en: "What got you into rock climbing?"
+        zh: "你是怎麼開始玩攀岩的？"
+      - en: "What got you into product design in the first place?"
+        zh: "你一開始是怎麼走上產品設計這條路的？"
+    choice:
+      situation: "新同事說他週末都在練衝浪，你想表示興趣並請他多分享。"
+      options:
+        - "Surfing? Why you like surfing?"
+        - "Oh, nice! What got you into surfing?"
+        - "Surfing is dangerous, isn't it?"
+      answer: 1
+      explain: "第一句少了助動詞，應是 Why do you like ...，而且用 why 開頭有點像質問；第三句直接下負面評論，話題容易卡住。"
+    task: "用這個句型追問：朋友說他最近開始學手沖咖啡。"
+    match: ["got you into"]
+
+  - id: last-time-you-mentioned
+    pack: smalltalk
+    pattern: "Last time you mentioned ... How did it go?"
+    meaning: "上次你提到……，後來怎麼樣了？"
+    when: "記得對方之前說過的事並主動追問，會讓人覺得你有在聽，是拉近關係最有效的閒聊句型。"
+    examples:
+      - en: "Last time you mentioned your sister's wedding. How did it go?"
+        zh: "上次你提到你姊姊的婚禮，後來辦得怎麼樣？"
+      - en: "Last time you mentioned the job interview. How did it go?"
+        zh: "上次你提到那個面試，結果怎麼樣？"
+    choice:
+      situation: "上週同事說他要去面試新工作，今天在茶水間碰到他。"
+      options:
+        - "Last time you said you will go to an interview. Is it success?"
+        - "Did you pass the interview or not?"
+        - "Last time you mentioned an interview. How did it go?"
+      answer: 2
+      explain: "第一句轉述過去說的話要用 would（you said you would），is it success 也不是英文；第二句 or not 聽起來像在逼問，太直接。"
+    task: "用這個句型追問一個朋友之前提過的計畫（旅行、搬家、考試都可以）。"
+    match: ["last time you mentioned", "how did"]
+    mistake:
+      wrong: "Last time you said you will go ..."
+      right: "Last time you said you would go ..."
+      why: "中文轉述別人的話不用改時態；英文轉述過去說的話時，will 通常要改成 would。"

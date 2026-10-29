@@ -17,6 +17,7 @@ import ShareCardPanel from './ShareCardPanel.vue'
 import AnalyticsDashboard from './AnalyticsDashboard.vue'
 import HomeHero from './HomeHero.vue'
 import DailyOpinionCard from './DailyOpinionCard.vue'
+import DailyPracticeCard from './DailyPracticeCard.vue'
 import WelcomeOnboarding from './WelcomeOnboarding.vue'
 
 const { t, locale } = useI18n()
@@ -254,9 +255,10 @@ function handleStart() {
         </div>
       </Transition>
 
-      <!-- Practice entries: Daily Opinion drill (3 min) + Opinion Chat.
+      <!-- Practice entries: Daily Practice (patterns + words), Daily Opinion drill (3 min) + Opinion Chat.
            Grid stretches each card full width and lets them shrink (no x-overflow). -->
       <section class="grid grid-cols-1 gap-3 mb-6">
+        <DailyPracticeCard class="min-w-0" @open="router.push('/daily-practice')" />
         <DailyOpinionCard class="min-w-0" @open="router.push('/daily-opinion')" />
         <button
           type="button"

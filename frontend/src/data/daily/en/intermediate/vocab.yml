@@ -1,0 +1,675 @@
+# Daily vocabulary - intermediate (CEFR B1-B2)
+# High-utility words for work and everyday adult conversation, chosen for what
+# Mandarin speakers tend to misuse or lack. All example sentences are original.
+level: intermediate
+words:
+  # ---------------------------------------------------------------
+  # Phrasal verbs & fixed phrases (20)
+  # ---------------------------------------------------------------
+  - id: follow-up-on
+    word: "follow up on"
+    pos: "phr."
+    phonetic: "/ˈfɑːloʊ ʌp ɑːn/"
+    meaning: "追蹤、後續處理（某件事）"
+    example:
+      en: "I'll follow up on the invoice with the client tomorrow."
+      zh: "我明天會跟客戶追一下發票的事。"
+    collocations: ["follow up with someone", "a follow-up email"]
+    note: "follow up on + 事情；follow up with + 人。名詞 follow-up 中間有連字號。"
+
+  - id: look-into
+    word: "look into"
+    pos: "phr."
+    phonetic: "/lʊk ˈɪntuː/"
+    meaning: "調查、研究一下"
+    example:
+      en: "I'll look into why the order hasn't shipped yet."
+      zh: "我會查一下為什麼訂單還沒出貨。"
+    collocations: ["look into a problem", "I'll look into it"]
+    note: "look into = 調查（還不知道答案）；look at = 看一眼；look for = 找。"
+
+  - id: run-into
+    word: "run into"
+    pos: "phr."
+    phonetic: "/rʌn ˈɪntuː/"
+    meaning: "遇到（問題）；巧遇（某人）"
+    example:
+      en: "We ran into a few problems while moving the data to the new server."
+      zh: "我們把資料搬到新伺服器時遇到了一些問題。"
+    collocations: ["run into trouble", "run into an old friend"]
+    note: "遇到困難說 run into problems，比 meet problems 自然；meet 通常只用在人。"
+
+  - id: push-back
+    word: "push back"
+    pos: "phr."
+    phonetic: "/pʊʃ ˈbæk/"
+    meaning: "反對、抗拒；把時間往後延"
+    example:
+      en: "Several managers pushed back on the new dress code."
+      zh: "好幾位主管對新的服裝規定提出反對。"
+    collocations: ["push back on something", "push the meeting back", "get pushback"]
+    note: "push back on + 事情 = 提出反對；push + 事情 + back = 延後（push the deadline back）。"
+
+  - id: get-back-to
+    word: "get back to"
+    pos: "phr."
+    phonetic: "/ɡɛt ˈbæk tuː/"
+    meaning: "之後再回覆（某人）"
+    example:
+      en: "Let me check my calendar and get back to you by Friday."
+      zh: "我查一下行事曆，週五前回覆你。"
+    collocations: ["get back to someone", "get back to you on that"]
+    note: "中文「我再回覆你」不要說 reply you later（reply 要加 to）；get back to you 最自然。"
+
+  - id: figure-out
+    word: "figure out"
+    pos: "phr."
+    phonetic: "/ˈfɪɡjər aʊt/"
+    meaning: "想出、搞懂"
+    example:
+      en: "I finally figured out how to change the language settings."
+      zh: "我終於搞懂怎麼改語言設定了。"
+    collocations: ["figure out how to", "figure it out", "figure out what happened"]
+    note: "代名詞要放中間：figure it out，不說 figure out it。"
+
+  - id: end-up
+    word: "end up"
+    pos: "phr."
+    phonetic: "/ɛnd ˈʌp/"
+    meaning: "最後（結果）……"
+    example:
+      en: "We planned to cook, but we ended up ordering pizza."
+      zh: "我們本來打算自己煮，結果最後叫了披薩。"
+    collocations: ["end up + V-ing", "end up in a place"]
+    note: "end up 後面接 V-ing：ended up ordering，不是 ended up to order。"
+
+  - id: deal-with
+    word: "deal with"
+    pos: "phr."
+    phonetic: "/ˈdiːl wɪð/"
+    meaning: "處理、應付"
+    example:
+      en: "She deals with customer complaints almost every day."
+      zh: "她幾乎每天都要處理客訴。"
+    collocations: ["deal with a problem", "hard to deal with"]
+    note: "一定要有 with：deal with a problem，不說 deal a problem。"
+
+  - id: come-up-with
+    word: "come up with"
+    pos: "phr."
+    phonetic: "/kʌm ˈʌp wɪð/"
+    meaning: "想出（點子、方案）"
+    example:
+      en: "Can you come up with a better name for the newsletter?"
+      zh: "你能想一個更好的電子報名稱嗎？"
+    collocations: ["come up with an idea", "come up with a plan"]
+    note: "come up with 是「自己想出來」；think of 偏向「想到、記起」。"
+
+  - id: bring-up
+    word: "bring up"
+    pos: "phr."
+    phonetic: "/brɪŋ ˈʌp/"
+    meaning: "提起（話題）"
+    example:
+      en: "I'll bring up the parking issue at the next team meeting."
+      zh: "我會在下次團隊會議提出停車的問題。"
+    collocations: ["bring up a topic", "bring it up"]
+    note: "bring up 也有「養育」的意思（I was brought up in Tainan.），要看上下文判斷。"
+
+  - id: set-up
+    word: "set up"
+    pos: "phr."
+    phonetic: "/sɛt ˈʌp/"
+    meaning: "安排、設定、建立"
+    example:
+      en: "Could you set up a call with the design team next week?"
+      zh: "下週可以幫我跟設計團隊約一個通話嗎？"
+    collocations: ["set up a meeting", "set up an account"]
+    note: "動詞 set up 是兩個字；名詞 setup 是一個字（The setup only takes five minutes.）。"
+
+  - id: catch-up
+    word: "catch up"
+    pos: "phr."
+    phonetic: "/kætʃ ˈʌp/"
+    meaning: "敘舊；跟上進度"
+    example:
+      en: "Let's grab coffee and catch up sometime next week."
+      zh: "下週找時間喝個咖啡聊聊近況吧。"
+    collocations: ["catch up with someone", "catch up on work"]
+    note: "catch up with + 人 = 跟上或敘舊；catch up on + 事 = 補做落後的事。"
+
+  - id: sort-out
+    word: "sort out"
+    pos: "phr."
+    phonetic: "/sɔːrt ˈaʊt/"
+    meaning: "解決、處理好"
+    example:
+      en: "Don't worry about the hotel booking. I'll sort it out tonight."
+      zh: "飯店訂房的事別擔心，我今晚會處理好。"
+    collocations: ["sort out a problem", "sort things out"]
+
+  - id: take-care-of
+    word: "take care of"
+    pos: "phr."
+    phonetic: "/teɪk ˈkɛr əv/"
+    meaning: "照顧；負責處理"
+    example:
+      en: "Can you take care of the slides while I write the summary?"
+      zh: "我寫摘要的時候，你可以負責投影片嗎？"
+    collocations: ["take care of a child", "I'll take care of it"]
+    note: "除了「照顧」，職場上常用來表示「這件事交給我」：I'll take care of it."
+
+  - id: put-off
+    word: "put off"
+    pos: "phr."
+    phonetic: "/pʊt ˈɔːf/"
+    meaning: "拖延、延後"
+    example:
+      en: "I keep putting off my dentist appointment."
+      zh: "我一直拖著不去看牙醫。"
+    collocations: ["put off + V-ing", "put it off"]
+    note: "後面接 V-ing：put off calling her；代名詞放中間：put it off。"
+
+  - id: call-off
+    word: "call off"
+    pos: "phr."
+    phonetic: "/kɔːl ˈɔːf/"
+    meaning: "取消（活動、計畫）"
+    example:
+      en: "They called off the outdoor concert because of the typhoon."
+      zh: "因為颱風，他們取消了戶外演唱會。"
+    collocations: ["call off a meeting", "call off the search"]
+    note: "call off = cancel，口語常用；不要和 call on（拜訪、點名）搞混。"
+
+  - id: go-over
+    word: "go over"
+    pos: "phr."
+    phonetic: "/ɡoʊ ˈoʊvər/"
+    meaning: "檢查、仔細看過一遍"
+    example:
+      en: "Let's go over the budget one more time before we send it."
+      zh: "寄出去之前，我們再把預算看一次。"
+    collocations: ["go over the details", "go over a report"]
+
+  - id: in-charge-of
+    word: "in charge of"
+    pos: "phr."
+    phonetic: "/ɪn ˈtʃɑːrdʒ əv/"
+    meaning: "負責、主管（某事）"
+    example:
+      en: "Who's in charge of the year-end party this year?"
+      zh: "今年尾牙誰負責？"
+    collocations: ["be in charge of", "put someone in charge"]
+    note: "be in charge of + 事，意思接近 be responsible for。"
+
+  - id: make-sense
+    word: "make sense"
+    pos: "phr."
+    phonetic: "/meɪk ˈsɛns/"
+    meaning: "合理、說得通"
+    example:
+      en: "Your plan makes sense, but it might cost too much."
+      zh: "你的計畫合理，但可能花費太高。"
+    collocations: ["Does that make sense?", "it makes sense to + V", "make sense of something"]
+    note: "想說「我懂了」可以說 That makes sense；I make sense 是「我說的有道理」，意思不同。"
+
+  - id: in-advance
+    word: "in advance"
+    pos: "phr."
+    phonetic: "/ɪn ədˈvæns/"
+    meaning: "事先、提前"
+    example:
+      en: "Please let me know in advance if you can't make it."
+      zh: "如果你不能來，請事先告訴我。"
+    collocations: ["book in advance", "thanks in advance", "three days in advance"]
+    note: "不要說 in advance before（意思重複）；「提前三天」說 three days in advance。"
+
+  # ---------------------------------------------------------------
+  # Nouns (10)
+  # ---------------------------------------------------------------
+  - id: concern
+    word: "concern"
+    pos: "n."
+    phonetic: "/kənˈsɝːn/"
+    meaning: "擔心、顧慮"
+    example:
+      en: "Her main concern is whether the apartment gets enough sunlight."
+      zh: "她主要擔心的是公寓採光夠不夠。"
+    collocations: ["raise a concern", "main concern", "concerns about"]
+    note: "用名詞委婉說「我擔心……」：I have a concern about ...，比 I'm worried 更適合職場。"
+
+  - id: priority
+    word: "priority"
+    pos: "n."
+    phonetic: "/praɪˈɔːrəti/"
+    meaning: "優先事項"
+    example:
+      en: "Fixing the login bug is our top priority this week."
+      zh: "修好登入的 bug 是我們這週的第一優先。"
+    collocations: ["top priority", "set priorities", "prioritize something"]
+
+  - id: deadline
+    word: "deadline"
+    pos: "n."
+    phonetic: "/ˈdɛdlaɪn/"
+    meaning: "截止期限"
+    example:
+      en: "The deadline for applications is next Monday at noon."
+      zh: "申請截止時間是下週一中午。"
+    collocations: ["meet a deadline", "miss a deadline", "a tight deadline"]
+    note: "趕上期限說 meet a deadline，不是 catch a deadline。"
+
+  - id: effect
+    word: "effect"
+    pos: "n."
+    phonetic: "/ɪˈfɛkt/"
+    meaning: "影響、效果"
+    example:
+      en: "The new policy had a big effect on how people commute."
+      zh: "新政策對大家通勤的方式影響很大。"
+    collocations: ["have an effect on", "side effect", "take effect"]
+    note: "effect 是名詞，affect 是動詞：A affects B = A has an effect on B。"
+
+  - id: feedback
+    word: "feedback"
+    pos: "n."
+    phonetic: "/ˈfiːdbæk/"
+    meaning: "意見回饋"
+    example:
+      en: "Thanks for the feedback. I'll update the slides tonight."
+      zh: "謝謝你的回饋，我今晚會更新投影片。"
+    collocations: ["give feedback", "get feedback on", "positive feedback"]
+    note: "不可數名詞，不加 s，也不說 a feedback；要數就說 a piece of feedback。"
+
+  - id: advice
+    word: "advice"
+    pos: "n."
+    phonetic: "/ədˈvaɪs/"
+    meaning: "建議、忠告"
+    example:
+      en: "My aunt gave me some really useful advice about renting."
+      zh: "我阿姨給了我一些很實用的租屋建議。"
+    collocations: ["give advice", "a piece of advice", "ask for advice"]
+    note: "不可數名詞，不說 advices 或 an advice；動詞是 advise /ədˈvaɪz/。"
+
+  - id: option
+    word: "option"
+    pos: "n."
+    phonetic: "/ˈɑːpʃən/"
+    meaning: "選擇、選項"
+    example:
+      en: "We have two options: repair the old laptop or buy a new one."
+      zh: "我們有兩個選擇：修舊筆電，或買一台新的。"
+    collocations: ["have no option but to", "a good option", "keep your options open"]
+
+  - id: budget
+    word: "budget"
+    pos: "n."
+    phonetic: "/ˈbʌdʒɪt/"
+    meaning: "預算"
+    example:
+      en: "We're already over budget, and the trip has only just started."
+      zh: "旅行才剛開始，我們就已經超出預算了。"
+    collocations: ["over budget", "on a tight budget", "budget for something"]
+    note: "「預算有限」說 on a tight budget；「超支」說 over budget。"
+
+  - id: opportunity
+    word: "opportunity"
+    pos: "n."
+    phonetic: "/ˌɑːpərˈtuːnəti/"
+    meaning: "機會"
+    example:
+      en: "This project is a great opportunity to learn new skills."
+      zh: "這個專案是學習新技能的好機會。"
+    collocations: ["an opportunity to + V", "take the opportunity", "job opportunity"]
+    note: "比 chance 正式，多指好的機會；後面接 to + V 或 for + 名詞。"
+
+  - id: colleague
+    word: "colleague"
+    pos: "n."
+    phonetic: "/ˈkɑːliːɡ/"
+    meaning: "同事"
+    example:
+      en: "One of my colleagues recommended this noodle shop."
+      zh: "這間麵店是我一個同事推薦的。"
+    collocations: ["a former colleague", "work colleagues"]
+    note: "比 coworker 稍正式；重音在第一音節 COL-league。"
+
+  # ---------------------------------------------------------------
+  # Verbs (12)
+  # ---------------------------------------------------------------
+  - id: affect
+    word: "affect"
+    pos: "v."
+    phonetic: "/əˈfɛkt/"
+    meaning: "影響"
+    example:
+      en: "The heavy rain affected flights all over the island."
+      zh: "豪雨影響了全台各地的班機。"
+    collocations: ["be affected by", "directly affect"]
+    note: "affect 是動詞，後面直接接受詞，不加 on：affect sales，不說 affect on sales。"
+
+  - id: suggest
+    word: "suggest"
+    pos: "v."
+    phonetic: "/səɡˈdʒɛst/"
+    meaning: "建議"
+    example:
+      en: "I suggest taking the earlier train, just in case."
+      zh: "我建議搭早一點的火車，以防萬一。"
+    collocations: ["suggest + V-ing", "suggest (that) someone do", "suggest something to someone"]
+    note: "不說 suggest someone to do：✗ I suggest you to go → ✓ I suggest (that) you go / I suggest going。"
+
+  - id: discuss
+    word: "discuss"
+    pos: "v."
+    phonetic: "/dɪˈskʌs/"
+    meaning: "討論"
+    example:
+      en: "We discussed the new schedule for almost two hours."
+      zh: "我們討論新的排班表討論了快兩小時。"
+    collocations: ["discuss a plan", "discuss something with someone", "a discussion about"]
+    note: "discuss 後面直接接受詞，不加 about；名詞 discussion 才接 about。"
+
+  - id: mention
+    word: "mention"
+    pos: "v."
+    phonetic: "/ˈmɛnʃən/"
+    meaning: "提到"
+    example:
+      en: "She mentioned that she's moving to Tainan next month."
+      zh: "她提到她下個月要搬去台南。"
+    collocations: ["mention something to someone", "as I mentioned", "not to mention"]
+    note: "後面直接接受詞或 that 子句，不說 mention about。"
+
+  - id: remind
+    word: "remind"
+    pos: "v."
+    phonetic: "/rɪˈmaɪnd/"
+    meaning: "提醒"
+    example:
+      en: "Can you remind me to call the landlord tonight?"
+      zh: "你可以提醒我今晚打給房東嗎？"
+    collocations: ["remind someone to + V", "remind someone of", "a reminder"]
+    note: "「提醒我」是 remind me，不是 remember me（remember = 記得）。"
+
+  - id: recommend
+    word: "recommend"
+    pos: "v."
+    phonetic: "/ˌrɛkəˈmɛnd/"
+    meaning: "推薦、建議"
+    example:
+      en: "Can you recommend a good dentist near the office?"
+      zh: "你可以推薦公司附近一間好的牙醫嗎？"
+    collocations: ["recommend something to someone", "highly recommend", "recommend + V-ing"]
+    note: "跟 suggest 一樣不說 recommend someone to do；說 I recommend (that) you ... 或 I recommend + V-ing。"
+
+  - id: attend
+    word: "attend"
+    pos: "v."
+    phonetic: "/əˈtɛnd/"
+    meaning: "參加、出席"
+    example:
+      en: "About fifty people attended the workshop on Saturday."
+      zh: "大約五十人參加了週六的工作坊。"
+    collocations: ["attend a meeting", "attend a wedding", "attend school"]
+    note: "attend 直接接受詞，不加 to；口語也常說 go to 或 join。"
+
+  - id: arrange
+    word: "arrange"
+    pos: "v."
+    phonetic: "/əˈreɪndʒ/"
+    meaning: "安排"
+    example:
+      en: "I've arranged a taxi to pick you up at the airport."
+      zh: "我已經安排計程車去機場接你了。"
+    collocations: ["arrange a meeting", "arrange for someone to + V"]
+
+  - id: apologize
+    word: "apologize"
+    pos: "v."
+    phonetic: "/əˈpɑːlədʒaɪz/"
+    meaning: "道歉"
+    example:
+      en: "I apologize for the late reply. It's been a hectic week."
+      zh: "抱歉這麼晚回覆，這週實在太忙了。"
+    collocations: ["apologize to someone", "apologize for something"]
+    note: "apologize to + 人 + for + 事：I apologized to her for being late；不說 apologize her。"
+
+  - id: explain
+    word: "explain"
+    pos: "v."
+    phonetic: "/ɪkˈspleɪn/"
+    meaning: "解釋、說明"
+    example:
+      en: "Could you explain the new process to me one more time?"
+      zh: "你可以再跟我解釋一次新流程嗎？"
+    collocations: ["explain something to someone", "explain why", "explain how"]
+    note: "不說 explain me；要說 explain it to me。"
+
+  - id: consider
+    word: "consider"
+    pos: "v."
+    phonetic: "/kənˈsɪdər/"
+    meaning: "考慮"
+    example:
+      en: "We're considering moving the office closer to the MRT."
+      zh: "我們正在考慮把辦公室搬到離捷運近一點的地方。"
+    collocations: ["consider + V-ing", "seriously consider", "take something into consideration"]
+    note: "後面接 V-ing，不接 to + V：considering moving，不是 considering to move。"
+
+  - id: prefer
+    word: "prefer"
+    pos: "v."
+    phonetic: "/prɪˈfɝː/"
+    meaning: "比較喜歡、偏好"
+    example:
+      en: "I prefer working early in the morning to staying up late."
+      zh: "比起熬夜，我比較喜歡一大早工作。"
+    collocations: ["prefer A to B", "prefer to + V", "would prefer"]
+    note: "比較兩者說 prefer A to B，不說 prefer A than B。"
+
+  # ---------------------------------------------------------------
+  # Adjectives (10)
+  # ---------------------------------------------------------------
+  - id: flexible
+    word: "flexible"
+    pos: "adj."
+    phonetic: "/ˈflɛksəbəl/"
+    meaning: "有彈性的、可以配合的"
+    example:
+      en: "My schedule is pretty flexible next week, so any day works."
+      zh: "我下週時間蠻有彈性的，哪天都可以。"
+    collocations: ["flexible hours", "flexible about something"]
+    note: "I'm flexible. 就是「我都可以配合」，比 I'm OK with anything 自然。"
+
+  - id: efficient
+    word: "efficient"
+    pos: "adj."
+    phonetic: "/ɪˈfɪʃənt/"
+    meaning: "有效率的"
+    example:
+      en: "The new system is much more efficient than our old spreadsheet."
+      zh: "新系統比我們舊的試算表有效率多了。"
+    collocations: ["energy-efficient", "an efficient way to + V"]
+    note: "efficient 是不浪費時間和資源；effective 是「有效、達到效果」，兩者不同。"
+
+  - id: reasonable
+    word: "reasonable"
+    pos: "adj."
+    phonetic: "/ˈriːzənəbəl/"
+    meaning: "合理的；（價格）公道的"
+    example:
+      en: "The rent is reasonable for such a central location."
+      zh: "在這麼市中心的地段，這個房租算公道。"
+    collocations: ["a reasonable price", "a reasonable request"]
+
+  - id: convenient
+    word: "convenient"
+    pos: "adj."
+    phonetic: "/kənˈviːniənt/"
+    meaning: "（時間、地點）方便的"
+    example:
+      en: "Is Thursday afternoon convenient for you?"
+      zh: "週四下午你方便嗎？"
+    collocations: ["convenient for someone", "a convenient location"]
+    note: "形容時間或地點，不形容人：✗ Are you convenient? → ✓ Is it convenient for you? / Are you free?"
+
+  - id: available
+    word: "available"
+    pos: "adj."
+    phonetic: "/əˈveɪləbəl/"
+    meaning: "有空的；可取得的"
+    example:
+      en: "Are you available for a quick call this afternoon?"
+      zh: "你今天下午有空簡短通個電話嗎？"
+    collocations: ["available for", "available on Monday", "not available"]
+    note: "問人有沒有空用 available 或 free，不用 convenient。"
+
+  - id: responsible
+    word: "responsible"
+    pos: "adj."
+    phonetic: "/rɪˈspɑːnsəbəl/"
+    meaning: "負責的；有責任感的"
+    example:
+      en: "Who is responsible for ordering office supplies?"
+      zh: "誰負責訂辦公用品？"
+    collocations: ["be responsible for", "a responsible person"]
+    note: "介系詞用 for：responsible for + 事 / V-ing。"
+
+  - id: familiar
+    word: "familiar"
+    pos: "adj."
+    phonetic: "/fəˈmɪljər/"
+    meaning: "熟悉的"
+    example:
+      en: "Are you familiar with this part of the city?"
+      zh: "你熟悉城市的這一區嗎？"
+    collocations: ["familiar with", "look familiar"]
+    note: "人熟悉某事：be familiar with；某事讓人覺得熟悉：be familiar to someone。"
+
+  - id: complicated
+    word: "complicated"
+    pos: "adj."
+    phonetic: "/ˈkɑːmplɪkeɪtɪd/"
+    meaning: "複雜的"
+    example:
+      en: "The refund process is more complicated than it needs to be."
+      zh: "退款流程比實際需要的還複雜。"
+    collocations: ["a complicated situation", "it's complicated"]
+
+  - id: confident
+    word: "confident"
+    pos: "adj."
+    phonetic: "/ˈkɑːnfɪdənt/"
+    meaning: "有自信的；有把握的"
+    example:
+      en: "I'm confident we can finish everything before the holiday."
+      zh: "我有把握我們能在連假前把事情做完。"
+    collocations: ["confident about", "feel confident"]
+    note: "confident 是形容詞，名詞是 confidence：improve my confidence，不是 improve my confident。"
+
+  - id: worth
+    word: "worth"
+    pos: "adj."
+    phonetic: "/wɝːθ/"
+    meaning: "值得（……的）"
+    example:
+      en: "The night market is definitely worth visiting."
+      zh: "那個夜市絕對值得去逛逛。"
+    collocations: ["worth + V-ing", "worth it", "worth the money"]
+    note: "後面接 V-ing 或名詞：worth visiting，不說 worth to visit。"
+
+  # ---------------------------------------------------------------
+  # Adverbs (6)
+  # ---------------------------------------------------------------
+  - id: actually
+    word: "actually"
+    pos: "adv."
+    phonetic: "/ˈæktʃuəli/"
+    meaning: "其實、事實上"
+    example:
+      en: "I thought the exam would be hard, but it was actually pretty easy."
+      zh: "我以為考試會很難，結果其實蠻簡單的。"
+    collocations: ["Actually, ...", "I actually ..."]
+    note: "actually 帶有「跟你以為的不一樣」的意味，常用來更正或轉折，不要每句都加。"
+
+  - id: especially
+    word: "especially"
+    pos: "adv."
+    phonetic: "/ɪˈspɛʃəli/"
+    meaning: "尤其、特別是"
+    example:
+      en: "I love Tainan, especially the street food."
+      zh: "我很愛台南，尤其是那裡的小吃。"
+    collocations: ["especially when", "especially for"]
+    note: "一般不放句首當開頭（✗ Especially, I like ...）；specially 是「特地」。"
+
+  - id: eventually
+    word: "eventually"
+    pos: "adv."
+    phonetic: "/ɪˈvɛntʃuəli/"
+    meaning: "最後、終究"
+    example:
+      en: "It took twenty minutes, but we eventually found a parking spot."
+      zh: "花了二十分鐘，但我們最後終於找到車位了。"
+    collocations: ["eventually decide", "will eventually"]
+    note: "強調「經過一段時間後終於」；不要和 occasionally（偶爾）搞混。"
+
+  - id: basically
+    word: "basically"
+    pos: "adv."
+    phonetic: "/ˈbeɪsɪkli/"
+    meaning: "基本上、簡單說"
+    example:
+      en: "Basically, we need either more people or more time."
+      zh: "簡單說，我們不是需要更多人，就是需要更多時間。"
+    collocations: ["Basically, ...", "basically the same"]
+    note: "用來把複雜的事講成重點；口語常用，但寫信時別用太多。"
+
+  - id: otherwise
+    word: "otherwise"
+    pos: "adv."
+    phonetic: "/ˈʌðərwaɪz/"
+    meaning: "否則、不然"
+    example:
+      en: "Bring an umbrella; otherwise, you'll get soaked."
+      zh: "帶把傘，不然你會淋濕。"
+    collocations: ["otherwise, ...", "unless otherwise noted"]
+    note: "otherwise 是副詞，連接兩個句子時前面要用句號或分號，不能只用逗號。"
+
+  - id: approximately
+    word: "approximately"
+    pos: "adv."
+    phonetic: "/əˈprɑːksɪmətli/"
+    meaning: "大約"
+    example:
+      en: "The flight to Tokyo takes approximately three hours."
+      zh: "飛東京大約三個小時。"
+    collocations: ["approximately + 數字"]
+    note: "比 about 正式，常用在報告和信件裡。"
+
+  # ---------------------------------------------------------------
+  # Prepositions (2)
+  # ---------------------------------------------------------------
+  - id: despite
+    word: "despite"
+    pos: "prep."
+    phonetic: "/dɪˈspaɪt/"
+    meaning: "儘管"
+    example:
+      en: "Despite the rain, the night market was packed."
+      zh: "儘管下雨，夜市還是擠滿了人。"
+    collocations: ["despite + 名詞 / V-ing", "despite the fact that"]
+    note: "介系詞，後面接名詞或 V-ing，不加 of、也不直接接句子：✗ despite of / ✗ despite it rained。"
+
+  - id: instead-of
+    word: "instead of"
+    pos: "prep."
+    phonetic: "/ɪnˈstɛd əv/"
+    meaning: "而不是、代替"
+    example:
+      en: "Let's take the MRT instead of driving. Parking downtown is a nightmare."
+      zh: "我們搭捷運，不要開車了，市區停車太痛苦。"
+    collocations: ["instead of + V-ing", "instead of + 名詞", "... instead（放句尾）"]
+    note: "instead of 後面接名詞或 V-ing：instead of driving，不說 instead of drive。"

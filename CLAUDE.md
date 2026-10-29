@@ -197,6 +197,7 @@ chat_mate/
 | `/settings` | SettingsScreen | User preferences |
 | `/diary` | DiaryScreen | Daily diary writing + AI feedback |
 | `/daily-opinion` | DailyOpinionScreen | Daily opinion drill (Opinion → Reason → Wrap-up) |
+| `/daily-practice` | DailyPracticeScreen | Today's 3 patterns + 5 words by level (SRS), with AI sentence check |
 | `/placement-test` | PlacementTestScreen | Level placement |
 
 Router uses **hash mode** (`/#/chat`) for GitHub Pages compatibility.
@@ -268,6 +269,10 @@ POST /api/diary-feedback
   Body: { diaryText, language, level, characterId, nativeLanguage, streakDays }
   Returns: { feedback: { reaction, didWell, corrections, betterExpressions, newVocabulary, encouragement, score } }
 
+POST /sentence-check   (GAS: action 'sentence-check'; needs ANTHROPIC_API_KEY)
+  Body: { sentence, pattern, meaning, task, level, nativeLanguage }
+  Returns: { check: { usedPattern, isNatural, corrected, comment, better } }
+
 GET /token
   Returns: Auth token (1-hour expiry)
 
@@ -308,6 +313,7 @@ All user progress stored in localStorage:
 - `chatmate_diary_draft` - Auto-saved diary draft
 - `chatmate_diary_pending_feedback` - Offline feedback queue
 - `chatmate_daily_opinion` - Daily opinion drill: per-day answer, connectors used, feedback
+- `chatmate_daily_practice` - Daily practice level and per-day plans (pattern/word ids, done flags); reviews go to `chatmate_srsProgress` as `pattern:<level>:<id>` / `word:<level>:<id>`
 
 ### Composable Patterns
 - **Singleton state**: `useNavState` uses module-level refs shared across components

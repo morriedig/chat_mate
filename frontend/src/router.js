@@ -35,6 +35,11 @@ const router = createRouter({
       component: () => import('./components/PlacementTestScreen.vue'),
     },
     {
+      path: '/daily-practice',
+      name: 'dailyPractice',
+      component: () => import('./components/DailyPracticeScreen.vue'),
+    },
+    {
       path: '/diary',
       name: 'diary',
       component: () => import('./components/DiaryScreen.vue'),

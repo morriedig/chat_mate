@@ -1,7 +1,7 @@
 {
   "app": {
     "title": "Chat Mate",
-    "subtitle": "和AI朋友一起練習中文"
+    "subtitle": "和AI朋友一起練習英文"
   },
   "setup": {
     "choosePartner": "選擇聊天夥伴",
@@ -590,5 +590,41 @@
     "cheerOne": "你用了 {a}，很好！明天也試試另一個。",
     "cheerOther": "你用了 {a}，雖然不是今天的目標，也很自然！",
     "cheerNone": "這次還沒用到連接詞。下次在看法後面加一句「because…」試試看。"
+  },
+  "dailyPractice": {
+    "title": "今日練習",
+    "back": "返回",
+    "progress": "已完成 {done} / {total}",
+    "newPattern": "新句型",
+    "reviewPattern": "複習句型",
+    "newWord": "新單字",
+    "reviewWord": "複習單字",
+    "listen": "聽發音",
+    "startPractice": "開始練習",
+    "correct": "對！這句最自然。",
+    "notQuite": "差一點，原因是：",
+    "next": "下一步",
+    "check": "請朋友看看",
+    "checking": "朋友在看……",
+    "skip": "先跳過",
+    "usedPattern": "有用到這個句型 ✓",
+    "missedPattern": "句子裡還沒用到這個句型。",
+    "corrected": "修正：",
+    "better": "也可以說：",
+    "checkUnavailable": "（朋友現在沒辦法幫你看。）",
+    "howWell": "現在熟不熟？",
+    "rating": {
+      "hard": "還不熟",
+      "ok": "有點印象",
+      "easy": "很熟了"
+    },
+    "doneTitle": "今天練完了！",
+    "doneSummary": "練了 {patterns} 個句型、{words} 個單字。",
+    "useThemHint": "試著把今天的句型真的用出來：",
+    "writeOpinion": "寫今日觀點",
+    "backHome": "回首頁",
+    "cardTitle": "今日練習",
+    "cardSubtitle": "{patterns} 個句型 + {words} 個單字，約 10 分鐘",
+    "cardDone": "今天練完了，明天見"
   }
 }

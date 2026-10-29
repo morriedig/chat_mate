@@ -1,0 +1,473 @@
+level: advanced
+patterns:
+  - id: it-could-be-argued
+    pack: opinion
+    pattern: "It could be argued that ..."
+    meaning: "或許可以說……／有人會認為……"
+    when: "想提出一個看法但不想說得太死，或要先擺出一個論點再討論時用；語氣比 I think 更客觀、更正式。"
+    examples:
+      - en: "It could be argued that working from a café is more productive than working at home, at least for people who get distracted easily."
+        zh: "或許可以說在咖啡廳工作比在家更有效率，至少對容易分心的人來說是這樣。"
+      - en: "It could be argued that the delay actually helped us, since we caught two major bugs before launch."
+        zh: "或許可以說這次延期反而幫了我們，因為我們在上線前抓到了兩個重大 bug。"
+    choice:
+      situation: "在提案會議上，你想提出「縮短會議其實會提高效率」這個看法，但不想聽起來像在下結論。"
+      options:
+        - "Shorter meetings are better. Everyone knows that."
+        - "It could be argued that shorter meetings would actually make us more productive."
+        - "It could be argue that shorter meeting is more efficiency."
+      answer: 1
+      explain: "第一句太武斷，「大家都知道」等於否定別人的看法；第三句 argue 要用過去分詞 argued，meeting 要用複數，efficiency 是名詞，這裡要用形容詞 efficient。"
+    task: "用這個句型提出看法：社群媒體讓人更孤單，而不是更有連結。"
+    match: ["could be argued"]
+    mistake:
+      wrong: "It could be argue that ..."
+      right: "It could be argued that ..."
+      why: "這是被動結構 could be + 過去分詞；中文動詞不變形，很容易漏掉 -ed。"
+
+  - id: inclined-to-think
+    pack: opinion
+    pattern: "I'm inclined to think ..."
+    meaning: "我傾向認為……"
+    when: "表達一個經過思考、但仍保留彈性的看法；比 I think 更謹慎，適合正式討論或給建議時。"
+    examples:
+      - en: "I'm inclined to think we should skip the hotel breakfast and find a local place instead."
+        zh: "我傾向認為我們應該跳過飯店早餐，改去找在地的店吃。"
+      - en: "I'm inclined to think the drop in sign-ups has more to do with pricing than with the new design."
+        zh: "我傾向認為註冊數下滑跟定價的關係比較大，跟新設計比較無關。"
+    choice:
+      situation: "主管問你產品要不要延後上線，你偏向延後，但想保留討論空間。"
+      options:
+        - "I'm incline to think delay is better."
+        - "We must delay. There is no other choice."
+        - "I'm inclined to think a short delay would be safer, but I'm open to other views."
+      answer: 2
+      explain: "第一句 incline 要用 inclined，而且 delay is better 太籠統；第二句語氣太強硬，把討論空間都關掉了。"
+    task: "用這個句型回答：朋友問你下次出國要選日本還是韓國。"
+    match: ["inclined to"]
+    mistake:
+      wrong: "I'm incline to think ..."
+      right: "I'm inclined to think ..."
+      why: "be inclined to 是固定搭配，inclined 是形容詞，不能用原形動詞 incline。"
+
+  - id: from-where-i-stand
+    pack: opinion
+    pattern: "From where I stand, ..."
+    meaning: "從我的角度／立場來看，……"
+    when: "強調這是你自己位置上看到的狀況（例如你的部門、你的經驗），暗示別人的角度可能不同，語氣客氣。"
+    examples:
+      - en: "From where I stand, moving closer to your office would make your life a lot easier."
+        zh: "從我的角度來看，搬到離公司近一點會讓你的生活輕鬆很多。"
+      - en: "From where I stand, the support team is already stretched too thin to take on another product."
+        zh: "從我的立場來看，客服團隊人力已經很吃緊，沒辦法再多接一個產品。"
+    choice:
+      situation: "業務部想加快出貨速度，你是倉儲主管，想從你的角度說明現有人力不夠。"
+      options:
+        - "From where I stand, we'd need at least two more people to keep up with faster shipping."
+        - "From my standing, we need more people."
+        - "Your idea is impossible because we don't have people."
+      answer: 0
+      explain: "第二句 from my standing 不是英文慣用說法；第三句直接說 impossible 太衝，也沒說清楚是從誰的角度看。"
+    task: "用這個句型回應：同事說「遠端工作對大家都比較好」，但你負責帶新人。"
+    match: ["from where i stand"]
+
+  - id: granted-but
+    pack: disagree
+    pattern: "Granted, ..., but ..."
+    meaning: "沒錯，……，但是……"
+    when: "先承認對方說得有道理的部分，再提出更重要的反面考量，討論和寫作都常用。"
+    examples:
+      - en: "Granted, the new place is smaller, but we'd save almost an hour of commuting every day."
+        zh: "沒錯，新的地方比較小，但我們每天可以省下將近一小時的通勤。"
+      - en: "Granted, the vendor is cheaper, but their support team only works in a different time zone."
+        zh: "沒錯，這家廠商比較便宜，但他們的客服只在不同時區上班。"
+    choice:
+      situation: "會議上同事說新工具太貴，你承認價格高，但想強調它能省很多人力。"
+      options:
+        - "Although it is expensive, but it can save manpower."
+        - "Granted, it's not cheap, but it would save us roughly two days of manual work a week."
+        - "You are wrong, it saves time."
+      answer: 1
+      explain: "第一句 although…but 重複；第三句太直接，像在吵架。"
+    task: "用這個句型回應：朋友說「在家煮飯太花時間，不如每天外食」。"
+    match: ["granted", "but"]
+    mistake:
+      wrong: "Although it is expensive, but ..."
+      right: "Granted, it's expensive, but ... / Although it's expensive, ..."
+      why: "中文「雖然…但是…」成對，英文只能留一個。"
+
+  - id: fair-point-though
+    pack: disagree
+    pattern: "That's a fair point, though ..."
+    meaning: "你說得有道理，不過……"
+    when: "先真心肯定對方的觀點，再補上一個你在意的考量；though 放在句中，語氣比 but 更輕。"
+    examples:
+      - en: "That's a fair point, though a bigger apartment also means higher rent and more cleaning."
+        zh: "你說得有道理，不過大一點的公寓也代表房租更高、打掃更累。"
+      - en: "That's a fair point, though I'd want to see the numbers before we commit to a second office."
+        zh: "你說得有道理，不過在決定開第二間辦公室之前，我想先看到數字。"
+    choice:
+      situation: "同事建議把客服外包來省錢，你覺得有道理，但擔心服務品質。"
+      options:
+        - "That's a fair point, but though I worry quality."
+        - "Fair point. Bad idea, though."
+        - "That's a fair point, though I'd be a bit worried about how it might affect service quality."
+      answer: 2
+      explain: "第一句 but 和 though 重複，worry 後面也少了 about；第二句先說 fair point 又馬上說 bad idea，聽起來很敷衍。"
+    task: "用這個句型回應：朋友說「買電動車比較環保，你應該換一台」。"
+    match: ["fair point", "though"]
+    mistake:
+      wrong: "That's a fair point, but though ..."
+      right: "That's a fair point, though ... / That's a fair point, but ..."
+      why: "but 和 though 都是轉折；中文「但是不過」可以疊著講，英文只能選一個。"
+
+  - id: while-i-take-your-point
+    pack: disagree
+    pattern: "While I take your point, ..."
+    meaning: "雖然我理解你的意思，……"
+    when: "正式場合表示「我聽懂你的論點了」，接著提出不同看法；比 I see what you're saying 更正式。"
+    examples:
+      - en: "While I take your point about saving money, I'd rather not spend our only vacation sleeping in a hostel."
+        zh: "雖然我理解你想省錢，但我不太想把我們唯一的假期花在睡青年旅館。"
+      - en: "While I take your point about speed, rushing the audit could cost us far more later."
+        zh: "雖然我理解你重視速度，但匆忙做稽核之後可能讓我們付出更大的代價。"
+    choice:
+      situation: "董事會上有人主張全面刪減行銷預算，你理解他的考量，但想正式地提出反對。"
+      options:
+        - "While I take your point, but cutting marketing is dangerous."
+        - "While I take your point about costs, cutting marketing entirely could slow our growth next year."
+        - "I take your point. No."
+      answer: 1
+      explain: "第一句 while 和 but 重複；第三句太短太硬，在董事會上很失禮。"
+    task: "用這個句型回應：家人說「你應該找個穩定的工作，不要創業」。"
+    match: ["take your point"]
+    mistake:
+      wrong: "While I take your point, but ..."
+      right: "While I take your point, ..."
+      why: "while 已經是「雖然」，後面不能再接 but，跟「雖然…但是…」是同一個陷阱。"
+
+  - id: main-reason-being
+    pack: opinion
+    pattern: "..., the main reason being ..."
+    meaning: "……，主要原因是……"
+    when: "先說結論，再用一個片語補上最主要的理由，句子緊湊，口說和書面都適合。"
+    examples:
+      - en: "We ended up staying in, the main reason being that it was pouring all afternoon."
+        zh: "我們最後待在家，主要原因是整個下午都在下大雨。"
+      - en: "I'd recommend the second vendor, the main reason being their track record with banks."
+        zh: "我會推薦第二家廠商，主要原因是他們和銀行合作的實績。"
+    choice:
+      situation: "主管問你為什麼選 B 方案，你想先講結論，再補上主要原因是成本比較低。"
+      options:
+        - "I'd go with Plan B, the main reason being that it costs about thirty percent less."
+        - "I'd go with Plan B, the main reason is being cheaper."
+        - "Because Plan B is cheaper, so I choose it."
+      answer: 0
+      explain: "第二句 the main reason is being 文法錯，這個句型是 reason being + 名詞或 that 子句；第三句 because…so 重複。"
+    task: "用這個句型說明：你為什麼最近開始早起。"
+    match: ["reason being"]
+    mistake:
+      wrong: "Because it's cheaper, so I chose it."
+      right: "I chose it, the main reason being that it's cheaper."
+      why: "中文「因為…所以…」成對，英文只能留一個；用 the main reason being 還可以先講結論。"
+
+  - id: given-that
+    pack: opinion
+    pattern: "Given that ..., ..."
+    meaning: "考慮到……／既然……"
+    when: "把一個已知事實當作推論的前提，再帶出結論；比 because 更有「理性推論」的味道。"
+    examples:
+      - en: "Given that it's your first marathon, I'd aim to finish rather than chase a time."
+        zh: "考慮到這是你第一次跑全馬，我會以完賽為目標，而不是追求成績。"
+      - en: "Given that the client changed the scope twice, the original deadline is no longer realistic."
+        zh: "考慮到客戶已經改了兩次範圍，原本的截止日已經不切實際了。"
+    choice:
+      situation: "團隊預算剛被砍了兩成，你想以此為前提，建議先暫停一個次要專案。"
+      options:
+        - "Given the budget was cut, so we should pause."
+        - "The budget was cut. Pause the project now."
+        - "Given that our budget has just been cut by twenty percent, it might make sense to pause the side project."
+      answer: 2
+      explain: "第一句 given…so 重複，等於中文「既然…所以…」；第二句是命令語氣，對團隊說太硬。"
+    task: "用這個句型給建議：朋友下個月要搬家，但工作正忙。"
+    match: ["given that"]
+    mistake:
+      wrong: "Given that the budget was cut, so ..."
+      right: "Given that the budget was cut, we should ..."
+      why: "given that 已經表示前提，後面不用再加 so。"
+
+  - id: which-is-precisely-why
+    pack: opinion
+    pattern: "..., which is precisely why ..."
+    meaning: "……，這正是為什麼……"
+    when: "把對方剛提到的事實（或你剛說的點）直接變成支持你論點的理由，論證力很強。"
+    examples:
+      - en: "Rents in the city keep going up, which is precisely why we started looking in the suburbs."
+        zh: "市區房租一直漲，這正是我們開始往郊區找房子的原因。"
+      - en: "Our users are mostly on mobile, which is precisely why the app needs to load in under two seconds."
+        zh: "我們的使用者大多用手機，這正是為什麼 app 必須在兩秒內載入。"
+    choice:
+      situation: "同事說「客戶都很忙，沒時間看長報告」，你想順勢說這正是你主張做一頁摘要的原因。"
+      options:
+        - "Yes, that's why. So we should make one page."
+        - "Exactly, which is precisely why I'm suggesting a one-page summary."
+        - "Exactly, which precisely is the reason why I suggest summary."
+      answer: 1
+      explain: "第一句意思到了但很零碎，沒有把對方的話變成你的論點；第三句語序不自然，summary 前面也少了冠詞。"
+    task: "用這個句型回應：朋友說「最近工作壓力好大，週末都在睡覺」。"
+    match: ["precisely why"]
+
+  - id: not-to-mention
+    pack: opinion
+    pattern: "..., not to mention ..."
+    meaning: "……，更不用說……"
+    when: "列完一個理由後，再補一個更有分量的理由，加強說服力；後面接名詞或 V-ing。"
+    examples:
+      - en: "Cooking at home is cheaper, not to mention a lot healthier."
+        zh: "在家煮比較便宜，更不用說健康多了。"
+      - en: "Switching providers would take months, not to mention the cost of retraining everyone."
+        zh: "換供應商要花好幾個月，更不用說重新訓練所有人的成本。"
+    choice:
+      situation: "你想說服主管升級舊系統：它很慢，更不用說還有資安風險。"
+      options:
+        - "The old system is slow, not to mention the security risks it exposes us to."
+        - "The old system is slow, not mention about the security risks."
+        - "The old system is slow and bad and dangerous."
+      answer: 0
+      explain: "第二句少了 to，mention 後面也不加 about；第三句只是堆形容詞，聽起來不專業也沒說服力。"
+    task: "用這個句型說服朋友：一起去學游泳。"
+    match: ["not to mention"]
+    mistake:
+      wrong: "not to mention about ..."
+      right: "not to mention ..."
+      why: "mention 是及物動詞，直接接受詞；中文「提到關於」會讓人多加 about。"
+
+  - id: would-it-be-worth
+    pack: suggest
+    pattern: "Would it be worth + V-ing ...?"
+    meaning: "……會不會值得一試？／要不要考慮……？"
+    when: "用問句委婉提議，讓對方覺得是一起評估，而不是你在下指令。"
+    examples:
+      - en: "Would it be worth booking the tickets now, before the prices go up?"
+        zh: "要不要趁漲價前先把票訂起來？"
+      - en: "Would it be worth running a small pilot before we roll this out to every branch?"
+        zh: "在推到所有分店之前，先做個小規模試行會不會比較值得？"
+    choice:
+      situation: "你想委婉建議主管：發布前先找幾位真實用戶測試。"
+      options:
+        - "We have to test with real users first."
+        - "Would it be worth to test with users?"
+        - "Would it be worth getting a few real users to try it before we launch?"
+      answer: 2
+      explain: "第一句 have to 聽起來像命令；第二句 worth 後面要接 V-ing，不是 to V。"
+    task: "用這個句型向室友提議：換一家網路業者。"
+    match: ["would it be worth"]
+    mistake:
+      wrong: "Would it be worth to test ...?"
+      right: "Would it be worth testing ...?"
+      why: "worth 後面接名詞或 V-ing；中文「值得去做」會讓人直覺用 to V。"
+
+  - id: i-wonder-if-we-might
+    pack: suggest
+    pattern: "I wonder if we might ..."
+    meaning: "不知道我們是否可以……"
+    when: "非常委婉的提議，適合對上級、客戶或敏感話題；把建議包裝成自己的思考。"
+    examples:
+      - en: "I wonder if we might leave a bit earlier, just in case the traffic is bad."
+        zh: "不知道我們是不是可以早一點出發，以防塞車。"
+      - en: "I wonder if we might revisit the timeline once we hear back from legal."
+        zh: "不知道我們是否可以等法務回覆後，再重新檢視時程。"
+    choice:
+      situation: "客戶堅持下週上線，你想很客氣地提議分兩階段上線。"
+      options:
+        - "I wonder if we might consider a two-phase launch, so the core features still go live next week."
+        - "I wonder if we might to launch in two phases."
+        - "You should launch in two phases, it's better."
+      answer: 0
+      explain: "第二句 might 後面直接接原形動詞，不加 to；第三句用 you should 對客戶說太直接，像在教對方做事。"
+    task: "用這個句型向家人提議：今年過年不回老家，改成出去玩。"
+    match: ["wonder if"]
+    mistake:
+      wrong: "I wonder if we might to ..."
+      right: "I wonder if we might ..."
+      why: "might 是助動詞，後面直接接原形動詞。"
+
+  - id: what-it-comes-down-to
+    pack: clarify
+    pattern: "What it comes down to is ..."
+    meaning: "說到底，關鍵就是……"
+    when: "討論很久之後，把複雜的問題收斂成一個核心，幫大家聚焦。"
+    examples:
+      - en: "What it comes down to is whether you'd rather have more space or a shorter commute."
+        zh: "說到底，關鍵就是你比較想要大一點的空間，還是短一點的通勤。"
+      - en: "What it comes down to is trust: if the client doesn't trust our data, nothing else matters."
+        zh: "說到底關鍵就是信任：如果客戶不信任我們的數據，其他都不重要。"
+    choice:
+      situation: "大家討論了一小時要不要換系統，你想把重點收斂成「團隊現在有沒有時間學新工具」。"
+      options:
+        - "In conclusion, the point is about if team has time."
+        - "What it comes down to is whether the team actually has time to learn a new tool right now."
+        - "What it comes down is the time."
+      answer: 1
+      explain: "第一句 in conclusion 太像寫作文，about if 也不對；第三句少了 to，而且太籠統，沒說清楚是什麼時間。"
+    task: "用這個句型總結：朋友在兩份工作 offer 之間猶豫不決。"
+    match: ["comes down to"]
+
+  - id: the-bottom-line
+    pack: clarify
+    pattern: "The bottom line is (that) ..."
+    meaning: "最重要的結論是……／底線是……"
+    when: "直接講出最後的結論或不能讓步的點，常在討論尾聲或需要給明確答覆時用。"
+    examples:
+      - en: "The bottom line is that we can't afford a new car this year."
+        zh: "說到底，我們今年就是買不起新車。"
+      - en: "The bottom line is that the project has to stay under budget, even if we cut a few features."
+        zh: "底線是專案必須控制在預算內，就算要砍掉一些功能也一樣。"
+    choice:
+      situation: "團隊在爭論各種細節，你想直接講結論：不管用哪種做法，都必須在月底前交付。"
+      options:
+        - "The bottom line is that we deliver by the end of the month, whatever approach we take."
+        - "The bottom line is, so we must deliver end of month."
+        - "The most bottom thing is the deadline."
+      answer: 0
+      explain: "第二句 is 後面多了 so，end of month 也少了 the；第三句 most bottom thing 不是英文說法。"
+    task: "用這個句型跟朋友說：你考慮很久之後的決定（例如先租房、暫時不買房）。"
+    match: ["bottom line"]
+
+  - id: to-put-it-another-way
+    pack: clarify
+    pattern: "To put it another way, ..."
+    meaning: "換個方式說，……"
+    when: "對方好像沒聽懂，或你想用更具體、更好懂的說法再講一次時用。"
+    examples:
+      - en: "You're paying for a gym you only use twice a month. To put it another way, each visit costs you about five hundred dollars."
+        zh: "你辦了一個一個月只去兩次的健身房。換個方式說，你每去一次大概要花五百塊。"
+      - en: "Our churn rate is eight percent. To put it another way, we lose about one customer in twelve every month."
+        zh: "我們的流失率是百分之八。換個方式說，我們每個月大約每十二個客戶就流失一個。"
+    choice:
+      situation: "你剛說「這個 bug 影響 3% 的付款」，但大家沒什麼感覺，你想換個說法讓大家理解嚴重性。"
+      options:
+        - "Another way to put, it's many people."
+        - "In other way, three percent is a lot."
+        - "To put it another way, roughly one in every thirty payments is failing."
+      answer: 2
+      explain: "第一句少了 it，而且說得很模糊；第二句 in other way 是錯誤說法，應該是 in other words，而且沒有讓數字更具體。"
+    task: "用這個句型換個說法解釋：你每天滑手機三小時。"
+    match: ["put it another way"]
+    mistake:
+      wrong: "In other way, ..."
+      right: "In other words, ... / To put it another way, ..."
+      why: "中文「換句話說」直譯會變成 in other way；正確是 in other words（複數），或用 to put it another way。"
+
+  - id: not-so-much-as
+    pack: clarify
+    pattern: "It's not so much X as Y"
+    meaning: "與其說是 X，不如說是 Y"
+    when: "修正別人（或自己）對問題的理解，指出真正的重點在哪裡。"
+    examples:
+      - en: "It's not so much the price that bothers me as the fact that it breaks so easily."
+        zh: "讓我不滿的與其說是價格，不如說是它太容易壞。"
+      - en: "It's not so much a technical problem as a communication problem between the two teams."
+        zh: "與其說這是技術問題，不如說是兩個團隊之間的溝通問題。"
+    choice:
+      situation: "主管以為專案延誤是因為工程師不夠，你想指出其實是需求一直變動。"
+      options:
+        - "It's not so much a staffing issue as the fact that the requirements keep changing."
+        - "It's not so much staffing, but requirements change."
+        - "Not staffing problem. Requirements problem."
+      answer: 0
+      explain: "第二句 not so much 要配 as，不是 but；第三句太簡略，像在打電報，對主管說不夠完整也不夠禮貌。"
+    task: "用這個句型說明：你不常運動的真正原因。"
+    match: ["not so much"]
+    mistake:
+      wrong: "It's not so much X, but Y."
+      right: "It's not so much X as Y."
+      why: "中文「與其說…不如說…」的「不如」容易被翻成 but；這個句型固定用 as。"
+
+  - id: what-really-matters
+    pack: opinion
+    pattern: "What really matters is ..."
+    meaning: "真正重要的是……"
+    when: "把焦點拉回最核心的價值或目標，常用在大家糾結細節的時候。"
+    examples:
+      - en: "What really matters is that everyone gets home safely, not whether we catch the last train."
+        zh: "真正重要的是大家都平安到家，而不是有沒有趕上末班車。"
+      - en: "What really matters is whether users can finish checkout without help."
+        zh: "真正重要的是使用者能不能不靠協助就完成結帳。"
+    choice:
+      situation: "團隊在爭論 logo 的顏色，你想把焦點拉回：客戶能不能看懂報價。"
+      options:
+        - "The really important is the client understand the quote."
+        - "Stop talking about colors, it's not important."
+        - "What really matters is that the client can understand the quote at a glance."
+      answer: 2
+      explain: "第一句 the really important 後面缺名詞，understand 也要加 s；第二句等於叫大家閉嘴，太不客氣。"
+    task: "用這個句型回應：朋友擔心婚禮場地不夠豪華。"
+    match: ["what really matters"]
+    mistake:
+      wrong: "The really important is ..."
+      right: "What really matters is ... / The really important thing is ..."
+      why: "中文「真正重要的是」直譯時會漏掉名詞；英文要用 what 子句，或補上 thing。"
+
+  - id: if-i-could-come-in
+    pack: meeting
+    pattern: "If I could just come in here, ..."
+    meaning: "我在這裡插一句……"
+    when: "會議中禮貌地插話補充或更正，比 Sorry to interrupt 更從容、更正式。"
+    examples:
+      - en: "If I could just come in here, the restaurant you're talking about closed last month."
+        zh: "我插一句，你們說的那家餐廳上個月已經收了。"
+      - en: "If I could just come in here, the figures on that slide are from last quarter, not this one."
+        zh: "我插一句，那張投影片上的數字是上一季的，不是這一季。"
+    choice:
+      situation: "線上會議中同事正在報告，你發現他講的上線日期錯了，想禮貌地插話。"
+      options:
+        - "Wait, wait, you're wrong."
+        - "If I could just come in here, I think the launch date moved to the twelfth."
+        - "If I could just come here, the date is wrong."
+      answer: 1
+      explain: "第一句太衝，當眾說別人錯；第三句少了 in，come here 是「過來這裡」，意思完全不同。"
+    task: "用這個句型插話：家庭聚會上大家在討論旅遊行程，你想補充一個資訊。"
+    match: ["come in"]
+
+  - id: going-back-to
+    pack: meeting
+    pattern: "Going back to what X said, ..."
+    meaning: "回到剛才 X 說的……"
+    when: "討論已經往前走了，你想把話題拉回某人先前的觀點，同時表示你有在聽。"
+    examples:
+      - en: "Going back to what your sister said, maybe we could just order in and stay home."
+        zh: "回到你姊姊剛剛說的，也許我們乾脆叫外送待在家就好。"
+      - en: "Going back to what Mei said about onboarding, I think that's where we're losing most new users."
+        zh: "回到 Mei 剛剛說的新手引導，我覺得那正是我們流失最多新用戶的地方。"
+    choice:
+      situation: "會議快結束時，你想把話題拉回同事 Kevin 一開始提到的預算問題。"
+      options:
+        - "Going back to what Kevin said earlier about the budget, do we have a final number yet?"
+        - "Back to Kevin say before, the budget?"
+        - "Return to Kevin's topic, budget."
+      answer: 0
+      explain: "第二句 say 要用過去式 said，而且整句不完整；第三句 return to 在這裡很生硬，也不是完整的句子。"
+    task: "用這個句型：朋友聚餐時，把話題拉回某位朋友先前提到的換工作計畫。"
+    match: ["going back to"]
+
+  - id: park-that
+    pack: meeting
+    pattern: "Let's park that for now (and come back to it later)."
+    meaning: "這個先放著，之後再討論。"
+    when: "會議中出現有價值但離題的議題時，禮貌地先擱置，讓討論回到正題。"
+    examples:
+      - en: "Let's park that for now and decide on the hotel once we know the dates."
+        zh: "這個先放著，等日期確定再決定飯店。"
+      - en: "That's a good question, but let's park that for now and come back to it after the demo."
+        zh: "這是個好問題，不過我們先把它放著，展示完再回來討論。"
+    choice:
+      situation: "你主持會議，有人突然提起明年的組織調整，你想先擱置，回到今天的議程。"
+      options:
+        - "That's off topic. Next."
+        - "Let's stop that for now and come back later."
+        - "Good point. Let's park that for now and come back to it at the end."
+      answer: 2
+      explain: "第一句太冷淡，會讓提問的人尷尬；第二句 stop that 聽起來像叫對方停止某個行為，有責備的味道。"
+    task: "用這個句型：家人討論晚餐時突然聊到過年要去哪，你想先擱置這個話題。"
+    match: ["park"]

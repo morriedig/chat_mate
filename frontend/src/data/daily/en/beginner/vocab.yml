@@ -1,0 +1,643 @@
+level: beginner
+words:
+  - id: borrow
+    word: "borrow"
+    pos: "v."
+    phonetic: "/ˈbɑːroʊ/"
+    meaning: "（向別人）借入"
+    example:
+      en: "Can I borrow your umbrella?"
+      zh: "我可以借你的傘嗎？"
+    collocations: ["borrow money", "borrow a book from the library"]
+    note: "borrow 是「借入」，lend 是「借出」：Can you lend me your pen?"
+
+  - id: lend
+    word: "lend"
+    pos: "v."
+    phonetic: "/lɛnd/"
+    meaning: "借出（給別人）"
+    example:
+      en: "Could you lend me 100 dollars?"
+      zh: "你可以借我一百元嗎？"
+    collocations: ["lend someone money", "lend a hand"]
+    note: "lend 是「把東西借給別人」，句型是 lend + 人 + 東西；不要說 Can you borrow me…?"
+
+  - id: bring
+    word: "bring"
+    pos: "v."
+    phonetic: "/brɪŋ/"
+    meaning: "帶來（往說話者這邊）"
+    example:
+      en: "Please bring your laptop to the meeting."
+      zh: "開會請帶你的筆電來。"
+    collocations: ["bring something home", "bring a friend"]
+    note: "bring 是帶「過來」，take 是帶「過去」。中文都說「帶」，要看方向。"
+
+  - id: take
+    word: "take"
+    pos: "v."
+    phonetic: "/teɪk/"
+    meaning: "帶走；拿去（往別處）；搭乘"
+    example:
+      en: "Don't forget to take a jacket."
+      zh: "別忘了帶件外套。"
+    collocations: ["take the bus", "take a photo", "take a break"]
+    note: "離開現在的地方帶東西去別處用 take：Take this to your mom."
+
+  - id: tired
+    word: "tired"
+    pos: "adj."
+    phonetic: "/ˈtaɪərd/"
+    meaning: "（人）累的"
+    example:
+      en: "I'm so tired after work today."
+      zh: "我今天下班後好累。"
+    collocations: ["feel tired", "tired of something"]
+    note: "-ed 形容詞描述「人的感覺」：I'm tired。不要說 I'm tiring（意思是「我很累人」）。"
+
+  - id: tiring
+    word: "tiring"
+    pos: "adj."
+    phonetic: "/ˈtaɪərɪŋ/"
+    meaning: "令人疲累的"
+    example:
+      en: "Moving to a new apartment is really tiring."
+      zh: "搬新家真的很累人。"
+    collocations: ["a tiring day", "a tiring trip"]
+    note: "-ing 形容詞描述「事情帶給人的感覺」：The job is tiring. I'm tired."
+
+  - id: bored
+    word: "bored"
+    pos: "adj."
+    phonetic: "/bɔːrd/"
+    meaning: "（人）感到無聊的"
+    example:
+      en: "I was bored, so I called my friend."
+      zh: "我很無聊，所以打給朋友。"
+    collocations: ["get bored", "bored with something"]
+    note: "說自己無聊要說 I'm bored；I'm boring 是「我這個人很無趣」。"
+
+  - id: boring
+    word: "boring"
+    pos: "adj."
+    phonetic: "/ˈbɔːrɪŋ/"
+    meaning: "令人無聊的、無趣的"
+    example:
+      en: "The movie was long and boring."
+      zh: "那部電影又長又無聊。"
+    collocations: ["a boring class", "boring work"]
+
+  - id: fun
+    word: "fun"
+    pos: "adj."
+    phonetic: "/fʌn/"
+    meaning: "好玩的、有趣的（令人開心）"
+    example:
+      en: "The beach trip was so much fun."
+      zh: "這趟海邊之旅超好玩。"
+    collocations: ["have fun", "a fun day"]
+    note: "fun 是「好玩、開心」，funny 是「好笑」。The party was funny 意思是派對很滑稽。"
+
+  - id: funny
+    word: "funny"
+    pos: "adj."
+    phonetic: "/ˈfʌni/"
+    meaning: "好笑的；奇怪的"
+    example:
+      en: "My brother tells really funny stories."
+      zh: "我哥哥講的故事真的很好笑。"
+    collocations: ["a funny video", "funny smell"]
+
+  - id: see
+    word: "see"
+    pos: "v."
+    phonetic: "/siː/"
+    meaning: "看見；見面"
+    example:
+      en: "I saw my teacher at the night market."
+      zh: "我在夜市看到我的老師。"
+    collocations: ["see a doctor", "see a movie", "see you later"]
+    note: "see 是「自然看到」；look 是「刻意去看」；watch 是「盯著看會動的東西」。"
+
+  - id: look
+    word: "look"
+    pos: "v."
+    phonetic: "/lʊk/"
+    meaning: "（刻意）看；看起來"
+    example:
+      en: "Look at this photo of my cat."
+      zh: "你看這張我家貓的照片。"
+    collocations: ["look at", "look for", "look tired"]
+    note: "look 後面接東西時要加 at：look at the board，不說 look the board。"
+
+  - id: watch
+    word: "watch"
+    pos: "v."
+    phonetic: "/wɑːtʃ/"
+    meaning: "觀看（一段時間、會動的東西）"
+    example:
+      en: "We watched a baseball game last night."
+      zh: "我們昨晚看了一場棒球賽。"
+    collocations: ["watch TV", "watch a video", "watch out"]
+
+  - id: say
+    word: "say"
+    pos: "v."
+    phonetic: "/seɪ/"
+    meaning: "說（說出某些話）"
+    example:
+      en: "She said she was busy today."
+      zh: "她說她今天很忙。"
+    collocations: ["say hello", "say sorry", "say goodbye"]
+    note: "say 重點在「說的內容」，後面不直接接人：He said to me…，不說 He said me…。"
+
+  - id: tell
+    word: "tell"
+    pos: "v."
+    phonetic: "/tɛl/"
+    meaning: "告訴（某人）"
+    example:
+      en: "Can you tell me the way to the station?"
+      zh: "你可以告訴我去車站怎麼走嗎？"
+    collocations: ["tell someone something", "tell a story", "tell the truth"]
+    note: "tell 後面通常直接接人：tell me、tell him。"
+
+  - id: speak
+    word: "speak"
+    pos: "v."
+    phonetic: "/spiːk/"
+    meaning: "說（某種語言）；發言"
+    example:
+      en: "I speak a little Japanese."
+      zh: "我會說一點日文。"
+    collocations: ["speak English", "speak to someone", "speak up"]
+    note: "說語言用 speak：speak English，不說 talk English。"
+
+  - id: talk
+    word: "talk"
+    pos: "v."
+    phonetic: "/tɔːk/"
+    meaning: "聊天、談話"
+    example:
+      en: "We talked for hours at the cafe."
+      zh: "我們在咖啡店聊了好幾個小時。"
+    collocations: ["talk to someone", "talk about something"]
+    note: "talk 強調雙方的對話，後面常接 to / about：talk about work。"
+
+  - id: wear
+    word: "wear"
+    pos: "v."
+    phonetic: "/wɛr/"
+    meaning: "穿著、戴著（狀態）"
+    example:
+      en: "She always wears glasses at work."
+      zh: "她上班時總是戴眼鏡。"
+    collocations: ["wear a mask", "wear a suit"]
+    note: "wear 是「穿著的狀態」，put on 是「穿上的動作」。衣服、眼鏡、手錶、口罩都用 wear。"
+
+  - id: put-on
+    word: "put on"
+    pos: "phr."
+    phonetic: "/pʊt ˈɑːn/"
+    meaning: "穿上、戴上（動作）"
+    example:
+      en: "Put on your coat. It's cold outside."
+      zh: "穿上外套，外面很冷。"
+    collocations: ["put on shoes", "put on sunscreen"]
+
+  - id: ago
+    word: "ago"
+    pos: "adv."
+    phonetic: "/əˈɡoʊ/"
+    meaning: "（從現在算起）……以前"
+    example:
+      en: "I moved to Taipei three years ago."
+      zh: "我三年前搬到台北。"
+    collocations: ["two days ago", "a long time ago"]
+    note: "ago 放在時間後面：three years ago；不說 before three years。"
+
+  - id: before
+    word: "before"
+    pos: "adv."
+    phonetic: "/bɪˈfɔːr/"
+    meaning: "以前、之前"
+    example:
+      en: "Have we met before?"
+      zh: "我們以前見過嗎？"
+    collocations: ["before lunch", "the day before"]
+    note: "單獨用的 before 是「以前（不特定時間）」；有確切時間長度時用 ago。"
+
+  - id: already
+    word: "already"
+    pos: "adv."
+    phonetic: "/ɔːlˈrɛdi/"
+    meaning: "已經"
+    example:
+      en: "I've already eaten, thanks."
+      zh: "我已經吃過了，謝謝。"
+    collocations: ["already done", "already know"]
+    note: "already 多用在肯定句；問「還沒」、「了嗎」通常用 yet。"
+
+  - id: yet
+    word: "yet"
+    pos: "adv."
+    phonetic: "/jɛt/"
+    meaning: "（否定句）還沒；（問句）已經……了嗎"
+    example:
+      en: "I haven't finished my homework yet."
+      zh: "我還沒寫完作業。"
+    collocations: ["not yet", "Are you ready yet?"]
+    note: "yet 放在句尾。回答「還沒」直接說 Not yet。"
+
+  - id: a-few
+    word: "a few"
+    pos: "phr."
+    phonetic: "/ə ˈfjuː/"
+    meaning: "幾個、一些（可數）"
+    example:
+      en: "I have a few questions about the plan."
+      zh: "我對這個計畫有幾個問題。"
+    collocations: ["a few days", "a few friends"]
+    note: "a few 接可數名詞（questions、days）；a little 接不可數名詞（time、money）。"
+
+  - id: a-little
+    word: "a little"
+    pos: "phr."
+    phonetic: "/ə ˈlɪtəl/"
+    meaning: "一點點（不可數）；有點"
+    example:
+      en: "Can I have a little more rice?"
+      zh: "我可以再多一點飯嗎？"
+    collocations: ["a little time", "a little tired"]
+
+  - id: hear
+    word: "hear"
+    pos: "v."
+    phonetic: "/hɪr/"
+    meaning: "聽到"
+    example:
+      en: "Did you hear the news?"
+      zh: "你聽說那個消息了嗎？"
+    collocations: ["hear about", "hear from someone"]
+    note: "hear 是「自然聽到」，listen 是「專心去聽」，類似 see 和 look 的差別。"
+
+  - id: listen
+    word: "listen"
+    pos: "v."
+    phonetic: "/ˈlɪsən/"
+    meaning: "（專心）聽"
+    example:
+      en: "I listen to podcasts on the bus."
+      zh: "我在公車上聽 podcast。"
+    collocations: ["listen to music", "listen carefully"]
+    note: "listen 後面接東西要加 to：listen to music，不說 listen music。"
+
+  - id: excited
+    word: "excited"
+    pos: "adj."
+    phonetic: "/ɪkˈsaɪtɪd/"
+    meaning: "（人）興奮的、期待的"
+    example:
+      en: "I'm excited about my trip next week."
+      zh: "我很期待下週的旅行。"
+    collocations: ["excited about", "get excited"]
+    note: "I'm excited 是「我很興奮」；I'm exciting 是「我是個令人興奮的人」。"
+
+  - id: interested
+    word: "interested"
+    pos: "adj."
+    phonetic: "/ˈɪntrəstɪd/"
+    meaning: "（人）感興趣的"
+    example:
+      en: "I'm interested in cooking."
+      zh: "我對做菜有興趣。"
+    collocations: ["interested in", "very interested"]
+    note: "對某事有興趣說 I'm interested in…，介系詞用 in，不用 about 或 on。"
+
+  - id: expensive
+    word: "expensive"
+    pos: "adj."
+    phonetic: "/ɪkˈspɛnsɪv/"
+    meaning: "昂貴的"
+    example:
+      en: "Rent in Taipei is really expensive."
+      zh: "台北的房租真的很貴。"
+    collocations: ["too expensive", "an expensive restaurant"]
+    note: "說價格高低用 high / low：The price is high；說東西貴才用 expensive。"
+
+  - id: cheap
+    word: "cheap"
+    pos: "adj."
+    phonetic: "/tʃiːp/"
+    meaning: "便宜的；（形容東西）廉價的"
+    example:
+      en: "This lunch box is cheap and tasty."
+      zh: "這個便當便宜又好吃。"
+    collocations: ["cheap tickets", "really cheap"]
+
+  - id: busy
+    word: "busy"
+    pos: "adj."
+    phonetic: "/ˈbɪzi/"
+    meaning: "忙碌的"
+    example:
+      en: "I'm busy with a report today."
+      zh: "我今天忙著寫報告。"
+    collocations: ["busy with", "a busy week"]
+    note: "忙著做某事說 busy + V-ing：I'm busy cooking，不說 busy to cook。"
+
+  - id: free
+    word: "free"
+    pos: "adj."
+    phonetic: "/friː/"
+    meaning: "有空的；免費的"
+    example:
+      en: "Are you free on Saturday afternoon?"
+      zh: "你星期六下午有空嗎？"
+    collocations: ["free time", "free of charge"]
+    note: "問人有沒有空說 Are you free?，不說 Do you have empty?"
+
+  - id: spend
+    word: "spend"
+    pos: "v."
+    phonetic: "/spɛnd/"
+    meaning: "花（錢、時間）"
+    example:
+      en: "I spend too much money on snacks."
+      zh: "我花太多錢在零食上。"
+    collocations: ["spend time", "spend money on"]
+    note: "主詞是「人」用 spend；主詞是「東西」用 cost。花時間做某事說 spend time + V-ing。"
+
+  - id: cost
+    word: "cost"
+    pos: "v."
+    phonetic: "/kɔːst/"
+    meaning: "（東西）花費、價值多少錢"
+    example:
+      en: "How much does this shirt cost?"
+      zh: "這件襯衫多少錢？"
+    collocations: ["cost a lot", "cost money"]
+
+  - id: forget
+    word: "forget"
+    pos: "v."
+    phonetic: "/fərˈɡɛt/"
+    meaning: "忘記"
+    example:
+      en: "I forgot my keys at home again."
+      zh: "我又把鑰匙忘在家裡了。"
+    collocations: ["forget to do", "forget about"]
+    note: "forget to do 是「忘了去做」，forget doing 是「忘了做過」。"
+
+  - id: remember
+    word: "remember"
+    pos: "v."
+    phonetic: "/rɪˈmɛmbər/"
+    meaning: "記得"
+    example:
+      en: "Remember to drink more water."
+      zh: "記得多喝水。"
+    collocations: ["remember to do", "remember someone's name"]
+
+  - id: lose
+    word: "lose"
+    pos: "v."
+    phonetic: "/luːz/"
+    meaning: "遺失；輸掉"
+    example:
+      en: "I lost my phone on the train."
+      zh: "我的手機在火車上掉了。"
+    collocations: ["lose weight", "lose a game"]
+    note: "lose 是動詞，lost 是過去式；loose /luːs/ 是形容詞「鬆的」，拼法和發音都不同。"
+
+  - id: miss
+    word: "miss"
+    pos: "v."
+    phonetic: "/mɪs/"
+    meaning: "想念；錯過"
+    example:
+      en: "Hurry up, or we'll miss the bus."
+      zh: "快點，不然我們會錯過公車。"
+    collocations: ["miss the train", "miss someone"]
+
+  - id: arrive
+    word: "arrive"
+    pos: "v."
+    phonetic: "/əˈraɪv/"
+    meaning: "抵達"
+    example:
+      en: "We arrived at the hotel around nine."
+      zh: "我們大約九點到飯店。"
+    collocations: ["arrive at", "arrive in Taipei"]
+    note: "arrive 後面要加 at（小地點）或 in（城市、國家），不能直接接地點；但 arrive home 不加。"
+
+  - id: join
+    word: "join"
+    pos: "v."
+    phonetic: "/dʒɔɪn/"
+    meaning: "加入；跟（某人）一起"
+    example:
+      en: "Do you want to join us for dinner?"
+      zh: "你要跟我們一起吃晚餐嗎？"
+    collocations: ["join a club", "join a meeting"]
+
+  - id: wait
+    word: "wait"
+    pos: "v."
+    phonetic: "/weɪt/"
+    meaning: "等待"
+    example:
+      en: "Can you wait for me at the door?"
+      zh: "你可以在門口等我嗎？"
+    collocations: ["wait for someone", "wait in line"]
+    note: "等某人要說 wait for me，不說 wait me。"
+
+  - id: invite
+    word: "invite"
+    pos: "v."
+    phonetic: "/ɪnˈvaɪt/"
+    meaning: "邀請"
+    example:
+      en: "She invited me to her wedding."
+      zh: "她邀請我參加她的婚禮。"
+    collocations: ["invite someone to", "invite friends over"]
+
+  - id: enjoy
+    word: "enjoy"
+    pos: "v."
+    phonetic: "/ɪnˈdʒɔɪ/"
+    meaning: "享受、喜歡（做某事）"
+    example:
+      en: "I really enjoy walking by the river."
+      zh: "我很喜歡在河邊散步。"
+    collocations: ["enjoy yourself", "enjoy the food"]
+    note: "enjoy 後面要接東西或 V-ing，不能單獨用：I enjoyed it，不說 I enjoyed。"
+
+  - id: decide
+    word: "decide"
+    pos: "v."
+    phonetic: "/dɪˈsaɪd/"
+    meaning: "決定"
+    example:
+      en: "We decided to eat at home tonight."
+      zh: "我們決定今晚在家吃。"
+    collocations: ["decide to do", "decide on something"]
+
+  - id: maybe
+    word: "maybe"
+    pos: "adv."
+    phonetic: "/ˈmeɪbi/"
+    meaning: "也許、可能"
+    example:
+      en: "Maybe we can go hiking next week."
+      zh: "也許我們下週可以去爬山。"
+    collocations: ["maybe later", "maybe not"]
+    note: "maybe 通常放句首；may be（兩個字）是動詞片語：It may be true."
+
+  - id: still
+    word: "still"
+    pos: "adv."
+    phonetic: "/stɪl/"
+    meaning: "還、仍然"
+    example:
+      en: "Are you still at the office?"
+      zh: "你還在辦公室嗎？"
+    collocations: ["still working", "still hungry"]
+
+  - id: almost
+    word: "almost"
+    pos: "adv."
+    phonetic: "/ˈɔːlmoʊst/"
+    meaning: "幾乎、差不多"
+    example:
+      en: "Dinner is almost ready."
+      zh: "晚餐快好了。"
+    collocations: ["almost there", "almost every day"]
+    note: "「大部分的人」說 most people 或 almost all people，不說 almost people。"
+
+  - id: during
+    word: "during"
+    pos: "prep."
+    phonetic: "/ˈdʊrɪŋ/"
+    meaning: "在……期間"
+    example:
+      en: "I fell asleep during the movie."
+      zh: "我看電影時睡著了。"
+    collocations: ["during the day", "during lunch"]
+    note: "during 後面接名詞（during the meeting）；接句子要用 while：while I was eating。"
+
+  - id: until
+    word: "until"
+    pos: "prep."
+    phonetic: "/ənˈtɪl/"
+    meaning: "直到……為止"
+    example:
+      en: "The store is open until ten."
+      zh: "這家店開到十點。"
+    collocations: ["until tomorrow", "wait until"]
+
+  - id: weekend
+    word: "weekend"
+    pos: "n."
+    phonetic: "/ˈwiːkɛnd/"
+    meaning: "週末"
+    example:
+      en: "What did you do last weekend?"
+      zh: "你上週末做了什麼？"
+    collocations: ["on the weekend", "this weekend"]
+
+  - id: homework
+    word: "homework"
+    pos: "n."
+    phonetic: "/ˈhoʊmwɜːrk/"
+    meaning: "回家作業"
+    example:
+      en: "I have a lot of homework tonight."
+      zh: "我今晚有很多作業。"
+    collocations: ["do homework", "finish homework"]
+    note: "homework 是不可數名詞，不說 homeworks；寫作業是 do homework，不說 write homework。"
+
+  - id: advice
+    word: "advice"
+    pos: "n."
+    phonetic: "/ədˈvaɪs/"
+    meaning: "建議、忠告"
+    example:
+      en: "Can you give me some advice?"
+      zh: "你可以給我一些建議嗎？"
+    collocations: ["give advice", "a piece of advice"]
+    note: "advice 不可數，不說 an advice 或 advices；動詞是 advise /ədˈvaɪz/。"
+
+  - id: information
+    word: "information"
+    pos: "n."
+    phonetic: "/ˌɪnfərˈmeɪʃən/"
+    meaning: "資訊、資料"
+    example:
+      en: "I need more information about the class."
+      zh: "我需要更多關於這門課的資訊。"
+    collocations: ["more information", "personal information"]
+    note: "information 不可數，不加 s。"
+
+  - id: trip
+    word: "trip"
+    pos: "n."
+    phonetic: "/trɪp/"
+    meaning: "（一趟）旅行、行程"
+    example:
+      en: "We took a short trip to Tainan."
+      zh: "我們去台南玩了一趟。"
+    collocations: ["take a trip", "business trip"]
+
+  - id: travel
+    word: "travel"
+    pos: "v."
+    phonetic: "/ˈtrævəl/"
+    meaning: "旅行、移動"
+    example:
+      en: "I love to travel with my family."
+      zh: "我喜歡和家人一起旅行。"
+    collocations: ["travel abroad", "travel by train"]
+    note: "travel 通常當動詞；「一趟旅行」用 a trip，不說 a travel。"
+
+  - id: appointment
+    word: "appointment"
+    pos: "n."
+    phonetic: "/əˈpɔɪntmənt/"
+    meaning: "（看醫生、洽公等）預約、約診"
+    example:
+      en: "I have a dentist appointment at four."
+      zh: "我四點要去看牙醫。"
+    collocations: ["make an appointment", "doctor's appointment"]
+    note: "跟醫生、客戶的正式約定用 appointment；跟朋友出去玩用 plans：I have plans tonight。"
+
+  - id: schedule
+    word: "schedule"
+    pos: "n."
+    phonetic: "/ˈskɛdʒuːl/"
+    meaning: "行程表、時間表"
+    example:
+      en: "My schedule is full this week."
+      zh: "我這週的行程排滿了。"
+    collocations: ["busy schedule", "on schedule"]
+
+  - id: meeting
+    word: "meeting"
+    pos: "n."
+    phonetic: "/ˈmiːtɪŋ/"
+    meaning: "會議"
+    example:
+      en: "The meeting starts at ten."
+      zh: "會議十點開始。"
+    collocations: ["have a meeting", "in a meeting"]
+
+  - id: convenient
+    word: "convenient"
+    pos: "adj."
+    phonetic: "/kənˈviːniənt/"
+    meaning: "方便的"
+    example:
+      en: "Is Friday convenient for you?"
+      zh: "星期五你方便嗎？"
+    collocations: ["convenient location", "convenient for someone"]
+    note: "主詞要是時間或事情：Is Friday convenient for you?，不說 Are you convenient?"

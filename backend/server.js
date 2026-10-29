@@ -1387,6 +1387,79 @@ User's message to analyze: "${userMessage}"`;
 }
 
 // === DIARY FEEDBACK ENDPOINT ===
+const SENTENCE_CHECK_SCHEMA = {
+  type: 'object',
+  properties: {
+    usedPattern: { type: 'boolean', description: 'Whether the sentence uses the target pattern (natural variations count)' },
+    isNatural: { type: 'boolean', description: 'Whether the sentence is grammatical and natural for a native speaker' },
+    corrected: { type: 'string', description: 'The sentence with the minimum fixes; identical to the input if nothing needs fixing' },
+    comment: { type: 'string', description: "One or two short, friendly sentences in the learner's native language about the main fix or what was good" },
+    better: { type: 'string', description: "One natural version that uses the pattern and keeps the learner's idea" },
+  },
+  required: ['usedPattern', 'isNatural', 'corrected', 'comment', 'better'],
+};
+
+function buildSentenceCheckPrompt(sentence, pattern, meaning, task, level, nativeLanguage) {
+  const levelName = level === 'beginner' ? 'A1-A2' : level === 'advanced' ? 'C1' : 'B1-B2';
+  const nativeName = nativeLanguage === 'zh' ? 'Traditional Chinese (Taiwan)' : nativeLanguage === 'ja' ? 'Japanese' : 'English';
+  return `You are a friendly English-speaking friend helping a ${levelName} learner whose native language is ${nativeName}.\n` +
+    `They are practicing the pattern "${pattern}"${meaning ? ` (${meaning})` : ''}.\n` +
+    (task ? `Their task was: ${task}\n` : '') +
+    'Check the sentence they wrote. Judge it against their level: do not rewrite a correct, natural sentence just to make it fancier.\n' +
+    `Write "comment" in ${nativeName}, like a friend, not a teacher. If they did not use the pattern, say so gently and show how.\n\n` +
+    `Sentence: "${sentence}"`;
+}
+
+// Daily practice sentence check. Needs ANTHROPIC_API_KEY; the frontend falls back to a local pattern check.
+app.post('/sentence-check', async (req, res) => {
+  try {
+    const { sentence, pattern, meaning = '', task = '', level = 'intermediate', nativeLanguage = 'zh', clientId, origin, authToken } = req.body;
+
+    if (!sentence || typeof sentence !== 'string' || sentence.trim().length === 0 || sentence.length > 500) {
+      return res.status(400).json({ success: false, error: 'Invalid sentence' });
+    }
+    if (!pattern || typeof pattern !== 'string' || pattern.length > 200) {
+      return res.status(400).json({ success: false, error: 'Invalid pattern' });
+    }
+    if (typeof meaning !== 'string' || meaning.length > 200 || typeof task !== 'string' || task.length > 300) {
+      return res.status(400).json({ success: false, error: 'Invalid pattern details' });
+    }
+    if (!VALID_LEVELS.includes(level)) {
+      return res.status(400).json({ success: false, error: 'Invalid level' });
+    }
+    if (!VALID_LANGUAGES.includes(nativeLanguage)) {
+      return res.status(400).json({ success: false, error: 'Invalid native language' });
+    }
+    if (!isAllowedOrigin(origin || '')) {
+      return res.status(403).json({ success: false, error: 'Unauthorized origin' });
+    }
+    if (!SKIP_AUTH && !validateToken(authToken)) {
+      return res.status(401).json({ success: false, error: 'Invalid or expired token.', isTokenError: true });
+    }
+    if (!checkRateLimit(clientId)) {
+      return res.status(429).json({ success: false, error: 'Too many requests.', isRateLimit: true });
+    }
+    if (!anthropic) {
+      return res.status(503).json({ success: false, error: 'Sentence check is not configured' });
+    }
+
+    const rawText = await generateJson({
+      contents: [{ role: 'user', parts: [{ text: buildSentenceCheckPrompt(sentence, pattern, meaning, task, level, nativeLanguage) }] }],
+      generationConfig: { responseSchema: SENTENCE_CHECK_SCHEMA },
+    }, { model: CLAUDE_FEEDBACK_MODEL, effort: 'low' });
+
+    res.json({ success: true, check: JSON.parse(rawText) });
+  } catch (error) {
+    console.error('Sentence check error:', error);
+    const isRateLimit = error.message?.includes('quota') || error.message?.includes('rate') || error.message?.includes('429');
+    res.status(isRateLimit ? 429 : 500).json({
+      success: false,
+      error: isRateLimit ? 'Rate limit exceeded.' : 'An internal error occurred.',
+      isRateLimit,
+    });
+  }
+});
+
 app.post('/diary-feedback', async (req, res) => {
   try {
     const { diaryText, language = 'en', level = 'intermediate', characterId = 'emma', nativeLanguage = 'en', streakDays = 0, clientId, origin, authToken } = req.body;
