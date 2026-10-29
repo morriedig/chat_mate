@@ -19,10 +19,15 @@ const props = defineProps({
   highlightTargets: {
     type: Array,
     default: null
+  },
+  // Voice conversation: blur the friend's reply until tapped (listen first)
+  hideText: {
+    type: Boolean,
+    default: false
   }
 })
 
-const emit = defineEmits(['explain', 'word-tap'])
+const emit = defineEmits(['explain', 'word-tap', 'reveal'])
 
 const showFeedback = ref(false)
 
@@ -99,7 +104,13 @@ function toggleFeedback() {
     <div class="flex flex-col gap-1 items-start min-w-0 overflow-hidden">
       <span class="text-text-muted dark:text-slate-400 text-[13px] font-medium ml-1">{{ character.name }}</span>
       <div class="p-3 sm:p-4 rounded-2xl rounded-bl-none bg-surface-light dark:bg-surface-dark text-text-main dark:text-slate-200 shadow-sm border border-slate-100 dark:border-slate-700">
-        <p class="text-sm sm:text-base leading-relaxed whitespace-pre-wrap break-words overflow-wrap-anywhere clickable-words" @click="handleWordClick">{{ message.content }}</p>
+        <button v-if="hideText" type="button" @click="emit('reveal')" class="block text-left" :aria-label="t('voiceChat.showText')">
+          <span class="block text-sm sm:text-base leading-relaxed whitespace-pre-wrap break-words blur-[6px] select-none" aria-hidden="true">{{ message.content }}</span>
+          <span class="mt-1 inline-flex items-center gap-1 text-xs text-primary">
+            <span class="material-symbols-outlined text-[14px]">visibility</span>{{ t('voiceChat.showText') }}
+          </span>
+        </button>
+        <p v-else class="text-sm sm:text-base leading-relaxed whitespace-pre-wrap break-words overflow-wrap-anywhere clickable-words" @click="handleWordClick">{{ message.content }}</p>
       </div>
     </div>
   </div>

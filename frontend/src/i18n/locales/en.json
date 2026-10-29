@@ -626,5 +626,23 @@
     "cardTitle": "Today's practice",
     "cardSubtitle": "{patterns} patterns + {words} words, about 10 minutes",
     "cardDone": "Done today — see you tomorrow"
+  },
+  "voiceChat": {
+    "enter": "Voice conversation",
+    "start": "Start talking",
+    "readyHint": "Your friend speaks first. Listen, then answer out loud.",
+    "speaking": "Listen…",
+    "listening": "Your turn — speak now",
+    "thinking": "Your friend is thinking…",
+    "tapToTalk": "Tap the mic to answer",
+    "didntHear": "Didn't catch that. Tap the mic and try again.",
+    "micBlocked": "Microphone is blocked. Allow it in settings, or type instead.",
+    "noMic": "Voice input isn't available here. Listen, then exit to type your answer.",
+    "replay": "Replay",
+    "text": "Text",
+    "slower": "Slower",
+    "exit": "Back to typing",
+    "mic": "Microphone",
+    "showText": "Show text"
   }
 }

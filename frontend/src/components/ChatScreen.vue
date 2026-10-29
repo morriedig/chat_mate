@@ -10,6 +10,7 @@ import { useCharacterMemory } from '../composables/useCharacterMemory'
 import ChatHeader from './chat/ChatHeader.vue'
 import ChatMessage from './chat/ChatMessage.vue'
 import ChatInput from './chat/ChatInput.vue'
+import VoiceConversationBar from './chat/VoiceConversationBar.vue'
 import VocabularyHints from './chat/VocabularyHints.vue'
 import ArticlePanel from './chat/ArticlePanel.vue'
 import TypingIndicator from './chat/TypingIndicator.vue'
@@ -434,6 +435,37 @@ function handleRenewChat() {
   getAIResponse(true)
 }
 
+// ---------- Voice conversation (listen, then answer by voice) ----------
+const voiceMode = ref(false)
+const voiceShowText = ref(false)
+// Replies from this index on are hidden until tapped; earlier ones stay readable
+const voiceStartIndex = ref(0)
+const revealedReplies = ref([])
+
+const lastReply = computed(() => {
+  for (let i = messages.value.length - 1; i >= 0; i--) {
+    if (messages.value[i].role === 'assistant') return messages.value[i].content
+  }
+  return ''
+})
+
+function isReplyHidden(msg, index) {
+  return voiceMode.value && !voiceShowText.value && msg.role === 'assistant'
+    && index >= voiceStartIndex.value && !revealedReplies.value.includes(index)
+}
+
+function startVoiceMode() {
+  const lastIndex = messages.value.map(m => m.role).lastIndexOf('assistant')
+  voiceStartIndex.value = lastIndex === -1 ? messages.value.length : lastIndex
+  revealedReplies.value = []
+  voiceMode.value = true
+}
+
+function handleVoiceSend(text) {
+  inputText.value = text
+  handleSendMessage()
+}
+
 function handleRetry() {
   errorMessage.value = ''
   const lastMsg = messages.value[messages.value.length - 1]
@@ -536,8 +568,10 @@ function handleBack() {
               :message="msg"
               :character="character"
               :highlight-targets="isOpinionMode ? connectorTargets : null"
+              :hide-text="isReplyHidden(msg, i)"
               @explain="handleExplain"
               @word-tap="handleWordTap"
+              @reveal="revealedReplies.push(i)"
             />
 
             <!-- Typing Indicator -->
@@ -630,14 +664,33 @@ function handleBack() {
             {{ t('opinionChat.showHints') }}
           </button>
 
-          <!-- Input Area -->
-          <ChatInput
-            ref="chatInputRef"
-            v-model="inputText"
-            :disabled="isLoading"
+          <!-- Input Area: voice conversation or typing -->
+          <VoiceConversationBar
+            v-if="voiceMode"
+            v-model:show-text="voiceShowText"
+            :last-reply="lastReply"
+            :is-loading="isLoading"
             :language="language"
-            @send="handleSendMessage"
+            @send="handleVoiceSend"
+            @exit="voiceMode = false"
           />
+          <template v-else>
+            <button
+              type="button"
+              @click="startVoiceMode"
+              class="voice-mode-entry self-end mx-4 mt-1 inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold text-primary bg-primary/10 hover:bg-primary/20 transition-colors"
+            >
+              <span class="material-symbols-outlined text-[16px]">headphones</span>
+              {{ t('voiceChat.enter') }}
+            </button>
+            <ChatInput
+              ref="chatInputRef"
+              v-model="inputText"
+              :disabled="isLoading"
+              :language="language"
+              @send="handleSendMessage"
+            />
+          </template>
         </div>
       </div>
     </div>

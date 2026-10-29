@@ -42,6 +42,7 @@ export function stopTTS() {
  */
 export const TTS_SPEEDS = {
   normal: { rate: 0.9, label: 'Normal' },
+  relaxed: { rate: 0.75, label: 'Relaxed' },
   slow: { rate: 0.15, label: 'Slow' },
   word: { rate: 0.5, label: 'Word by Word' }
 }
@@ -74,12 +75,29 @@ export function playTTS(text, language = 'en', speedMode = 'normal', onWordChang
     utterance.lang = LANGUAGE_CODES[language] || language
     utterance.rate = TTS_SPEEDS[speedMode]?.rate || 0.9
     utterance.pitch = 1
+    const voice = pickVoice(utterance.lang)
+    if (voice) utterance.voice = voice
 
     utterance.onend = () => resolve()
     utterance.onerror = (e) => reject(new Error('Speech synthesis failed'))
 
     window.speechSynthesis.speak(utterance)
   })
+}
+
+// Higher-quality system voices first (iOS "Enhanced"/"Premium", Chrome's Google voices)
+const PREFERRED_VOICE = /premium|enhanced|natural|google|samantha|ava|allison/i
+
+/**
+ * Pick the best installed voice for a BCP-47 language tag, or null to use the default.
+ * Voices load asynchronously, so an early call may return null.
+ */
+function pickVoice(lang) {
+  const voices = window.speechSynthesis.getVoices?.() || []
+  const prefix = lang.split('-')[0]
+  const matching = voices.filter(v => v.lang === lang)
+  const sameLanguage = matching.length ? matching : voices.filter(v => v.lang?.startsWith(prefix))
+  return sameLanguage.find(v => PREFERRED_VOICE.test(v.name)) || sameLanguage.find(v => v.localService) || sameLanguage[0] || null
 }
 
 /**

@@ -626,5 +626,23 @@
     "cardTitle": "今日練習",
     "cardSubtitle": "{patterns} 個句型 + {words} 個單字，約 10 分鐘",
     "cardDone": "今天練完了，明天見"
+  },
+  "voiceChat": {
+    "enter": "語音對話",
+    "start": "開始對話",
+    "readyHint": "朋友先說，聽完換你用說的回答。",
+    "speaking": "仔細聽……",
+    "listening": "換你說了",
+    "thinking": "朋友在想……",
+    "tapToTalk": "按麥克風回答",
+    "didntHear": "沒聽清楚，按麥克風再說一次。",
+    "micBlocked": "麥克風被關掉了，請到設定允許，或改用打字。",
+    "noMic": "這裡不能用語音輸入。可以先聽，再回到打字回答。",
+    "replay": "重聽",
+    "text": "文字",
+    "slower": "慢一點",
+    "exit": "回到打字",
+    "mic": "麥克風",
+    "showText": "看文字"
   }
 }
