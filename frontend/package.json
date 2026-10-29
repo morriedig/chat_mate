@@ -16,8 +16,10 @@
     "test:e2e:ui": "npx playwright test --ui"
   },
   "dependencies": {
+    "@capacitor-community/text-to-speech": "^8.0.2",
     "@capacitor/core": "^8.6.0",
     "@capacitor/ios": "^8.6.0",
+    "@capgo/capacitor-speech-recognition": "^8.4.6",
     "html2canvas": "^1.4.1",
     "js-yaml": "^4.1.1",
     "vue": "^3.5.24",

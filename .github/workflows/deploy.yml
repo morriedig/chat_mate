@@ -33,9 +33,16 @@ jobs:
           VITE_API_URL: ${{ secrets.VITE_API_URL }}
         run: npm run build
 
+      # Landing page at /chat_mate/, the app (loaded by the iOS shell) at /chat_mate/app/
+      - name: Assemble site
+        run: |
+          mkdir site
+          cp -r frontend/landing/. site/
+          cp -r frontend/dist site/app
+
       - name: Deploy to gh-pages branch
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./frontend/dist
+          publish_dir: ./site
           publish_branch: gh-pages

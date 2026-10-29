@@ -96,9 +96,9 @@ export default defineConfig({
       }
     })
   ],
-  // For GitHub Pages: set base to repo name (e.g., '/chat_mate/')
-  // Leave empty for custom domain or root deployment
-  base: process.env.GITHUB_PAGES ? '/chat_mate/' : '/',
+  // For GitHub Pages the app lives under /chat_mate/app/; /chat_mate/ is the landing page (landing/)
+  // that points people to the iOS app. Leave '/' for local dev.
+  base: process.env.GITHUB_PAGES ? '/chat_mate/app/' : '/',
   test: {
     globals: true,
     environment: 'happy-dom',

@@ -1,8 +1,13 @@
 /**
- * Text-to-Speech utility using Web Speech API
- *
- * Uses browser's built-in speech synthesis for pronunciation
+ * Text-to-Speech: native iOS speech inside the app, Web Speech API in browsers
  */
+import { Capacitor } from '@capacitor/core'
+import { TextToSpeech } from '@capacitor-community/text-to-speech'
+
+const isNative = Capacitor.isNativePlatform()
+
+// Native rates: 1.0 is the system's normal speaking speed
+const NATIVE_RATES = { normal: 1.0, relaxed: 0.8, slow: 0.5, word: 0.7 }
 
 /**
  * Language codes for Web Speech API
@@ -22,16 +27,28 @@ const LANGUAGE_CODES = {
  * @returns {boolean}
  */
 export function isTTSAvailable() {
-  return 'speechSynthesis' in window
+  return isNative || 'speechSynthesis' in window
 }
 
 /**
  * Stop any ongoing speech
  */
 export function stopTTS() {
-  if (isTTSAvailable()) {
+  if (isNative) {
+    TextToSpeech.stop().catch(() => {})
+  } else if (isTTSAvailable()) {
     window.speechSynthesis.cancel()
   }
+}
+
+function speakNative(text, language, speedMode) {
+  return TextToSpeech.speak({
+    text,
+    lang: LANGUAGE_CODES[language] || language,
+    rate: NATIVE_RATES[speedMode] || 1.0,
+    // Play even when the ringer switch is off
+    category: 'playback',
+  })
 }
 
 /**
@@ -62,14 +79,20 @@ export function playTTS(text, language = 'en', speedMode = 'normal', onWordChang
       return
     }
 
-    // Cancel any ongoing speech
-    window.speechSynthesis.cancel()
-
     // Word-by-word mode: split and play each word with pause
     if (speedMode === 'word') {
+      stopTTS()
       playWordByWord(text, language, onWordChange).then(resolve).catch(reject)
       return
     }
+
+    if (isNative) {
+      speakNative(text, language, speedMode).then(resolve).catch(reject)
+      return
+    }
+
+    // Cancel any ongoing speech
+    window.speechSynthesis.cancel()
 
     const utterance = new SpeechSynthesisUtterance(text)
     utterance.lang = LANGUAGE_CODES[language] || language
@@ -120,6 +143,12 @@ async function playWordByWord(text, language, onWordChange = null) {
     // Notify which word is being played
     if (onWordChange) {
       onWordChange(i, word, words)
+    }
+
+    if (isNative) {
+      await speakNative(word, language, 'word')
+      await new Promise(r => setTimeout(r, 400))
+      continue
     }
 
     await new Promise((resolve, reject) => {

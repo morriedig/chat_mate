@@ -3,7 +3,7 @@
   "appName": "Chat Mate",
   "webDir": "dist",
   "server": {
-    "url": "https://morriedig.github.io/chat_mate/",
+    "url": "https://morriedig.github.io/chat_mate/app/",
     "allowNavigation": ["morriedig.github.io", "script.google.com", "script.googleusercontent.com"]
   },
   "ios": {
