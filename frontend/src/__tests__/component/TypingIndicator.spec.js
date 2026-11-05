@@ -31,38 +31,28 @@ describe('TypingIndicator', () => {
       expect(wrapper.exists()).toBe(true)
     })
 
-    it('should display character avatar', () => {
+    it('should display a monogram avatar named after the friend', () => {
       const wrapper = createWrapper()
-      expect(wrapper.text()).toContain('🌸')
+      const avatar = wrapper.find('[role="img"]')
+      expect(avatar.text()).toBe('S')
+      expect(avatar.attributes('aria-label')).toBe('Sakura')
+      expect(wrapper.text()).not.toContain('🌸')
     })
 
-    it('should display character name', () => {
+    it('should say the friend is replying', () => {
       const wrapper = createWrapper()
-      expect(wrapper.text()).toContain('Sakura')
+      expect(wrapper.text()).toContain('chat.typing')
+      expect(wrapper.attributes('role')).toBe('status')
     })
 
-    it('should show three bouncing dots', () => {
+    it('should show two static bars instead of bouncing dots', () => {
       const wrapper = createWrapper()
-      const dots = wrapper.findAll('.animate-bounce')
-      expect(dots.length).toBe(3)
-    })
-
-    it('should have proper animation delays for dots', () => {
-      const wrapper = createWrapper()
-      const dots = wrapper.findAll('.animate-bounce')
-
-      // Check that animation delays are set (format may vary by browser/parser)
-      expect(dots[0].attributes('style')).toMatch(/animation-delay:\s*0ms/)
-      expect(dots[1].attributes('style')).toMatch(/animation-delay:\s*150ms/)
-      expect(dots[2].attributes('style')).toMatch(/animation-delay:\s*300ms/)
+      expect(wrapper.findAll('.typing-bar').length).toBe(2)
+      expect(wrapper.find('.animate-bounce').exists()).toBe(false)
     })
   })
 
   describe('styling', () => {
-    it('should have rounded bubble container', () => {
-      const wrapper = createWrapper()
-      expect(wrapper.find('.rounded-2xl').exists()).toBe(true)
-    })
 
     it('should align to the left like assistant messages', () => {
       const wrapper = createWrapper()
@@ -76,8 +66,8 @@ describe('TypingIndicator', () => {
         character: { id: 'kenji', name: 'Kenji', avatar: '🎌' }
       })
 
-      expect(wrapper.text()).toContain('🎌')
-      expect(wrapper.text()).toContain('Kenji')
+      expect(wrapper.find('[role="img"]').attributes('aria-label')).toBe('Kenji')
+      expect(wrapper.find('[role="img"]').text()).toBe('K')
     })
   })
 })

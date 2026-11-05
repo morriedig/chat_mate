@@ -86,7 +86,8 @@ describe('AchievementsPanel', () => {
       const wrapper = createWrapper()
       const progressBar = wrapper.find('.progress-bar')
       // 3 out of 8 = 37.5%, rounded to 38%
-      expect(progressBar.attributes('style')).toContain('width')
+      // Progress scales with transform, never an animated width
+      expect(progressBar.attributes('style')).toContain('scaleX(0.38)')
     })
   })
 

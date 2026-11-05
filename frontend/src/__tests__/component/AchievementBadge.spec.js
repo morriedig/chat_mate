@@ -56,7 +56,9 @@ describe('AchievementBadge', () => {
 
     it('should display achievement icon when unlocked', () => {
       const wrapper = createWrapper({ isUnlocked: true })
-      expect(wrapper.text()).toContain('💬')
+      // Category icon (Material Symbols), never the emoji from the data
+      expect(wrapper.find('.badge-icon').text()).toBe('flag')
+      expect(wrapper.text()).not.toContain('💬')
     })
 
     it('should not have locked class when unlocked', () => {
@@ -73,7 +75,7 @@ describe('AchievementBadge', () => {
 
     it('should display lock icon when locked', () => {
       const wrapper = createWrapper({ isUnlocked: false })
-      expect(wrapper.text()).toContain('🔒')
+      expect(wrapper.find('.badge-icon').text()).toBe('lock')
     })
 
     it('should not have unlocked class when locked', () => {
@@ -105,7 +107,7 @@ describe('AchievementBadge', () => {
         isUnlocked: true
       })
 
-      expect(wrapper.text()).toContain('🔥')
+      expect(wrapper.find('.badge-icon').text()).toBe('event_repeat')
     })
 
     it('should display different achievement titles', () => {

@@ -2,6 +2,9 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useCharacterMemory } from '../../composables/useCharacterMemory'
+import CmBottomSheet from '../ui/CmBottomSheet.vue'
+import CmAvatar from '../ui/CmAvatar.vue'
+import CmStateBlock from '../ui/CmStateBlock.vue'
 
 const { t } = useI18n()
 
@@ -20,6 +23,11 @@ const daysKnown = computed(() => {
   return Math.max(1, Math.floor((Date.now() - meta.value.firstMet) / (24 * 60 * 60 * 1000)))
 })
 
+const description = computed(() => [
+  meta.value.conversationCount ? t('memory.conversations', { count: meta.value.conversationCount }, meta.value.conversationCount) : '',
+  daysKnown.value > 0 ? t('memory.daysKnowing', { count: daysKnown.value }, daysKnown.value) : '',
+].filter(Boolean).join(' · '))
+
 function handleRemove(i) {
   removeMemory(props.character.id, i)
 }
@@ -33,87 +41,49 @@ function handleClearAll() {
 </script>
 
 <template>
-  <Teleport to="body">
-    <Transition name="fade-scale">
-      <div class="fixed inset-0 z-[100] flex items-center justify-center p-4">
-        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" @click="emit('close')" />
-        <div class="relative w-full max-w-md bg-surface-light dark:bg-surface-dark rounded-2xl shadow-2xl max-h-[85vh] overflow-hidden flex flex-col">
-          <!-- Header -->
-          <div class="p-5 pb-3 border-b border-slate-200 dark:border-slate-700">
-            <div class="flex items-start justify-between gap-3">
-              <div class="flex items-center gap-3 min-w-0">
-                <div class="flex items-center justify-center rounded-full size-12 shrink-0 shadow-sm bg-gradient-to-br from-amber-100 to-rose-100 dark:from-amber-900/40 dark:to-rose-900/40 text-2xl">
-                  {{ character.avatar }}
-                </div>
-                <div class="min-w-0">
-                  <h2 class="font-bold text-text-main dark:text-white truncate">
-                    {{ t('memory.title', { name: character.name }) }}
-                  </h2>
-                  <p class="text-xs text-text-muted dark:text-slate-400">
-                    <span v-if="meta.conversationCount">{{ t('memory.conversations', { count: meta.conversationCount }, meta.conversationCount) }}</span>
-                    <span v-if="daysKnown > 0"> · {{ t('memory.daysKnowing', { count: daysKnown }, daysKnown) }}</span>
-                  </p>
-                </div>
-              </div>
-              <button @click="emit('close')" class="shrink-0 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
-                <span class="material-symbols-outlined">close</span>
-              </button>
-            </div>
-          </div>
+  <CmBottomSheet
+    :title="t('memory.title', { name: character.name })"
+    :description="description"
+    :close-label="t('chat.close')"
+    @close="emit('close')"
+  >
+    <template #leading>
+      <CmAvatar :name="character.name" :size="48" />
+    </template>
 
-          <!-- Memory list -->
-          <div class="flex-1 overflow-y-auto p-5 pt-4">
-            <div v-if="memories.length === 0" class="text-center py-10">
-              <span class="material-symbols-outlined text-5xl text-slate-300 dark:text-slate-600 mb-2">psychology</span>
-              <p class="text-text-muted dark:text-slate-400 text-sm">
-                {{ t('memory.emptyTitle', { name: character.name }) }}
-              </p>
-              <p class="text-text-muted dark:text-slate-500 text-xs mt-2">
-                {{ t('memory.emptyBody', { name: character.name }) }}
-              </p>
-            </div>
-            <ul v-else class="space-y-2">
-              <li
-                v-for="(memory, i) in memories"
-                :key="i"
-                class="group flex items-start gap-2 p-3 rounded-lg bg-amber-50 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-900/40"
-              >
-                <span class="material-symbols-outlined text-amber-500 text-[20px] shrink-0 mt-0.5">favorite</span>
-                <p class="flex-1 text-sm text-text-main dark:text-slate-200 leading-relaxed">{{ memory.fact }}</p>
-                <button
-                  @click="handleRemove(i)"
-                  class="shrink-0 opacity-0 group-hover:opacity-100 transition-opacity text-slate-400 hover:text-red-500"
-                  :title="t('memory.forget')"
-                >
-                  <span class="material-symbols-outlined text-[18px]">delete</span>
-                </button>
-              </li>
-            </ul>
-          </div>
+    <CmStateBlock
+      v-if="memories.length === 0"
+      icon="psychology"
+      :title="t('memory.emptyTitle', { name: character.name })"
+      :body="t('memory.emptyBody', { name: character.name })"
+    />
+    <ul v-else class="memory-list divide-y divide-hairline overflow-hidden rounded-[14px] border border-hairline">
+      <li
+        v-for="(memory, i) in memories"
+        :key="i"
+        class="flex items-start gap-2 bg-surface py-1 pl-3 pr-1"
+      >
+        <p class="min-w-0 flex-1 py-2.5 text-body text-ink">{{ memory.fact }}</p>
+        <button
+          type="button"
+          @click="handleRemove(i)"
+          :aria-label="t('memory.forget')"
+          :title="t('memory.forget')"
+          class="flex size-11 shrink-0 items-center justify-center rounded-[10px] text-ink-muted active:bg-surface-raised"
+        >
+          <span class="material-symbols-outlined" aria-hidden="true">delete</span>
+        </button>
+      </li>
+    </ul>
 
-          <!-- Footer -->
-          <div v-if="memories.length > 0" class="p-4 border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50">
-            <button
-              @click="handleClearAll"
-              class="w-full text-xs text-text-muted dark:text-slate-500 hover:text-red-500 dark:hover:text-red-400 transition-colors"
-            >
-              {{ t('memory.clearAll') }}
-            </button>
-          </div>
-        </div>
-      </div>
-    </Transition>
-  </Teleport>
+    <template v-if="memories.length > 0" #actions>
+      <button
+        type="button"
+        @click="handleClearAll"
+        class="memory-clear flex min-h-11 w-full items-center justify-center rounded-[10px] text-body text-error active:bg-surface-raised"
+      >
+        {{ t('memory.clearAll') }}
+      </button>
+    </template>
+  </CmBottomSheet>
 </template>
-
-<style scoped>
-.fade-scale-enter-active,
-.fade-scale-leave-active {
-  transition: opacity 200ms ease, transform 200ms ease;
-}
-.fade-scale-enter-from,
-.fade-scale-leave-to {
-  opacity: 0;
-  transform: scale(0.95);
-}
-</style>

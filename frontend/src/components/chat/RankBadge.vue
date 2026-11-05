@@ -3,7 +3,10 @@ import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useUserProgress } from '../../composables/useUserProgress'
 import AchievementsPanel from './AchievementsPanel.vue'
+import CmBottomSheet from '../ui/CmBottomSheet.vue'
 
+// Rank, streak and achievements as quiet text. No longer shown in the chat header
+// (DESIGN.md: no XP/rank/streak in a conversation header); kept for other screens.
 const { t } = useI18n()
 const {
   progress,
@@ -20,172 +23,102 @@ const showAchievements = ref(false)
 </script>
 
 <template>
-  <div class="flex items-center gap-1 sm:gap-2">
-    <!-- Achievements Button -->
+  <div class="relative flex items-center gap-1 text-meta text-ink-secondary tabular-nums">
+    <!-- Achievements -->
     <button
+      type="button"
       @click="showAchievements = !showAchievements"
-      class="hidden min-[360px]:flex items-center gap-1 px-2 py-1 rounded-lg bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/30 dark:to-amber-900/30 border border-yellow-200 dark:border-yellow-700 hover:border-yellow-400 dark:hover:border-yellow-500 transition-colors"
+      :aria-label="t('chat.achievements')"
+      class="hidden min-h-11 items-center gap-1 rounded-[10px] px-2 active:bg-surface-raised min-[360px]:flex"
     >
-      <span class="text-base">🏆</span>
-      <span class="text-xs font-bold text-yellow-600 dark:text-yellow-400">{{ unlockedAchievements.length }}/{{ ACHIEVEMENTS.length }}</span>
+      <span class="material-symbols-outlined !text-[18px] text-ink-muted" aria-hidden="true">military_tech</span>
+      <span>{{ unlockedAchievements.length }}/{{ ACHIEVEMENTS.length }}</span>
     </button>
 
-    <!-- Streak Badge -->
-    <div v-if="progress.currentStreak > 0" class="flex items-center justify-center gap-1 px-2 py-1 rounded-lg bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-900/30 dark:to-orange-900/30 border border-red-200 dark:border-red-700">
-      <span class="text-base animate-pulse">🔥</span>
-      <span class="text-xs font-bold text-red-600 dark:text-red-400">{{ progress.currentStreak }}</span>
-      <span class="hidden sm:inline text-[10px] text-red-500 dark:text-red-400">{{ t('rank.days') }}</span>
-      <span v-if="progress.streakFreezes > 0" class="hidden sm:inline text-[10px] text-blue-500 dark:text-blue-400 ml-0.5" :title="t('rank.streakFreeze', { count: progress.streakFreezes })">🛡️{{ progress.streakFreezes }}</span>
+    <!-- Streak -->
+    <div v-if="progress.currentStreak > 0" class="flex items-center gap-1 px-2">
+      <span class="material-symbols-outlined !text-[18px] text-ink-muted" aria-hidden="true">event_available</span>
+      <span>{{ progress.currentStreak }}</span>
+      <span class="hidden sm:inline">{{ t('rank.days') }}</span>
+      <span v-if="progress.streakFreezes > 0" class="ml-1 hidden items-center gap-0.5 sm:inline-flex" :title="t('rank.streakFreeze', { count: progress.streakFreezes })">
+        <span class="material-symbols-outlined !text-[16px] text-ink-muted" aria-hidden="true">ac_unit</span>{{ progress.streakFreezes }}
+      </span>
     </div>
 
-    <!-- Rank Badge (its details are a hover tooltip, so phones skip it) -->
-    <div class="relative group hidden sm:block">
-      <div class="flex items-center gap-1.5 px-1.5 sm:px-2 py-1 rounded-lg bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/30 dark:to-orange-900/30 border border-amber-200 dark:border-amber-700">
-        <span class="text-base">{{ currentRank.icon }}</span>
-        <div class="hidden sm:flex flex-col">
-          <span class="text-xs font-semibold text-amber-800 dark:text-amber-200 leading-tight">
-            {{ t(`ranks.${currentRank.title.toLowerCase()}`, currentRank.title) }}
-          </span>
-          <span class="text-[10px] text-amber-600 dark:text-amber-400 leading-tight">
-            Lv.{{ currentRank.level }}
-          </span>
-        </div>
+    <!-- Rank (details are a hover tooltip, so phones skip it) -->
+    <div class="group relative hidden sm:block">
+      <div class="flex items-center gap-1.5 px-2">
+        <span class="material-symbols-outlined !text-[18px] text-ink-muted" aria-hidden="true">trending_up</span>
+        <span class="text-ink">Lv.{{ currentRank.level }}</span>
+        <span>{{ t(`ranks.${currentRank.title.toLowerCase()}`, currentRank.title) }}</span>
       </div>
 
       <!-- Tooltip with details -->
-      <div class="absolute top-full left-0 mt-2 p-3 rounded-lg bg-white dark:bg-slate-800 shadow-lg border border-slate-200 dark:border-slate-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 min-w-[180px]">
-        <div class="text-sm font-semibold text-text-main dark:text-white mb-2">
-          {{ currentRank.icon }} {{ t(`ranks.${currentRank.title.toLowerCase()}`, currentRank.title) }}
-        </div>
-        <div class="text-xs text-text-muted dark:text-slate-400 mb-2">
-          {{ t('rank.totalXP', { xp: progress.totalXP }) }}
-        </div>
+      <div class="invisible absolute left-0 top-full z-50 mt-2 min-w-[200px] rounded-[10px] border border-hairline bg-surface p-3 opacity-0 shadow-[var(--cm-shadow-float)] transition-opacity group-hover:visible group-hover:opacity-100">
+        <p class="mb-1 text-caption font-medium text-ink">
+          Lv.{{ currentRank.level }} {{ t(`ranks.${currentRank.title.toLowerCase()}`, currentRank.title) }}
+        </p>
+        <p class="mb-2 text-meta text-ink-muted">{{ t('rank.totalXP', { xp: progress.totalXP }) }}</p>
         <div v-if="nextRank" class="space-y-1">
-          <div class="flex justify-between text-xs">
-            <span class="text-text-muted dark:text-slate-400">{{ t('rank.nextLevel') }}</span>
-            <span class="text-amber-600 dark:text-amber-400">{{ xpToNextRank }} XP</span>
+          <div class="flex justify-between text-meta">
+            <span class="text-ink-muted">{{ t('rank.nextLevel') }}</span>
+            <span class="text-ink">{{ xpToNextRank }} XP</span>
           </div>
-          <div class="h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+          <div class="h-1 overflow-hidden bg-surface-raised">
             <div
-              class="h-full bg-gradient-to-r from-amber-400 to-orange-500 rounded-full transition-all duration-500"
-              :style="{ width: `${progressToNextRank}%` }"
+              class="h-full w-full origin-left rounded-r-[2px] bg-accent"
+              :style="{ transform: `scaleX(${progressToNextRank / 100})` }"
             ></div>
           </div>
         </div>
-        <div v-else class="text-xs text-amber-600 dark:text-amber-400">
-          {{ t('rank.maxLevel') }}
-        </div>
-        <div class="mt-2 pt-2 border-t border-slate-200 dark:border-slate-700 text-xs text-text-muted dark:text-slate-400 space-y-1">
-          <div>{{ t('rank.messagesSent', { count: progress.messagesSent }) }}</div>
-          <div class="flex items-center gap-1">
-            <span>🔥</span>
-            <span>{{ t('rank.currentStreak', { count: progress.currentStreak }) }}</span>
-          </div>
-          <div v-if="progress.longestStreak > 0" class="text-amber-600 dark:text-amber-400">
-            {{ t('rank.longestStreak', { count: progress.longestStreak }) }}
-          </div>
+        <p v-else class="text-meta text-ink">{{ t('rank.maxLevel') }}</p>
+        <div class="mt-2 space-y-0.5 border-t border-hairline pt-2 text-meta text-ink-muted">
+          <p>{{ t('rank.messagesSent', { count: progress.messagesSent }) }}</p>
+          <p>{{ t('rank.currentStreak', { count: progress.currentStreak }) }}</p>
+          <p v-if="progress.longestStreak > 0">{{ t('rank.longestStreak', { count: progress.longestStreak }) }}</p>
         </div>
       </div>
     </div>
 
-    <!-- XP Progress Bar (compact) -->
-    <div v-if="nextRank" class="hidden sm:flex items-center gap-1.5">
-      <div class="w-16 h-1.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+    <!-- XP progress (compact) -->
+    <div v-if="nextRank" class="hidden items-center gap-1.5 px-1 sm:flex">
+      <div class="rank-xp-bar h-1 w-16 overflow-hidden bg-surface-raised">
         <div
-          class="h-full bg-gradient-to-r from-amber-400 to-orange-500 rounded-full transition-all duration-500"
-          :style="{ width: `${progressToNextRank}%` }"
+          class="h-full w-full origin-left rounded-r-[2px] bg-accent transition-transform duration-[180ms] ease-[var(--ease-cm)]"
+          :style="{ transform: `scaleX(${progressToNextRank / 100})` }"
         ></div>
       </div>
-      <span class="text-[10px] text-text-muted dark:text-slate-400">{{ progressToNextRank }}%</span>
+      <span class="text-ink-muted">{{ progressToNextRank }}%</span>
     </div>
 
-    <!-- Recent XP Gain Animation -->
-    <transition name="xp-popup">
-      <div
+    <!-- Recent XP gain: plain text, fades -->
+    <transition name="xp-note">
+      <span
         v-if="recentXPGain"
-        class="absolute -top-2 right-0 px-2 py-0.5 rounded-full bg-green-500 text-white text-xs font-bold shadow-lg"
-      >
-        +{{ recentXPGain.amount }} XP
-      </div>
+        class="absolute -top-3 right-0 rounded-[6px] bg-success-soft px-1.5 text-meta font-medium text-success"
+        role="status"
+      >+{{ recentXPGain.amount }} XP</span>
     </transition>
 
-    <!-- Achievements Panel Popup -->
-    <Teleport to="body">
-      <Transition name="panel">
-        <div
-          v-if="showAchievements"
-          class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
-          @click.self="showAchievements = false"
-        >
-          <div class="achievements-popup-inner bg-surface-light dark:bg-surface-dark rounded-3xl w-full max-w-md max-h-[85vh] overflow-hidden flex flex-col shadow-2xl">
-            <div class="flex items-center justify-between p-5 pb-3 border-b border-slate-200 dark:border-slate-700">
-              <h2 class="text-base font-bold text-text-main dark:text-white flex items-center gap-2">
-                <span class="text-xl">🏆</span>
-                {{ $t('achievements.unlocked') }}
-              </h2>
-              <button
-                @click="showAchievements = false"
-                class="p-1 rounded-lg text-text-muted dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-              >
-                <span class="material-symbols-outlined">close</span>
-              </button>
-            </div>
-            <div class="flex-1 overflow-y-auto">
-              <AchievementsPanel />
-            </div>
-          </div>
-        </div>
-      </Transition>
-    </Teleport>
+    <CmBottomSheet
+      v-if="showAchievements"
+      :title="t('chat.achievements')"
+      :description="t('chat.achievementsDescription')"
+      :close-label="t('chat.close')"
+      @close="showAchievements = false"
+    >
+      <AchievementsPanel class="-mx-5 -mt-4" />
+    </CmBottomSheet>
   </div>
 </template>
 
 <style scoped>
-.xp-popup-enter-active {
-  animation: xpPopup 0.5s ease-out;
+.xp-note-enter-active,
+.xp-note-leave-active {
+  transition: opacity var(--motion-control) var(--ease-cm);
 }
-
-.xp-popup-leave-active {
-  animation: xpFade 0.3s ease-in forwards;
-}
-
-@keyframes xpPopup {
-  0% {
-    opacity: 0;
-    transform: translateY(10px) scale(0.8);
-  }
-  50% {
-    transform: translateY(-5px) scale(1.1);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-@keyframes xpFade {
-  to {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-}
-
-/* Panel transitions */
-.panel-enter-active,
-.panel-leave-active {
-  transition: opacity 260ms ease;
-}
-.panel-enter-active .achievements-popup-inner,
-.panel-leave-active .achievements-popup-inner {
-  transition: transform 320ms cubic-bezier(0.34, 1.56, 0.64, 1), opacity 260ms ease;
-}
-.panel-enter-from,
-.panel-leave-to {
+.xp-note-enter-from,
+.xp-note-leave-to {
   opacity: 0;
-}
-.panel-enter-from .achievements-popup-inner,
-.panel-leave-to .achievements-popup-inner {
-  opacity: 0;
-  transform: scale(0.92) translateY(10px);
 }
 </style>

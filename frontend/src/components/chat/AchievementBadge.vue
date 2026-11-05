@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from 'vue'
 import { useUserProgress } from '../../composables/useUserProgress'
+import { achievementIcon } from './achievementIcon'
 
 const props = defineProps({
   achievement: { type: Object, required: true },
@@ -55,44 +56,38 @@ const progressInfo = computed(() => {
 
 <template>
   <div
-    class="achievement-badge flex items-center gap-3 p-3 rounded-xl transition-all"
-    :class="[
-      isUnlocked
-        ? 'unlocked bg-gradient-to-br from-amber-50 to-amber-100/60 dark:from-amber-900/30 dark:to-amber-900/10 border border-amber-300/60 dark:border-amber-700/50'
-        : 'locked bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 opacity-80'
-    ]"
+    class="achievement-badge flex items-center gap-3 rounded-[14px] border border-hairline p-3"
+    :class="isUnlocked ? 'unlocked bg-surface' : 'locked bg-surface-sunken'"
     :title="isUnlocked ? '' : $t(`achievements.${achievement.id}.hint`)"
   >
     <div
-      class="badge-icon shrink-0 flex items-center justify-center w-12 h-12 rounded-full text-2xl shadow-sm transition-all"
-      :class="isUnlocked
-        ? 'bg-white dark:bg-slate-700 shadow-amber-200/40 dark:shadow-amber-900/30'
-        : 'bg-white/60 dark:bg-slate-800 grayscale'"
+      class="badge-icon flex size-11 shrink-0 items-center justify-center rounded-[10px]"
+      :class="isUnlocked ? 'bg-accent-soft text-accent' : 'bg-surface-raised text-ink-muted'"
     >
-      <span v-if="isUnlocked">{{ achievement.icon }}</span>
-      <span v-else class="locked-icon text-slate-400 dark:text-slate-500">🔒</span>
+      <span class="material-symbols-outlined" aria-hidden="true">{{ isUnlocked ? achievementIcon(achievement) : 'lock' }}</span>
     </div>
 
-    <div class="badge-info flex flex-col gap-0.5 flex-1 min-w-0">
+    <div class="badge-info flex min-w-0 flex-1 flex-col gap-0.5">
       <span
-        class="badge-title text-sm font-semibold truncate"
-        :class="isUnlocked ? 'text-text-main dark:text-white' : 'text-text-muted dark:text-slate-400'"
+        class="badge-title truncate text-caption font-medium"
+        :class="isUnlocked ? 'text-ink' : 'text-ink-secondary'"
       >
         {{ $t(`achievements.${achievement.id}.title`) }}
       </span>
-      <span class="badge-desc text-xs text-text-muted dark:text-slate-400 line-clamp-2 leading-snug">
+      <span class="badge-desc line-clamp-2 text-meta text-ink-muted">
         {{ $t(`achievements.${achievement.id}.description`) }}
       </span>
+      <span class="sr-only">{{ isUnlocked ? $t('achievements.unlockedState') : $t('achievements.lockedState') }}</span>
       <!-- Progress for locked -->
       <div v-if="!isUnlocked && progressInfo" class="mt-1.5">
-        <div class="flex items-center justify-between text-[10px] text-text-muted dark:text-slate-500 mb-1">
+        <div class="mb-1 flex items-center justify-between text-meta text-ink-muted tabular-nums">
           <span>{{ progressInfo.current }} / {{ progressInfo.target }}</span>
           <span>{{ progressInfo.pct }}%</span>
         </div>
-        <div class="h-1 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden">
+        <div class="h-1 overflow-hidden bg-surface-raised">
           <div
-            class="h-full rounded-full bg-amber-400 dark:bg-amber-500 transition-all duration-500"
-            :style="{ width: `${progressInfo.pct}%` }"
+            class="h-full w-full origin-left rounded-r-[2px] bg-accent transition-transform duration-[180ms] ease-[var(--ease-cm)]"
+            :style="{ transform: `scaleX(${progressInfo.pct / 100})` }"
           ></div>
         </div>
       </div>

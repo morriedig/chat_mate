@@ -3,6 +3,9 @@ import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useVocabularyBank } from '../../composables/useVocabularyBank'
 import { useOpinionChat } from '../../composables/useOpinionChat'
+import CmBottomSheet from '../ui/CmBottomSheet.vue'
+import CmAvatar from '../ui/CmAvatar.vue'
+import CmButton from '../ui/CmButton.vue'
 
 const { t } = useI18n()
 
@@ -58,115 +61,83 @@ function handleSaveSentence() {
 </script>
 
 <template>
-  <Teleport to="body">
-    <div class="fixed inset-0 z-50 flex items-end sm:items-center justify-center">
-      <div class="absolute inset-0 bg-black/40" @click="emit('close')" />
+  <CmBottomSheet
+    :title="t('opinionChat.summaryTitle')"
+    :description="t('opinionChat.summaryIntro', { name: character.name, count: summary.userTurns })"
+    :close-label="t('opinionChat.keepChatting')"
+    @close="emit('close')"
+  >
+    <template #leading>
+      <CmAvatar :name="character.name" :size="48" />
+    </template>
 
-      <div class="opinion-summary relative w-full sm:max-w-lg max-h-[90vh] overflow-y-auto rounded-t-3xl sm:rounded-3xl bg-surface-light dark:bg-surface-dark shadow-2xl px-4 pt-5 pb-6 sm:p-6 safe-area-bottom">
-        <!-- Friend header -->
-        <div class="flex items-start gap-3 mb-5">
-          <div class="flex items-center justify-center rounded-full size-12 shrink-0 shadow-sm bg-slate-100 dark:bg-slate-800 text-3xl">
-            {{ character.avatar }}
-          </div>
-          <div class="flex-1 min-w-0">
-            <h2 class="text-lg font-bold text-text-main dark:text-white">{{ t('opinionChat.summaryTitle') }}</h2>
-            <p class="text-sm text-text-muted dark:text-slate-400">
-              {{ t('opinionChat.summaryIntro', { name: character.name, count: summary.userTurns }) }}
+    <div class="opinion-summary">
+      <!-- Connectors used -->
+      <section class="mb-5">
+        <h3 class="mb-2 text-caption font-medium text-ink-secondary">
+          {{ usedItems.length ? t('opinionChat.summaryUsed') : t('opinionChat.summaryNoneUsed') }}
+        </h3>
+        <ul v-if="usedItems.length" class="divide-y divide-hairline overflow-hidden rounded-[14px] border border-hairline">
+          <li
+            v-for="item in usedItems"
+            :key="item.id"
+            class="summary-used bg-surface px-3.5 py-3"
+          >
+            <p class="mb-1 flex flex-wrap items-baseline gap-x-2">
+              <span class="inline-flex items-center gap-1 text-caption font-medium text-success">
+                <span class="material-symbols-outlined !text-[18px] self-center" aria-hidden="true">check</span>{{ item.label }}
+              </span>
+              <span v-if="item.meaning" class="text-meta text-ink-muted">{{ item.meaning }}</span>
             </p>
-          </div>
-          <button
-            @click="emit('close')"
-            class="shrink-0 material-symbols-outlined text-xl text-text-muted dark:text-slate-400 hover:text-text-main dark:hover:text-slate-200"
-            :aria-label="t('opinionChat.keepChatting')"
-          >close</button>
-        </div>
+            <p class="break-words text-body text-ink">“{{ item.sentence }}”</p>
+          </li>
+        </ul>
+      </section>
 
-        <!-- Connectors used -->
-        <section class="mb-5">
-          <h3 class="flex items-center gap-1.5 text-sm font-semibold text-text-main dark:text-slate-200 mb-2">
-            <span class="material-symbols-outlined text-[18px] text-emerald-500">favorite</span>
-            {{ usedItems.length ? t('opinionChat.summaryUsed') : t('opinionChat.summaryNoneUsed') }}
-          </h3>
-          <ul v-if="usedItems.length" class="space-y-2">
-            <li
-              v-for="item in usedItems"
-              :key="item.id"
-              class="summary-used p-3 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-900"
-            >
-              <div class="flex items-baseline gap-2 mb-1">
-                <span class="text-sm font-bold text-emerald-700 dark:text-emerald-300">{{ item.label }}</span>
-                <span v-if="item.meaning" class="text-xs text-text-muted dark:text-slate-400">{{ item.meaning }}</span>
-              </div>
-              <p class="text-sm text-text-main dark:text-slate-300 italic break-words">“{{ item.sentence }}”</p>
-            </li>
-          </ul>
-        </section>
-
-        <!-- Try next time -->
-        <section v-if="tryNextItems.length" class="mb-5">
-          <h3 class="flex items-center gap-1.5 text-sm font-semibold text-text-main dark:text-slate-200 mb-2">
-            <span class="material-symbols-outlined text-[18px] text-amber-500">lightbulb</span>
-            {{ t('opinionChat.summaryTryNext') }}
-          </h3>
-          <ul class="space-y-2">
-            <li
-              v-for="item in tryNextItems"
-              :key="item.id"
-              class="summary-try p-3 rounded-xl bg-amber-50 dark:bg-amber-900/15 border border-amber-100 dark:border-amber-900"
-            >
-              <div class="flex items-baseline gap-2 mb-1">
-                <span class="text-sm font-bold text-amber-700 dark:text-amber-300">{{ item.label }}</span>
-                <span v-if="item.meaning" class="text-xs text-text-muted dark:text-slate-400">{{ item.meaning }}</span>
-              </div>
-              <p v-if="item.example" class="text-sm text-text-muted dark:text-slate-400 break-words">{{ item.example }}</p>
-            </li>
-          </ul>
-        </section>
-
-        <!-- Best sentence -->
-        <section v-if="summary.bestSentence" class="mb-6">
-          <h3 class="flex items-center gap-1.5 text-sm font-semibold text-text-main dark:text-slate-200 mb-2">
-            <span class="material-symbols-outlined text-[18px] text-primary">format_quote</span>
-            {{ t('opinionChat.summaryBest') }}
-          </h3>
-          <div class="p-3 rounded-xl bg-primary/10 dark:bg-primary/15 border border-primary/20">
-            <p class="text-sm font-medium text-text-main dark:text-slate-200 break-words mb-3">“{{ summary.bestSentence }}”</p>
-            <button
-              @click="handleSaveSentence"
-              :disabled="isSaved"
-              class="save-sentence inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors"
-              :class="isSaved
-                ? 'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300'
-                : 'bg-primary text-[#0d171b] hover:bg-primary/90'"
-            >
-              <span class="material-symbols-outlined text-[16px]">{{ isSaved ? 'check' : 'bookmark_add' }}</span>
-              {{ isSaved ? t('opinionChat.saved') : t('opinionChat.saveSentence') }}
-            </button>
-          </div>
-        </section>
-
-        <!-- Actions -->
-        <div class="grid grid-cols-2 gap-2">
-          <button
-            @click="emit('new-topic')"
-            class="new-topic col-span-2 py-3 rounded-xl font-bold bg-primary text-[#0d171b] hover:bg-primary/90 active:scale-[0.98] transition-all"
+      <!-- Try next time -->
+      <section v-if="tryNextItems.length" class="mb-5">
+        <h3 class="mb-2 text-caption font-medium text-ink-secondary">{{ t('opinionChat.summaryTryNext') }}</h3>
+        <ul class="divide-y divide-hairline overflow-hidden rounded-[14px] border border-hairline">
+          <li
+            v-for="item in tryNextItems"
+            :key="item.id"
+            class="summary-try bg-surface px-3.5 py-3"
           >
-            {{ t('opinionChat.newTopic') }}
-          </button>
+            <p class="mb-1 flex flex-wrap items-baseline gap-x-2">
+              <span class="text-caption font-medium text-ink">{{ item.label }}</span>
+              <span v-if="item.meaning" class="text-meta text-ink-muted">{{ item.meaning }}</span>
+            </p>
+            <p v-if="item.example" class="break-words text-caption text-ink-secondary">{{ item.example }}</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- Best sentence -->
+      <section v-if="summary.bestSentence">
+        <h3 class="mb-2 text-caption font-medium text-ink-secondary">{{ t('opinionChat.summaryBest') }}</h3>
+        <div class="relative rounded-[14px] bg-accent-soft py-3.5 pl-4 pr-3.5">
+          <span class="absolute left-0 top-3.5 h-9 w-[3px] rounded-r-[3px] bg-accent" aria-hidden="true"></span>
+          <p class="mb-2 break-words text-body font-medium text-ink">“{{ summary.bestSentence }}”</p>
           <button
-            @click="emit('close')"
-            class="py-2.5 rounded-xl text-sm font-semibold border border-slate-200 dark:border-slate-700 text-text-main dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+            type="button"
+            @click="handleSaveSentence"
+            :disabled="isSaved"
+            class="save-sentence -mx-1 inline-flex min-h-11 items-center gap-1.5 rounded-[10px] px-1 text-caption font-medium"
+            :class="isSaved ? 'text-success' : 'text-accent'"
           >
-            {{ t('opinionChat.keepChatting') }}
-          </button>
-          <button
-            @click="emit('home')"
-            class="py-2.5 rounded-xl text-sm font-semibold border border-slate-200 dark:border-slate-700 text-text-main dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
-          >
-            {{ t('opinionChat.backHome') }}
+            <span class="material-symbols-outlined !text-[18px]" aria-hidden="true">{{ isSaved ? 'check' : 'bookmark_add' }}</span>
+            {{ isSaved ? t('opinionChat.saved') : t('opinionChat.saveSentence') }}
           </button>
         </div>
-      </div>
+      </section>
     </div>
-  </Teleport>
+
+    <template #actions>
+      <div class="grid grid-cols-2 gap-2">
+        <CmButton block class="new-topic col-span-2" @click="emit('new-topic')">{{ t('opinionChat.newTopic') }}</CmButton>
+        <CmButton variant="secondary" @click="emit('close')">{{ t('opinionChat.keepChatting') }}</CmButton>
+        <CmButton variant="secondary" @click="emit('home')">{{ t('opinionChat.backHome') }}</CmButton>
+      </div>
+    </template>
+  </CmBottomSheet>
 </template>

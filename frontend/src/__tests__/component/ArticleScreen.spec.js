@@ -133,7 +133,7 @@ describe('ArticleScreen', () => {
 
     it('should render article cards', () => {
       const wrapper = createWrapper()
-      const cards = wrapper.findAll('.rounded-xl.border')
+      const cards = wrapper.findAll('button.article-card')
       expect(cards.length).toBeGreaterThan(0)
     })
   })
@@ -141,7 +141,7 @@ describe('ArticleScreen', () => {
   describe('article selection', () => {
     it('should call setArticle and navigate to /chat when article is clicked', async () => {
       const wrapper = createWrapper()
-      const articleCards = wrapper.findAll('.rounded-xl.border.cursor-pointer')
+      const articleCards = wrapper.findAll('button.article-card')
 
       await articleCards[0].trigger('click')
 
@@ -151,7 +151,7 @@ describe('ArticleScreen', () => {
 
     it('should pass correct article data on select', async () => {
       const wrapper = createWrapper()
-      const articleCards = wrapper.findAll('.rounded-xl.border.cursor-pointer')
+      const articleCards = wrapper.findAll('button.article-card')
 
       await articleCards[0].trigger('click')
 

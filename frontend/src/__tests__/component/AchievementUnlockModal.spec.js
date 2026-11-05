@@ -86,7 +86,8 @@ describe('AchievementUnlockModal', () => {
     it('should display achievement icon', async () => {
       const wrapper = createWrapper()
       await wrapper.vm.$nextTick()
-      expect(wrapper.text()).toContain('💬')
+      expect(wrapper.find('.badge-icon-large').text()).toBe('flag')
+      expect(wrapper.text()).not.toContain('💬')
     })
 
     it('should display unlocked text', async () => {
@@ -167,16 +168,12 @@ describe('AchievementUnlockModal', () => {
       expect(wrapper.find('.badge-icon-large').exists()).toBe(true)
     })
 
-    it('should have confetti elements', async () => {
+    it('has no confetti or looping animation', async () => {
       const wrapper = createWrapper()
       await wrapper.vm.$nextTick()
-      expect(wrapper.findAll('.confetti').length).toBe(12)
-    })
-
-    it('should have celebration container', async () => {
-      const wrapper = createWrapper()
-      await wrapper.vm.$nextTick()
-      expect(wrapper.find('.celebration').exists()).toBe(true)
+      expect(wrapper.findAll('.confetti').length).toBe(0)
+      expect(wrapper.find('.celebration').exists()).toBe(false)
+      expect(wrapper.find('.animate-bounce, .animate-pulse').exists()).toBe(false)
     })
   })
 
@@ -192,7 +189,7 @@ describe('AchievementUnlockModal', () => {
       const wrapper = createWrapper()
       await wrapper.vm.$nextTick()
 
-      expect(wrapper.text()).toContain('🔥')
+      expect(wrapper.find('.badge-icon-large').text()).toBe('event_repeat')
       expect(wrapper.text()).toContain('achievements.streak_7.title')
       expect(wrapper.text()).toContain('achievements.categories.consistency')
     })

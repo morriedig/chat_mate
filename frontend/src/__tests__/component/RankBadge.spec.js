@@ -80,9 +80,10 @@ describe('RankBadge', () => {
       expect(wrapper.exists()).toBe(true)
     })
 
-    it('should display current rank icon', () => {
+    it('shows the rank as text, not its emoji', () => {
       const wrapper = createWrapper()
-      expect(wrapper.text()).toContain('📚')
+      expect(wrapper.text()).not.toContain('📚')
+      expect(wrapper.text()).toContain('trending_up')
     })
 
     it('should display rank level', () => {
@@ -97,9 +98,10 @@ describe('RankBadge', () => {
       expect(wrapper.text()).toContain('1/2') // 1 unlocked out of 2
     })
 
-    it('should show trophy emoji', () => {
+    it('uses a labelled line icon instead of the trophy emoji', () => {
       const wrapper = createWrapper()
-      expect(wrapper.text()).toContain('🏆')
+      expect(wrapper.text()).not.toContain('🏆')
+      expect(wrapper.find('button').attributes('aria-label')).toBe('chat.achievements')
     })
 
     it('should toggle achievements panel on click', async () => {
@@ -117,7 +119,7 @@ describe('RankBadge', () => {
   describe('streak badge', () => {
     it('should show streak when greater than 0', () => {
       const wrapper = createWrapper()
-      expect(wrapper.text()).toContain('🔥')
+      expect(wrapper.text()).toContain('event_available')
       expect(wrapper.text()).toContain('5')
     })
 
@@ -133,9 +135,9 @@ describe('RankBadge', () => {
       expect(wrapper.text()).toContain('25%')
     })
 
-    it('should have progress bar element', () => {
+    it('scales the XP bar with transform', () => {
       const wrapper = createWrapper()
-      expect(wrapper.find('.bg-gradient-to-r.from-amber-400').exists()).toBe(true)
+      expect(wrapper.find('.rank-xp-bar > div').attributes('style')).toContain('scaleX(0.25)')
     })
   })
 

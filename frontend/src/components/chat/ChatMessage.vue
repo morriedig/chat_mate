@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import FeedbackPanel from './FeedbackPanel.vue'
+import CmAvatar from '../ui/CmAvatar.vue'
 import { splitByConnectors } from '../../utils/connectorDetect'
 
 const { t } = useI18n()
@@ -20,7 +21,7 @@ const props = defineProps({
     type: Array,
     default: null
   },
-  // Voice conversation: blur the friend's reply until tapped (listen first)
+  // Voice conversation: hide the friend's reply behind text bars until tapped (listen first)
   hideText: {
     type: Boolean,
     default: false
@@ -96,47 +97,53 @@ function toggleFeedback() {
 </script>
 
 <template>
-  <!-- Bot Message -->
-  <div v-if="message.role === 'assistant'" class="flex items-end gap-2 sm:gap-3 max-w-[calc(100%-2.5rem)] sm:max-w-3xl">
-    <div class="flex items-center justify-center rounded-full size-8 sm:size-10 shrink-0 shadow-sm bg-slate-100 dark:bg-slate-800 text-xl sm:text-2xl">
-      {{ character.avatar }}
-    </div>
-    <div class="flex flex-col gap-1 items-start min-w-0 overflow-hidden">
-      <span class="text-text-muted dark:text-slate-400 text-[13px] font-medium ml-1">{{ character.name }}</span>
-      <div class="p-3 sm:p-4 rounded-2xl rounded-bl-none bg-surface-light dark:bg-surface-dark text-text-main dark:text-slate-200 shadow-sm border border-slate-100 dark:border-slate-700">
-        <button v-if="hideText" type="button" @click="emit('reveal')" class="block text-left" :aria-label="t('voiceChat.showText')">
-          <span class="block text-sm sm:text-base leading-relaxed whitespace-pre-wrap break-words blur-[6px] select-none" aria-hidden="true">{{ message.content }}</span>
-          <span class="mt-1 inline-flex items-center gap-1 text-xs text-primary">
-            <span class="material-symbols-outlined text-[14px]">visibility</span>{{ t('voiceChat.showText') }}
+  <!-- Friend message -->
+  <div v-if="message.role === 'assistant'" class="chat-turn flex items-end gap-2">
+    <CmAvatar :name="character.name" :size="32" />
+    <div class="flex min-w-0 max-w-[82%] min-[390px]:max-w-[78%] flex-col items-start gap-1 sm:max-w-xl">
+      <span class="ml-1 text-meta text-ink-muted">{{ character.name }}</span>
+      <div class="min-w-0 max-w-full rounded-[14px] rounded-bl-[6px] border border-hairline bg-surface px-3.5 py-2.5 text-ink shadow-[var(--cm-shadow-small)]">
+        <button
+          v-if="hideText"
+          type="button"
+          @click="emit('reveal')"
+          class="hidden-reply block w-48 max-w-full text-left"
+        >
+          <span class="flex flex-col gap-2 py-1.5" aria-hidden="true">
+            <span class="h-2.5 w-full rounded-[3px] bg-surface-raised"></span>
+            <span class="h-2.5 w-11/12 rounded-[3px] bg-surface-raised"></span>
+            <span class="h-2.5 w-3/5 rounded-[3px] bg-surface-raised"></span>
+          </span>
+          <span class="mt-2 inline-flex items-center gap-1 text-caption font-medium text-accent">
+            <span class="material-symbols-outlined !text-[18px]" aria-hidden="true">visibility</span>{{ t('voiceChat.listenFirst') }}
           </span>
         </button>
-        <p v-else class="text-sm sm:text-base leading-relaxed whitespace-pre-wrap break-words overflow-wrap-anywhere clickable-words" @click="handleWordClick">{{ message.content }}</p>
+        <p v-else class="clickable-words whitespace-pre-wrap break-words overflow-wrap-anywhere text-body" @click="handleWordClick">{{ message.content }}</p>
       </div>
     </div>
   </div>
 
-  <!-- User Message -->
-  <div v-else class="flex items-end gap-2 sm:gap-3 justify-end">
-    <div class="flex flex-col gap-1 items-end min-w-0 max-w-[80%] sm:max-w-xl">
-      <span class="text-text-muted dark:text-slate-400 text-[13px] font-medium mr-1">{{ t('feedback.you') }}</span>
-      <div class="p-3 sm:p-4 rounded-2xl rounded-br-none bg-primary text-[#0d171b] shadow-md">
-        <p v-if="userSegments" class="text-sm sm:text-base leading-relaxed font-medium whitespace-pre-wrap break-words"><template v-for="(seg, i) in userSegments" :key="i"><span
+  <!-- User message: alignment shows authorship, so no label or avatar -->
+  <div v-else class="chat-turn flex justify-end">
+    <div class="flex min-w-0 max-w-[82%] min-[390px]:max-w-[78%] flex-col items-end gap-1 sm:max-w-xl">
+      <div class="user-bubble min-w-0 max-w-full rounded-[14px] rounded-br-[6px] bg-accent-soft px-3.5 py-2.5 text-ink">
+        <p v-if="userSegments" class="whitespace-pre-wrap break-words text-body"><template v-for="(seg, i) in userSegments" :key="i"><span
           v-if="seg.id"
-          class="connector-mark font-bold rounded px-0.5 bg-white/50 underline decoration-2 underline-offset-2 decoration-[#0d171b]/50"
+          class="connector-mark border-b-2 border-accent font-medium"
           :data-connector="seg.id"
         >{{ seg.text }}</span><template v-else>{{ seg.text }}</template></template></p>
-        <p v-else class="text-sm sm:text-base leading-relaxed font-medium whitespace-pre-wrap break-words">{{ message.content }}</p>
+        <p v-else class="whitespace-pre-wrap break-words text-body">{{ message.content }}</p>
       </div>
 
-      <!-- Explain Button -->
+      <!-- Feedback toggle -->
       <button
+        type="button"
         @click="toggleFeedback"
-        class="flex items-center gap-1 mt-0.5 mr-1 text-xs transition-colors"
-        :class="showFeedback
-          ? 'text-primary'
-          : 'text-text-muted dark:text-slate-500 hover:text-primary dark:hover:text-primary'"
+        class="explain-toggle -my-1 inline-flex min-h-11 items-center gap-1 rounded-[10px] px-1 text-meta"
+        :class="showFeedback ? 'text-accent' : 'text-ink-muted'"
+        :aria-expanded="showFeedback"
       >
-        <span class="material-symbols-outlined text-sm">lightbulb</span>
+        <span class="material-symbols-outlined !text-[16px]" aria-hidden="true">{{ showFeedback ? 'expand_less' : 'spellcheck' }}</span>
         {{ t('feedback.explain') }}
       </button>
 
@@ -146,10 +153,8 @@ function toggleFeedback() {
         :feedback="message.feedback"
         :loading="message.feedbackLoading"
         :error="message.feedbackError"
+        @retry="emit('explain', message)"
       />
-    </div>
-    <div class="flex items-center justify-center rounded-full size-8 sm:size-10 shrink-0 shadow-sm bg-primary/20 text-xl sm:text-2xl">
-      👤
     </div>
   </div>
 </template>

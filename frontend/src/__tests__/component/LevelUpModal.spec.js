@@ -85,10 +85,11 @@ describe('LevelUpModal', () => {
       }
     })
 
-    it('should display rank icon', async () => {
+    it('shows a line icon instead of the rank emoji', async () => {
       const wrapper = createWrapper()
       await wrapper.vm.$nextTick()
-      expect(wrapper.text()).toContain('🎓')
+      expect(wrapper.text()).toContain('trending_up')
+      expect(wrapper.text()).not.toContain('🎓')
     })
 
     it('should display level up text', async () => {
@@ -157,16 +158,11 @@ describe('LevelUpModal', () => {
       }
     })
 
-    it('should have bouncing icon animation', async () => {
+    it('has no bounce or confetti', async () => {
       const wrapper = createWrapper()
       await wrapper.vm.$nextTick()
-      expect(wrapper.find('.animate-bounce').exists()).toBe(true)
-    })
-
-    it('should have confetti elements', async () => {
-      const wrapper = createWrapper()
-      await wrapper.vm.$nextTick()
-      expect(wrapper.findAll('.confetti').length).toBe(20)
+      expect(wrapper.find('.animate-bounce').exists()).toBe(false)
+      expect(wrapper.findAll('.confetti').length).toBe(0)
     })
   })
 })

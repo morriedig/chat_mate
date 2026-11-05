@@ -25,6 +25,11 @@ const props = defineProps({
   showText: {
     type: Boolean,
     default: false
+  },
+  // Friend's name for "Emma is speaking / replying"
+  friendName: {
+    type: String,
+    default: ''
   }
 })
 
@@ -139,67 +144,86 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="p-4 sm:p-6 bg-surface-light dark:bg-surface-dark border-t border-[#e7eff3] dark:border-slate-800 z-10 safe-area-bottom">
-    <div class="max-w-4xl mx-auto flex flex-col items-center gap-3">
-      <!-- Status / live transcript -->
-      <p class="min-h-[1.5rem] text-sm text-center break-words max-w-full"
-        :class="heard && status !== 'speaking' ? 'text-text-main dark:text-slate-200' : 'text-text-muted dark:text-slate-400'">
-        <template v-if="status === 'ready'">{{ t('voiceChat.readyHint') }}</template>
-        <template v-else-if="status === 'speaking'">{{ t('voiceChat.speaking') }}</template>
+  <div class="voice-bar z-10 shrink-0 border-t border-hairline bg-surface px-4 pt-4 pb-[max(12px,env(safe-area-inset-bottom))] sm:px-6">
+    <div class="mx-auto flex max-w-md flex-col items-center gap-3">
+      <!-- Status sentence is the hero; the live transcript replaces it while you talk -->
+      <p
+        class="voice-status flex min-h-7 max-w-full items-center justify-center gap-2 break-words text-center"
+        :class="heard && status !== 'speaking' ? 'text-body text-ink' : 'text-title font-medium text-ink'"
+        role="status"
+        aria-live="polite"
+      >
+        <span v-if="status === 'listening'" class="size-2 shrink-0 rounded-full bg-error" aria-hidden="true"></span>
+        <span v-if="status === 'ready'" class="text-body font-normal text-ink-secondary">{{ t('voiceChat.readyHint') }}</span>
+        <template v-else-if="status === 'speaking'">{{ t('voiceChat.speaking', { name: friendName }) }}</template>
         <template v-else-if="status === 'listening'">{{ heard || t('voiceChat.listening') }}</template>
-        <template v-else-if="status === 'thinking'">{{ heard || t('voiceChat.thinking') }}</template>
-        <template v-else>{{ notice || t('voiceChat.tapToTalk') }}</template>
+        <template v-else-if="status === 'thinking'">{{ heard || t('voiceChat.thinking', { name: friendName }) }}</template>
+        <span v-else class="text-body font-normal text-ink-secondary">{{ notice || t('voiceChat.tapToTalk') }}</span>
       </p>
 
-      <div class="flex items-center justify-center gap-4 w-full">
-        <button @click="replay" :disabled="status === 'ready' || isLoading" class="flex flex-col items-center gap-0.5 text-xs text-text-muted dark:text-slate-400 disabled:opacity-40 w-14">
-          <span class="material-symbols-outlined">replay</span>
+      <div class="flex w-full items-center justify-center gap-6">
+        <button
+          type="button"
+          @click="replay"
+          :disabled="status === 'ready' || isLoading"
+          class="voice-replay flex min-h-11 min-w-11 flex-col items-center justify-center rounded-[10px] px-1 text-meta text-ink-secondary disabled:opacity-40"
+        >
+          <span class="material-symbols-outlined" aria-hidden="true">replay</span>
           {{ t('voiceChat.replay') }}
         </button>
 
         <button
           v-if="status === 'ready'"
+          type="button"
           @click="start"
-          class="h-16 px-6 rounded-full bg-primary text-white font-semibold shadow-md flex items-center gap-2"
+          class="voice-start flex h-16 items-center gap-2 rounded-[14px] bg-accent px-5 text-body font-semibold text-on-accent active:bg-accent-pressed"
         >
-          <span class="material-symbols-outlined">headphones</span>
+          <span class="material-symbols-outlined" aria-hidden="true">headphones</span>
           {{ t('voiceChat.start') }}
         </button>
         <button
           v-else
+          type="button"
           @click="handleMic"
           :disabled="status === 'thinking'"
-          class="size-16 rounded-full flex items-center justify-center shadow-md transition-colors disabled:opacity-50"
-          :class="status === 'listening' ? 'bg-red-500 text-white animate-pulse' : 'bg-primary text-white'"
+          class="voice-mic flex size-16 items-center justify-center rounded-[14px] disabled:opacity-55"
+          :class="status === 'listening' ? 'is-listening border border-error/30 bg-error-soft text-error' : 'bg-accent text-on-accent active:bg-accent-pressed'"
           :aria-label="t('voiceChat.mic')"
         >
-          <span class="material-symbols-outlined text-[30px]">{{ status === 'speaking' ? 'volume_up' : status === 'listening' ? 'stop' : 'mic' }}</span>
+          <span class="material-symbols-outlined !text-[28px]" aria-hidden="true">{{ status === 'speaking' ? 'volume_up' : status === 'listening' ? 'stop' : 'mic' }}</span>
         </button>
 
-        <button @click="emit('update:showText', !showText)" class="flex flex-col items-center gap-0.5 text-xs w-14"
-          :class="showText ? 'text-primary' : 'text-text-muted dark:text-slate-400'">
-          <span class="material-symbols-outlined">{{ showText ? 'visibility' : 'visibility_off' }}</span>
+        <button
+          type="button"
+          @click="emit('update:showText', !showText)"
+          :aria-pressed="showText"
+          class="voice-text flex min-h-11 min-w-11 flex-col items-center justify-center rounded-[10px] px-1 text-meta"
+          :class="showText ? 'text-accent' : 'text-ink-secondary'"
+        >
+          <span class="material-symbols-outlined" aria-hidden="true">{{ showText ? 'visibility' : 'visibility_off' }}</span>
           {{ t('voiceChat.text') }}
         </button>
       </div>
 
       <button
         v-if="status === 'listening'"
+        type="button"
         @click="stillThinking"
-        class="still-thinking px-4 py-1.5 rounded-full border text-sm font-medium transition-colors"
-        :class="extended ? 'border-primary text-primary bg-primary/10' : 'border-slate-200 dark:border-slate-700 text-text-main dark:text-slate-200'"
-      >
-        {{ extended ? t('voiceChat.takeYourTime') : t('voiceChat.stillThinking') }}
-      </button>
+        class="still-thinking min-h-11 rounded-[10px] border px-4 text-body font-medium"
+        :class="extended ? 'border-accent/30 bg-accent-soft text-accent' : 'border-hairline bg-surface-raised text-ink'"
+      >{{ extended ? t('voiceChat.takeYourTime') : t('voiceChat.stillThinking') }}</button>
 
-      <div class="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs">
-        <button @click="cyclePause" class="pause-length text-text-muted dark:text-slate-400" :aria-label="t('voiceChat.pauseHint')">
+      <!-- One metadata row: pause length · slower · back to typing -->
+      <div class="flex w-full flex-wrap items-center justify-center text-meta text-ink-muted">
+        <button type="button" @click="cyclePause" class="pause-length min-h-11 rounded-[10px] px-2 tabular-nums" :aria-label="t('voiceChat.pauseHint')">
           {{ t('voiceChat.pauseLength', { sec: pauseMs / 1000 }) }}
         </button>
-        <button @click="relaxed = !relaxed" :class="relaxed ? 'text-primary font-semibold' : 'text-text-muted dark:text-slate-400'">
+        <span aria-hidden="true">·</span>
+        <button type="button" @click="relaxed = !relaxed" :aria-pressed="relaxed" class="voice-slower min-h-11 rounded-[10px] px-2" :class="relaxed ? 'font-medium text-accent' : ''">
           {{ t('voiceChat.slower') }}
         </button>
-        <button @click="exit" class="text-text-muted dark:text-slate-400">{{ t('voiceChat.exit') }}</button>
+        <span aria-hidden="true">·</span>
+        <button type="button" @click="exit" class="voice-exit min-h-11 rounded-[10px] px-2">{{ t('voiceChat.exit') }}</button>
       </div>
     </div>
   </div>
