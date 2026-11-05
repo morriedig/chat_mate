@@ -1,4 +1,4 @@
-import{u as j}from"./useSRS-_g3_VaRl.js";import{y as S}from"./js-yaml-BccGX7PZ.js";import{f as h,l as H}from"./index-LJ8EAkmE.js";const A=`level: advanced
+import{u as j}from"./useSRS-GRSI06Qs.js";import{y as S}from"./js-yaml-BccGX7PZ.js";import{f as h,l as H}from"./index-CjUszX55.js";const A=`level: advanced
 patterns:
   - id: it-could-be-argued
     pack: opinion
