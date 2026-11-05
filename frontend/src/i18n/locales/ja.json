@@ -608,7 +608,7 @@
   },
   "dailyOpinion": {
     "title": "今日の意見",
-    "cardTitle": "今日の意見（3分）",
+    "cardTitle": "3文で意見を言おう",
     "subtitle": "意見 → 理由 → まとめ",
     "doneToday": "今日は完了",
     "notDoneToday": "まだ",
@@ -620,7 +620,7 @@
     "placeholder": "英語で答えよう：意見を言って、理由を添えて、まとめる。",
     "structureProgress": "構成 {count}/3",
     "livePreview": "見つかったつなぎ言葉",
-    "submit": "友達に送る",
+    "submit": "{name} に見てもらう",
     "cancelRewrite": "書き直しをやめる",
     "back": "戻る",
     "connectorsUsed": "使ったつなぎ言葉",
@@ -629,10 +629,10 @@
     "saveSentence": "この文を保存",
     "sentenceSaved": "単語帳に保存しました",
     "offlineFeedback": "オフラインです。回答は保存されました。ネットに繋がったら友達からフィードバックが届きます。",
-    "doneSeeYouTomorrow": "完了、また明日",
-    "cheerBoth": "いいね！今日は {a} と {b} の両方を使えたね。",
-    "cheerOne": "{a} を使えたね！明日はもう一つも試してみよう。",
-    "cheerOther": "{a} を使えたね。今日の目標ではないけど自然だよ！",
+    "doneSeeYouTomorrow": "完了",
+    "cheerBoth": "今日は {a} と {b} を使えた",
+    "cheerOne": "{a} を使えたね。明日はもう一つも試してみよう。",
+    "cheerOther": "{a} を使えたね。今日の目標ではないけど自然だよ。",
     "cheerNone": "まだつなぎ言葉が見つからないよ。次は意見のあとに「because…」を足してみよう。"
   },
   "common": {
@@ -716,7 +716,7 @@
     "reveal": "開く",
     "noSavedMeaning": "意味は保存されていません。どこで見たか思い出してみよう。",
     "doneExtras": "自分のカード（前のミス、保存した単語）も {count} 枚復習しました。",
-    "mistakeReview": "直してみよう",
+    "mistakeReview": "もう一度直そう",
     "cardExtras": "、さらに復習とリスニング {count} 枚"
   },
   "mistakes": {
@@ -730,10 +730,13 @@
     "yourFix": "あなたの直し方",
     "compare": "答え合わせ",
     "showHint": "ヒント",
-    "matched": "完璧！",
-    "unchanged": "今回は直していません。直すところはここ：",
-    "compareHint": "おすすめの書き方と比べよう（緑が直した所）：",
-    "remove": "この文は問題なかったので、もう出さない"
+    "matched": "おすすめの文と同じ",
+    "unchanged": "今回は直していません。直すところはここ",
+    "compareHint": "おすすめの書き方と比べよう",
+    "remove": "この文は問題なかったので、もう出さない",
+    "youWrote": "あなたの文",
+    "suggested": "おすすめ",
+    "hintLabel": "ヒント"
   },
   "listening": {
     "label": "リスニング",
@@ -743,7 +746,7 @@
     "slow": "ゆっくり",
     "typeWhatYouHear": "聞こえたとおりに入力…",
     "check": "答え合わせ",
-    "correct": "全部正解！",
+    "correct": "全部正解",
     "answerWas": "正しい文：",
     "missedWords": "印の付いた単語は聞き逃し・聞き間違いです。"
   },
@@ -782,7 +785,7 @@
   },
   "retell": {
     "title": "同じ話を3回",
-    "subtitle": "回を重ねるほど滑らかになる流暢さ練習",
+    "subtitle": "同じ考えを、回ごとに滑らかに",
     "back": "戻る",
     "cardTitle": "同じ話を3回",
     "cardSubtitle": "30秒準備して、同じ内容を3回、だんだん短い時間で話そう。",
@@ -813,12 +816,14 @@
     "stats": "{words}語 · {sec}秒",
     "nextHint": "次は{sec}秒だけ。同じ内容を話そう。",
     "nextRound": "{n}回目を始める",
-    "resultImproved": "回を重ねるほど滑らかに！",
-    "resultSteady": "同じ話を3回話せたね。よくできました！",
+    "resultImproved": "3回目はより滑らかに",
+    "resultSteady": "3回とも完了",
     "roundShort": "{n}回目（{sec}秒）",
     "wpmNote": "1分あたりの語数が増えるほど、流暢になっている証拠です。",
     "showTranscripts": "話した内容を見る",
     "again": "もう一度",
-    "home": "ホームへ"
+    "home": "ホームへ",
+    "sequence": "準備 {plan}秒 → {a}秒 → {b}秒 → {c}秒",
+    "timeLeft": "残り時間"
   }
 }

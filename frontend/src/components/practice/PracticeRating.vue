@@ -12,14 +12,16 @@ const RATINGS = [
 </script>
 
 <template>
-  <div class="space-y-2">
-    <p class="text-sm font-medium text-text-main dark:text-slate-200">{{ t('dailyPractice.howWell') }}</p>
-    <div class="grid grid-cols-3 gap-2">
+  <!-- Self-report, not correctness: neutral segments, accent-soft on press (DESIGN.md "Progress and rating") -->
+  <div class="space-y-2" role="group" :aria-label="t('dailyPractice.howWell')">
+    <p class="text-caption font-medium text-ink-secondary">{{ t('dailyPractice.howWell') }}</p>
+    <div class="grid grid-cols-3 gap-1 rounded-[10px] bg-surface-raised p-1">
       <button
         v-for="r in RATINGS"
         :key="r.key"
+        type="button"
         @click="emit('rate', r.confidence)"
-        class="py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark text-sm font-semibold text-text-main dark:text-slate-200 hover:border-primary/50"
+        class="min-h-12 min-w-0 rounded-[8px] px-1 text-caption font-medium text-ink active:bg-accent-soft active:text-accent"
       >{{ t(`dailyPractice.rating.${r.key}`) }}</button>
     </div>
   </div>
