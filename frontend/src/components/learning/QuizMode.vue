@@ -4,6 +4,8 @@ import { useI18n } from 'vue-i18n'
 import { useQuiz } from '../../composables/useQuiz'
 import { useLearningProgress } from '../../composables/useLearningProgress'
 import { useSRS } from '../../composables/useSRS'
+import CmButton from '../ui/CmButton.vue'
+import CmProgress from '../ui/CmProgress.vue'
 
 const { t } = useI18n()
 const { markQuizCompleted } = useLearningProgress()
@@ -103,18 +105,18 @@ function sentenceParts(sentence) {
 
 function getOptionClass(option) {
   if (!isAnswered.value) {
-    return 'border-slate-200 dark:border-slate-700 hover:border-primary dark:hover:border-primary'
+    return 'border-hairline bg-surface active:bg-surface-raised'
   }
 
   if (isCorrectOption(option)) {
-    return 'border-green-500 bg-green-50 dark:bg-green-900/30'
+    return 'border-success/40 bg-success-soft'
   }
 
   if (selectedAnswer.value?.id === option.id && !isCorrectOption(option)) {
-    return 'border-red-500 bg-red-50 dark:bg-red-900/30'
+    return 'border-error/40 bg-error-soft'
   }
 
-  return 'border-slate-200 dark:border-slate-700 opacity-50'
+  return 'border-hairline bg-surface opacity-55'
 }
 
 // Initialize on mount and when words / cloze questions change
@@ -122,186 +124,157 @@ watch([() => props.words, () => props.cloze], () => initQuiz(props.words, props.
 </script>
 
 <template>
-  <div class="flex flex-col items-center">
+  <div class="mx-auto flex w-full max-w-lg flex-col">
     <!-- Quiz In Progress -->
     <template v-if="!isCompleted">
-      <!-- Progress Bar -->
-      <div class="w-full max-w-lg mb-6">
-        <div class="flex justify-between text-sm text-text-muted dark:text-slate-400 mb-2">
+      <!-- Progress -->
+      <div class="mb-4">
+        <div class="mb-2 flex items-center justify-between text-meta tabular-nums text-ink-muted">
           <span>{{ t('learning.question') }} {{ currentIndex + 1 }} / {{ totalQuestions }}</span>
           <span class="flex items-center gap-1">
-            <span class="material-symbols-outlined text-sm text-green-500">check_circle</span>
+            <span class="material-symbols-outlined !text-[16px] text-success" aria-hidden="true">check</span>
             {{ score }}
           </span>
         </div>
-        <div class="h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
-          <div
-            class="h-full bg-gradient-to-r from-primary to-green-400 rounded-full transition-all duration-300"
-            :style="{ width: `${progress}%` }"
-          ></div>
-        </div>
+        <CmProgress :value="progress" :max="100" :label="t('learning.question')" />
       </div>
 
-      <!-- Question Card: Cloze -->
-      <div v-if="isClozeMode" class="w-full max-w-lg p-6 sm:p-8 rounded-2xl bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/30 dark:to-purple-900/20 border border-indigo-200 dark:border-indigo-800 mb-6">
-        <p class="text-sm text-text-muted dark:text-slate-400 mb-3">{{ t('learning.fillBlank') }}</p>
-        <p class="text-xl sm:text-2xl font-semibold leading-relaxed text-text-main dark:text-white">
+      <!-- Prompt: Cloze -->
+      <div v-if="isClozeMode" class="relative mb-4 rounded-[14px] border border-hairline bg-surface p-5 shadow-[var(--cm-shadow-small)]" data-testid="quiz-prompt">
+        <span class="absolute left-0 top-5 h-9 w-[3px] rounded-r-[3px] bg-accent" aria-hidden="true"></span>
+        <p class="mb-3 text-caption text-ink-secondary">{{ t('learning.fillBlank') }}</p>
+        <p class="text-section font-medium text-ink">
           {{ sentenceParts(currentQuestion?.sentence).before }}<span
-            class="inline-block min-w-[4.5rem] mx-1 px-2 border-b-2 text-center transition-colors"
-            :class="isAnswered ? 'border-green-500 text-green-600 dark:text-green-400' : 'border-primary text-primary'"
-          >{{ isAnswered ? currentQuestion?.answer : '\u00a0' }}</span>{{ sentenceParts(currentQuestion?.sentence).after }}
+            class="mx-1 inline-block min-w-[4.5rem] border-b-2 px-2 text-center"
+            :class="isAnswered ? 'border-success text-success' : 'border-accent text-accent'"
+          >{{ isAnswered ? currentQuestion?.answer : ' ' }}</span>{{ sentenceParts(currentQuestion?.sentence).after }}
         </p>
       </div>
 
-      <!-- Question Card -->
-      <div v-else class="w-full max-w-lg p-8 rounded-2xl bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/30 dark:to-purple-900/20 border border-indigo-200 dark:border-indigo-800 mb-6">
-        <p class="text-sm text-text-muted dark:text-slate-400 mb-2">{{ t('learning.whatMeans') }}</p>
-        <h2 class="text-3xl sm:text-4xl font-bold text-text-main dark:text-white text-center">
+      <!-- Prompt: word -->
+      <div v-else class="relative mb-4 rounded-[14px] border border-hairline bg-surface p-5 text-center shadow-[var(--cm-shadow-small)]" data-testid="quiz-prompt">
+        <span class="absolute left-0 top-5 h-9 w-[3px] rounded-r-[3px] bg-accent" aria-hidden="true"></span>
+        <p class="mb-2 text-caption text-ink-secondary">{{ t('learning.whatMeans') }}</p>
+        <h2 class="break-words text-display font-medium text-ink" data-heading>
           {{ currentQuestion?.word }}
         </h2>
-        <p v-if="currentQuestion?.reading" class="text-xl text-primary text-center mt-2">{{ currentQuestion.reading }}</p>
-        <p v-if="currentQuestion?.phonetic" class="text-lg text-text-muted dark:text-slate-400 text-center mt-1">{{ currentQuestion.phonetic }}</p>
+        <p v-if="currentQuestion?.reading" class="mt-1 text-body text-accent">{{ currentQuestion.reading }}</p>
+        <p v-if="currentQuestion?.phonetic" class="mt-1 text-caption text-ink-muted">{{ currentQuestion.phonetic }}</p>
       </div>
 
-      <!-- Answer Options -->
-      <div class="w-full max-w-lg space-y-3">
+      <!-- Answer rows -->
+      <div class="space-y-2" role="group" :aria-label="t('learning.question')">
         <button
           v-for="(option, index) in currentQuestion?.options"
           :key="option.id"
+          type="button"
+          data-testid="quiz-option"
           @click="handleSelectAnswer(option)"
           :disabled="isAnswered"
-          class="w-full p-4 rounded-xl border-2 text-left transition-all"
+          class="flex min-h-14 w-full items-center gap-3 rounded-[10px] border px-3 py-2 text-left transition-colors duration-[180ms]"
           :class="getOptionClass(option)"
         >
-          <div class="flex items-center gap-3">
-            <span class="flex items-center justify-center size-8 rounded-full bg-slate-100 dark:bg-slate-800 text-sm font-bold text-text-muted">
-              {{ String.fromCharCode(65 + index) }}
-            </span>
-            <span class="text-text-main dark:text-white">{{ isClozeMode ? option.text : option.meaning }}</span>
-            <span v-if="isAnswered && isCorrectOption(option)" class="ml-auto material-symbols-outlined text-green-500">check_circle</span>
-            <span v-if="isAnswered && selectedAnswer?.id === option.id && !isCorrectOption(option)" class="ml-auto material-symbols-outlined text-red-500">cancel</span>
-          </div>
+          <span class="flex size-6 shrink-0 items-center justify-center rounded-[6px] border border-hairline bg-surface-raised text-meta font-medium text-ink-secondary" aria-hidden="true">
+            {{ String.fromCharCode(65 + index) }}
+          </span>
+          <span class="min-w-0 flex-1 break-words text-body text-ink">{{ isClozeMode ? option.text : option.meaning }}</span>
+          <span v-if="isAnswered && isCorrectOption(option)" class="material-symbols-outlined shrink-0 text-success" aria-hidden="true">check_circle</span>
+          <span v-if="isAnswered && selectedAnswer?.id === option.id && !isCorrectOption(option)" class="material-symbols-outlined shrink-0 text-error" aria-hidden="true">cancel</span>
         </button>
       </div>
 
-      <!-- Feedback & Next Button -->
-      <div v-if="isAnswered" class="w-full max-w-lg mt-6">
+      <!-- Explanation & Next -->
+      <div v-if="isAnswered" class="mt-4">
         <div
-          class="p-4 rounded-xl mb-4"
-          :class="isCorrectOption(selectedAnswer)
-            ? 'bg-green-100 dark:bg-green-900/30 border border-green-300 dark:border-green-700'
-            : 'bg-red-100 dark:bg-red-900/30 border border-red-300 dark:border-red-700'"
+          class="mb-4 rounded-[14px] p-4"
+          :class="isCorrectOption(selectedAnswer) ? 'bg-success-soft' : 'bg-error-soft'"
+          role="status"
+          aria-live="polite"
         >
-          <div class="flex items-center gap-2 mb-2">
-            <span class="material-symbols-outlined" :class="isCorrectOption(selectedAnswer) ? 'text-green-600' : 'text-red-600'">
-              {{ isCorrectOption(selectedAnswer) ? 'celebration' : 'sentiment_dissatisfied' }}
+          <div class="mb-1 flex items-center gap-2">
+            <span class="material-symbols-outlined" :class="isCorrectOption(selectedAnswer) ? 'text-success' : 'text-error'" aria-hidden="true">
+              {{ isCorrectOption(selectedAnswer) ? 'check_circle' : 'cancel' }}
             </span>
-            <span class="font-semibold" :class="isCorrectOption(selectedAnswer) ? 'text-green-700 dark:text-green-300' : 'text-red-700 dark:text-red-300'">
+            <span class="text-body font-medium" :class="isCorrectOption(selectedAnswer) ? 'text-success' : 'text-error'">
               {{ isCorrectOption(selectedAnswer) ? t('learning.correct') : t('learning.incorrect') }}
             </span>
           </div>
           <!-- Cloze: explain the mistake in the user's mother tongue -->
-          <p v-if="isClozeMode && !isCorrectOption(selectedAnswer) && currentQuestion?.explain" class="text-sm text-text-main dark:text-slate-200">
-            <span class="font-semibold">{{ t('learning.whyLabel') }}</span>
+          <p v-if="isClozeMode && !isCorrectOption(selectedAnswer) && currentQuestion?.explain" class="text-caption text-ink">
+            <span class="font-medium">{{ t('learning.whyLabel') }}</span>
             {{ currentQuestion.explain }}
           </p>
-          <p v-else-if="!isClozeMode" class="text-sm text-text-muted dark:text-slate-400">
+          <p v-else-if="!isClozeMode" class="break-words text-caption text-ink-secondary">
             {{ currentQuestion?.example }}
           </p>
         </div>
 
-        <button
-          @click="handleNextQuestion"
-          class="w-full py-4 rounded-xl bg-primary text-[#0d171b] font-bold text-lg hover:bg-primary/90 transition-colors"
-        >
+        <CmButton block data-testid="quiz-next" @click="handleNextQuestion">
           {{ currentIndex < totalQuestions - 1 ? t('learning.nextQuestion') : t('learning.finishQuiz') }}
-        </button>
+        </CmButton>
       </div>
     </template>
 
-    <!-- Quiz Completed -->
+    <!-- Quiz Completed: factual result -->
     <template v-else>
-      <div class="w-full max-w-lg text-center">
-        <!-- Score Display -->
-        <div class="p-8 rounded-2xl bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-900/30 dark:to-orange-900/20 border border-amber-200 dark:border-amber-700 mb-6">
-          <div class="text-6xl mb-4">
-            {{ accuracy >= 80 ? '🎉' : accuracy >= 60 ? '👍' : '💪' }}
-          </div>
-          <h2 class="text-2xl font-bold text-text-main dark:text-white mb-2">{{ t('learning.quizComplete') }}</h2>
-          <p class="text-text-muted dark:text-slate-400 mb-4">{{ t('learning.yourScore') }}</p>
-
-          <div class="flex items-center justify-center gap-4">
-            <div class="text-center">
-              <span class="text-4xl font-bold text-primary">{{ score }}</span>
-              <span class="text-2xl text-text-muted dark:text-slate-400"> / {{ totalQuestions }}</span>
-            </div>
-            <div class="h-12 w-px bg-slate-300 dark:bg-slate-600"></div>
-            <div class="text-center">
-              <span class="text-4xl font-bold" :class="accuracy >= 80 ? 'text-green-500' : accuracy >= 60 ? 'text-amber-500' : 'text-red-500'">{{ accuracy }}%</span>
-            </div>
-          </div>
-
-          <p class="mt-4 text-sm text-amber-600 dark:text-amber-400">
-            +{{ xpEarned }} XP {{ t('learning.earned') }}
-          </p>
+      <div class="mb-6 rounded-[14px] border border-hairline bg-surface p-5 shadow-[var(--cm-shadow-small)]" data-testid="quiz-result">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-accent" aria-hidden="true">task_alt</span>
+          <h2 class="text-title font-medium text-ink">{{ t('learning.quizComplete') }}</h2>
         </div>
-
-        <!-- Answer Review -->
-        <div class="mb-6">
-          <h3 class="text-lg font-semibold text-text-main dark:text-white mb-3 text-left">{{ t('learning.reviewAnswers') }}</h3>
-          <div class="space-y-2">
-            <div
-              v-for="(answer, index) in answers"
-              :key="index"
-              class="flex items-center gap-3 p-3 rounded-lg bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-700"
-            >
-              <span
-                class="material-symbols-outlined"
-                :class="answer.isCorrect ? 'text-green-500' : 'text-red-500'"
-              >
-                {{ answer.isCorrect ? 'check_circle' : 'cancel' }}
-              </span>
-              <template v-if="isClozeMode">
-                <span class="font-medium text-text-main dark:text-white shrink-0">{{ answer.word.answer }}</span>
-                <span class="text-sm text-text-muted dark:text-slate-400 truncate flex-1 text-left">{{ answer.word.sentence }}</span>
-              </template>
-              <template v-else>
-                <span class="font-medium text-text-main dark:text-white">{{ answer.word.word }}</span>
-                <span class="text-text-muted dark:text-slate-400">-</span>
-                <span class="text-sm text-text-muted dark:text-slate-400 truncate flex-1">{{ answer.word.meaning }}</span>
-              </template>
-            </div>
-          </div>
+        <p class="mt-3 text-meta text-ink-muted">{{ t('learning.yourScore') }}</p>
+        <div class="flex items-baseline gap-3">
+          <span class="text-display font-medium tabular-nums text-ink">{{ score }} / {{ totalQuestions }}</span>
+          <span class="text-title tabular-nums text-ink-secondary">{{ accuracy }}%</span>
         </div>
-
-        <!-- Bridge: use the connectors in a real chat -->
-        <div v-if="isClozeMode" class="mb-3">
-          <button
-            @click="handleUseInChat"
-            class="w-full py-4 rounded-xl bg-primary text-[#0d171b] font-bold text-lg hover:bg-primary/90 transition-colors"
-          >
-            <span class="flex items-center justify-center gap-2">
-              <span class="material-symbols-outlined">forum</span>
-              {{ t('learning.useInChat') }}
-            </span>
-          </button>
-          <p class="mt-2 text-sm text-text-muted dark:text-slate-400">{{ t('learning.useInChatHint') }}</p>
-        </div>
-
-        <!-- Restart Button -->
-        <button
-          @click="handleRestartQuiz"
-          class="w-full py-4 rounded-xl font-bold text-lg transition-colors"
-          :class="isClozeMode
-            ? 'border-2 border-slate-200 dark:border-slate-700 text-text-main dark:text-white hover:border-primary'
-            : 'bg-primary text-[#0d171b] hover:bg-primary/90'"
-        >
-          <span class="flex items-center justify-center gap-2">
-            <span class="material-symbols-outlined">replay</span>
-            {{ t('learning.tryAgain') }}
-          </span>
-        </button>
+        <p class="mt-2 text-meta tabular-nums text-ink-muted">
+          +{{ xpEarned }} XP {{ t('learning.earned') }}
+        </p>
       </div>
+
+      <!-- Answer review -->
+      <section class="mb-6">
+        <h3 class="mb-2 text-caption font-medium text-ink">{{ t('learning.reviewAnswers') }}</h3>
+        <ul class="divide-y divide-hairline overflow-hidden rounded-[14px] border border-hairline bg-surface">
+          <li
+            v-for="(answer, index) in answers"
+            :key="index"
+            class="flex min-h-12 items-center gap-3 px-4 py-2"
+          >
+            <span
+              class="material-symbols-outlined shrink-0"
+              :class="answer.isCorrect ? 'text-success' : 'text-error'"
+              :aria-label="answer.isCorrect ? t('learning.correct') : t('learning.incorrect')"
+            >
+              {{ answer.isCorrect ? 'check_circle' : 'cancel' }}
+            </span>
+            <template v-if="isClozeMode">
+              <span class="shrink-0 text-body font-medium text-ink">{{ answer.word.answer }}</span>
+              <span class="min-w-0 flex-1 truncate text-left text-caption text-ink-muted">{{ answer.word.sentence }}</span>
+            </template>
+            <template v-else>
+              <span class="shrink-0 text-body font-medium text-ink">{{ answer.word.word }}</span>
+              <span class="text-ink-muted" aria-hidden="true">-</span>
+              <span class="min-w-0 flex-1 truncate text-caption text-ink-muted">{{ answer.word.meaning }}</span>
+            </template>
+          </li>
+        </ul>
+      </section>
+
+      <!-- Bridge: use the connectors in a real chat -->
+      <div v-if="isClozeMode" class="mb-3">
+        <CmButton block @click="handleUseInChat">
+          <span class="material-symbols-outlined" aria-hidden="true">forum</span>
+          {{ t('learning.useInChat') }}
+        </CmButton>
+        <p class="mt-2 text-caption text-ink-secondary">{{ t('learning.useInChatHint') }}</p>
+      </div>
+
+      <!-- Restart -->
+      <CmButton block :variant="isClozeMode ? 'secondary' : 'primary'" data-testid="quiz-restart" @click="handleRestartQuiz">
+        <span class="material-symbols-outlined" aria-hidden="true">replay</span>
+        {{ t('learning.tryAgain') }}
+      </CmButton>
     </template>
   </div>
 </template>

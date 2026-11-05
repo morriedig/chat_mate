@@ -402,10 +402,10 @@
       "slow": "ゆっくり",
       "word": "単語ごと"
     },
-    "chooseChapter": "チャプターを選ぶ",
+    "chooseChapter": "学習内容",
     "chapterDescription": "学習したいチャプターを選んでください",
     "noChapters": "チャプターがありません",
-    "noChaptersDescription": "chaptersフォルダにYAMLファイルを追加してチャプターを作成してください",
+    "noChaptersDescription": "このレベルにはまだチャプターがありません。別のレベルを試してください。",
     "words": "単語",
     "categories": {
       "travel": "旅行",
@@ -431,12 +431,12 @@
     "keyboardHints": "矢印キーで移動、スペースで裏返す",
     "question": "問題",
     "whatMeans": "この単語の意味は？",
-    "correct": "正解！",
-    "incorrect": "残念...",
+    "correct": "正解",
+    "incorrect": "不正解",
     "nextQuestion": "次の問題",
     "finishQuiz": "結果を見る",
-    "quizComplete": "クイズ完了！",
-    "yourScore": "あなたの結果：",
+    "quizComplete": "クイズ完了",
+    "yourScore": "あなたの結果",
     "earned": "獲得",
     "reviewAnswers": "答えを確認",
     "tryAgain": "もう一度",
@@ -464,7 +464,7 @@
       "prompt": {
         "title": "会話で練習する？",
         "description": "覚えた単語を実際の会話で使ってみませんか？",
-        "start": "話してみる！",
+        "start": "話してみる",
         "skip": "また今度"
       }
     },
@@ -473,7 +473,11 @@
     "useInChat": "チャットで使ってみよう",
     "useInChatHint": "友だちと意見を話しながら、つなぎ言葉を3つ使ってみよう。",
     "tryDifferentLevel": "別のレベルを試す",
-    "trySayingIt": "言ってみよう"
+    "trySayingIt": "言ってみよう",
+    "more": "その他",
+    "speed": "再生速度",
+    "previousCard": "前のカード",
+    "nextCard": "次のカード"
   },
   "diary": {
     "title": "毎日の日記",
@@ -491,15 +495,15 @@
     },
     "wordCount": "{count} 文字",
     "charCount": "{count} 文字",
-    "getFeedback": "フィードバックをもらう",
+    "getFeedback": "{name}に見てもらう",
     "submitting": "読んでいるよ...",
     "feedback": {
       "friendSays": "友達からのコメント:",
-      "niceJob": "ここがよかった！",
-      "tryNext": "こうするともっと自然",
+      "niceJob": "このまま使える表現",
+      "tryNext": "次はこう書いてみよう",
       "wordsToTry": "次に使ってみよう",
       "addToVocab": "単語帳に追加",
-      "added": "追加済み！",
+      "added": "追加済み",
       "saveWord": "保存",
       "retry": "再試行",
       "betterExpressions": "より自然な表現",
@@ -511,7 +515,7 @@
     "writeAnother": "もう一つ書く",
     "saveAndClose": "保存して閉じる",
     "noEntries": "日記はまだありません",
-    "noEntriesDesc": "書き始めて成長を記録しよう！",
+    "noEntriesDesc": "今日の小さな出来事を書くと、友達が返事をくれます。",
     "writeFirst": "最初の日記を書く",
     "writingStreak": "連続記録",
     "days": "{count} 日",
@@ -529,10 +533,15 @@
     "export": "エクスポート",
     "status": {
       "reviewed": "レビュー済み",
-      "reviewing": "レビュー中...",
+      "reviewing": "レビュー中",
       "pending": "保留中",
       "error": "エラー"
-    }
+    },
+    "back": "戻る",
+    "reading": "{name}が日記を読んでいます",
+    "gridLabel": "直近8週間の記録",
+    "prevMonth": "前の月",
+    "nextMonth": "次の月"
   },
   "foundation": {
     "title": "基礎",
@@ -558,7 +567,7 @@
     "stateNew": "新規",
     "tapCharacterYouHear": "聞こえた文字をタップしてください",
     "nextCharacter": "次へ",
-    "matchComplete": "マッチ完了！",
+    "matchComplete": "マッチ完了",
     "xpEarned": "+{xp} XP獲得",
     "tone1": "第一声（高平）",
     "tone2": "第二声（上昇）",

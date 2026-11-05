@@ -51,16 +51,16 @@ describe('FlashcardMode', () => {
     })
 
     it('should display progress bar', () => {
-      expect(wrapper.find('.h-2.bg-slate-200').exists()).toBe(true)
+      expect(wrapper.find('[role="progressbar"]').exists()).toBe(true)
     })
 
     it('should display flashcard', () => {
-      expect(wrapper.find('.perspective-1000').exists()).toBe(true)
+      expect(wrapper.find('[data-testid="flashcard"]').exists()).toBe(true)
     })
 
     it('should display navigation buttons', () => {
-      const navButtons = wrapper.findAll('.size-12.rounded-full')
-      expect(navButtons.length).toBe(2) // prev and next buttons
+      expect(wrapper.find('[data-testid="flashcard-prev"]').exists()).toBe(true)
+      expect(wrapper.find('[data-testid="flashcard-next"]').exists()).toBe(true)
     })
 
     it('should display shuffle button', () => {
@@ -84,17 +84,16 @@ describe('FlashcardMode', () => {
 
   describe('flip functionality', () => {
     it('should flip card when clicked', async () => {
-      const flashcard = wrapper.find('.perspective-1000')
+      const flashcard = wrapper.find('[data-testid="flashcard"]')
 
       await flashcard.trigger('click')
 
-      // Card should have rotate-y-180 class after flip
-      const innerCard = wrapper.find('.transition-transform.duration-500')
-      expect(innerCard.classes()).toContain('rotate-y-180')
+      // Card reports the flipped state after a tap
+      expect(wrapper.find('[data-testid="flashcard"]').attributes('data-flipped')).toBe('true')
     })
 
     it('should show meaning after flip', async () => {
-      const flashcard = wrapper.find('.perspective-1000')
+      const flashcard = wrapper.find('[data-testid="flashcard"]')
 
       await flashcard.trigger('click')
 
@@ -103,7 +102,7 @@ describe('FlashcardMode', () => {
     })
 
     it('should show example after flip', async () => {
-      const flashcard = wrapper.find('.perspective-1000')
+      const flashcard = wrapper.find('[data-testid="flashcard"]')
 
       await flashcard.trigger('click')
 
@@ -112,31 +111,29 @@ describe('FlashcardMode', () => {
     })
 
     it('should toggle flip state on multiple clicks', async () => {
-      const flashcard = wrapper.find('.perspective-1000')
+      const flashcard = wrapper.find('[data-testid="flashcard"]')
 
       await flashcard.trigger('click')
-      let innerCard = wrapper.find('.transition-transform.duration-500')
-      expect(innerCard.classes()).toContain('rotate-y-180')
+      expect(flashcard.attributes('data-flipped')).toBe('true')
 
       await flashcard.trigger('click')
-      innerCard = wrapper.find('.transition-transform.duration-500')
-      expect(innerCard.classes()).not.toContain('rotate-y-180')
+      expect(flashcard.attributes('data-flipped')).toBe('false')
     })
   })
 
   describe('navigation', () => {
     it('should disable prev button on first card', () => {
-      const prevButton = wrapper.findAll('.size-12.rounded-full')[0]
+      const prevButton = wrapper.find('[data-testid="flashcard-prev"]')
       expect(prevButton.attributes('disabled')).toBeDefined()
     })
 
     it('should enable next button on first card', () => {
-      const nextButton = wrapper.findAll('.size-12.rounded-full')[1]
+      const nextButton = wrapper.find('[data-testid="flashcard-next"]')
       expect(nextButton.attributes('disabled')).toBeUndefined()
     })
 
     it('should move to next card when next is clicked', async () => {
-      const nextButton = wrapper.findAll('.size-12.rounded-full')[1]
+      const nextButton = wrapper.find('[data-testid="flashcard-next"]')
 
       await nextButton.trigger('click')
 
@@ -145,20 +142,20 @@ describe('FlashcardMode', () => {
     })
 
     it('should enable prev button after moving to second card', async () => {
-      const nextButton = wrapper.findAll('.size-12.rounded-full')[1]
+      const nextButton = wrapper.find('[data-testid="flashcard-next"]')
       await nextButton.trigger('click')
 
-      const prevButton = wrapper.findAll('.size-12.rounded-full')[0]
+      const prevButton = wrapper.find('[data-testid="flashcard-prev"]')
       expect(prevButton.attributes('disabled')).toBeUndefined()
     })
 
     it('should go back when prev is clicked', async () => {
       // Move to second card
-      const nextButton = wrapper.findAll('.size-12.rounded-full')[1]
+      const nextButton = wrapper.find('[data-testid="flashcard-next"]')
       await nextButton.trigger('click')
 
       // Move back
-      const prevButton = wrapper.findAll('.size-12.rounded-full')[0]
+      const prevButton = wrapper.find('[data-testid="flashcard-prev"]')
       await prevButton.trigger('click')
 
       expect(wrapper.text()).toMatch(/1 \//)
@@ -167,32 +164,31 @@ describe('FlashcardMode', () => {
     it('should disable next button on last card', async () => {
       // Navigate to last card
       for (let i = 0; i < mockWords.length - 1; i++) {
-        const nextButton = wrapper.findAll('.size-12.rounded-full')[1]
+        const nextButton = wrapper.find('[data-testid="flashcard-next"]')
         await nextButton.trigger('click')
       }
 
-      const nextButton = wrapper.findAll('.size-12.rounded-full')[1]
+      const nextButton = wrapper.find('[data-testid="flashcard-next"]')
       expect(nextButton.attributes('disabled')).toBeDefined()
     })
 
     it('should reset flip state when navigating', async () => {
       // Flip card
-      const flashcard = wrapper.find('.perspective-1000')
+      const flashcard = wrapper.find('[data-testid="flashcard"]')
       await flashcard.trigger('click')
 
       // Navigate
-      const nextButton = wrapper.findAll('.size-12.rounded-full')[1]
+      const nextButton = wrapper.find('[data-testid="flashcard-next"]')
       await nextButton.trigger('click')
 
       // Card should not be flipped
-      const innerCard = wrapper.find('.transition-transform.duration-500')
-      expect(innerCard.classes()).not.toContain('rotate-y-180')
+      expect(wrapper.find('[data-testid="flashcard"]').attributes('data-flipped')).toBe('false')
     })
   })
 
   describe('shuffle functionality', () => {
     it('should shuffle cards when shuffle button is clicked', async () => {
-      const shuffleButton = wrapper.find('.px-6.py-3.rounded-xl')
+      const shuffleButton = wrapper.find('[data-testid="flashcard-shuffle"]')
 
       await shuffleButton.trigger('click')
 
@@ -202,11 +198,11 @@ describe('FlashcardMode', () => {
 
     it('should reset to first card after shuffle', async () => {
       // Navigate to second card
-      const nextButton = wrapper.findAll('.size-12.rounded-full')[1]
+      const nextButton = wrapper.find('[data-testid="flashcard-next"]')
       await nextButton.trigger('click')
 
       // Shuffle
-      const shuffleButton = wrapper.find('.px-6.py-3.rounded-xl')
+      const shuffleButton = wrapper.find('[data-testid="flashcard-shuffle"]')
       await shuffleButton.trigger('click')
 
       // Should be back at first card
@@ -215,16 +211,15 @@ describe('FlashcardMode', () => {
 
     it('should reset flip state after shuffle', async () => {
       // Flip card
-      const flashcard = wrapper.find('.perspective-1000')
+      const flashcard = wrapper.find('[data-testid="flashcard"]')
       await flashcard.trigger('click')
 
       // Shuffle
-      const shuffleButton = wrapper.find('.px-6.py-3.rounded-xl')
+      const shuffleButton = wrapper.find('[data-testid="flashcard-shuffle"]')
       await shuffleButton.trigger('click')
 
       // Card should not be flipped
-      const innerCard = wrapper.find('.transition-transform.duration-500')
-      expect(innerCard.classes()).not.toContain('rotate-y-180')
+      expect(wrapper.find('[data-testid="flashcard"]').attributes('data-flipped')).toBe('false')
     })
   })
 
@@ -235,7 +230,7 @@ describe('FlashcardMode', () => {
     })
 
     it('should update progress as cards are viewed', async () => {
-      const nextButton = wrapper.findAll('.size-12.rounded-full')[1]
+      const nextButton = wrapper.find('[data-testid="flashcard-next"]')
 
       await nextButton.trigger('click')
       expect(wrapper.text()).toMatch(/67%|66%/)
@@ -251,12 +246,12 @@ describe('FlashcardMode', () => {
 
   describe('audio functionality', () => {
     it('should have play button', () => {
-      const playButton = wrapper.find('button.mt-6')
+      const playButton = wrapper.find('[data-testid="flashcard-listen"]')
       expect(playButton.exists()).toBe(true)
     })
 
     it('should play audio when play button is clicked', async () => {
-      const playButton = wrapper.find('button.mt-6')
+      const playButton = wrapper.find('[data-testid="flashcard-listen"]')
 
       // Click should not throw error
       await playButton.trigger('click')
@@ -281,7 +276,7 @@ describe('FlashcardMode', () => {
     it('should show reading if word has reading property', async () => {
       // Navigate through all cards to find one with reading
       let foundReading = false
-      const nextButton = wrapper.findAll('.size-12.rounded-full')[1]
+      const nextButton = wrapper.find('[data-testid="flashcard-next"]')
 
       for (let i = 0; i < mockWords.length; i++) {
         if (wrapper.text().match(/ハロー|グッバイ/)) {
@@ -299,7 +294,7 @@ describe('FlashcardMode', () => {
     it('should show phonetic if word has phonetic property', async () => {
       // Navigate through all cards to find one with phonetic
       let foundPhonetic = false
-      const nextButton = wrapper.findAll('.size-12.rounded-full')[1]
+      const nextButton = wrapper.find('[data-testid="flashcard-next"]')
 
       for (let i = 0; i < mockWords.length; i++) {
         if (wrapper.text().match(/\/θæŋks\//)) {

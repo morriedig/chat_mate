@@ -66,88 +66,88 @@ async function playExample(word) {
 </script>
 
 <template>
-  <div
-    class="p-4 rounded-2xl bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-colors"
-    :class="{ 'border-l-4 border-l-green-500': learned }"
+  <article
+    class="relative overflow-hidden rounded-[14px] border border-hairline bg-surface p-4 shadow-[var(--cm-shadow-small)]"
+    data-testid="character-card"
+    :data-learned="learned ? 'true' : 'false'"
   >
-    <!-- Learned Badge -->
-    <div v-if="learned" class="flex justify-end mb-1">
-      <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 text-xs font-medium">
-        <span class="material-symbols-outlined text-sm">check_circle</span>
-        {{ t('prelesson.learned') }}
-      </span>
-    </div>
+    <span v-if="learned" class="absolute left-0 top-4 h-9 w-[3px] rounded-r-[3px] bg-success" aria-hidden="true"></span>
 
     <div class="flex items-start gap-4">
-      <!-- Audio Button + Character Display -->
-      <div class="flex flex-col items-center gap-2">
-        <span class="text-4xl font-bold text-text-main dark:text-white">
+      <!-- Character + reading + play -->
+      <div class="flex w-16 shrink-0 flex-col items-center gap-1">
+        <span class="text-[40px] font-medium leading-[48px] text-ink" data-testid="character-glyph">
           {{ character.char }}
         </span>
-        <span v-if="character.romaji" class="text-sm text-primary font-medium">
+        <span v-if="character.romaji" class="text-caption text-accent" data-testid="character-romaji">
           {{ character.romaji }}
         </span>
         <button
+          type="button"
           @click="playCharacter"
           :disabled="isPlayingChar"
           :aria-label="character.reading"
-          class="flex items-center justify-center size-10 rounded-full bg-primary/10 hover:bg-primary/20 text-primary transition-colors disabled:opacity-50 touch-target"
-          :class="{ 'animate-pulse': isPlayingChar }"
+          class="touch-target inline-flex size-11 items-center justify-center rounded-[10px] text-accent active:bg-surface-raised disabled:opacity-55"
         >
-          <span class="material-symbols-outlined text-xl">
+          <span class="material-symbols-outlined" aria-hidden="true">
             {{ isPlayingChar ? 'volume_up' : 'play_arrow' }}
           </span>
         </button>
       </div>
 
       <!-- Content -->
-      <div class="flex-1 min-w-0">
-        <!-- Mnemonic -->
-        <p v-if="character.mnemonic" class="text-base text-text-main dark:text-slate-200 font-medium mb-2">
+      <div class="min-w-0 flex-1">
+        <!-- Learned status: icon + text -->
+        <p v-if="learned" class="mb-1 flex items-center gap-1 text-meta text-success">
+          <span class="material-symbols-outlined !text-[16px]" aria-hidden="true">check_circle</span>
+          {{ t('prelesson.learned') }}
+        </p>
+
+        <p v-if="character.mnemonic" class="mb-2 text-body font-medium text-ink">
           {{ character.mnemonic }}
         </p>
 
-        <!-- Audio Hint -->
-        <p v-if="character.audioHint" class="text-sm text-text-muted dark:text-slate-400 mb-3">
+        <p v-if="character.audioHint" class="mb-2 text-caption text-ink-secondary">
           {{ character.audioHint }}
         </p>
 
-        <!-- Stroke Count -->
-        <p v-if="character.strokeCount" class="text-xs text-text-muted dark:text-slate-500 mb-3">
+        <p v-if="character.strokeCount" class="mb-3 text-meta tabular-nums text-ink-muted">
           {{ t('prelesson.strokes', { count: character.strokeCount }) }}
         </p>
 
-        <!-- Example Words -->
-        <div v-if="character.examples && character.examples.length > 0" class="space-y-2">
-          <p class="text-xs font-semibold text-text-muted dark:text-slate-400 uppercase tracking-wide">
+        <!-- Example words -->
+        <div v-if="character.examples && character.examples.length > 0">
+          <p class="mb-1 text-meta text-ink-muted">
             {{ t('prelesson.exampleWords') }}
           </p>
-          <div
-            v-for="(example, index) in character.examples"
-            :key="index"
-            class="flex items-center gap-2 p-2 rounded-lg bg-slate-50 dark:bg-slate-800/50"
-          >
-            <button
-              @click="playExample(example.word)"
-              :disabled="isPlayingExample"
-              :aria-label="example.reading"
-              class="shrink-0 flex items-center justify-center size-7 rounded-full bg-white dark:bg-slate-700 hover:bg-slate-100 dark:hover:bg-slate-600 text-primary transition-colors disabled:opacity-50 shadow-sm touch-target"
-              :class="{ 'animate-pulse': isPlayingExample }"
+          <ul class="space-y-1">
+            <li
+              v-for="(example, index) in character.examples"
+              :key="index"
+              class="flex flex-wrap items-center gap-x-2 rounded-[10px] bg-surface-sunken py-0.5 pl-0.5 pr-3"
             >
-              <span class="material-symbols-outlined text-sm">volume_up</span>
-            </button>
-            <span class="text-sm font-medium text-text-main dark:text-white">{{ example.word }}</span>
-            <span v-if="example.reading" class="text-xs text-primary">{{ example.reading }}</span>
-            <span class="text-xs text-text-muted dark:text-slate-400">{{ example.meaning }}</span>
-          </div>
+              <button
+                type="button"
+                @click="playExample(example.word)"
+                :disabled="isPlayingExample"
+                :aria-label="example.reading"
+                class="touch-target inline-flex size-11 shrink-0 items-center justify-center rounded-[10px] text-accent active:bg-surface-raised disabled:opacity-55"
+              >
+                <span class="material-symbols-outlined !text-[18px]" aria-hidden="true">volume_up</span>
+              </button>
+              <span class="text-body font-medium text-ink">{{ example.word }}</span>
+              <span v-if="example.reading" class="text-caption text-accent">{{ example.reading }}</span>
+              <span class="text-caption text-ink-muted">{{ example.meaning }}</span>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
 
     <!-- Audio Error -->
-    <p v-if="audioError" class="mt-2 text-xs text-amber-600 dark:text-amber-400 flex items-center gap-1">
-      <span class="material-symbols-outlined text-sm">warning</span>
+    <p v-if="audioError" class="mt-2 flex items-center gap-1 text-meta text-warning" role="status">
+      <span class="material-symbols-outlined !text-[16px]" aria-hidden="true">warning</span>
       {{ t('learning.audioNotAvailable') }}
     </p>
-  </div>
+  </article>
 </template>

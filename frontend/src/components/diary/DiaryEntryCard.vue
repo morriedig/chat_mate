@@ -28,16 +28,17 @@ const previewText = computed(() => {
   return text.length > 80 ? text.slice(0, 80) + '...' : text
 })
 
+// Status is plain meta text: icon + label, semantic color only for warning/error/success
 const feedbackBadge = computed(() => {
   switch (props.entry.feedbackStatus) {
     case 'done':
-      return { label: t('diary.status.reviewed'), class: 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300' }
+      return { label: t('diary.status.reviewed'), icon: 'check', class: 'text-success' }
     case 'loading':
-      return { label: t('diary.status.reviewing'), class: 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300' }
+      return { label: t('diary.status.reviewing'), icon: 'schedule', class: 'text-ink-muted' }
     case 'pending':
-      return { label: t('diary.status.pending'), class: 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300' }
+      return { label: t('diary.status.pending'), icon: 'wifi_off', class: 'text-warning' }
     case 'error':
-      return { label: t('diary.status.error'), class: 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300' }
+      return { label: t('diary.status.error'), icon: 'error', class: 'text-error' }
     default:
       return null
   }
@@ -54,40 +55,37 @@ const countLabel = computed(() => {
 </script>
 
 <template>
+  <!-- 72 px grouped-list row (the parent draws the group and dividers) -->
   <button
+    type="button"
     @click="emit('select', entry)"
     data-testid="diary-entry-card"
-    class="w-full text-left p-4 rounded-2xl bg-surface-light dark:bg-surface-dark border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-md hover:border-primary/30 dark:hover:border-primary/30 transition-all active:scale-[0.99]"
+    class="flex min-h-[72px] w-full items-center gap-3 px-4 py-3 text-left active:bg-surface-raised"
   >
-    <div class="flex items-start justify-between gap-3">
-      <div class="min-w-0 flex-1">
-        <!-- Date -->
-        <p data-testid="entry-date" class="text-xs font-medium text-text-muted dark:text-slate-400 mb-1">{{ dateFormatted }}</p>
-        <!-- Preview text -->
-        <p data-testid="entry-preview" class="text-sm text-text-main dark:text-slate-200 leading-relaxed line-clamp-2">{{ previewText }}</p>
-        <!-- Word count -->
-        <p data-testid="entry-word-count" class="text-xs text-text-muted dark:text-slate-500 mt-1.5">{{ countLabel }}</p>
-      </div>
-      <!-- Feedback badge -->
-      <div class="shrink-0 flex flex-col items-end gap-2">
+    <div class="min-w-0 flex-1">
+      <div class="flex flex-wrap items-center gap-x-3 gap-y-0.5 text-meta">
+        <span data-testid="entry-date" class="text-ink-secondary">{{ dateFormatted }}</span>
+        <span data-testid="entry-word-count" class="tabular-nums text-ink-muted">{{ countLabel }}</span>
         <span
           v-if="entry.rewriteOf"
           data-testid="rewrite-badge"
-          class="inline-flex items-center gap-0.5 px-2 py-0.5 rounded-full text-[11px] font-medium bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-300"
+          class="inline-flex items-center gap-0.5 text-ink-muted"
         >
-          <span class="material-symbols-outlined text-[12px]">edit_note</span>
+          <span class="material-symbols-outlined !text-[14px]" aria-hidden="true">edit_note</span>
           {{ t('diary.rewriteOf') }}
         </span>
         <span
           v-if="feedbackBadge"
           data-testid="feedback-badge"
-          class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium"
+          class="inline-flex items-center gap-0.5"
           :class="feedbackBadge.class"
         >
+          <span class="material-symbols-outlined !text-[14px]" aria-hidden="true">{{ feedbackBadge.icon }}</span>
           {{ feedbackBadge.label }}
         </span>
-        <span class="material-symbols-outlined text-[18px] text-slate-300 dark:text-slate-600">chevron_right</span>
       </div>
+      <p data-testid="entry-preview" class="mt-0.5 line-clamp-2 break-words text-caption text-ink">{{ previewText }}</p>
     </div>
+    <span class="material-symbols-outlined shrink-0 text-ink-muted" aria-hidden="true">chevron_right</span>
   </button>
 </template>

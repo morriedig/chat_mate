@@ -20,6 +20,11 @@ import CharacterCard from './learning/CharacterCard.vue'
 import CharacterGrid from './learning/CharacterGrid.vue'
 import CharacterMatchGame from './learning/CharacterMatchGame.vue'
 import TonePractice from './learning/TonePractice.vue'
+import CmAppBar from './ui/CmAppBar.vue'
+import CmButton from './ui/CmButton.vue'
+import CmBottomSheet from './ui/CmBottomSheet.vue'
+import CmProgress from './ui/CmProgress.vue'
+import CmStateBlock from './ui/CmStateBlock.vue'
 
 const { t, locale } = useI18n()
 const router = useRouter()
@@ -64,6 +69,76 @@ const isReviewMode = ref(false)
 const reviewWords = ref([])
 const isPreLessonSelected = ref(false)
 const currentCharacters = ref([])
+const menuOpen = ref(false) // header overflow menu (phones)
+
+// Chapter YAML icons are emoji; map them to Material Symbols by topic (unknown → menu_book)
+const CHAPTER_SYMBOLS = {
+  '🍽️': 'restaurant',
+  '👨‍👩‍👧‍👦': 'group',
+  '🏠': 'home',
+  '🌤️': 'partly_cloudy_day',
+  '⏰': 'schedule',
+  '☀️': 'wb_sunny',
+  '🚌': 'directions_bus',
+  '👕': 'apparel',
+  '🏥': 'local_hospital',
+  '🎮': 'sports_esports',
+  '📖': 'auto_stories',
+  '💬': 'forum',
+  '🎭': 'theater_comedy',
+  '🧳': 'luggage',
+  '🎬': 'movie',
+  '🔮': 'event_upcoming',
+  '🏆': 'workspace_premium',
+  '🪪': 'badge',
+  '💡': 'lightbulb',
+  '⚡': 'speed',
+  '🙅': 'block',
+  '🤝': 'handshake',
+  '❓': 'help',
+  '🗣️': 'record_voice_over',
+  '☝️': 'info',
+  '🤔': 'psychology_alt',
+}
+function chapterSymbol(icon) {
+  return CHAPTER_SYMBOLS[icon] || 'menu_book'
+}
+// Foundation icons are script glyphs (あ, b, 声); show them as type, never emoji
+function glyphFor(icon) {
+  return icon && /^[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}A-Za-z]{1,2}$/u.test(icon) ? icon : '文'
+}
+
+const CEFR = { beginner: 'A1–A2', intermediate: 'B1–B2', advanced: 'C1–C2' }
+const levelLabel = computed(() => {
+  const id = props.level.id
+  const name = t(`levels.${id}.name`)
+  return CEFR[id] ? `${name} · ${CEFR[id]}` : name
+})
+
+const speedOptions = computed(() => [
+  { value: 'normal', label: t('learning.voiceSpeed.normal') },
+  { value: 'slow', label: t('learning.voiceSpeed.slow') },
+  { value: 'word', label: t('learning.voiceSpeed.word') },
+])
+
+// Mode tabs (pre-lesson: cards/grid/match/quiz/tones; regular: list/flashcard/quiz/conversation)
+const modeTabs = computed(() => {
+  if (isPreLessonSelected.value) {
+    return [
+      { mode: 'cards', icon: 'style', label: 'foundation.cards' },
+      { mode: 'grid', icon: 'grid_view', label: 'foundation.grid' },
+      { mode: 'match', icon: 'extension', label: 'foundation.match' },
+      { mode: 'quiz', icon: 'quiz', label: 'learning.modes.quiz' },
+      ...(hasToneData.value ? [{ mode: 'tones', icon: 'music_note', label: 'prelesson.tones' }] : []),
+    ]
+  }
+  return [
+    { mode: 'list', icon: 'list', label: 'learning.modes.list' },
+    { mode: 'flashcard', icon: 'style', label: 'learning.modes.flashcard' },
+    { mode: 'quiz', icon: 'quiz', label: 'learning.modes.quiz' },
+    ...(isReviewMode.value ? [] : [{ mode: 'conversation', icon: 'chat', label: 'learning.modes.conversation' }]),
+  ]
+})
 
 // Pre-lesson: check if current characters have tone data (Chinese pinyin)
 const hasToneData = computed(() => {
@@ -180,7 +255,7 @@ function startDailyReview() {
   reviewWords.value = dueReviewWords.value
   if (reviewWords.value.length === 0) return
   isReviewMode.value = true
-  selectedChapter.value = { id: null, title: t('srs.dailyReview'), icon: '🔄' }
+  selectedChapter.value = { id: null, title: t('srs.dailyReview'), icon: null }
   currentWords.value = reviewWords.value
   currentConversations.value = []
   currentCloze.value = []
@@ -273,365 +348,278 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-background-light dark:bg-background-dark">
-    <!-- Header -->
-    <header class="sticky top-0 z-10 bg-surface-light dark:bg-surface-dark border-b border-slate-200 dark:border-slate-700 safe-area-top">
-      <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between gap-2">
-        <button
-          @click="selectedChapter ? backToChapters() : router.push('/')"
-          class="flex items-center gap-1 sm:gap-2 shrink-0 whitespace-nowrap text-text-muted hover:text-text-main dark:text-slate-400 dark:hover:text-white transition-colors"
-        >
-          <span class="material-symbols-outlined">arrow_back</span>
-          <span class="hidden min-[360px]:inline text-sm font-medium">{{ selectedChapter ? t('learning.backToChapters') : t('learning.backToSetup') }}</span>
-        </button>
-
-        <div class="flex items-center gap-2 sm:gap-4 min-w-0">
-          <!-- Voice Speed Select -->
-          <div class="relative shrink-0">
-            <select
-              v-model="voiceSpeed"
-              class="appearance-none pl-8 pr-8 py-1.5 rounded-full text-sm font-medium bg-slate-100 dark:bg-slate-800 text-text-main dark:text-slate-300 border-none cursor-pointer focus:ring-2 focus:ring-primary focus:outline-none"
+  <div class="min-h-screen bg-page">
+    <!-- Header: back, title + level, speed and bilingual (overflow menu on phones) -->
+    <div class="sticky top-0 z-20">
+      <CmAppBar
+        :title="t('learning.chooseChapter')"
+        :subtitle="levelLabel"
+        :back-label="selectedChapter ? t('learning.backToChapters') : t('learning.backToSetup')"
+        @back="selectedChapter ? backToChapters() : router.push('/')"
+      >
+        <template #actions>
+          <!-- Inline controls from 640 px -->
+          <div class="hidden items-center gap-2 pr-1 sm:flex">
+            <label class="relative inline-flex items-center">
+              <span class="sr-only">{{ t('learning.speed') }}</span>
+              <span class="material-symbols-outlined pointer-events-none absolute left-2.5 !text-[18px] text-ink-muted" aria-hidden="true">volume_up</span>
+              <select
+                v-model="voiceSpeed"
+                data-testid="speed-select"
+                class="min-h-11 appearance-none rounded-[10px] border border-hairline bg-surface-raised pl-8 pr-8 text-caption font-medium text-ink"
+              >
+                <option v-for="opt in speedOptions" :key="opt.value" :value="opt.value">{{ opt.label }}</option>
+              </select>
+              <span class="material-symbols-outlined pointer-events-none absolute right-2 !text-[18px] text-ink-muted" aria-hidden="true">expand_more</span>
+            </label>
+            <button
+              type="button"
+              @click="isBilingual = !isBilingual"
+              :aria-pressed="isBilingual"
+              class="inline-flex min-h-11 items-center gap-1 rounded-[10px] border px-3 text-caption font-medium"
+              :class="isBilingual ? 'border-accent bg-accent-soft text-accent' : 'border-hairline bg-surface-raised text-ink-secondary'"
             >
-              <option value="normal">{{ t('learning.voiceSpeed.normal') }}</option>
-              <option value="slow">{{ t('learning.voiceSpeed.slow') }}</option>
-              <option value="word">{{ t('learning.voiceSpeed.word') }}</option>
-            </select>
-            <span class="material-symbols-outlined text-lg absolute left-2 top-1/2 -translate-y-1/2 text-text-muted dark:text-slate-400 pointer-events-none">volume_up</span>
-            <span class="material-symbols-outlined text-sm absolute right-2 top-1/2 -translate-y-1/2 text-text-muted dark:text-slate-400 pointer-events-none">expand_more</span>
+              <span class="material-symbols-outlined !text-[18px]" aria-hidden="true">translate</span>
+              {{ t('learning.bilingual') }}
+            </button>
           </div>
 
-          <!-- Bilingual Toggle -->
-          <button
-            @click="isBilingual = !isBilingual"
-            class="flex items-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-full text-sm font-medium transition-colors shrink-0"
-            :class="isBilingual
-              ? 'bg-primary/10 text-primary'
-              : 'bg-slate-100 dark:bg-slate-800 text-text-muted dark:text-slate-400'"
-          >
-            <span class="material-symbols-outlined text-lg">translate</span>
-            <span class="hidden sm:inline">{{ t('learning.bilingual') }}</span>
-          </button>
-
-          <div class="flex items-center gap-1 sm:gap-2 shrink-0">
-            <span class="text-2xl">{{ props.level.icon }}</span>
-            <span class="hidden sm:inline whitespace-nowrap font-semibold text-text-main dark:text-white">{{ t(`levels.${props.level.id}.name`) }}</span>
+          <!-- Overflow menu on phones -->
+          <div class="relative sm:hidden" @keydown.esc="menuOpen = false">
+            <button
+              type="button"
+              data-testid="learning-menu-button"
+              @click="menuOpen = !menuOpen"
+              :aria-label="t('learning.more')"
+              :aria-expanded="menuOpen"
+              aria-haspopup="menu"
+              class="inline-flex size-11 items-center justify-center rounded-[10px] text-ink-secondary active:bg-surface-raised"
+            >
+              <span class="material-symbols-outlined" aria-hidden="true">more_vert</span>
+            </button>
+            <template v-if="menuOpen">
+              <div class="fixed inset-0 z-30" aria-hidden="true" @click="menuOpen = false"></div>
+              <div
+                role="menu"
+                :aria-label="t('learning.more')"
+                class="absolute right-1 top-full z-40 mt-1 w-56 rounded-[10px] border border-hairline bg-surface py-2 shadow-[var(--cm-shadow-float)]"
+              >
+                <p class="px-4 pb-1 pt-1 text-meta text-ink-muted">{{ t('learning.speed') }}</p>
+                <button
+                  v-for="opt in speedOptions"
+                  :key="opt.value"
+                  type="button"
+                  role="menuitemradio"
+                  :aria-checked="voiceSpeed === opt.value"
+                  @click="voiceSpeed = opt.value"
+                  class="flex min-h-11 w-full items-center gap-3 px-4 text-left text-body text-ink active:bg-surface-raised"
+                >
+                  <span class="min-w-0 flex-1">{{ opt.label }}</span>
+                  <span v-if="voiceSpeed === opt.value" class="material-symbols-outlined text-accent" aria-hidden="true">check</span>
+                </button>
+                <div class="my-2 h-px bg-hairline" role="separator"></div>
+                <button
+                  type="button"
+                  role="menuitemcheckbox"
+                  :aria-checked="isBilingual"
+                  @click="isBilingual = !isBilingual"
+                  class="flex min-h-11 w-full items-center gap-3 px-4 text-left text-body text-ink active:bg-surface-raised"
+                >
+                  <span class="material-symbols-outlined text-ink-muted" aria-hidden="true">translate</span>
+                  <span class="min-w-0 flex-1">{{ t('learning.bilingual') }}</span>
+                  <span class="material-symbols-outlined" :class="isBilingual ? 'text-accent' : 'text-ink-muted'" aria-hidden="true">{{ isBilingual ? 'check_box' : 'check_box_outline_blank' }}</span>
+                </button>
+              </div>
+            </template>
           </div>
-        </div>
-      </div>
-    </header>
+        </template>
+      </CmAppBar>
+    </div>
 
     <!-- Main Content -->
-    <main class="max-w-4xl mx-auto px-4 py-6">
-      <!-- Chapter Selection -->
+    <main class="mx-auto max-w-4xl px-4 pb-10 pt-5 min-[375px]:px-5">
+      <!-- Hub: foundation → lock divider → due review → chapters → empty state -->
       <template v-if="!selectedChapter">
-        <h1 class="text-2xl font-bold text-text-main dark:text-white mb-2">{{ t('learning.chooseChapter') }}</h1>
-        <p class="text-text-muted dark:text-slate-400 mb-6">{{ t('learning.chapterDescription') }}</p>
+        <p class="mb-6 text-caption text-ink-secondary">{{ t('learning.chapterDescription') }}</p>
 
-        <!-- Pre-Lesson Foundation Section -->
-        <div v-if="preLessons.length > 0" class="mb-6">
-          <div class="flex items-center gap-2 mb-3">
-            <span class="material-symbols-outlined text-violet-500">auto_stories</span>
-            <h2 class="text-lg font-bold text-text-main dark:text-white">{{ t('foundation.title') }}</h2>
-            <span class="text-sm text-text-muted dark:text-slate-400">{{ t('foundation.description') }}</span>
+        <!-- Foundation (pre-lessons) -->
+        <section v-if="preLessons.length > 0" class="mb-8">
+          <div class="mb-3">
+            <h2 class="text-title font-medium text-ink">{{ t('foundation.title') }}</h2>
+            <p class="text-meta text-ink-muted">{{ t('foundation.description') }}</p>
           </div>
 
-          <div class="space-y-3">
-            <div
-              v-for="pl in preLessons"
-              :key="pl.id"
-              @click="selectChapter(pl)"
-              class="flex items-center gap-3 sm:gap-4 p-4 rounded-2xl border-2 cursor-pointer transition-all hover:scale-[1.01] bg-gradient-to-r from-violet-50 to-indigo-50 dark:from-violet-900/20 dark:to-indigo-900/20"
-              :class="preLessonProgress[pl.id]?.quizCompleted
-                ? 'border-green-400 dark:border-green-600'
-                : 'border-violet-300 dark:border-violet-700 hover:border-violet-400 dark:hover:border-violet-500'"
-            >
-              <!-- Icon -->
-              <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-violet-100 dark:bg-violet-900/30 flex items-center justify-center">
-                <span v-if="preLessonProgress[pl.id]?.quizCompleted" class="material-symbols-outlined text-2xl text-green-600 dark:text-green-400">check_circle</span>
-                <span v-else class="text-2xl">{{ pl.icon }}</span>
-              </div>
-
-              <!-- Info -->
-              <div class="flex-1 min-w-0">
-                <h3 class="font-semibold text-text-main dark:text-white text-lg">{{ pl.title }}</h3>
-                <p class="text-sm text-text-muted dark:text-slate-400 truncate">{{ pl.description }}</p>
-                <!-- Character progress bar -->
-                <div v-if="pl.characterCount > 0" class="mt-2">
-                  <div class="flex items-center justify-between mb-1">
-                    <span class="text-xs text-violet-600 dark:text-violet-400">
+          <ul class="divide-y divide-hairline overflow-hidden rounded-[14px] border border-hairline bg-surface">
+            <li v-for="pl in preLessons" :key="pl.id">
+              <button
+                type="button"
+                data-testid="prelesson-row"
+                @click="selectChapter(pl)"
+                class="flex min-h-[72px] w-full items-center gap-2 py-3 pr-3 text-left active:bg-surface-raised"
+              >
+                <span class="flex w-14 shrink-0 justify-center">
+                  <span
+                    v-if="preLessonProgress[pl.id]?.quizCompleted"
+                    class="material-symbols-outlined text-success"
+                    :aria-label="t('prelesson.learned')"
+                  >check_circle</span>
+                  <span v-else class="flex size-10 items-center justify-center rounded-[10px] border border-hairline bg-surface-raised text-title font-medium text-ink" aria-hidden="true">{{ glyphFor(pl.icon) }}</span>
+                </span>
+                <span class="min-w-0 flex-1">
+                  <span class="block truncate text-body font-medium text-ink">{{ pl.title }}</span>
+                  <span class="block truncate text-meta text-ink-muted">{{ pl.description }}</span>
+                  <span v-if="pl.characterCount > 0" class="mt-1.5 flex items-center gap-2">
+                    <CmProgress
+                      class="max-w-32 flex-1"
+                      :value="preLessonProgress[pl.id]?.charactersLearned || 0"
+                      :max="pl.characterCount"
+                    />
+                    <span class="text-meta tabular-nums text-ink-muted">
                       {{ t('foundation.charactersLearned', { learned: preLessonProgress[pl.id]?.charactersLearned || 0, total: pl.characterCount }) }}
                     </span>
-                  </div>
-                  <div class="w-full h-1.5 bg-violet-200 dark:bg-violet-800 rounded-full overflow-hidden">
-                    <div
-                      class="h-full bg-violet-500 dark:bg-violet-400 rounded-full transition-all duration-300"
-                      :style="{ width: `${Math.min(100, ((preLessonProgress[pl.id]?.charactersLearned || 0) / pl.characterCount) * 100)}%` }"
-                    ></div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Character Count Badge -->
-              <div class="hidden sm:block flex-shrink-0 px-3 py-1 bg-violet-100 dark:bg-violet-900/30 rounded-full">
-                <span class="text-sm font-medium text-violet-600 dark:text-violet-400">
-                  {{ t('foundation.characters', { count: pl.characterCount }) }}
+                  </span>
                 </span>
-              </div>
+                <span class="hidden shrink-0 text-meta tabular-nums text-ink-muted sm:inline">{{ t('foundation.characters', { count: pl.characterCount }) }}</span>
+                <span class="material-symbols-outlined shrink-0 text-ink-muted" aria-hidden="true">chevron_right</span>
+              </button>
+            </li>
+          </ul>
 
-              <!-- Arrow -->
-              <span class="material-symbols-outlined text-violet-400 dark:text-violet-500">chevron_right</span>
-            </div>
-          </div>
-
-          <!-- Lock Divider -->
-          <div v-if="chaptersLocked" class="flex items-center gap-3 my-6">
-            <div class="flex-1 h-px bg-slate-200 dark:bg-slate-700"></div>
-            <div class="flex items-center gap-1.5 text-sm text-text-muted dark:text-slate-500">
-              <span class="material-symbols-outlined text-base">lock</span>
+          <!-- Lock divider -->
+          <div v-if="chaptersLocked" class="mt-6 flex items-center gap-3">
+            <div class="h-px flex-1 bg-hairline"></div>
+            <div class="flex items-center gap-1.5 text-meta text-ink-muted">
+              <span class="material-symbols-outlined !text-[16px]" aria-hidden="true">lock</span>
               {{ t('foundation.completeToUnlock') }}
             </div>
-            <div class="flex-1 h-px bg-slate-200 dark:bg-slate-700"></div>
+            <div class="h-px flex-1 bg-hairline"></div>
           </div>
-        </div>
+        </section>
 
-        <!-- Daily Review Card -->
-        <div
+        <!-- Due review: the hub's hero row -->
+        <button
           v-if="dueReviewWords.length > 0"
+          type="button"
+          data-testid="due-review"
           @click="startDailyReview"
-          class="flex items-center gap-4 p-4 mb-6 rounded-2xl border-2 border-amber-400 dark:border-amber-600 bg-amber-50 dark:bg-amber-900/20 cursor-pointer transition-all hover:scale-[1.01]"
+          class="relative mb-8 flex min-h-[72px] w-full items-center gap-2 overflow-hidden rounded-[14px] border border-hairline bg-accent-soft py-3 pr-3 text-left"
         >
-          <div class="flex-shrink-0 w-12 h-12 rounded-xl bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
-            <span class="text-2xl">🔄</span>
-          </div>
-          <div class="flex-1 min-w-0">
-            <h3 class="font-semibold text-text-main dark:text-white text-lg">{{ t('srs.dailyReview') }}</h3>
-            <p class="text-sm text-text-muted dark:text-slate-400">{{ t('srs.dailyReviewDescription') }}</p>
-          </div>
-          <div class="flex-shrink-0 whitespace-nowrap px-3 py-1 bg-amber-200 dark:bg-amber-800 rounded-full">
-            <span class="text-sm font-bold text-amber-800 dark:text-amber-200">
-              {{ t('srs.wordsToReview', { count: dueReviewWords.length }) }}
-            </span>
-          </div>
-          <span class="material-symbols-outlined text-amber-600 dark:text-amber-400">chevron_right</span>
-        </div>
+          <span class="absolute left-0 top-4 h-9 w-[3px] rounded-r-[3px] bg-accent" aria-hidden="true"></span>
+          <span class="flex w-14 shrink-0 justify-center">
+            <span class="material-symbols-outlined !text-[24px] text-accent" aria-hidden="true">event_repeat</span>
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block text-body font-medium text-ink">{{ t('srs.dailyReview') }}</span>
+            <span class="block text-meta text-ink-secondary">{{ t('srs.dailyReviewDescription') }}</span>
+            <span class="mt-0.5 block text-meta font-medium tabular-nums text-accent">{{ t('srs.wordsToReview', { count: dueReviewWords.length }) }}</span>
+          </span>
+          <span class="material-symbols-outlined shrink-0 text-accent" aria-hidden="true">chevron_right</span>
+        </button>
 
-        <div class="space-y-4">
-          <div
-            v-for="(chapter, index) in availableChapters"
-            :key="chapter.id"
-            @click="!chaptersLocked && selectChapter(chapter)"
-            class="flex items-center gap-3 sm:gap-4 p-4 rounded-2xl border-2 bg-surface-light dark:bg-surface-dark transition-all"
-            :class="[
-              chaptersLocked
-                ? 'opacity-50 pointer-events-none border-slate-200 dark:border-slate-700'
-                : [
-                    'hover:border-primary dark:hover:border-primary cursor-pointer hover:scale-[1.01]',
-                    getChapterCompletionStatus(chapter.id).complete
-                      ? 'border-green-400 dark:border-green-600'
-                      : 'border-slate-200 dark:border-slate-700'
-                  ]
-            ]"
-          >
-            <!-- Chapter Number / Completion Check -->
-            <div
-              class="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center"
-              :class="getChapterCompletionStatus(chapter.id).complete
-                ? 'bg-green-100 dark:bg-green-900/30'
-                : 'bg-primary/10 dark:bg-primary/20'"
+        <!-- Chapters as grouped rows -->
+        <ul
+          v-if="availableChapters.length > 0"
+          class="divide-y divide-hairline overflow-hidden rounded-[14px] border border-hairline bg-surface"
+        >
+          <li v-for="(chapter, index) in availableChapters" :key="chapter.id">
+            <button
+              type="button"
+              data-testid="chapter-row"
+              :disabled="chaptersLocked"
+              @click="!chaptersLocked && selectChapter(chapter)"
+              class="flex min-h-[72px] w-full items-center gap-2 py-3 pr-3 text-left active:bg-surface-raised disabled:opacity-55"
             >
-              <span
-                v-if="getChapterCompletionStatus(chapter.id).complete"
-                class="material-symbols-outlined text-2xl text-green-600 dark:text-green-400"
-              >check_circle</span>
-              <span v-else class="text-lg font-bold text-primary">{{ index + 1 }}</span>
-            </div>
-
-            <!-- Chapter Icon -->
-            <span class="text-4xl">{{ chapter.icon }}</span>
-
-            <!-- Chapter Info -->
-            <div class="flex-1 min-w-0">
-              <h3 class="font-semibold text-text-main dark:text-white text-lg">{{ chapter.title }}</h3>
-              <p class="text-sm text-text-muted dark:text-slate-400 truncate">{{ chapter.description }}</p>
-              <!-- Progress indicators -->
-              <div class="flex items-center gap-3 mt-1">
+              <!-- Number / completion column -->
+              <span class="flex w-14 shrink-0 justify-center" data-testid="chapter-number">
                 <span
-                  class="flex items-center gap-1 text-xs"
-                  :class="getChapterCompletionStatus(chapter.id).quiz
-                    ? 'text-green-600 dark:text-green-400'
-                    : 'text-text-muted dark:text-slate-500'"
-                >
-                  <span class="material-symbols-outlined text-sm">
-                    {{ getChapterCompletionStatus(chapter.id).quiz ? 'check_circle' : 'radio_button_unchecked' }}
-                  </span>
-                  {{ t('learning.progress.quiz') }}
-                </span>
-                <span
-                  class="flex items-center gap-1 text-xs"
-                  :class="getChapterCompletionStatus(chapter.id).conversation
-                    ? 'text-green-600 dark:text-green-400'
-                    : 'text-text-muted dark:text-slate-500'"
-                >
-                  <span class="material-symbols-outlined text-sm">
-                    {{ getChapterCompletionStatus(chapter.id).conversation ? 'check_circle' : 'radio_button_unchecked' }}
-                  </span>
-                  {{ t('learning.progress.conversation') }}
-                </span>
-              </div>
-            </div>
-
-            <!-- SRS Due Badge -->
-            <div
-              v-if="chapterDueCounts[chapter.id] > 0"
-              class="flex-shrink-0 px-2.5 py-1 bg-amber-100 dark:bg-amber-900/30 rounded-full"
-            >
-              <span class="text-xs font-bold text-amber-700 dark:text-amber-300">
-                {{ chapterDueCounts[chapter.id] }} {{ t('srs.dueToday') }}
+                  v-if="getChapterCompletionStatus(chapter.id).complete"
+                  class="material-symbols-outlined text-success"
+                  :aria-label="t('learning.quizComplete')"
+                >check_circle</span>
+                <span v-else class="flex size-6 items-center justify-center rounded-[6px] border border-hairline text-meta font-medium tabular-nums text-ink-secondary">{{ index + 1 }}</span>
               </span>
-            </div>
 
-            <!-- Word Count Badge -->
-            <div class="flex-shrink-0 whitespace-nowrap px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-full">
-              <span class="text-sm font-medium text-text-muted dark:text-slate-400">
-                {{ chapter.wordCount }} {{ t('learning.words') }}
+              <span class="min-w-0 flex-1">
+                <span class="flex items-center gap-1.5">
+                  <span class="material-symbols-outlined shrink-0 !text-[18px] text-ink-muted" aria-hidden="true" data-testid="chapter-icon">{{ chapterSymbol(chapter.icon) }}</span>
+                  <span class="truncate text-body font-medium text-ink">{{ chapter.title }}</span>
+                </span>
+                <span class="block truncate text-meta text-ink-muted">{{ chapter.description }}</span>
+                <!-- Progress metadata -->
+                <span class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-0.5 text-meta text-ink-muted">
+                  <span class="inline-flex items-center gap-0.5" :class="getChapterCompletionStatus(chapter.id).quiz ? 'text-success' : ''">
+                    <span class="material-symbols-outlined !text-[14px]" aria-hidden="true">{{ getChapterCompletionStatus(chapter.id).quiz ? 'check_circle' : 'radio_button_unchecked' }}</span>
+                    {{ t('learning.progress.quiz') }}
+                  </span>
+                  <span class="inline-flex items-center gap-0.5" :class="getChapterCompletionStatus(chapter.id).conversation ? 'text-success' : ''">
+                    <span class="material-symbols-outlined !text-[14px]" aria-hidden="true">{{ getChapterCompletionStatus(chapter.id).conversation ? 'check_circle' : 'radio_button_unchecked' }}</span>
+                    {{ t('learning.progress.conversation') }}
+                  </span>
+                  <span class="tabular-nums">{{ chapter.wordCount }} {{ t('learning.words') }}</span>
+                  <span v-if="chapterDueCounts[chapter.id] > 0" class="font-medium tabular-nums text-accent">
+                    {{ chapterDueCounts[chapter.id] }} {{ t('srs.dueToday') }}
+                  </span>
+                </span>
               </span>
-            </div>
 
-            <!-- Arrow -->
-            <span class="material-symbols-outlined text-text-muted dark:text-slate-400">chevron_right</span>
-          </div>
-        </div>
+              <span class="material-symbols-outlined shrink-0 text-ink-muted" aria-hidden="true">{{ chaptersLocked ? 'lock' : 'chevron_right' }}</span>
+            </button>
+          </li>
+        </ul>
 
         <!-- Empty State -->
-        <div v-if="availableChapters.length === 0 && preLessons.length === 0" class="flex flex-col items-center justify-center py-16 px-6 text-center">
-          <div class="w-20 h-20 rounded-3xl bg-gradient-to-br from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/10 flex items-center justify-center mb-4 shadow-sm">
-            <span class="material-symbols-outlined text-4xl text-primary">auto_stories</span>
-          </div>
-          <h3 class="text-lg font-semibold text-text-main dark:text-white mb-2">{{ t('learning.noChapters') }}</h3>
-          <p class="text-sm text-text-muted dark:text-slate-400 max-w-md leading-relaxed mb-5">{{ t('learning.noChaptersDescription') }}</p>
-          <button
-            @click="$router.push('/')"
-            class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-700 hover:border-primary text-text-main dark:text-slate-200 text-sm font-semibold transition-colors"
-          >
-            <span class="material-symbols-outlined text-[18px]">tune</span>
-            {{ t('learning.tryDifferentLevel') }}
-          </button>
-        </div>
+        <CmStateBlock
+          v-if="availableChapters.length === 0 && preLessons.length === 0"
+          class="mt-8"
+          icon="menu_book"
+          :title="t('learning.noChapters')"
+          :body="t('learning.noChaptersDescription')"
+          :action="t('learning.tryDifferentLevel')"
+          @action="router.push('/')"
+        />
       </template>
 
       <!-- Learning Content -->
       <template v-else>
-        <!-- Chapter Header with Mode Selector -->
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-          <div class="flex items-center gap-3">
-            <span class="text-4xl">{{ selectedChapter.icon }}</span>
-            <div>
-              <h1 class="text-2xl font-bold text-text-main dark:text-white">{{ selectedChapter.title }}</h1>
-              <p class="text-sm text-text-muted dark:text-slate-400">
-                {{ isPreLessonSelected
-                  ? t('foundation.characters', { count: currentCharacters.length })
-                  : `${currentWords.length} ${t('learning.words')}` }}
-              </p>
-            </div>
+        <!-- Chapter title (hero) -->
+        <div class="mb-4 flex items-start gap-3">
+          <span
+            v-if="isPreLessonSelected"
+            class="flex size-10 shrink-0 items-center justify-center rounded-[10px] border border-hairline bg-surface-raised text-title font-medium text-ink"
+            aria-hidden="true"
+          >{{ glyphFor(selectedChapter.icon) }}</span>
+          <span v-else class="material-symbols-outlined mt-1 shrink-0 !text-[24px] text-accent" aria-hidden="true" data-testid="chapter-icon">{{ isReviewMode ? 'event_repeat' : chapterSymbol(selectedChapter.icon) }}</span>
+          <div class="min-w-0">
+            <h1 class="text-section font-medium text-ink" data-heading>{{ selectedChapter.title }}</h1>
+            <p class="text-meta tabular-nums text-ink-muted">
+              {{ isPreLessonSelected
+                ? t('foundation.characters', { count: currentCharacters.length })
+                : `${currentWords.length} ${t('learning.words')}` }}
+            </p>
           </div>
+        </div>
 
-          <!-- Mode Tabs: Pre-lesson modes -->
-          <div v-if="isPreLessonSelected" class="flex overflow-x-auto bg-slate-100 dark:bg-slate-800 rounded-xl p-1">
+        <!-- Mode tabs: horizontally scrollable rectangular tabs -->
+        <div class="-mx-4 mb-5 overflow-x-auto px-4 min-[375px]:-mx-5 min-[375px]:px-5">
+          <div
+            role="tablist"
+            data-testid="mode-tabs"
+            class="flex w-max min-w-full gap-1 rounded-[10px] bg-surface-raised p-1"
+          >
             <button
-              @click="setMode('cards')"
-              class="flex flex-1 sm:flex-none items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors"
-              :class="learningMode === 'cards'
-                ? 'bg-white dark:bg-slate-700 text-primary shadow-sm'
-                : 'text-text-muted dark:text-slate-400 hover:text-text-main dark:hover:text-white'"
+              v-for="tab in modeTabs"
+              :key="tab.mode"
+              type="button"
+              role="tab"
+              :aria-selected="learningMode === tab.mode"
+              @click="setMode(tab.mode)"
+              class="flex min-h-11 flex-1 items-center justify-center gap-1.5 whitespace-nowrap rounded-[8px] border px-3 text-caption font-medium"
+              :class="learningMode === tab.mode
+                ? 'border-accent/30 bg-surface text-accent shadow-[var(--cm-shadow-small)]'
+                : 'border-transparent text-ink-secondary'"
             >
-              <span class="material-symbols-outlined text-lg">style</span>
-              {{ t('foundation.cards') }}
-            </button>
-            <button
-              @click="setMode('grid')"
-              class="flex flex-1 sm:flex-none items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors"
-              :class="learningMode === 'grid'
-                ? 'bg-white dark:bg-slate-700 text-primary shadow-sm'
-                : 'text-text-muted dark:text-slate-400 hover:text-text-main dark:hover:text-white'"
-            >
-              <span class="material-symbols-outlined text-lg">grid_view</span>
-              {{ t('foundation.grid') }}
-            </button>
-            <button
-              @click="setMode('match')"
-              class="flex flex-1 sm:flex-none items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors"
-              :class="learningMode === 'match'
-                ? 'bg-white dark:bg-slate-700 text-primary shadow-sm'
-                : 'text-text-muted dark:text-slate-400 hover:text-text-main dark:hover:text-white'"
-            >
-              <span class="material-symbols-outlined text-lg">extension</span>
-              {{ t('foundation.match') }}
-            </button>
-            <button
-              @click="setMode('quiz')"
-              class="flex flex-1 sm:flex-none items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors"
-              :class="learningMode === 'quiz'
-                ? 'bg-white dark:bg-slate-700 text-primary shadow-sm'
-                : 'text-text-muted dark:text-slate-400 hover:text-text-main dark:hover:text-white'"
-            >
-              <span class="material-symbols-outlined text-lg">quiz</span>
-              {{ t('learning.modes.quiz') }}
-            </button>
-            <button
-              v-if="hasToneData"
-              @click="setMode('tones')"
-              class="flex flex-1 sm:flex-none items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors"
-              :class="learningMode === 'tones'
-                ? 'bg-white dark:bg-slate-700 text-primary shadow-sm'
-                : 'text-text-muted dark:text-slate-400 hover:text-text-main dark:hover:text-white'"
-            >
-              <span class="material-symbols-outlined text-lg">music_note</span>
-              {{ t('prelesson.tones') }}
-            </button>
-          </div>
-
-          <!-- Mode Tabs: Regular chapter modes -->
-          <div v-else class="flex overflow-x-auto bg-slate-100 dark:bg-slate-800 rounded-xl p-1">
-            <button
-              @click="setMode('list')"
-              class="flex flex-1 sm:flex-none items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors"
-              :class="learningMode === 'list'
-                ? 'bg-white dark:bg-slate-700 text-primary shadow-sm'
-                : 'text-text-muted dark:text-slate-400 hover:text-text-main dark:hover:text-white'"
-            >
-              <span class="material-symbols-outlined text-lg">list</span>
-              {{ t('learning.modes.list') }}
-            </button>
-            <button
-              @click="setMode('flashcard')"
-              class="flex flex-1 sm:flex-none items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors"
-              :class="learningMode === 'flashcard'
-                ? 'bg-white dark:bg-slate-700 text-primary shadow-sm'
-                : 'text-text-muted dark:text-slate-400 hover:text-text-main dark:hover:text-white'"
-            >
-              <span class="material-symbols-outlined text-lg">style</span>
-              {{ t('learning.modes.flashcard') }}
-            </button>
-            <button
-              @click="setMode('quiz')"
-              class="flex flex-1 sm:flex-none items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors"
-              :class="learningMode === 'quiz'
-                ? 'bg-white dark:bg-slate-700 text-primary shadow-sm'
-                : 'text-text-muted dark:text-slate-400 hover:text-text-main dark:hover:text-white'"
-            >
-              <span class="material-symbols-outlined text-lg">quiz</span>
-              {{ t('learning.modes.quiz') }}
-            </button>
-            <button
-              v-if="!isReviewMode"
-              @click="setMode('conversation')"
-              class="flex flex-1 sm:flex-none items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors"
-              :class="learningMode === 'conversation'
-                ? 'bg-white dark:bg-slate-700 text-primary shadow-sm'
-                : 'text-text-muted dark:text-slate-400 hover:text-text-main dark:hover:text-white'"
-            >
-              <span class="material-symbols-outlined text-lg">chat</span>
-              {{ t('learning.modes.conversation') }}
+              <span class="material-symbols-outlined !text-[18px]" aria-hidden="true">{{ tab.icon }}</span>
+              {{ t(tab.label) }}
             </button>
           </div>
         </div>
@@ -717,39 +705,27 @@ onMounted(() => {
       </template>
     </main>
 
-    <!-- Conversation Prompt Modal (after quiz) -->
-    <Teleport to="body">
-      <div
-        v-if="showConversationPrompt"
-        class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
-        @click.self="skipConversation"
-      >
-        <div class="bg-surface-light dark:bg-surface-dark rounded-2xl p-6 max-w-md w-full shadow-xl">
-          <div class="text-center">
-            <span class="text-5xl block mb-4">💬</span>
-            <h3 class="text-xl font-bold text-text-main dark:text-white mb-2">
-              {{ t('learning.conversation.prompt.title') }}
-            </h3>
-            <p class="text-text-muted dark:text-slate-400 mb-6">
-              {{ t('learning.conversation.prompt.description') }}
-            </p>
-            <div class="flex gap-3">
-              <button
-                @click="skipConversation"
-                class="flex-1 px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-xl text-text-main dark:text-white font-medium hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
-              >
-                {{ t('learning.conversation.prompt.skip') }}
-              </button>
-              <button
-                @click="startConversation"
-                class="flex-1 px-4 py-2.5 bg-primary text-white rounded-xl font-medium hover:bg-primary/90 transition-colors"
-              >
-                {{ t('learning.conversation.prompt.start') }}
-              </button>
-            </div>
-          </div>
+    <!-- Conversation prompt after the quiz -->
+    <CmBottomSheet
+      v-if="showConversationPrompt"
+      :title="t('learning.conversation.prompt.title')"
+      :description="t('learning.conversation.prompt.description')"
+      :close-label="t('learning.conversation.prompt.skip')"
+      @close="skipConversation"
+    >
+      <template #leading>
+        <span class="material-symbols-outlined mt-0.5 !text-[24px] text-accent" aria-hidden="true">forum</span>
+      </template>
+      <template #actions>
+        <div class="flex gap-3">
+          <CmButton variant="secondary" class="flex-1" @click="skipConversation">
+            {{ t('learning.conversation.prompt.skip') }}
+          </CmButton>
+          <CmButton class="flex-1" @click="startConversation">
+            {{ t('learning.conversation.prompt.start') }}
+          </CmButton>
         </div>
-      </div>
-    </Teleport>
+      </template>
+    </CmBottomSheet>
   </div>
 </template>

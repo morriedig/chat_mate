@@ -12,7 +12,7 @@ const props = defineProps({
 
 const emit = defineEmits(['select-date'])
 
-const { locale } = useI18n()
+const { t, locale } = useI18n()
 
 const now = new Date()
 const currentYear = ref(now.getFullYear())
@@ -104,54 +104,63 @@ function selectDate(cell) {
 <template>
   <div class="w-full">
     <!-- Month navigation -->
-    <div class="flex items-center justify-between mb-3 px-1">
+    <div class="mb-2 flex items-center justify-between">
       <button
+        type="button"
         @click="prevMonth"
-        class="flex items-center justify-center w-8 h-8 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-text-main dark:text-slate-200 transition-colors"
+        :aria-label="t('diary.prevMonth')"
+        class="inline-flex size-11 items-center justify-center rounded-[10px] text-ink-secondary active:bg-surface-raised"
       >
-        <span class="material-symbols-outlined text-[20px]">chevron_left</span>
+        <span class="material-symbols-outlined" aria-hidden="true">chevron_left</span>
       </button>
-      <span class="text-sm font-semibold text-text-main dark:text-white">{{ monthLabel }}</span>
+      <span class="text-caption font-medium text-ink" aria-live="polite">{{ monthLabel }}</span>
       <button
+        type="button"
         @click="nextMonth"
-        class="flex items-center justify-center w-8 h-8 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-text-main dark:text-slate-200 transition-colors"
+        :aria-label="t('diary.nextMonth')"
+        class="inline-flex size-11 items-center justify-center rounded-[10px] text-ink-secondary active:bg-surface-raised"
       >
-        <span class="material-symbols-outlined text-[20px]">chevron_right</span>
+        <span class="material-symbols-outlined" aria-hidden="true">chevron_right</span>
       </button>
     </div>
 
     <!-- Day labels -->
-    <div class="grid grid-cols-7 gap-0 mb-1">
+    <div class="mb-1 grid grid-cols-7" aria-hidden="true">
       <div
         v-for="(label, idx) in dayLabels"
         :key="idx"
-        class="text-center text-[10px] font-medium text-text-muted dark:text-slate-500 py-1"
+        class="py-1 text-center text-meta text-ink-muted"
       >
         {{ label }}
       </div>
     </div>
 
     <!-- Day grid -->
-    <div class="grid grid-cols-7 gap-0">
+    <div class="grid grid-cols-7">
       <div
         v-for="(cell, idx) in calendarDays"
         :key="idx"
-        class="flex flex-col items-center justify-center py-1.5"
+        class="flex items-center justify-center"
       >
         <template v-if="cell">
           <button
+            type="button"
             @click="selectDate(cell)"
-            class="relative flex items-center justify-center w-8 h-8 rounded-full text-xs transition-colors"
+            :disabled="!cell.hasEntry"
+            :aria-label="cell.dateStr"
+            :aria-current="cell.isToday ? 'date' : undefined"
+            class="relative flex h-11 w-full max-w-11 items-center justify-center rounded-[10px] border text-caption tabular-nums disabled:cursor-default"
             :class="[
-              cell.isToday ? 'ring-2 ring-primary ring-offset-1 dark:ring-offset-surface-dark' : '',
-              cell.hasEntry ? 'text-text-main dark:text-white font-semibold cursor-pointer hover:bg-primary/10' : 'text-slate-400 dark:text-slate-600 cursor-default',
+              cell.isToday ? 'border-accent' : 'border-transparent',
+              cell.hasEntry ? 'font-medium text-ink active:bg-accent-soft' : 'text-ink-muted',
             ]"
           >
             {{ cell.day }}
-            <!-- Entry indicator dot -->
+            <!-- Entry indicator -->
             <span
               v-if="cell.hasEntry"
-              class="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-primary"
+              class="absolute bottom-1.5 left-1/2 h-1 w-1 -translate-x-1/2 rounded-[1px] bg-accent"
+              aria-hidden="true"
             />
           </button>
         </template>

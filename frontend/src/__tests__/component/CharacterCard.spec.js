@@ -50,12 +50,12 @@ describe('CharacterCard', () => {
     it('should display the character in large text', () => {
       const wrapper = createWrapper()
       expect(wrapper.text()).toContain('あ')
-      expect(wrapper.find('.text-4xl').exists()).toBe(true)
+      expect(wrapper.find('[data-testid="character-glyph"]').text()).toBe('あ')
     })
 
     it('should display romaji below the character', () => {
       const wrapper = createWrapper()
-      const romaji = wrapper.find('.text-sm.text-primary')
+      const romaji = wrapper.find('[data-testid="character-romaji"]')
       expect(romaji.exists()).toBe(true)
       expect(romaji.text()).toBe('a')
     })
@@ -85,14 +85,14 @@ describe('CharacterCard', () => {
 
     it('should have rounded-2xl container', () => {
       const wrapper = createWrapper()
-      expect(wrapper.find('.rounded-2xl').exists()).toBe(true)
+      expect(wrapper.find('[data-testid="character-card"]').exists()).toBe(true)
     })
   })
 
   describe('learned state', () => {
     it('should show green left border when learned', () => {
       const wrapper = createWrapper({ learned: true })
-      expect(wrapper.find('.border-l-green-500').exists()).toBe(true)
+      expect(wrapper.find('[data-testid="character-card"]').attributes('data-learned')).toBe('true')
     })
 
     it('should show checkmark badge when learned', () => {
@@ -161,10 +161,12 @@ describe('CharacterCard', () => {
   })
 
   describe('dark mode support', () => {
-    it('should have dark mode classes', () => {
+    it('uses theme tokens instead of fixed palette colors', () => {
       const wrapper = createWrapper()
       const html = wrapper.html()
-      expect(html).toContain('dark:')
+      // Light/dark come from the token variables, so no per-theme palette utilities
+      expect(html).toMatch(/bg-surface|bg-accent/)
+      expect(html).not.toMatch(/(slate|gray|green|amber|red|violet)-\d{2,3}/)
     })
   })
 })

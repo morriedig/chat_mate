@@ -2,6 +2,8 @@
 import { ref, computed, watch, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import DiaryPromptBanner from './DiaryPromptBanner.vue'
+import CmButton from '../ui/CmButton.vue'
+import CmProgress from '../ui/CmProgress.vue'
 
 const { t } = useI18n()
 
@@ -21,6 +23,11 @@ const props = defineProps({
   initialPrompt: {
     type: String,
     default: ''
+  },
+  // Friend who reads the entry (feedback CTA copy)
+  characterName: {
+    type: String,
+    default: 'Emma'
   }
 })
 
@@ -37,6 +44,7 @@ const textareaRef = ref(null)
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
 const speechSupported = computed(() => !!SpeechRecognition)
 const isListening = ref(false)
+const isFocused = ref(false)
 let recognition = null
 
 const LANG_MAP = {
@@ -216,11 +224,11 @@ function handleSubmit() {
 </script>
 
 <template>
-  <div class="flex flex-col flex-1 overflow-hidden">
+  <div class="flex flex-1 flex-col overflow-hidden">
     <!-- Scrollable content area -->
     <div class="flex-1 overflow-y-auto">
-      <div class="max-w-2xl mx-auto px-4 py-4 sm:py-6">
-        <!-- Prompt Banner -->
+      <div class="mx-auto max-w-2xl px-4 py-4 min-[375px]:px-5 sm:py-6">
+        <!-- Prompt strip -->
         <DiaryPromptBanner
           v-if="!promptDismissed"
           :level="level"
@@ -230,60 +238,61 @@ function handleSubmit() {
           @dismiss="promptDismissed = true"
         />
 
-        <!-- Textarea -->
+        <!-- Textarea: the hero; a notebook margin rule appears on focus -->
         <div class="relative">
+          <span
+            v-if="isFocused"
+            class="pointer-events-none absolute left-0 top-4 bottom-4 w-[3px] rounded-r-[3px] bg-accent"
+            aria-hidden="true"
+          ></span>
           <textarea
             ref="textareaRef"
             v-model="body"
             :placeholder="placeholder"
             :disabled="isLoading"
-            class="w-full resize-none rounded-2xl border border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark text-text-main dark:text-white px-4 py-4 text-base leading-relaxed focus:border-primary focus:ring-1 focus:ring-primary dark:focus:ring-primary placeholder-slate-400 disabled:opacity-50 transition-colors"
+            :aria-label="t('diary.todaysDiary')"
+            @focus="isFocused = true"
+            @blur="isFocused = false"
+            class="block w-full resize-none rounded-[14px] border border-hairline bg-surface px-4 py-4 text-body text-ink placeholder:text-ink-muted focus:border-accent/40 focus:outline-none focus-visible:outline-none focus-visible:shadow-none disabled:opacity-55"
             style="min-height: 200px; max-height: 60vh;"
           ></textarea>
         </div>
 
-        <!-- Count + progress bar -->
+        <!-- Count + progress -->
         <div class="mt-3 flex items-center gap-3">
-          <span class="text-xs text-text-muted dark:text-slate-400 shrink-0">{{ countLabel }}</span>
-          <div class="flex-1 h-1.5 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
-            <div
-              class="h-full rounded-full transition-all duration-300"
-              :class="targetProgress >= 100 ? 'bg-green-400 dark:bg-green-500' : 'bg-primary/60'"
-              :style="{ width: targetProgress + '%' }"
-            ></div>
-          </div>
-          <span v-if="targetProgress >= 100" class="material-symbols-outlined text-green-500 text-[16px]">check_circle</span>
+          <span class="shrink-0 text-meta tabular-nums text-ink-muted">{{ countLabel }}</span>
+          <CmProgress class="flex-1" :value="textCount" :max="softTarget" :label="countLabel" />
+          <span
+            v-if="targetProgress >= 100"
+            class="material-symbols-outlined shrink-0 !text-[18px] text-success"
+            aria-hidden="true"
+          >check_circle</span>
         </div>
       </div>
     </div>
 
-    <!-- Footer with submit -->
-    <div class="p-4 sm:p-6 bg-surface-light dark:bg-surface-dark border-t border-[#e7eff3] dark:border-slate-800 z-10 safe-area-bottom">
-      <div class="flex items-center gap-3 max-w-2xl mx-auto">
-        <!-- Mic Button -->
+    <!-- Footer: mic + feedback CTA -->
+    <div class="z-10 border-t border-hairline bg-surface px-4 pt-3 pb-[max(12px,env(safe-area-inset-bottom))] min-[375px]:px-5">
+      <div class="mx-auto flex max-w-2xl items-center gap-3">
         <button
           v-if="speechSupported"
+          type="button"
           @click="toggleSpeech"
           :disabled="isLoading"
           :aria-label="isListening ? t('common.stopVoiceInput') : t('common.startVoiceInput')"
-          class="shrink-0 flex items-center justify-center size-12 rounded-full transition-all disabled:opacity-50"
+          :aria-pressed="isListening"
+          class="inline-flex size-12 shrink-0 items-center justify-center rounded-[10px] border disabled:opacity-55"
           :class="isListening
-            ? 'bg-red-500 text-white animate-pulse shadow-lg shadow-red-500/30'
-            : 'bg-slate-100 dark:bg-slate-800 text-text-muted dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'"
+            ? 'border-transparent bg-error-soft text-error'
+            : 'border-hairline bg-surface-raised text-ink-secondary active:bg-surface-sunken'"
         >
-          <span class="material-symbols-outlined text-[22px]">{{ isListening ? 'mic_off' : 'mic' }}</span>
+          <span class="material-symbols-outlined" aria-hidden="true">{{ isListening ? 'mic_off' : 'mic' }}</span>
         </button>
 
-        <!-- Submit Button -->
-        <button
-          @click="handleSubmit"
-          :disabled="!canSubmit"
-          class="flex-1 flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-primary text-[#0d171b] font-semibold shadow-lg hover:bg-primary/90 hover:scale-[1.01] active:scale-[0.99] transition-all disabled:opacity-50 disabled:hover:scale-100"
-        >
-          <span v-if="isLoading" class="material-symbols-outlined text-[20px] animate-spin">progress_activity</span>
-          <span v-else class="material-symbols-outlined text-[20px]">rate_review</span>
-          {{ isLoading ? t('diary.submitting') : t('diary.getFeedback') }}
-        </button>
+        <CmButton class="min-w-0 flex-1" :disabled="!canSubmit" @click="handleSubmit">
+          <span class="material-symbols-outlined shrink-0" aria-hidden="true">rate_review</span>
+          <span class="truncate">{{ isLoading ? t('diary.reading', { name: characterName }) : t('diary.getFeedback', { name: characterName }) }}</span>
+        </CmButton>
       </div>
     </div>
   </div>

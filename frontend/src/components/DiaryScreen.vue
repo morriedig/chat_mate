@@ -13,6 +13,10 @@ import DiaryFeedback from './diary/DiaryFeedback.vue'
 import DiaryEntryCard from './diary/DiaryEntryCard.vue'
 import DiaryCalendar from './diary/DiaryCalendar.vue'
 import ContributionGrid from './diary/ContributionGrid.vue'
+import CmAppBar from './ui/CmAppBar.vue'
+import CmButton from './ui/CmButton.vue'
+import CmSegmentedControl from './ui/CmSegmentedControl.vue'
+import CmStateBlock from './ui/CmStateBlock.vue'
 import { toLocalDateKey, LOCALE_MAP } from '../utils/dateUtils'
 
 const { t } = useI18n()
@@ -218,6 +222,21 @@ const totalWords = computed(() => {
   return entryIndex.value.reduce((sum, e) => sum + (e.wordCount || 0), 0)
 })
 
+const historyViewOptions = computed(() => [
+  { value: 'list', label: t('diary.list') },
+  { value: 'calendar', label: t('diary.calendar') },
+])
+
+function setHistoryView(view) {
+  historyView.value = view
+  filterDate.value = null
+}
+
+function toggleViewMode() {
+  viewMode.value = viewMode.value === 'write' ? 'history' : 'write'
+  selectedEntry.value = null
+}
+
 function handleCalendarDate(dateStr) {
   filterDate.value = dateStr
   historyView.value = 'list'
@@ -253,66 +272,63 @@ function handleBack() {
 
 <template>
   <div class="flex h-screen w-full max-w-[100vw] overflow-hidden">
-    <div class="flex flex-1 min-w-0 flex-col h-full relative bg-background-light dark:bg-background-dark">
-      <!-- Header -->
-      <header class="flex items-center justify-between border-b border-[#e7eff3] dark:border-slate-800 px-3 sm:px-6 py-3 sm:py-4 bg-surface-light dark:bg-surface-dark z-10 shadow-sm overflow-hidden safe-area-top">
-        <div class="flex items-center gap-2 sm:gap-3 text-text-main dark:text-white min-w-0 shrink">
-          <button @click="handleBack" class="flex items-center justify-center shrink-0">
-            <span class="material-symbols-outlined cursor-pointer">arrow_back</span>
-          </button>
-          <div class="flex flex-col min-w-0">
-            <h2 class="text-sm sm:text-base font-bold leading-tight tracking-[-0.015em] truncate">
-              {{ viewMode === 'history' && !selectedEntry ? t('diary.history') : t('diary.todaysDiary') }}
-            </h2>
-            <span class="text-xs text-text-muted dark:text-slate-400 truncate">{{ todayFormatted }}</span>
-          </div>
-        </div>
-        <div class="flex items-center gap-1 sm:gap-2">
-          <!-- Writing streak badge -->
-          <span v-if="stats.currentWritingStreak > 0" class="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 text-xs font-semibold">
-            <span class="material-symbols-outlined text-[14px]">local_fire_department</span>
-            {{ stats.currentWritingStreak }}
+    <div class="relative flex h-full min-w-0 flex-1 flex-col bg-page">
+      <CmAppBar
+        :title="viewMode === 'history' && !selectedEntry ? t('diary.history') : t('diary.todaysDiary')"
+        :subtitle="todayFormatted"
+        :back-label="t('diary.back')"
+        @back="handleBack"
+      >
+        <template #actions>
+          <!-- Writing streak: plain meta text, wide screens only -->
+          <span v-if="stats.currentWritingStreak > 0" class="mr-2 hidden text-meta tabular-nums text-ink-muted sm:inline">
+            {{ t('diary.writingStreak') }}: {{ t('diary.days', { count: stats.currentWritingStreak }) }}
           </span>
-          <!-- History toggle -->
           <button
-            @click="viewMode = viewMode === 'write' ? 'history' : 'write'; selectedEntry = null"
-            class="flex h-9 w-9 sm:w-auto sm:px-3 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-text-main dark:text-slate-200 text-sm font-medium transition-colors shrink-0"
-            :class="viewMode === 'history' ? 'bg-primary/10 border-primary/30' : ''"
+            type="button"
+            @click="toggleViewMode"
+            :aria-label="viewMode === 'history' ? t('diary.mode') : t('diary.history')"
+            :aria-pressed="viewMode === 'history'"
+            class="inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center gap-1 rounded-[10px] px-2.5 active:bg-surface-raised"
+            :class="viewMode === 'history' ? 'bg-accent-soft text-accent' : 'text-ink-secondary'"
           >
-            <span class="material-symbols-outlined text-[18px]">{{ viewMode === 'history' ? 'edit_note' : 'history' }}</span>
-            <span class="hidden sm:inline ml-1">{{ viewMode === 'history' ? t('diary.mode') : t('diary.history') }}</span>
+            <span class="material-symbols-outlined" aria-hidden="true">{{ viewMode === 'history' ? 'edit_note' : 'history' }}</span>
+            <span class="hidden text-caption font-medium sm:inline">{{ viewMode === 'history' ? t('diary.mode') : t('diary.history') }}</span>
           </button>
-          <!-- Dark mode toggle -->
           <button
+            type="button"
             @click="toggleDark"
-            class="hidden sm:flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-text-main dark:text-slate-200 transition-colors"
+            :aria-label="t('settings.darkMode')"
+            :aria-pressed="isDark"
+            class="hidden size-11 shrink-0 items-center justify-center rounded-[10px] text-ink-secondary active:bg-surface-raised sm:inline-flex"
           >
-            <span class="material-symbols-outlined text-[18px]">{{ isDark ? 'light_mode' : 'dark_mode' }}</span>
+            <span class="material-symbols-outlined" aria-hidden="true">{{ isDark ? 'light_mode' : 'dark_mode' }}</span>
           </button>
-        </div>
-      </header>
+        </template>
+      </CmAppBar>
 
       <!-- Content Area -->
-      <div class="flex flex-col flex-1 overflow-hidden">
+      <div class="flex flex-1 flex-col overflow-hidden">
         <!-- WRITE MODE -->
         <template v-if="viewMode === 'write'">
-          <!-- Show editor if no active entry with feedback -->
+          <!-- Editor until feedback exists -->
           <DiaryEditor
             v-if="!activeEntry || !activeEntry.feedback"
             :language="diaryLanguage"
             :level="diaryLevel"
             :is-loading="isLoadingFeedback"
             :initial-prompt="rewriteInitialText || initialPrompt"
+            :character-name="feedbackCharacter.name"
             @submit="handleSubmit"
           />
 
-          <!-- Show feedback when loading or available -->
+          <!-- Feedback when loading or available -->
           <div v-if="activeEntry" class="flex-1 overflow-y-auto">
-            <div class="max-w-2xl mx-auto px-4 py-4 sm:py-6">
-              <!-- Show the submitted text as reference -->
-              <div v-if="activeEntry.feedback" class="mb-4 p-3 sm:p-4 rounded-2xl bg-primary/10 dark:bg-primary/20 border border-primary/20">
-                <p class="text-xs font-medium text-text-muted dark:text-slate-400 mb-1">{{ t('feedback.you') }}</p>
-                <p class="text-sm sm:text-base text-text-main dark:text-slate-200 whitespace-pre-wrap break-words">{{ activeEntry.body }}</p>
+            <div class="mx-auto max-w-2xl px-4 py-4 min-[375px]:px-5 sm:py-6">
+              <!-- Submitted text as a neutral reference -->
+              <div v-if="activeEntry.feedback" class="mb-5 rounded-[14px] bg-surface-sunken p-4">
+                <p class="mb-1 text-meta text-ink-muted">{{ t('feedback.you') }}</p>
+                <p class="whitespace-pre-wrap break-words text-body text-ink">{{ activeEntry.body }}</p>
               </div>
 
               <DiaryFeedback
@@ -324,22 +340,16 @@ function handleBack() {
                 @rewrite="handleRewrite"
               />
 
-              <!-- Action buttons after feedback -->
-              <div v-if="activeEntry.feedback" class="mt-6 flex flex-col sm:flex-row gap-3 pb-6">
-                <button
-                  @click="handleWriteAnother"
-                  class="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-primary text-[#0d171b] font-semibold shadow-md hover:bg-primary/90 transition-colors"
-                >
-                  <span class="material-symbols-outlined text-[20px]">edit_note</span>
+              <!-- Actions after feedback -->
+              <div v-if="activeEntry.feedback" class="mt-8 flex flex-col gap-3 pb-6 sm:flex-row">
+                <CmButton class="flex-1" @click="handleWriteAnother">
+                  <span class="material-symbols-outlined" aria-hidden="true">edit_note</span>
                   {{ t('diary.writeAnother') }}
-                </button>
-                <button
-                  @click="router.push('/')"
-                  class="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 text-text-main dark:text-slate-200 font-medium hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
-                >
-                  <span class="material-symbols-outlined text-[20px]">check</span>
+                </CmButton>
+                <CmButton variant="secondary" class="flex-1" @click="router.push('/')">
+                  <span class="material-symbols-outlined" aria-hidden="true">check</span>
                   {{ t('diary.saveAndClose') }}
-                </button>
+                </CmButton>
               </div>
             </div>
           </div>
@@ -347,25 +357,20 @@ function handleBack() {
 
         <!-- HISTORY MODE -->
         <template v-else>
-          <!-- Detail view -->
+          <!-- Detail view: the selected entry is the only card -->
           <div v-if="selectedEntry" class="flex-1 overflow-y-auto">
-            <div class="max-w-2xl mx-auto px-4 py-4 sm:py-6">
-              <!-- Entry date -->
-              <div class="flex items-center gap-2 mb-4">
-                <span class="text-xs font-medium text-slate-400 bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-full">
-                  {{ new Date(selectedEntry.createdAt).toLocaleDateString(language === 'ja' ? 'ja-JP' : language === 'zh' ? 'zh-TW' : 'en-US', { year: 'numeric', month: 'short', day: 'numeric', weekday: 'short' }) }}
-                </span>
-              </div>
+            <div class="mx-auto max-w-2xl px-4 py-4 min-[375px]:px-5 sm:py-6">
+              <p class="mb-2 text-meta text-ink-muted">
+                {{ new Date(selectedEntry.createdAt).toLocaleDateString(language === 'ja' ? 'ja-JP' : language === 'zh' ? 'zh-TW' : 'en-US', { year: 'numeric', month: 'short', day: 'numeric', weekday: 'short' }) }}
+              </p>
 
-              <!-- Entry body -->
-              <div class="mb-4 p-3 sm:p-4 rounded-2xl bg-primary/10 dark:bg-primary/20 border border-primary/20">
-                <p class="text-sm sm:text-base text-text-main dark:text-slate-200 whitespace-pre-wrap break-words">{{ selectedEntry.body }}</p>
-                <p class="mt-2 text-xs text-text-muted dark:text-slate-500">
+              <div class="mb-5 rounded-[14px] border border-hairline bg-surface p-4 shadow-[var(--cm-shadow-small)]">
+                <p class="whitespace-pre-wrap break-words text-body text-ink">{{ selectedEntry.body }}</p>
+                <p class="mt-2 text-meta tabular-nums text-ink-muted">
                   {{ ['ja', 'zh'].includes(selectedEntry.language) ? t('diary.charCount', { count: selectedEntry.body.length }) : t('diary.wordCount', { count: selectedEntry.wordCount }) }}
                 </p>
               </div>
 
-              <!-- Feedback if available -->
               <DiaryFeedback
                 v-if="selectedEntry.feedback || selectedEntry.feedbackStatus === 'loading'"
                 :feedback="selectedEntry.feedback"
@@ -375,107 +380,90 @@ function handleBack() {
                 @rewrite="handleRewriteFromHistory"
               />
 
-              <div v-else-if="selectedEntry.feedbackStatus === 'pending'" class="p-4 rounded-xl bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 text-sm text-amber-700 dark:text-amber-300">
-                <div class="flex items-center gap-2">
-                  <span class="material-symbols-outlined text-base">wifi_off</span>
-                  {{ t('diary.offline') }}
-                </div>
+              <div v-else-if="selectedEntry.feedbackStatus === 'pending'" class="flex items-start gap-2 rounded-[14px] bg-warning-soft p-4 text-caption text-ink" role="status">
+                <span class="material-symbols-outlined shrink-0 text-warning" aria-hidden="true">wifi_off</span>
+                {{ t('diary.offline') }}
               </div>
             </div>
           </div>
 
-          <!-- Entry list / Calendar view -->
+          <!-- Grid → totals/export → list/calendar → entries -->
           <div v-else class="flex-1 overflow-y-auto">
-            <div class="max-w-2xl mx-auto px-4 py-4 sm:py-6 space-y-3">
-              <!-- Contribution heatmap -->
-              <div v-if="entryIndex.length > 0" class="p-3 rounded-2xl bg-surface-light dark:bg-surface-dark border border-slate-100 dark:border-slate-800">
+            <div class="mx-auto max-w-2xl space-y-4 px-4 py-4 min-[375px]:px-5 sm:py-6">
+              <!-- Contribution grid (hero) -->
+              <section v-if="entryIndex.length > 0" class="rounded-[14px] border border-hairline bg-surface p-4 shadow-[var(--cm-shadow-small)]">
+                <h2 class="mb-3 text-caption font-medium text-ink">{{ t('diary.gridLabel') }}</h2>
                 <ContributionGrid :entries="entryIndex" />
-              </div>
+              </section>
 
-              <!-- Stats bar with streak and totals -->
-              <div v-if="entryIndex.length > 0" class="flex items-center flex-wrap gap-3 mb-1 px-1">
-                <span class="text-xs text-text-muted dark:text-slate-400">
-                  {{ t('diary.entries', { count: stats.totalEntries }) }}
-                </span>
-                <span class="text-xs text-text-muted dark:text-slate-400">
-                  {{ t('diary.totalWords') }}: {{ totalWords }}
-                </span>
-                <span v-if="stats.currentWritingStreak > 0" class="text-xs text-amber-600 dark:text-amber-400 flex items-center gap-1">
-                  <span class="material-symbols-outlined text-[14px]">local_fire_department</span>
+              <!-- Totals + export -->
+              <div v-if="entryIndex.length > 0" class="flex flex-wrap items-center gap-x-4 gap-y-1">
+                <span class="text-meta tabular-nums text-ink-muted">{{ t('diary.entries', { count: stats.totalEntries }) }}</span>
+                <span class="text-meta tabular-nums text-ink-muted">{{ t('diary.totalWords') }}: {{ totalWords }}</span>
+                <span v-if="stats.currentWritingStreak > 0" class="text-meta tabular-nums text-ink-muted">
                   {{ t('diary.writingStreak') }}: {{ t('diary.days', { count: stats.currentWritingStreak }) }}
                 </span>
                 <button
+                  type="button"
                   @click="handleExport"
-                  class="ml-auto flex items-center gap-1 px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-text-muted dark:text-slate-400 text-xs font-medium transition-colors"
+                  class="ml-auto -mr-2 inline-flex min-h-11 items-center gap-1 rounded-[10px] px-2 text-caption font-medium text-accent active:bg-surface-raised"
                 >
-                  <span class="material-symbols-outlined text-[14px]">download</span>
+                  <span class="material-symbols-outlined !text-[18px]" aria-hidden="true">download</span>
                   {{ t('diary.export') }}
                 </button>
               </div>
 
               <!-- View toggle: List / Calendar -->
-              <div v-if="entryIndex.length > 0" class="flex items-center gap-1 p-1 bg-slate-100 dark:bg-slate-800 rounded-lg w-fit">
-                <button
-                  @click="historyView = 'list'; filterDate = null"
-                  class="flex items-center gap-1 px-3 py-1.5 rounded-md text-xs font-medium transition-colors"
-                  :class="historyView === 'list' ? 'bg-white dark:bg-slate-700 text-text-main dark:text-white shadow-sm' : 'text-text-muted dark:text-slate-400'"
-                >
-                  <span class="material-symbols-outlined text-[14px]">list</span>
-                  {{ t('diary.list') }}
-                </button>
-                <button
-                  @click="historyView = 'calendar'; filterDate = null"
-                  class="flex items-center gap-1 px-3 py-1.5 rounded-md text-xs font-medium transition-colors"
-                  :class="historyView === 'calendar' ? 'bg-white dark:bg-slate-700 text-text-main dark:text-white shadow-sm' : 'text-text-muted dark:text-slate-400'"
-                >
-                  <span class="material-symbols-outlined text-[14px]">calendar_month</span>
-                  {{ t('diary.calendar') }}
-                </button>
-              </div>
+              <CmSegmentedControl
+                v-if="entryIndex.length > 0"
+                :options="historyViewOptions"
+                :model-value="historyView"
+                :label="t('diary.history')"
+                class="sm:max-w-xs"
+                @update:model-value="setHistoryView"
+              />
 
               <!-- Calendar view -->
-              <div v-if="historyView === 'calendar'" class="p-3 rounded-2xl bg-surface-light dark:bg-surface-dark border border-slate-100 dark:border-slate-800">
+              <div v-if="historyView === 'calendar'" class="rounded-[14px] border border-hairline bg-surface px-2 py-3">
                 <DiaryCalendar :entries="entryIndex" @select-date="handleCalendarDate" />
               </div>
 
               <!-- Date filter indicator -->
-              <div v-if="filterDate" class="flex items-center gap-2 px-1">
-                <span class="text-xs text-primary font-medium">{{ filterDate }}</span>
+              <div v-if="filterDate" class="flex items-center gap-2">
+                <span class="text-caption font-medium tabular-nums text-accent">{{ filterDate }}</span>
                 <button
+                  type="button"
                   @click="clearDateFilter"
-                  class="text-xs text-text-muted dark:text-slate-400 hover:text-text-main dark:hover:text-white underline"
+                  class="inline-flex min-h-11 items-center rounded-[10px] px-2 text-caption text-ink-secondary underline underline-offset-2"
                 >
                   {{ t('diary.list') }}
                 </button>
               </div>
 
-              <!-- List view (default or filtered) -->
+              <!-- Entries as a grouped list -->
               <template v-if="historyView === 'list' || filterDate">
-                <DiaryEntryCard
-                  v-for="entry in filteredEntries"
-                  :key="entry.id"
-                  :entry="entry"
-                  @select="handleSelectEntry"
-                />
-
-                <div v-if="filteredEntries.length === 0 && filterDate" class="text-center py-8">
-                  <p class="text-sm text-text-muted dark:text-slate-400">{{ t('diary.noEntriesForDate') }}</p>
+                <div v-if="filteredEntries.length" class="divide-y divide-hairline overflow-hidden rounded-[14px] border border-hairline bg-surface">
+                  <DiaryEntryCard
+                    v-for="entry in filteredEntries"
+                    :key="entry.id"
+                    :entry="entry"
+                    @select="handleSelectEntry"
+                  />
                 </div>
+
+                <p v-if="filteredEntries.length === 0 && filterDate" class="py-8 text-center text-caption text-ink-muted">{{ t('diary.noEntriesForDate') }}</p>
               </template>
 
               <!-- Empty state -->
-              <div v-if="entryIndex.length === 0" class="flex flex-col items-center justify-center py-16 text-center">
-                <span class="material-symbols-outlined text-[48px] text-slate-300 dark:text-slate-600 mb-4">menu_book</span>
-                <p class="text-base font-semibold text-text-main dark:text-white mb-1">{{ t('diary.noEntries') }}</p>
-                <p class="text-sm text-text-muted dark:text-slate-400 mb-6">{{ t('diary.noEntriesDesc') }}</p>
-                <button
-                  @click="viewMode = 'write'"
-                  class="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-[#0d171b] font-semibold shadow-md hover:bg-primary/90 transition-colors"
-                >
-                  <span class="material-symbols-outlined text-[20px]">edit_note</span>
-                  {{ t('diary.writeFirst') }}
-                </button>
-              </div>
+              <CmStateBlock
+                v-if="entryIndex.length === 0"
+                class="mt-8"
+                icon="edit_note"
+                :title="t('diary.noEntries')"
+                :body="t('diary.noEntriesDesc')"
+                :action="t('diary.writeFirst')"
+                @action="viewMode = 'write'"
+              />
             </div>
           </div>
         </template>

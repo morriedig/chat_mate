@@ -127,12 +127,12 @@ describe('VocabularyCard', () => {
   describe('styling', () => {
     it('should have rounded container', () => {
       const wrapper = createWrapper()
-      expect(wrapper.find('.rounded-xl').exists()).toBe(true)
+      expect(wrapper.find('[data-testid="vocabulary-card"]').classes()).toContain('rounded-[14px]')
     })
 
     it('should have example section with border', () => {
       const wrapper = createWrapper()
-      expect(wrapper.find('.border-l-4').exists()).toBe(true)
+      expect(wrapper.find('[data-testid="example"]').classes()).toContain('bg-surface-sunken')
     })
   })
 

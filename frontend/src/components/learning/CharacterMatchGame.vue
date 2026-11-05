@@ -2,6 +2,8 @@
 import { ref, computed, watch, nextTick, onBeforeUnmount } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { playTTS, isTTSAvailable } from '../../utils/tts'
+import CmButton from '../ui/CmButton.vue'
+import CmProgress from '../ui/CmProgress.vue'
 
 const { t } = useI18n()
 
@@ -145,21 +147,21 @@ onBeforeUnmount(() => {
 
 function getOptionClasses(character) {
   if (!isAnswered.value) {
-    return 'border-slate-200 dark:border-slate-700 hover:border-primary dark:hover:border-primary bg-surface-light dark:bg-surface-dark'
+    return 'border-hairline bg-surface active:bg-surface-raised'
   }
 
   const isSelected = selectedId.value === character.id
   const isCorrectOption = character.id === currentQuestion.value.correct.id
 
   if (isCorrectOption) {
-    return 'border-green-500 bg-green-50 dark:bg-green-900/30'
+    return 'border-success/40 bg-success-soft'
   }
 
   if (isSelected && !isCorrectOption) {
-    return 'border-red-500 bg-red-50 dark:bg-red-900/30 animate-shake'
+    return 'border-error/40 bg-error-soft'
   }
 
-  return 'border-slate-200 dark:border-slate-700 opacity-40'
+  return 'border-hairline bg-surface opacity-40'
 }
 
 // Initialize on mount and when characters change
@@ -173,165 +175,121 @@ watch(() => props.characters, (newChars) => {
 </script>
 
 <template>
-  <div class="flex flex-col items-center w-full max-w-lg mx-auto">
+  <div class="mx-auto flex w-full max-w-lg flex-col">
     <!-- Empty State -->
-    <div v-if="totalQuestions === 0" class="text-center py-12">
-      <span class="material-symbols-outlined text-[48px] text-slate-300 dark:text-slate-600 mb-4">quiz</span>
-      <p class="text-sm text-text-muted dark:text-slate-400">No characters to practice</p>
+    <div v-if="totalQuestions === 0" class="flex flex-col items-center gap-3 py-12 text-center">
+      <span class="flex size-16 items-center justify-center rounded-[14px] bg-accent-soft text-accent">
+        <span class="material-symbols-outlined !text-[32px]" aria-hidden="true">quiz</span>
+      </span>
+      <p class="text-caption text-ink-secondary">No characters to practice</p>
     </div>
 
     <!-- Game In Progress -->
     <template v-else-if="!isCompleted">
-      <!-- Progress Bar -->
-      <div class="w-full mb-6">
-        <div class="flex justify-between text-sm text-text-muted dark:text-slate-400 mb-2">
+      <!-- Progress -->
+      <div class="mb-4">
+        <div class="mb-2 flex items-center justify-between text-meta tabular-nums text-ink-muted">
           <span>{{ currentIndex + 1 }} / {{ totalQuestions }}</span>
           <span class="flex items-center gap-1">
-            <span class="material-symbols-outlined text-sm text-green-500">check_circle</span>
+            <span class="material-symbols-outlined !text-[16px] text-success" aria-hidden="true">check_circle</span>
             {{ score }}
           </span>
         </div>
-        <div class="h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
-          <div
-            class="h-full bg-gradient-to-r from-primary to-green-400 rounded-full transition-all duration-300"
-            :style="{ width: `${progress}%` }"
-          ></div>
-        </div>
+        <CmProgress :value="progress" :max="100" :label="t('prelesson.tapCharacterYouHear')" />
       </div>
 
-      <!-- Audio Prompt Card -->
-      <div class="w-full p-8 rounded-2xl bg-gradient-to-br from-violet-50 to-indigo-50 dark:from-violet-900/30 dark:to-indigo-900/20 border border-violet-200 dark:border-violet-800 mb-6 text-center">
+      <!-- Audio prompt -->
+      <div class="relative mb-4 rounded-[14px] border border-hairline bg-surface p-5 text-center shadow-[var(--cm-shadow-small)]" data-testid="match-prompt">
+        <span class="absolute left-0 top-5 h-9 w-[3px] rounded-r-[3px] bg-accent" aria-hidden="true"></span>
         <template v-if="isTTSAvailable()">
           <button
+            type="button"
+            data-testid="match-play"
             @click="playCurrentAudio"
             :disabled="isPlayingAudio"
-            aria-label="Play audio"
-            class="mx-auto flex items-center justify-center size-16 rounded-full bg-white dark:bg-slate-800 shadow-lg hover:shadow-xl transition-shadow"
-            :class="{ 'animate-pulse': isPlayingAudio }"
+            :aria-label="t('learning.conversation.playAudio')"
+            class="mx-auto flex size-16 items-center justify-center rounded-[14px] bg-accent text-on-accent active:bg-accent-pressed disabled:opacity-70"
           >
-            <span class="material-symbols-outlined text-3xl text-primary">
+            <span class="material-symbols-outlined !text-[28px]" aria-hidden="true">
               {{ isPlayingAudio ? 'volume_up' : 'play_arrow' }}
             </span>
           </button>
-          <p class="mt-4 text-sm text-text-muted dark:text-slate-400">
+          <p class="mt-3 text-caption text-ink-secondary">
             {{ t('prelesson.tapCharacterYouHear') }}
           </p>
         </template>
         <template v-else>
-          <p class="text-3xl font-bold text-primary mb-2">{{ currentQuestion?.correct.romaji }}</p>
-          <p class="text-sm text-text-muted dark:text-slate-400">
+          <p class="mb-1 text-display font-medium text-accent">{{ currentQuestion?.correct.romaji }}</p>
+          <p class="text-caption text-ink-secondary">
             {{ t('prelesson.tapCharacterYouHear') }}
           </p>
         </template>
       </div>
 
-      <!-- Character Options -->
-      <div class="w-full grid grid-cols-3 gap-3 sm:grid-cols-5">
+      <!-- Character options -->
+      <div class="grid w-full grid-cols-3 gap-2 sm:grid-cols-5">
         <button
           v-for="option in currentQuestion?.options"
           :key="option.id"
+          type="button"
           @click="selectOption(option)"
           :disabled="isAnswered"
           :aria-label="option.char + ' ' + option.romaji"
-          class="relative flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all touch-target"
+          class="touch-target relative flex flex-col items-center justify-center rounded-[10px] border p-3 transition-colors duration-[180ms]"
           :class="getOptionClasses(option)"
         >
-          <span class="text-3xl font-bold text-text-main dark:text-white">
+          <span class="text-section font-medium text-ink">
             {{ option.char }}
           </span>
-          <span class="text-xs text-text-muted dark:text-slate-400 mt-1">
+          <span class="mt-0.5 text-meta text-ink-muted">
             {{ option.romaji }}
           </span>
 
-          <!-- Correct checkmark overlay -->
           <span
             v-if="isAnswered && option.id === currentQuestion?.correct.id"
-            class="absolute top-1 right-1 material-symbols-outlined text-green-500 text-lg"
-          >
-            check_circle
-          </span>
-          <!-- Wrong X overlay -->
+            class="absolute right-1 top-1 material-symbols-outlined !text-[18px] text-success"
+            aria-hidden="true"
+          >check_circle</span>
           <span
             v-if="isAnswered && selectedId === option.id && option.id !== currentQuestion?.correct.id"
-            class="absolute top-1 right-1 material-symbols-outlined text-red-500 text-lg"
-          >
-            cancel
-          </span>
+            class="absolute right-1 top-1 material-symbols-outlined !text-[18px] text-error"
+            aria-hidden="true"
+          >cancel</span>
         </button>
       </div>
 
-      <!-- Wrong Answer: Play Again / Next Button -->
-      <div v-if="isAnswered && !isCorrect" class="w-full mt-6">
-        <button
-          @click="handlePlayAgain"
-          class="w-full py-4 rounded-xl bg-primary text-[#0d171b] font-bold text-lg hover:bg-primary/90 transition-colors"
-        >
-          <span class="flex items-center justify-center gap-2">
-            <span class="material-symbols-outlined">arrow_forward</span>
-            {{ t('prelesson.nextCharacter') }}
-          </span>
-        </button>
+      <p v-if="isAnswered" class="sr-only" role="status">{{ isCorrect ? t('learning.correct') : t('learning.incorrect') }}</p>
+
+      <!-- Wrong answer: next -->
+      <div v-if="isAnswered && !isCorrect" class="mt-5 w-full">
+        <CmButton block data-testid="match-next" @click="handlePlayAgain">
+          <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+          {{ t('prelesson.nextCharacter') }}
+        </CmButton>
       </div>
     </template>
 
-    <!-- Game Complete -->
+    <!-- Game complete: factual result -->
     <template v-else>
-      <div class="w-full text-center">
-        <div class="p-8 rounded-2xl bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-900/30 dark:to-orange-900/20 border border-amber-200 dark:border-amber-700 mb-6">
-          <div class="text-6xl mb-4">
-            {{ accuracy >= 80 ? '🎉' : accuracy >= 60 ? '👍' : '💪' }}
-          </div>
-          <h2 class="text-2xl font-bold text-text-main dark:text-white mb-2">
-            {{ t('prelesson.matchComplete') }}
-          </h2>
-          <p class="text-text-muted dark:text-slate-400 mb-4">{{ t('learning.yourScore') }}</p>
-
-          <div class="flex items-center justify-center gap-4">
-            <div class="text-center">
-              <span class="text-4xl font-bold text-primary">{{ score }}</span>
-              <span class="text-2xl text-text-muted dark:text-slate-400"> / {{ totalQuestions }}</span>
-            </div>
-            <div class="h-12 w-px bg-slate-300 dark:bg-slate-600"></div>
-            <div class="text-center">
-              <span
-                class="text-4xl font-bold"
-                :class="accuracy >= 80 ? 'text-green-500' : accuracy >= 60 ? 'text-amber-500' : 'text-red-500'"
-              >
-                {{ accuracy }}%
-              </span>
-            </div>
-          </div>
-
-          <p class="mt-4 text-sm text-amber-600 dark:text-amber-400">
-            {{ t('prelesson.xpEarned', { xp: score * 2 }) }}
-          </p>
+      <div class="mb-6 rounded-[14px] border border-hairline bg-surface p-5 shadow-[var(--cm-shadow-small)]" data-testid="match-result">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-accent" aria-hidden="true">task_alt</span>
+          <h2 class="text-title font-medium text-ink">{{ t('prelesson.matchComplete') }}</h2>
         </div>
-
-        <!-- Restart Button -->
-        <button
-          @click="restartGame"
-          class="w-full py-4 rounded-xl bg-primary text-[#0d171b] font-bold text-lg hover:bg-primary/90 transition-colors"
-        >
-          <span class="flex items-center justify-center gap-2">
-            <span class="material-symbols-outlined">replay</span>
-            {{ t('learning.tryAgain') }}
-          </span>
-        </button>
+        <p class="mt-3 text-meta text-ink-muted">{{ t('learning.yourScore') }}</p>
+        <div class="flex items-baseline gap-3">
+          <span class="text-display font-medium tabular-nums text-ink">{{ score }} / {{ totalQuestions }}</span>
+          <span class="text-title tabular-nums text-ink-secondary">{{ accuracy }}%</span>
+        </div>
+        <p class="mt-2 text-meta tabular-nums text-ink-muted">
+          {{ t('prelesson.xpEarned', { xp: score * 2 }) }}
+        </p>
       </div>
+
+      <CmButton block data-testid="match-restart" @click="restartGame">
+        <span class="material-symbols-outlined" aria-hidden="true">replay</span>
+        {{ t('learning.tryAgain') }}
+      </CmButton>
     </template>
   </div>
 </template>
-
-<style scoped>
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  20% { transform: translateX(-4px); }
-  40% { transform: translateX(4px); }
-  60% { transform: translateX(-4px); }
-  80% { transform: translateX(4px); }
-}
-
-.animate-shake {
-  animation: shake 0.4s ease-in-out;
-}
-</style>

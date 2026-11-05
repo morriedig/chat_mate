@@ -43,15 +43,15 @@ describe('QuizMode', () => {
 
   describe('rendering', () => {
     it('should render quiz interface', () => {
-      expect(wrapper.find('.flex.flex-col.items-center').exists()).toBe(true)
+      expect(wrapper.find('.flex.flex-col').exists()).toBe(true)
     })
 
     it('should display progress bar', () => {
-      expect(wrapper.find('.h-2.bg-slate-200').exists()).toBe(true)
+      expect(wrapper.find('[role="progressbar"]').exists()).toBe(true)
     })
 
     it('should display question card', () => {
-      expect(wrapper.find('.rounded-2xl').exists()).toBe(true)
+      expect(wrapper.find('[data-testid="quiz-prompt"]').exists()).toBe(true)
     })
 
     it('should display answer options', () => {
@@ -67,7 +67,7 @@ describe('QuizMode', () => {
 
   describe('answer selection', () => {
     it('should allow selecting an answer', async () => {
-      const optionButtons = wrapper.findAll('.w-full.p-4.rounded-xl.border-2')
+      const optionButtons = wrapper.findAll('[data-testid="quiz-option"]')
 
       expect(optionButtons.length).toBeGreaterThanOrEqual(2)
 
@@ -78,17 +78,17 @@ describe('QuizMode', () => {
     })
 
     it('should disable options after answer is selected', async () => {
-      const optionButtons = wrapper.findAll('.w-full.p-4.rounded-xl.border-2')
+      const optionButtons = wrapper.findAll('[data-testid="quiz-option"]')
 
       await optionButtons[0].trigger('click')
 
       // Check that buttons are disabled
-      const disabledButtons = wrapper.findAll('.w-full.p-4.rounded-xl.border-2[disabled]')
+      const disabledButtons = wrapper.findAll('[data-testid="quiz-option"][disabled]')
       expect(disabledButtons.length).toBeGreaterThan(0)
     })
 
     it('should show feedback after answering', async () => {
-      const optionButtons = wrapper.findAll('.w-full.p-4.rounded-xl.border-2')
+      const optionButtons = wrapper.findAll('[data-testid="quiz-option"]')
 
       await optionButtons[0].trigger('click')
 
@@ -99,11 +99,11 @@ describe('QuizMode', () => {
 
   describe('navigation', () => {
     it('should move to next question when next button is clicked', async () => {
-      const optionButtons = wrapper.findAll('.w-full.p-4.rounded-xl.border-2')
+      const optionButtons = wrapper.findAll('[data-testid="quiz-option"]')
       await optionButtons[0].trigger('click')
 
       // Find and click next button
-      const nextButton = wrapper.find('.w-full.py-4.rounded-xl.bg-primary')
+      const nextButton = wrapper.find('[data-testid="quiz-next"]')
       await nextButton.trigger('click')
 
       // Progress should update
@@ -115,10 +115,10 @@ describe('QuizMode', () => {
     it('should emit complete event when quiz finishes', async () => {
       // Answer all questions
       for (let i = 0; i < mockWords.length; i++) {
-        const optionButtons = wrapper.findAll('.w-full.p-4.rounded-xl.border-2')
+        const optionButtons = wrapper.findAll('[data-testid="quiz-option"]')
         await optionButtons[0].trigger('click')
 
-        const nextButton = wrapper.find('.w-full.py-4.rounded-xl.bg-primary')
+        const nextButton = wrapper.find('[data-testid="quiz-next"]')
         await nextButton.trigger('click')
       }
 
@@ -137,10 +137,10 @@ describe('QuizMode', () => {
     it('should show completion screen after quiz ends', async () => {
       // Answer all questions
       for (let i = 0; i < mockWords.length; i++) {
-        const optionButtons = wrapper.findAll('.w-full.p-4.rounded-xl.border-2')
+        const optionButtons = wrapper.findAll('[data-testid="quiz-option"]')
         await optionButtons[0].trigger('click')
 
-        const nextButton = wrapper.find('.w-full.py-4.rounded-xl.bg-primary')
+        const nextButton = wrapper.find('[data-testid="quiz-next"]')
         await nextButton.trigger('click')
       }
 
@@ -152,10 +152,10 @@ describe('QuizMode', () => {
     it('should show review answers after completion', async () => {
       // Answer all questions
       for (let i = 0; i < mockWords.length; i++) {
-        const optionButtons = wrapper.findAll('.w-full.p-4.rounded-xl.border-2')
+        const optionButtons = wrapper.findAll('[data-testid="quiz-option"]')
         await optionButtons[0].trigger('click')
 
-        const nextButton = wrapper.find('.w-full.py-4.rounded-xl.bg-primary')
+        const nextButton = wrapper.find('[data-testid="quiz-next"]')
         await nextButton.trigger('click')
       }
 
@@ -167,15 +167,15 @@ describe('QuizMode', () => {
     it('should restart quiz when try again is clicked', async () => {
       // Complete the quiz
       for (let i = 0; i < mockWords.length; i++) {
-        const optionButtons = wrapper.findAll('.w-full.p-4.rounded-xl.border-2')
+        const optionButtons = wrapper.findAll('[data-testid="quiz-option"]')
         await optionButtons[0].trigger('click')
 
-        const nextButton = wrapper.find('.w-full.py-4.rounded-xl.bg-primary')
+        const nextButton = wrapper.find('[data-testid="quiz-next"]')
         await nextButton.trigger('click')
       }
 
       // Find and click restart button
-      const restartButton = wrapper.find('.w-full.py-4.rounded-xl.bg-primary')
+      const restartButton = wrapper.find('[data-testid="quiz-restart"]')
       await restartButton.trigger('click')
 
       // Should be back at first question
@@ -201,10 +201,10 @@ describe('QuizMode', () => {
     it('should show XP earned after completion', async () => {
       // Complete the quiz
       for (let i = 0; i < mockWords.length; i++) {
-        const optionButtons = wrapper.findAll('.w-full.p-4.rounded-xl.border-2')
+        const optionButtons = wrapper.findAll('[data-testid="quiz-option"]')
         await optionButtons[0].trigger('click')
 
-        const nextButton = wrapper.find('.w-full.py-4.rounded-xl.bg-primary')
+        const nextButton = wrapper.find('[data-testid="quiz-next"]')
         await nextButton.trigger('click')
       }
 
