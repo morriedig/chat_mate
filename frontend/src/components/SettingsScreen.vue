@@ -6,6 +6,7 @@ import { useDarkMode } from '../composables/useDarkMode'
 import { useDailyGoal } from '../composables/useDailyGoal'
 import { useMotherTongue, supportedLanguages } from '../composables/useMotherTongue'
 import { useUserProgress } from '../composables/useUserProgress'
+import { useVoiceSettings } from '../composables/useVoiceSettings'
 
 const { t, locale } = useI18n()
 const router = useRouter()
@@ -14,6 +15,7 @@ const { isDark, toggle: toggleDark } = useDarkMode()
 const { goalMinutes, setGoal } = useDailyGoal()
 const { motherTongue, setMotherTongue } = useMotherTongue()
 const { progress, resetProgress } = useUserProgress()
+const { pauseMs, setPauseMs, PAUSE_CHOICES } = useVoiceSettings()
 
 const showResetConfirm = ref(false)
 const showExportSuccess = ref(false)
@@ -158,6 +160,28 @@ function handleReset() {
                 : 'border-slate-200 dark:border-slate-700 text-text-main dark:text-white hover:border-primary/50'"
             >
               {{ t('dailyGoal.minutes', { count: mins }) }}
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Voice -->
+      <section>
+        <h3 class="text-sm font-semibold text-text-muted dark:text-slate-400 uppercase tracking-wider mb-3">{{ t('voiceSettings.title') }}</h3>
+        <div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-slate-200 dark:border-slate-700 p-4">
+          <p class="text-sm font-medium text-text-main dark:text-white">{{ t('voiceSettings.pauseLabel') }}</p>
+          <p class="text-xs text-text-muted dark:text-slate-400 mt-0.5 mb-3">{{ t('voiceSettings.pauseHint') }}</p>
+          <div class="grid grid-cols-3 gap-3">
+            <button
+              v-for="ms in PAUSE_CHOICES"
+              :key="ms"
+              @click="setPauseMs(ms)"
+              class="py-3 rounded-xl border-2 font-bold transition-all text-center"
+              :class="pauseMs === ms
+                ? 'border-primary bg-primary/10 text-primary'
+                : 'border-slate-200 dark:border-slate-700 text-text-main dark:text-white hover:border-primary/50'"
+            >
+              {{ t('voiceSettings.seconds', { sec: ms / 1000 }) }}
             </button>
           </div>
         </div>

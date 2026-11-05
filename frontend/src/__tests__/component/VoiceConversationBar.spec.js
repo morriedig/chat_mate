@@ -16,9 +16,11 @@ vi.mock('../../utils/tts', () => ({
 
 let nextHeard = 'I think working from home is better.'
 const listenOnce = vi.fn(() => Promise.resolve(nextHeard))
+const extendListening = vi.fn(() => true)
 vi.mock('../../utils/stt', () => ({
   listenOnce: (...args) => listenOnce(...args),
   stopListening: vi.fn(),
+  extendListening: (...args) => extendListening(...args),
   isSTTAvailable: () => true,
 }))
 
@@ -70,6 +72,38 @@ describe('VoiceConversationBar', () => {
 
     expect(wrapper.emitted('send')).toBeUndefined()
     expect(wrapper.text()).toContain('voiceChat.didntHear')
+  })
+})
+
+describe('VoiceConversationBar pauses', () => {
+  beforeEach(() => {
+    localStorage.clear()
+    extendListening.mockClear()
+  })
+
+  it('offers "still thinking" while listening and keeps the turn open', async () => {
+    let finish
+    listenOnce.mockImplementationOnce(() => new Promise(resolve => { finish = resolve }))
+    const wrapper = mount(VoiceConversationBar, { props: { lastReply: 'Hi!' } })
+    expect(wrapper.find('.still-thinking').exists()).toBe(false)
+
+    await wrapper.find('button.rounded-full.bg-primary').trigger('click')
+    await flushPromises()
+    await wrapper.find('.still-thinking').trigger('click')
+
+    expect(extendListening).toHaveBeenCalledTimes(1)
+    expect(wrapper.find('.still-thinking').text()).toBe('voiceChat.takeYourTime')
+    finish('')
+    await flushPromises()
+    expect(wrapper.find('.still-thinking').exists()).toBe(false)
+  })
+
+  it('cycles the pause length and remembers it', async () => {
+    const wrapper = mount(VoiceConversationBar, { props: { lastReply: 'Hi!' } })
+    await wrapper.find('.pause-length').trigger('click')
+    expect(localStorage.getItem('chatmate_voice_pause_ms')).toBe('4000')
+    await wrapper.find('.pause-length').trigger('click')
+    expect(localStorage.getItem('chatmate_voice_pause_ms')).toBe('1500')
   })
 })
 
