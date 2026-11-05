@@ -2,6 +2,8 @@
 import { useI18n } from 'vue-i18n'
 import { useWeeklyQuests } from '../composables/useWeeklyQuests'
 import { useUserProgress } from '../composables/useUserProgress'
+import CmBottomSheet from './ui/CmBottomSheet.vue'
+import CmProgress from './ui/CmProgress.vue'
 
 const { t } = useI18n()
 const emit = defineEmits(['close'])
@@ -18,91 +20,50 @@ function handleClaim(quest) {
 </script>
 
 <template>
-  <Teleport to="body">
-    <Transition name="slide-up">
-      <div class="fixed inset-0 z-[90] flex items-end justify-center">
-        <div class="absolute inset-0 bg-black/40" @click="emit('close')" />
-        <div class="relative w-full max-w-lg bg-surface-light dark:bg-surface-dark rounded-t-2xl p-6 pb-8 max-h-[70vh] overflow-y-auto">
-          <!-- Header -->
-          <div class="flex items-center justify-between mb-4">
-            <h2 class="text-xl font-bold text-text-main dark:text-white flex items-center gap-2">
-              <span class="material-symbols-outlined text-primary">assignment</span>
-              {{ t('weeklyQuests.title') }}
-            </h2>
-            <button @click="emit('close')" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
-              <span class="material-symbols-outlined">close</span>
-            </button>
-          </div>
+  <CmBottomSheet
+    :title="t('weeklyQuests.title')"
+    :description="t('weeklyQuests.description')"
+    :close-label="t('common.close')"
+    @close="emit('close')"
+  >
+    <!-- All done -->
+    <div v-if="allCompleted" role="status" class="mb-4 flex items-center gap-3 rounded-[14px] border border-success/25 bg-success-soft p-4">
+      <span class="material-symbols-outlined shrink-0 text-success" aria-hidden="true">task_alt</span>
+      <p class="text-caption font-medium text-ink">{{ t('weeklyQuests.allDone') }}</p>
+    </div>
 
-          <!-- All done -->
-          <div v-if="allCompleted" class="text-center py-6">
-            <span class="material-symbols-outlined text-5xl text-green-500 mb-2">celebration</span>
-            <p class="text-green-600 dark:text-green-400 font-bold">{{ t('weeklyQuests.allDone') }}</p>
-          </div>
-
-          <!-- Quest list -->
-          <div class="space-y-3">
-            <div
-              v-for="quest in quests"
-              :key="quest.id"
-              class="p-4 rounded-xl border transition-all"
-              :class="quest.completed
-                ? 'border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-900/20'
-                : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800'"
-            >
-              <div class="flex items-center justify-between gap-3">
-                <div class="flex-1">
-                  <p class="font-medium text-text-main dark:text-white text-sm">
-                    {{ t(quest.key) }}
-                  </p>
-                  <!-- Progress bar -->
-                  <div class="mt-2 flex items-center gap-2">
-                    <div class="flex-1 h-1.5 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden">
-                      <div
-                        class="h-full rounded-full transition-all"
-                        :class="quest.completed ? 'bg-green-400' : 'bg-primary'"
-                        :style="{ width: `${Math.min(quest.progress / quest.target, 1) * 100}%` }"
-                      />
-                    </div>
-                    <span class="text-xs text-text-muted dark:text-slate-400 shrink-0">
-                      {{ quest.progress }}/{{ quest.target }}
-                    </span>
-                  </div>
-                </div>
-
-                <!-- Reward / Claim button -->
-                <div class="shrink-0">
-                  <button
-                    v-if="quest.completed && !quest.claimed"
-                    @click="handleClaim(quest)"
-                    class="px-3 py-1.5 rounded-lg bg-primary text-[#0d171b] text-sm font-bold hover:bg-primary/90 transition-colors"
-                  >
-                    {{ t('weeklyQuests.claimReward') }} +{{ quest.reward }}
-                  </button>
-                  <span v-else-if="quest.claimed" class="text-xs text-green-500 font-medium">
-                    {{ t('weeklyQuests.claimed') }} +{{ quest.reward }}
-                  </span>
-                  <span v-else class="text-xs text-text-muted dark:text-slate-400">
-                    +{{ quest.reward }} XP
-                  </span>
-                </div>
-              </div>
-            </div>
+    <!-- Quest list -->
+    <ul class="divide-y divide-hairline overflow-hidden rounded-[14px] border border-hairline bg-surface">
+      <li v-for="quest in quests" :key="quest.id" class="flex min-h-16 items-center gap-3 px-4 py-3">
+        <div class="min-w-0 flex-1">
+          <p class="flex items-start gap-1.5 text-body text-ink">
+            <span v-if="quest.completed" class="material-symbols-outlined mt-0.5 shrink-0 !text-[18px] text-success" :aria-label="t('weeklyQuests.done')">check</span>
+            <span class="min-w-0">{{ t(quest.key) }}</span>
+          </p>
+          <div class="mt-2 flex items-center gap-2">
+            <CmProgress class="flex-1" :value="Math.min(quest.progress, quest.target)" :max="quest.target" :label="t(quest.key)" />
+            <span class="shrink-0 text-meta text-ink-muted tabular-nums">{{ quest.progress }} / {{ quest.target }}</span>
           </div>
         </div>
-      </div>
-    </Transition>
-  </Teleport>
-</template>
 
-<style scoped>
-.slide-up-enter-active,
-.slide-up-leave-active {
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
-.slide-up-enter-from,
-.slide-up-leave-to {
-  transform: translateY(100%);
-  opacity: 0;
-}
-</style>
+        <!-- Reward / Claim -->
+        <div class="shrink-0">
+          <button
+            v-if="quest.completed && !quest.claimed"
+            type="button"
+            @click="handleClaim(quest)"
+            class="min-h-11 rounded-[10px] bg-accent px-3 text-caption font-medium text-on-accent active:bg-accent-pressed"
+          >
+            {{ t('weeklyQuests.claimReward') }} +{{ quest.reward }}
+          </button>
+          <span v-else-if="quest.claimed" class="text-meta text-success tabular-nums">
+            {{ t('weeklyQuests.claimed') }} +{{ quest.reward }}
+          </span>
+          <span v-else class="text-meta text-ink-muted tabular-nums">
+            +{{ quest.reward }} XP
+          </span>
+        </div>
+      </li>
+    </ul>
+  </CmBottomSheet>
+</template>

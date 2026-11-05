@@ -23,12 +23,16 @@ import RetellCard from './RetellCard.vue'
 import { useTaskChatLauncher } from '../composables/useTaskChatLauncher'
 import { useDailyPractice } from '../composables/useDailyPractice'
 import WelcomeOnboarding from './WelcomeOnboarding.vue'
+import CmAvatar from './ui/CmAvatar.vue'
+import CmIconButton from './ui/CmIconButton.vue'
+import CmButton from './ui/CmButton.vue'
+import { levelCode, languageCode } from '../utils/levelCode'
 
 const { t, locale } = useI18n()
 const router = useRouter()
 const { isDark, toggle: toggleDark } = useDarkMode()
 const { motherTongue, setMotherTongue } = useMotherTongue()
-const { progress } = useUserProgress()
+useUserProgress()
 const { startChallenge } = useDailyChallenge()
 const { setChatState, setLearningState, selectedLevel: navSelectedLevel } = useNavState()
 const { load: loadLastSession, saveChatSession, saveLearningSession } = useLastSession()
@@ -146,6 +150,32 @@ const MORE_KEY = 'chatmate_home_more_open'
 const moreOpen = ref((() => {
   try { return localStorage.getItem(MORE_KEY) === '1' } catch { return false }
 })())
+// The route marks one step as current: practice until it is done, then task chat
+const currentStep = computed(() => (practiceDone.value ? 2 : 1))
+const routeSteps = computed(() => [1, 2, 3].map(n => ({ n, current: n === currentStep.value })))
+
+const primaryModeOptions = computed(() => [
+  { id: 'chat', icon: 'forum', name: t('setup.primaryModes.chat.name'), desc: t('setup.primaryModes.chat.description') },
+  { id: 'learning', icon: 'school', name: t('setup.primaryModes.learning.name'), desc: t('setup.primaryModes.learning.description') },
+  { id: 'diary', icon: 'edit_note', name: t('diary.mode'), desc: t('diary.modeDesc') },
+])
+const chatModeOptions = computed(() => [
+  { id: 'free', icon: 'chat_bubble', name: t('setup.modes.free.name'), desc: t('setup.modes.free.description') },
+  { id: 'article', icon: 'article', name: t('setup.modes.article.name'), desc: t('setup.modes.article.description') },
+])
+const tools = computed(() => [
+  { id: 'quests', icon: 'assignment', label: t('weeklyQuests.title'), open: () => { showWeeklyQuests.value = true } },
+  { id: 'scenarios', icon: 'theater_comedy', label: t('scenarios.title'), open: () => { showScenarios.value = true } },
+  { id: 'placement', icon: 'quiz', label: t('placementTest.title'), open: () => router.push('/placement-test') },
+  { id: 'analytics', icon: 'analytics', label: t('setup.analytics'), open: () => { showAnalytics.value = true } },
+  { id: 'share', icon: 'share', label: t('shareCard.share'), open: () => { showShareCard.value = true } },
+])
+
+const canStart = computed(() =>
+  (primaryMode.value === 'chat' && canStartChat.value) ||
+  (primaryMode.value === 'learning' && canStartLearning.value) ||
+  primaryMode.value === 'diary')
+
 function toggleMore() {
   moreOpen.value = !moreOpen.value
   try { localStorage.setItem(MORE_KEY, moreOpen.value ? '1' : '0') } catch { /* storage unavailable */ }
@@ -210,95 +240,77 @@ function handleStart() {
 </script>
 
 <template>
-  <div class="min-h-screen overflow-y-auto bg-background-light dark:bg-background-dark safe-area-inset">
-    <div class="max-w-2xl mx-auto px-4 py-8 pb-12">
-      <!-- Header -->
-      <div class="flex justify-between items-center mb-8">
-        <div></div>
-        <div class="flex items-center gap-2">
+  <div class="min-h-screen overflow-y-auto bg-page safe-area-inset">
+    <div class="mx-auto max-w-2xl px-4 pb-12 pt-2 min-[375px]:px-5">
+      <!-- Header: quiet product title + language, theme, settings -->
+      <header class="flex min-h-14 items-center justify-between gap-2">
+        <h1 class="min-w-0 truncate text-title font-semibold text-ink">{{ t('app.title') }}</h1>
+        <div class="flex shrink-0 items-center gap-1">
           <!-- Mother Tongue / UI Language Selector (combined) -->
           <div class="relative">
             <select
               :value="motherTongue"
               @change="handleMotherTongueChange($event.target.value)"
-              class="appearance-none pl-3 pr-8 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark text-text-main dark:text-slate-200 text-sm font-medium cursor-pointer focus:ring-2 focus:ring-primary focus:outline-none"
+              :aria-label="t('setup.motherTongue')"
+              class="h-11 min-h-11 cursor-pointer appearance-none rounded-[10px] border border-hairline bg-surface pl-3 pr-8 text-caption font-medium text-ink-secondary"
             >
               <option v-for="lang in supportedLanguages" :key="lang.id" :value="lang.id">
-                {{ lang.flag }} {{ lang.nativeName }}
+                {{ lang.nativeName }}
               </option>
             </select>
-            <span class="material-symbols-outlined text-sm absolute right-2 top-1/2 -translate-y-1/2 text-text-muted dark:text-slate-400 pointer-events-none">expand_more</span>
+            <span class="material-symbols-outlined pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 !text-[18px] text-ink-muted" aria-hidden="true">expand_more</span>
           </div>
-          <!-- Dark Mode Toggle -->
-          <button
-            @click="toggleDark"
-            class="flex items-center justify-center size-10 rounded-lg border border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark hover:bg-slate-50 dark:hover:bg-slate-800 text-text-main dark:text-slate-200 transition-colors"
-            :aria-label="t('setup.toggleDark')"
-          >
-            <span class="material-symbols-outlined text-[20px]">{{ isDark ? 'light_mode' : 'dark_mode' }}</span>
-          </button>
-          <!-- Settings -->
-          <button
-            @click="router.push('/settings')"
-            class="flex items-center justify-center size-10 rounded-lg border border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark hover:bg-slate-50 dark:hover:bg-slate-800 text-text-main dark:text-slate-200 transition-colors"
-            :aria-label="t('setup.settings')"
-          >
-            <span class="material-symbols-outlined text-[20px]">settings</span>
-          </button>
+          <CmIconButton :icon="isDark ? 'light_mode' : 'dark_mode'" :label="t('setup.toggleDark')" @click="toggleDark" />
+          <CmIconButton icon="settings" :label="t('setup.settings')" @click="router.push('/settings')" />
         </div>
-      </div>
+      </header>
 
-      <!-- Title -->
-      <div class="text-center mb-6">
-        <h1 class="text-3xl font-bold text-text-main dark:text-white mb-2">{{ t('app.title') }}</h1>
-        <p class="text-text-muted dark:text-slate-400">{{ t('app.subtitle') }}</p>
-      </div>
+      <p class="mb-4 mt-1 text-body text-ink-secondary">{{ t('app.subtitle') }}</p>
 
-      <!-- Home Hero: streak + daily goal + rank -->
-      <HomeHero />
+      <!-- Compact progress rail: today's minutes, streak, level -->
+      <HomeHero class="mb-6" />
 
       <!-- Placement Result Banner -->
       <Transition name="fade-slide">
         <div
           v-if="placementBanner"
-          class="mb-6 flex items-start gap-3 p-4 rounded-xl bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/30 dark:to-teal-900/30 border border-emerald-200 dark:border-emerald-800"
+          role="status"
+          class="mb-6 flex items-start gap-3 rounded-[14px] border border-success/25 bg-success-soft py-2 pl-4 pr-1"
         >
-          <span class="material-symbols-outlined text-emerald-500 shrink-0">task_alt</span>
-          <div class="flex-1 min-w-0">
-            <p class="text-sm font-semibold text-emerald-700 dark:text-emerald-300">
+          <span class="material-symbols-outlined mt-2.5 shrink-0 text-success" aria-hidden="true">task_alt</span>
+          <div class="min-w-0 flex-1 py-2">
+            <p class="text-caption font-medium text-ink">
               {{ t('setup.placementDone') }}
-              <span class="capitalize">{{ t(`levels.${placementBanner.level}.name`) }}</span>
+              <span>{{ t(`levels.${placementBanner.level}.name`) }}</span>
             </p>
-            <p class="text-xs text-emerald-600/80 dark:text-emerald-400/80 mt-0.5">
+            <p class="mt-0.5 text-meta text-ink-secondary">
               {{ t('setup.placementHint') }}
             </p>
           </div>
-          <button @click="dismissPlacementBanner" class="shrink-0 text-emerald-500 hover:text-emerald-700 dark:hover:text-emerald-300">
-            <span class="material-symbols-outlined text-[18px]">close</span>
-          </button>
+          <CmIconButton icon="close" :label="t('common.dismiss')" @click="dismissPlacementBanner" />
         </div>
       </Transition>
 
-      <!-- Today's path: practice → task chat (with summary) → retell. Grid cards shrink (no x-overflow). -->
-      <section class="mb-6">
-        <h2 class="text-sm font-semibold text-text-muted dark:text-slate-400 mb-2">{{ t('home.todayPath') }}</h2>
-        <ol class="grid grid-cols-1 gap-3">
-          <li class="flex gap-2 min-w-0">
-            <span class="shrink-0 mt-4 flex items-center justify-center size-6 rounded-full bg-primary/15 text-xs font-bold text-sky-700 dark:text-primary">1</span>
-            <DailyPracticeCard class="flex-1 min-w-0" @open="router.push('/daily-practice')" />
-          </li>
-          <li class="flex gap-2 min-w-0">
-            <span class="shrink-0 mt-4 flex items-center justify-center size-6 rounded-full bg-primary/15 text-xs font-bold text-sky-700 dark:text-primary">2</span>
-            <TaskChatCard class="flex-1 min-w-0" :patterns="todayPatterns" :recommended="practiceDone" @open="startTaskChat" />
-          </li>
-          <li class="flex gap-2 min-w-0">
-            <span class="shrink-0 mt-4 flex items-center justify-center size-6 rounded-full bg-primary/15 text-xs font-bold text-sky-700 dark:text-primary">3</span>
-            <RetellCard class="flex-1 min-w-0" />
+      <!-- Today's route: practice → task chat (with summary) → retell -->
+      <section class="mb-5" aria-labelledby="home-route-title">
+        <h2 id="home-route-title" class="mb-2.5 text-caption font-medium text-ink-secondary">{{ t('home.todayPath') }}</h2>
+        <ol class="relative ml-1 grid grid-cols-1 gap-2.5">
+          <!-- Faint vertical hairline through the step markers -->
+          <span class="pointer-events-none absolute bottom-8 left-[11px] top-8 w-px bg-hairline" aria-hidden="true"></span>
+          <li v-for="step in routeSteps" :key="step.n" class="relative grid min-w-0 grid-cols-[24px_minmax(0,1fr)] gap-2.5" :aria-current="step.current ? 'step' : undefined">
+            <span
+              class="relative z-[1] mt-3.5 flex size-6 items-center justify-center rounded-[6px] text-meta font-medium tabular-nums"
+              :class="step.current ? 'bg-accent text-on-accent' : 'bg-surface-raised text-ink-secondary'"
+              aria-hidden="true"
+            >{{ step.n }}</span>
+            <DailyPracticeCard v-if="step.n === 1" class="min-w-0" @open="router.push('/daily-practice')" />
+            <TaskChatCard v-else-if="step.n === 2" class="min-w-0" :patterns="todayPatterns" :recommended="practiceDone" @open="startTaskChat" />
+            <RetellCard v-else class="min-w-0" />
           </li>
         </ol>
       </section>
 
-      <section class="grid grid-cols-1 gap-3 mb-6">
+      <section class="mb-3">
         <DailyOpinionCard class="min-w-0" @open="router.push('/daily-opinion')" />
       </section>
 
@@ -307,305 +319,245 @@ function handleStart() {
         type="button"
         @click="toggleMore"
         :aria-expanded="moreOpen"
-        class="w-full flex items-center justify-between px-4 py-3 mb-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark text-sm font-semibold text-text-main dark:text-slate-200"
+        aria-controls="home-more"
+        class="flex min-h-12 w-full items-center justify-between rounded-[10px] border border-hairline bg-surface px-4 text-body font-medium text-ink"
       >
-        <span class="flex items-center gap-2"><span class="material-symbols-outlined text-[20px]">apps</span>{{ t('home.more') }}</span>
-        <span class="material-symbols-outlined text-[20px] transition-transform" :class="moreOpen ? 'rotate-180' : ''">expand_more</span>
+        <span>{{ t('home.more') }}</span>
+        <span class="material-symbols-outlined text-ink-muted transition-transform duration-[180ms]" :class="moreOpen ? 'rotate-180' : ''" aria-hidden="true">expand_more</span>
       </button>
+      <p v-if="!moreOpen" class="mt-3 px-0.5 text-meta text-ink-muted">{{ t('home.moreHint') }}</p>
 
-      <div v-show="moreOpen">
-      <section class="grid grid-cols-1 gap-3 mb-6">
-        <button
-          type="button"
-          @click="handleStartOpinionChat"
-          class="opinion-chat-entry flex min-w-0 items-center gap-4 p-4 sm:p-5 rounded-2xl text-left border-2 border-primary/40 hover:border-primary bg-gradient-to-br from-primary/15 via-primary/5 to-amber-50 dark:from-primary/25 dark:via-primary/10 dark:to-amber-900/10 shadow-sm hover:shadow-md active:scale-[0.99] transition-all"
-        >
-          <div class="relative shrink-0">
-            <div class="flex items-center justify-center rounded-full size-14 shadow-md bg-white dark:bg-slate-800 text-3xl">
-              {{ opinionCharacter.avatar }}
-            </div>
-            <span class="absolute -bottom-1 -right-1 flex items-center justify-center size-6 rounded-full bg-primary text-[#0d171b] shadow">
-              <span class="material-symbols-outlined text-[16px]">forum</span>
+      <div v-show="moreOpen" id="home-more" class="mt-6 space-y-8">
+        <!-- Opinion chat (free chat about today's topic) -->
+        <section>
+          <button
+            type="button"
+            @click="handleStartOpinionChat"
+            class="opinion-chat-entry flex w-full min-w-0 items-center gap-3 rounded-[14px] border border-hairline bg-surface p-4 text-left shadow-[var(--cm-shadow-small)]"
+          >
+            <CmAvatar :name="opinionCharacter.name" :size="40" />
+            <span class="min-w-0 flex-1">
+              <span class="block text-body font-medium text-ink">{{ t('opinionChat.homeTitle') }}</span>
+              <span class="mt-0.5 block text-caption text-ink-secondary">{{ t('opinionChat.homeDesc') }}</span>
+              <span lang="en" class="mt-1 block truncate text-meta text-accent">{{ opinionTopic.en }}</span>
             </span>
-          </div>
-          <div class="flex-1 min-w-0">
-            <h2 class="font-bold text-text-main dark:text-white text-base sm:text-lg leading-tight">{{ t('opinionChat.homeTitle') }}</h2>
-            <p class="text-xs sm:text-sm text-text-muted dark:text-slate-400 mt-0.5">{{ t('opinionChat.homeDesc') }}</p>
-            <p class="text-xs text-primary font-medium mt-1.5 truncate">“{{ opinionTopic.en }}”</p>
-          </div>
-          <span class="material-symbols-outlined text-primary shrink-0">arrow_forward</span>
-        </button>
-      </section>
+            <span class="material-symbols-outlined shrink-0 text-ink-muted" aria-hidden="true">chevron_right</span>
+          </button>
+        </section>
 
-      <!-- Primary Mode Selection (Chat vs Learning vs Diary) -->
-      <section class="mb-8">
-        <div class="grid grid-cols-3 gap-3">
-          <div
-            @click="primaryMode = 'chat'"
-            class="flex flex-col items-center p-3 sm:p-5 rounded-2xl border-2 transition-all cursor-pointer"
-            :class="primaryMode === 'chat'
-              ? 'border-primary bg-gradient-to-br from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/10'
-              : 'border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark hover:border-slate-300 dark:hover:border-slate-600'"
-          >
-            <span class="material-symbols-outlined text-3xl sm:text-5xl mb-2 sm:mb-3" :class="primaryMode === 'chat' ? 'text-primary' : 'text-slate-400'">forum</span>
-            <h3 class="font-bold text-text-main dark:text-white text-sm sm:text-lg">{{ t('setup.primaryModes.chat.name') }}</h3>
-            <p class="hidden sm:block text-xs text-text-muted dark:text-slate-400 text-center mt-2">{{ t('setup.primaryModes.chat.description') }}</p>
-          </div>
-          <div
-            @click="primaryMode = 'learning'"
-            class="flex flex-col items-center p-3 sm:p-5 rounded-2xl border-2 transition-all cursor-pointer"
-            :class="primaryMode === 'learning'
-              ? 'border-primary bg-gradient-to-br from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/10'
-              : 'border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark hover:border-slate-300 dark:hover:border-slate-600'"
-          >
-            <span class="material-symbols-outlined text-3xl sm:text-5xl mb-2 sm:mb-3" :class="primaryMode === 'learning' ? 'text-primary' : 'text-slate-400'">school</span>
-            <h3 class="font-bold text-text-main dark:text-white text-sm sm:text-lg">{{ t('setup.primaryModes.learning.name') }}</h3>
-            <p class="hidden sm:block text-xs text-text-muted dark:text-slate-400 text-center mt-2">{{ t('setup.primaryModes.learning.description') }}</p>
-          </div>
-          <div
-            @click="primaryMode = 'diary'"
-            class="flex flex-col items-center p-3 sm:p-5 rounded-2xl border-2 transition-all cursor-pointer"
-            :class="primaryMode === 'diary'
-              ? 'border-primary bg-gradient-to-br from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/10'
-              : 'border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark hover:border-slate-300 dark:hover:border-slate-600'"
-          >
-            <span class="material-symbols-outlined text-3xl sm:text-5xl mb-2 sm:mb-3" :class="primaryMode === 'diary' ? 'text-primary' : 'text-slate-400'">edit_note</span>
-            <h3 class="font-bold text-text-main dark:text-white text-sm sm:text-lg">{{ t('diary.mode') }}</h3>
-            <p class="hidden sm:block text-xs text-text-muted dark:text-slate-400 text-center mt-2">{{ t('diary.modeDesc') }}</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- ========== CHAT MODE OPTIONS ========== -->
-      <template v-if="primaryMode === 'chat'">
-        <!-- Choose Partner Section -->
-        <section class="mb-8">
-        <div class="flex items-center gap-2 mb-4">
-          <span class="material-symbols-outlined text-primary">person</span>
-          <h2 class="text-lg font-semibold text-text-main dark:text-white">{{ t('setup.choosePartner') }}</h2>
-        </div>
-        <div class="flex gap-4 overflow-x-auto pb-2">
-          <div
-            v-for="char in characters"
-            :key="char.id"
-            @click="selectedCharacter = char"
-            class="flex items-center gap-4 p-4 rounded-xl border-2 transition-all cursor-pointer bg-surface-light dark:bg-surface-dark shrink-0 w-72"
-            :class="selectedCharacter?.id === char.id
-              ? 'border-primary bg-primary/5 dark:bg-primary/10'
-              : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'"
-          >
-            <div class="flex items-center justify-center rounded-full size-16 shrink-0 shadow-md bg-slate-100 dark:bg-slate-800 text-4xl">
-              {{ char.avatar }}
-            </div>
-            <div class="flex-1">
-              <h3 class="font-bold text-text-main dark:text-white text-lg">{{ char.name }}</h3>
-              <p class="text-sm text-text-muted dark:text-slate-400">{{ char.age }} · {{ char.location }}</p>
-              <p class="text-sm text-text-main dark:text-slate-300 mt-1">{{ t(`characters.${char.id}.tagline`) }}</p>
-            </div>
-            <div v-if="selectedCharacter?.id === char.id" class="shrink-0">
-              <span class="material-symbols-outlined icon-filled text-primary text-2xl">check_circle</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Choose Level Section -->
-      <section class="mb-8">
-        <div class="flex items-center gap-2 mb-4">
-          <span class="material-symbols-outlined text-primary">signal_cellular_alt</span>
-          <h2 class="text-lg font-semibold text-text-main dark:text-white">{{ t('setup.yourLevel') }}</h2>
-        </div>
-        <div class="grid grid-cols-3 gap-3">
-          <div
-            v-for="level in levels"
-            :key="level.id"
-            @click="selectedLevel = level"
-            class="flex flex-col items-center p-4 rounded-xl border-2 transition-all cursor-pointer bg-surface-light dark:bg-surface-dark"
-            :class="selectedLevel?.id === level.id
-              ? 'border-primary bg-primary/5 dark:bg-primary/10'
-              : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'"
-          >
-            <span class="text-2xl mb-2">{{ level.icon }}</span>
-            <h3 class="font-semibold text-text-main dark:text-white text-sm">{{ t(`levels.${level.id}.name`) }}</h3>
-            <p class="text-xs text-text-muted dark:text-slate-400 text-center mt-1">{{ t(`levels.${level.id}.description`) }}</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- Choose Chat Type Section -->
-      <section class="mb-10">
-        <div class="flex items-center gap-2 mb-4">
-          <span class="material-symbols-outlined text-primary">category</span>
-          <h2 class="text-lg font-semibold text-text-main dark:text-white">{{ t('setup.chooseMode') }}</h2>
-        </div>
-        <div class="grid grid-cols-2 gap-4">
-          <div
-            @click="selectedChatMode = 'free'"
-            class="flex flex-col items-center p-5 rounded-xl border-2 transition-all cursor-pointer bg-surface-light dark:bg-surface-dark"
-            :class="selectedChatMode === 'free'
-              ? 'border-primary bg-primary/5 dark:bg-primary/10'
-              : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'"
-          >
-            <span class="material-symbols-outlined text-4xl mb-2" :class="selectedChatMode === 'free' ? 'text-primary' : 'text-slate-400'">chat_bubble</span>
-            <h3 class="font-semibold text-text-main dark:text-white">{{ t('setup.modes.free.name') }}</h3>
-            <p class="text-xs text-text-muted dark:text-slate-400 text-center mt-1">{{ t('setup.modes.free.description') }}</p>
-          </div>
-          <div
-            @click="selectedChatMode = 'article'"
-            class="flex flex-col items-center p-5 rounded-xl border-2 transition-all cursor-pointer bg-surface-light dark:bg-surface-dark"
-            :class="selectedChatMode === 'article'
-              ? 'border-primary bg-primary/5 dark:bg-primary/10'
-              : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'"
-          >
-            <span class="material-symbols-outlined text-4xl mb-2" :class="selectedChatMode === 'article' ? 'text-primary' : 'text-slate-400'">article</span>
-            <h3 class="font-semibold text-text-main dark:text-white">{{ t('setup.modes.article.name') }}</h3>
-            <p class="text-xs text-text-muted dark:text-slate-400 text-center mt-1">{{ t('setup.modes.article.description') }}</p>
-          </div>
-        </div>
-      </section>
-      </template>
-
-      <!-- ========== LEARNING MODE OPTIONS ========== -->
-      <template v-if="primaryMode === 'learning'">
-        <!-- Target Language Section -->
-        <section class="mb-8">
-          <div class="flex items-center gap-2 mb-4">
-            <span class="material-symbols-outlined text-primary">school</span>
-            <h2 class="text-lg font-semibold text-text-main dark:text-white">{{ t('setup.targetLanguage') }}</h2>
-          </div>
-          <div class="grid grid-cols-2 gap-3">
-            <div
-              v-for="lang in availableTargetLanguages"
-              :key="lang.id"
-              @click="selectedTargetLanguage = lang.id"
-              class="flex flex-col items-center p-4 rounded-xl border-2 transition-all cursor-pointer bg-surface-light dark:bg-surface-dark"
-              :class="selectedTargetLanguage === lang.id
-                ? 'border-primary bg-primary/5 dark:bg-primary/10'
-                : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'"
+        <!-- Primary mode: chat / learning / diary -->
+        <section aria-labelledby="home-mode-title">
+          <h2 id="home-mode-title" class="mb-2 px-1 text-caption font-medium text-ink-secondary">{{ t('setup.practiceType') }}</h2>
+          <div role="radiogroup" aria-labelledby="home-mode-title" class="divide-y divide-hairline overflow-hidden rounded-[14px] border border-hairline bg-surface">
+            <button
+              v-for="m in primaryModeOptions"
+              :key="m.id"
+              type="button"
+              role="radio"
+              data-test="primary-mode"
+              :aria-checked="primaryMode === m.id"
+              @click="primaryMode = m.id"
+              class="flex min-h-14 w-full items-center gap-3 px-4 py-2.5 text-left"
+              :class="primaryMode === m.id ? 'bg-accent-soft' : ''"
             >
-              <span class="text-2xl mb-2">{{ lang.flag }}</span>
-              <h3 class="font-semibold text-text-main dark:text-white text-sm">{{ lang.nativeName }}</h3>
-            </div>
+              <span class="material-symbols-outlined shrink-0" :class="primaryMode === m.id ? 'text-accent' : 'text-ink-muted'" aria-hidden="true">{{ m.icon }}</span>
+              <span class="min-w-0 flex-1">
+                <span class="block text-body font-medium text-ink">{{ m.name }}</span>
+                <span class="block text-meta text-ink-secondary">{{ m.desc }}</span>
+              </span>
+              <span v-if="primaryMode === m.id" class="material-symbols-outlined shrink-0 text-accent" aria-hidden="true">check</span>
+            </button>
           </div>
         </section>
 
-        <!-- Choose Level Section -->
-        <section class="mb-10">
-          <div class="flex items-center gap-2 mb-4">
-            <span class="material-symbols-outlined text-primary">signal_cellular_alt</span>
-            <h2 class="text-lg font-semibold text-text-main dark:text-white">{{ t('setup.learningLevel') }}</h2>
-          </div>
-          <div class="grid grid-cols-3 gap-3">
-            <div
-              v-for="level in levels"
-              :key="level.id"
-              @click="selectedLearningLevel = level"
-              class="flex flex-col items-center p-4 rounded-xl border-2 transition-all cursor-pointer bg-surface-light dark:bg-surface-dark"
-              :class="selectedLearningLevel?.id === level.id
-                ? 'border-primary bg-primary/5 dark:bg-primary/10'
-                : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'"
-            >
-              <span class="text-2xl mb-2">{{ level.icon }}</span>
-              <h3 class="font-semibold text-text-main dark:text-white text-sm">{{ t(`levels.${level.id}.name`) }}</h3>
-              <p class="text-xs text-text-muted dark:text-slate-400 text-center mt-1">{{ t(`levels.${level.id}.description`) }}</p>
+        <!-- ========== CHAT MODE OPTIONS ========== -->
+        <template v-if="primaryMode === 'chat'">
+          <!-- Friend -->
+          <section aria-labelledby="home-partner-title">
+            <h2 id="home-partner-title" class="mb-2 px-1 text-caption font-medium text-ink-secondary">{{ t('setup.choosePartner') }}</h2>
+            <div role="radiogroup" aria-labelledby="home-partner-title" class="divide-y divide-hairline overflow-hidden rounded-[14px] border border-hairline bg-surface">
+              <button
+                v-for="char in characters"
+                :key="char.id"
+                type="button"
+                role="radio"
+                data-test="character"
+                :aria-checked="selectedCharacter?.id === char.id"
+                @click="selectedCharacter = char"
+                class="flex min-h-16 w-full items-center gap-3 px-4 py-3 text-left"
+                :class="selectedCharacter?.id === char.id ? 'bg-accent-soft' : ''"
+              >
+                <CmAvatar :name="char.name" :size="40" />
+                <span class="min-w-0 flex-1">
+                  <span class="block text-body font-medium text-ink">{{ char.name }} <span class="text-meta font-normal text-ink-muted">{{ char.age }} · {{ char.location }}</span></span>
+                  <span class="block text-caption text-ink-secondary">{{ t(`characters.${char.id}.tagline`) }}</span>
+                </span>
+                <span v-if="selectedCharacter?.id === char.id" class="material-symbols-outlined shrink-0 text-accent" aria-hidden="true">check</span>
+              </button>
             </div>
-          </div>
+          </section>
+
+          <!-- Level -->
+          <section aria-labelledby="home-level-title">
+            <h2 id="home-level-title" class="mb-2 px-1 text-caption font-medium text-ink-secondary">{{ t('setup.yourLevel') }}</h2>
+            <div role="radiogroup" aria-labelledby="home-level-title" class="divide-y divide-hairline overflow-hidden rounded-[14px] border border-hairline bg-surface">
+              <button
+                v-for="level in levels"
+                :key="level.id"
+                type="button"
+                role="radio"
+                data-test="chat-level"
+                :aria-checked="selectedLevel?.id === level.id"
+                @click="selectedLevel = level"
+                class="flex min-h-14 w-full items-center gap-3 px-4 py-2.5 text-left"
+                :class="selectedLevel?.id === level.id ? 'bg-accent-soft' : ''"
+              >
+                <span class="w-12 shrink-0 text-caption font-medium text-ink-secondary tabular-nums">{{ levelCode(level.id) }}</span>
+                <span class="min-w-0 flex-1">
+                  <span class="block text-body font-medium text-ink">{{ t(`levels.${level.id}.name`) }}</span>
+                  <span class="block text-meta text-ink-secondary">{{ t(`levels.${level.id}.description`) }}</span>
+                </span>
+                <span v-if="selectedLevel?.id === level.id" class="material-symbols-outlined shrink-0 text-accent" aria-hidden="true">check</span>
+              </button>
+            </div>
+          </section>
+
+          <!-- Chat type -->
+          <section aria-labelledby="home-chatmode-title">
+            <h2 id="home-chatmode-title" class="mb-2 px-1 text-caption font-medium text-ink-secondary">{{ t('setup.chooseMode') }}</h2>
+            <div role="radiogroup" aria-labelledby="home-chatmode-title" class="divide-y divide-hairline overflow-hidden rounded-[14px] border border-hairline bg-surface">
+              <button
+                v-for="m in chatModeOptions"
+                :key="m.id"
+                type="button"
+                role="radio"
+                data-test="chat-mode"
+                :aria-checked="selectedChatMode === m.id"
+                @click="selectedChatMode = m.id"
+                class="flex min-h-14 w-full items-center gap-3 px-4 py-2.5 text-left"
+                :class="selectedChatMode === m.id ? 'bg-accent-soft' : ''"
+              >
+                <span class="material-symbols-outlined shrink-0" :class="selectedChatMode === m.id ? 'text-accent' : 'text-ink-muted'" aria-hidden="true">{{ m.icon }}</span>
+                <span class="min-w-0 flex-1">
+                  <span class="block text-body font-medium text-ink">{{ m.name }}</span>
+                  <span class="block text-meta text-ink-secondary">{{ m.desc }}</span>
+                </span>
+                <span v-if="selectedChatMode === m.id" class="material-symbols-outlined shrink-0 text-accent" aria-hidden="true">check</span>
+              </button>
+            </div>
+          </section>
+        </template>
+
+        <!-- ========== LEARNING MODE OPTIONS ========== -->
+        <template v-if="primaryMode === 'learning'">
+          <!-- Target Language -->
+          <section aria-labelledby="home-target-title">
+            <h2 id="home-target-title" class="mb-2 px-1 text-caption font-medium text-ink-secondary">{{ t('setup.targetLanguage') }}</h2>
+            <div role="radiogroup" aria-labelledby="home-target-title" class="divide-y divide-hairline overflow-hidden rounded-[14px] border border-hairline bg-surface">
+              <button
+                v-for="lang in availableTargetLanguages"
+                :key="lang.id"
+                type="button"
+                role="radio"
+                data-test="target-language"
+                :aria-checked="selectedTargetLanguage === lang.id"
+                @click="selectedTargetLanguage = lang.id"
+                class="flex min-h-14 w-full items-center gap-3 px-4 py-2.5 text-left"
+                :class="selectedTargetLanguage === lang.id ? 'bg-accent-soft' : ''"
+              >
+                <span class="w-12 shrink-0 text-caption font-medium text-ink-secondary">{{ languageCode(lang.id) }}</span>
+                <span class="min-w-0 flex-1 text-body font-medium text-ink">{{ lang.nativeName }}</span>
+                <span v-if="selectedTargetLanguage === lang.id" class="material-symbols-outlined shrink-0 text-accent" aria-hidden="true">check</span>
+              </button>
+            </div>
+          </section>
+
+          <!-- Level -->
+          <section aria-labelledby="home-learning-level-title">
+            <h2 id="home-learning-level-title" class="mb-2 px-1 text-caption font-medium text-ink-secondary">{{ t('setup.learningLevel') }}</h2>
+            <div role="radiogroup" aria-labelledby="home-learning-level-title" class="divide-y divide-hairline overflow-hidden rounded-[14px] border border-hairline bg-surface">
+              <button
+                v-for="level in levels"
+                :key="level.id"
+                type="button"
+                role="radio"
+                data-test="learning-level"
+                :aria-checked="selectedLearningLevel?.id === level.id"
+                @click="selectedLearningLevel = level"
+                class="flex min-h-14 w-full items-center gap-3 px-4 py-2.5 text-left"
+                :class="selectedLearningLevel?.id === level.id ? 'bg-accent-soft' : ''"
+              >
+                <span class="w-12 shrink-0 text-caption font-medium text-ink-secondary tabular-nums">{{ levelCode(level.id) }}</span>
+                <span class="min-w-0 flex-1">
+                  <span class="block text-body font-medium text-ink">{{ t(`levels.${level.id}.name`) }}</span>
+                  <span class="block text-meta text-ink-secondary">{{ t(`levels.${level.id}.description`) }}</span>
+                </span>
+                <span v-if="selectedLearningLevel?.id === level.id" class="material-symbols-outlined shrink-0 text-accent" aria-hidden="true">check</span>
+              </button>
+            </div>
+          </section>
+
+          <!-- What learning mode includes -->
+          <section class="rounded-[14px] border border-hairline bg-surface p-4">
+            <h3 class="text-caption font-medium text-ink">{{ t('setup.learningModeInfo.title') }}</h3>
+            <ul class="mt-2 space-y-1.5 text-caption text-ink-secondary">
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined !text-[18px] shrink-0 text-ink-muted" aria-hidden="true">check</span>
+                {{ t('setup.learningModeInfo.flashcards') }}
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined !text-[18px] shrink-0 text-ink-muted" aria-hidden="true">check</span>
+                {{ t('setup.learningModeInfo.audio') }}
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="material-symbols-outlined !text-[18px] shrink-0 text-ink-muted" aria-hidden="true">check</span>
+                {{ t('setup.learningModeInfo.quiz') }}
+              </li>
+            </ul>
+          </section>
+        </template>
+
+        <!-- Daily Challenge Card (shown when chat mode selected) -->
+        <section v-if="primaryMode === 'chat' && canStartChat">
+          <DailyChallengeCard
+            :level="selectedLevel?.id || 'intermediate'"
+            :language="locale"
+            @start="() => {
+              startChallenge(selectedLevel.id, locale)
+              handleStart()
+            }"
+          />
         </section>
 
-        <!-- Learning Mode Preview -->
-        <section class="mb-10">
-          <div class="p-4 rounded-xl bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border border-blue-200 dark:border-blue-800">
-            <div class="flex items-start gap-3">
-              <span class="material-symbols-outlined text-2xl text-blue-500">info</span>
-              <div>
-                <h4 class="font-semibold text-text-main dark:text-white mb-1">{{ t('setup.learningModeInfo.title') }}</h4>
-                <ul class="text-sm text-text-muted dark:text-slate-400 space-y-1">
-                  <li class="flex items-center gap-2">
-                    <span class="material-symbols-outlined text-sm text-green-500">check</span>
-                    {{ t('setup.learningModeInfo.flashcards') }}
-                  </li>
-                  <li class="flex items-center gap-2">
-                    <span class="material-symbols-outlined text-sm text-green-500">check</span>
-                    {{ t('setup.learningModeInfo.audio') }}
-                  </li>
-                  <li class="flex items-center gap-2">
-                    <span class="material-symbols-outlined text-sm text-green-500">check</span>
-                    {{ t('setup.learningModeInfo.quiz') }}
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
+        <!-- Tools -->
+        <section aria-labelledby="home-tools-title">
+          <h2 id="home-tools-title" class="mb-2 px-1 text-caption font-medium text-ink-secondary">{{ t('home.tools') }}</h2>
+          <ul class="divide-y divide-hairline overflow-hidden rounded-[14px] border border-hairline bg-surface">
+            <li v-for="tool in tools" :key="tool.id">
+              <button
+                type="button"
+                :data-test="`tool-${tool.id}`"
+                @click="tool.open"
+                class="flex min-h-[52px] w-full items-center gap-3 px-4 text-left active:bg-surface-raised"
+              >
+                <span class="material-symbols-outlined shrink-0 text-ink-muted" aria-hidden="true">{{ tool.icon }}</span>
+                <span class="min-w-0 flex-1 text-body text-ink">{{ tool.label }}</span>
+                <span class="material-symbols-outlined shrink-0 text-ink-muted" aria-hidden="true">chevron_right</span>
+              </button>
+            </li>
+          </ul>
         </section>
-      </template>
 
-      <!-- Daily Challenge Card (shown when chat mode selected) -->
-      <section v-if="primaryMode === 'chat' && canStartChat" class="mb-6">
-        <DailyChallengeCard
-          :level="selectedLevel?.id || 'intermediate'"
-          :language="locale"
-          @start="() => {
-            startChallenge(selectedLevel.id, locale)
-            handleStart()
-          }"
-        />
-      </section>
-
-      <!-- Quick Access Buttons -->
-      <section class="mb-6">
-        <div class="grid grid-cols-5 gap-2">
-          <button
-            @click="showWeeklyQuests = true"
-            class="flex flex-col items-center p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark hover:border-primary/50 transition-colors"
-          >
-            <span class="material-symbols-outlined text-2xl text-amber-500 mb-1">assignment</span>
-            <span class="text-[10px] text-text-muted dark:text-slate-400 leading-tight text-center">{{ t('weeklyQuests.title') }}</span>
-          </button>
-          <button
-            @click="showScenarios = true"
-            class="flex flex-col items-center p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark hover:border-primary/50 transition-colors"
-          >
-            <span class="material-symbols-outlined text-2xl text-purple-500 mb-1">theater_comedy</span>
-            <span class="text-[10px] text-text-muted dark:text-slate-400 leading-tight text-center">{{ t('scenarios.title') }}</span>
-          </button>
-          <button
-            @click="router.push('/placement-test')"
-            class="flex flex-col items-center p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark hover:border-primary/50 transition-colors"
-          >
-            <span class="material-symbols-outlined text-2xl text-blue-500 mb-1">quiz</span>
-            <span class="text-[10px] text-text-muted dark:text-slate-400 leading-tight text-center">{{ t('placementTest.title') }}</span>
-          </button>
-          <button
-            @click="showAnalytics = true"
-            class="flex flex-col items-center p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark hover:border-primary/50 transition-colors"
-          >
-            <span class="material-symbols-outlined text-2xl text-cyan-500 mb-1">analytics</span>
-            <span class="text-[10px] text-text-muted dark:text-slate-400 leading-tight text-center">{{ t('setup.analytics') }}</span>
-          </button>
-          <button
-            @click="showShareCard = true"
-            class="flex flex-col items-center p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark hover:border-primary/50 transition-colors"
-          >
-            <span class="material-symbols-outlined text-2xl text-green-500 mb-1">share</span>
-            <span class="text-[10px] text-text-muted dark:text-slate-400 leading-tight text-center">{{ t('shareCard.share') }}</span>
-          </button>
-        </div>
-      </section>
-
-      <!-- Start Button -->
-      <button
-        @click="handleStart"
-        :disabled="(primaryMode === 'chat' && !canStartChat) || (primaryMode === 'learning' && !canStartLearning)"
-        class="start-button w-full py-4 rounded-xl font-bold text-lg transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none"
-        :class="(primaryMode === 'chat' && canStartChat) || (primaryMode === 'learning' && canStartLearning) || primaryMode === 'diary'
-          ? 'bg-primary text-[#0d171b] hover:bg-primary/90 hover:scale-[1.02] active:scale-[0.98]'
-          : 'bg-slate-300 dark:bg-slate-700 text-slate-500 dark:text-slate-400'"
-      >
-        <span class="flex items-center justify-center gap-2">
-          <span class="material-symbols-outlined">arrow_forward</span>
-          {{ primaryMode === 'chat' ? t('setup.startChatting') : primaryMode === 'diary' ? t('diary.mode') : t('setup.startLearning') }}
-        </span>
-      </button>
+        <!-- Start Button -->
+        <CmButton
+          block
+          class="start-button"
+          @click="handleStart"
+          :disabled="!canStart"
+        >
+          {{ primaryMode === 'chat' ? t('setup.startChatting') : primaryMode === 'diary' ? t('setup.startDiary') : t('setup.startLearning') }}
+          <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+        </CmButton>
       </div>
     </div>
 
@@ -638,7 +590,7 @@ function handleStart() {
 <style scoped>
 .fade-slide-enter-active,
 .fade-slide-leave-active {
-  transition: opacity 300ms ease, transform 300ms ease;
+  transition: opacity var(--motion-control) var(--ease-cm), transform var(--motion-control) var(--ease-cm);
 }
 .fade-slide-enter-from,
 .fade-slide-leave-to {

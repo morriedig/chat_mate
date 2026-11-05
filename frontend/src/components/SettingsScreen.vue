@@ -7,6 +7,11 @@ import { useDailyGoal } from '../composables/useDailyGoal'
 import { useMotherTongue, supportedLanguages } from '../composables/useMotherTongue'
 import { useUserProgress } from '../composables/useUserProgress'
 import { useVoiceSettings } from '../composables/useVoiceSettings'
+import { languageCode } from '../utils/levelCode'
+import CmAppBar from './ui/CmAppBar.vue'
+import CmButton from './ui/CmButton.vue'
+import CmBottomSheet from './ui/CmBottomSheet.vue'
+import CmSegmentedControl from './ui/CmSegmentedControl.vue'
 
 const { t, locale } = useI18n()
 const router = useRouter()
@@ -21,6 +26,8 @@ const showResetConfirm = ref(false)
 const showExportSuccess = ref(false)
 
 const goalOptions = [5, 10, 15]
+const goalChoices = computed(() => goalOptions.map(mins => ({ value: mins, label: t('dailyGoal.minutes', { count: mins }) })))
+const pauseChoices = computed(() => PAUSE_CHOICES.map(ms => ({ value: ms, label: t('voiceSettings.seconds', { sec: ms / 1000 }) })))
 
 function handleLanguageChange(langId) {
   setMotherTongue(langId)
@@ -93,170 +100,139 @@ function handleReset() {
 </script>
 
 <template>
-  <div class="min-h-screen bg-background-light dark:bg-background-dark">
-    <!-- Header -->
-    <div class="flex items-center gap-3 p-4 border-b border-slate-200 dark:border-slate-700 safe-area-top">
-      <button @click="router.push('/')" class="text-text-muted dark:text-slate-400 hover:text-text-main dark:hover:text-white">
-        <span class="material-symbols-outlined">arrow_back</span>
-      </button>
-      <h1 class="text-lg font-bold text-text-main dark:text-white">{{ t('settings.title') }}</h1>
-    </div>
+  <div class="min-h-screen bg-page">
+    <CmAppBar :title="t('settings.title')" :back-label="t('common.back')" @back="router.push('/')" />
 
-    <div class="max-w-lg mx-auto p-4 space-y-6">
+    <div class="mx-auto max-w-lg space-y-8 px-4 pb-[max(32px,env(safe-area-inset-bottom))] pt-6 min-[375px]:px-5">
       <!-- Language -->
-      <section>
-        <h3 class="text-sm font-semibold text-text-muted dark:text-slate-400 uppercase tracking-wider mb-3">{{ t('setup.motherTongue') }}</h3>
-        <div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
-          <div
+      <section aria-labelledby="settings-language">
+        <h2 id="settings-language" class="mb-2 px-4 text-caption font-medium text-ink-secondary">{{ t('setup.motherTongue') }}</h2>
+        <div role="radiogroup" aria-labelledby="settings-language" class="divide-y divide-hairline overflow-hidden rounded-[14px] border border-hairline bg-surface">
+          <button
             v-for="lang in supportedLanguages"
             :key="lang.id"
+            type="button"
+            role="radio"
+            :aria-checked="motherTongue === lang.id"
             @click="handleLanguageChange(lang.id)"
-            class="flex items-center justify-between p-4 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors border-b border-slate-100 dark:border-slate-700 last:border-0"
+            class="flex min-h-[52px] w-full items-center gap-3 px-4 text-left active:bg-surface-raised"
           >
-            <span class="flex items-center gap-3">
-              <span class="text-lg">{{ lang.flag }}</span>
-              <span class="text-text-main dark:text-white font-medium">{{ lang.nativeName }}</span>
-            </span>
-            <span v-if="motherTongue === lang.id" class="material-symbols-outlined text-primary">check</span>
-          </div>
+            <span class="w-12 shrink-0 text-caption font-medium text-ink-muted">{{ languageCode(lang.id) }}</span>
+            <span class="min-w-0 flex-1 text-body text-ink">{{ lang.nativeName }}</span>
+            <span v-if="motherTongue === lang.id" class="material-symbols-outlined shrink-0 text-accent" aria-hidden="true">check</span>
+          </button>
         </div>
       </section>
 
-      <!-- Dark Mode -->
-      <section>
-        <h3 class="text-sm font-semibold text-text-muted dark:text-slate-400 uppercase tracking-wider mb-3">{{ t('settings.appearance') }}</h3>
-        <div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-slate-200 dark:border-slate-700 p-4">
-          <div class="flex items-center justify-between">
-            <span class="flex items-center gap-3">
-              <span class="material-symbols-outlined text-text-muted dark:text-slate-400">{{ isDark ? 'dark_mode' : 'light_mode' }}</span>
-              <span class="text-text-main dark:text-white font-medium">{{ t('settings.darkMode') }}</span>
-            </span>
+      <!-- Appearance -->
+      <section aria-labelledby="settings-appearance">
+        <h2 id="settings-appearance" class="mb-2 px-4 text-caption font-medium text-ink-secondary">{{ t('settings.appearance') }}</h2>
+        <div class="overflow-hidden rounded-[14px] border border-hairline bg-surface">
+          <div class="flex min-h-[52px] items-center gap-3 pl-4 pr-2">
+            <span class="material-symbols-outlined shrink-0 text-ink-muted" aria-hidden="true">{{ isDark ? 'dark_mode' : 'light_mode' }}</span>
+            <span id="settings-dark-label" class="min-w-0 flex-1 text-body text-ink">{{ t('settings.darkMode') }}</span>
+            <!-- 48 × 28 switch inside a 44 px hit area -->
             <button
+              type="button"
+              role="switch"
+              :aria-checked="isDark"
+              aria-labelledby="settings-dark-label"
               @click="toggleDark"
-              class="relative w-12 h-7 rounded-full transition-colors"
-              :class="isDark ? 'bg-primary' : 'bg-slate-300'"
+              class="flex h-11 w-14 shrink-0 items-center justify-center rounded-[10px]"
             >
               <span
-                class="absolute top-0.5 w-6 h-6 rounded-full bg-white shadow transition-transform"
-                :class="isDark ? 'translate-x-5' : 'translate-x-0.5'"
-              />
+                class="relative block h-7 w-12 rounded-full border transition-colors duration-[180ms]"
+                :class="isDark ? 'border-accent bg-accent' : 'border-hairline bg-surface-raised'"
+                aria-hidden="true"
+              >
+                <span
+                  class="absolute left-0.5 top-0.5 size-[22px] rounded-full bg-surface shadow-[var(--cm-shadow-small)] transition-transform duration-[180ms]"
+                  :class="isDark ? 'translate-x-5' : 'translate-x-0'"
+                ></span>
+              </span>
             </button>
           </div>
         </div>
       </section>
 
       <!-- Daily Goal -->
-      <section>
-        <h3 class="text-sm font-semibold text-text-muted dark:text-slate-400 uppercase tracking-wider mb-3">{{ t('dailyGoal.title') }}</h3>
-        <div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-slate-200 dark:border-slate-700 p-4">
-          <div class="grid grid-cols-3 gap-3">
-            <button
-              v-for="mins in goalOptions"
-              :key="mins"
-              @click="setGoal(mins)"
-              class="py-3 rounded-xl border-2 font-bold transition-all text-center"
-              :class="goalMinutes === mins
-                ? 'border-primary bg-primary/10 text-primary'
-                : 'border-slate-200 dark:border-slate-700 text-text-main dark:text-white hover:border-primary/50'"
-            >
-              {{ t('dailyGoal.minutes', { count: mins }) }}
-            </button>
-          </div>
+      <section aria-labelledby="settings-goal">
+        <h2 id="settings-goal" class="mb-2 px-4 text-caption font-medium text-ink-secondary">{{ t('dailyGoal.title') }}</h2>
+        <div class="rounded-[14px] border border-hairline bg-surface p-3">
+          <CmSegmentedControl
+            :options="goalChoices"
+            :model-value="goalMinutes"
+            :label="t('dailyGoal.title')"
+            @update:model-value="setGoal"
+          />
         </div>
       </section>
 
       <!-- Voice -->
-      <section>
-        <h3 class="text-sm font-semibold text-text-muted dark:text-slate-400 uppercase tracking-wider mb-3">{{ t('voiceSettings.title') }}</h3>
-        <div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-slate-200 dark:border-slate-700 p-4">
-          <p class="text-sm font-medium text-text-main dark:text-white">{{ t('voiceSettings.pauseLabel') }}</p>
-          <p class="text-xs text-text-muted dark:text-slate-400 mt-0.5 mb-3">{{ t('voiceSettings.pauseHint') }}</p>
-          <div class="grid grid-cols-3 gap-3">
-            <button
-              v-for="ms in PAUSE_CHOICES"
-              :key="ms"
-              @click="setPauseMs(ms)"
-              class="py-3 rounded-xl border-2 font-bold transition-all text-center"
-              :class="pauseMs === ms
-                ? 'border-primary bg-primary/10 text-primary'
-                : 'border-slate-200 dark:border-slate-700 text-text-main dark:text-white hover:border-primary/50'"
-            >
-              {{ t('voiceSettings.seconds', { sec: ms / 1000 }) }}
-            </button>
-          </div>
+      <section aria-labelledby="settings-voice">
+        <h2 id="settings-voice" class="mb-2 px-4 text-caption font-medium text-ink-secondary">{{ t('voiceSettings.title') }}</h2>
+        <div class="rounded-[14px] border border-hairline bg-surface p-4">
+          <p class="text-body text-ink">{{ t('voiceSettings.pauseLabel') }}</p>
+          <p class="mb-3 mt-0.5 text-caption text-ink-secondary">{{ t('voiceSettings.pauseHint') }}</p>
+          <CmSegmentedControl
+            :options="pauseChoices"
+            :model-value="pauseMs"
+            :label="t('voiceSettings.pauseLabel')"
+            @update:model-value="setPauseMs"
+          />
         </div>
       </section>
 
       <!-- Data Management -->
-      <section>
-        <h3 class="text-sm font-semibold text-text-muted dark:text-slate-400 uppercase tracking-wider mb-3">{{ t('settings.data') }}</h3>
-        <div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
-          <button @click="exportProgress" class="w-full flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors border-b border-slate-100 dark:border-slate-700">
-            <span class="flex items-center gap-3">
-              <span class="material-symbols-outlined text-text-muted dark:text-slate-400">download</span>
-              <span class="text-text-main dark:text-white font-medium">{{ t('settings.export') }}</span>
+      <section aria-labelledby="settings-data">
+        <h2 id="settings-data" class="mb-2 px-4 text-caption font-medium text-ink-secondary">{{ t('settings.data') }}</h2>
+        <div class="divide-y divide-hairline overflow-hidden rounded-[14px] border border-hairline bg-surface">
+          <button type="button" @click="exportProgress" class="flex min-h-[52px] w-full items-center gap-3 px-4 text-left active:bg-surface-raised">
+            <span class="material-symbols-outlined shrink-0 text-ink-muted" aria-hidden="true">download</span>
+            <span class="min-w-0 flex-1 text-body text-ink">{{ t('settings.export') }}</span>
+            <span v-if="showExportSuccess" role="status" class="flex shrink-0 items-center gap-1 text-caption text-success">
+              <span class="material-symbols-outlined !text-[18px]" aria-hidden="true">check</span>{{ t('settings.saved') }}
             </span>
-            <span v-if="showExportSuccess" class="text-green-500 text-sm">{{ t('settings.saved') }}</span>
-            <span v-else class="material-symbols-outlined text-slate-400">chevron_right</span>
+            <span v-else class="material-symbols-outlined shrink-0 text-ink-muted" aria-hidden="true">chevron_right</span>
           </button>
-          <button @click="importProgress" class="w-full flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors border-b border-slate-100 dark:border-slate-700">
-            <span class="flex items-center gap-3">
-              <span class="material-symbols-outlined text-text-muted dark:text-slate-400">upload</span>
-              <span class="text-text-main dark:text-white font-medium">{{ t('settings.import') }}</span>
-            </span>
-            <span class="material-symbols-outlined text-slate-400">chevron_right</span>
+          <button type="button" @click="importProgress" class="flex min-h-[52px] w-full items-center gap-3 px-4 text-left active:bg-surface-raised">
+            <span class="material-symbols-outlined shrink-0 text-ink-muted" aria-hidden="true">upload</span>
+            <span class="min-w-0 flex-1 text-body text-ink">{{ t('settings.import') }}</span>
+            <span class="material-symbols-outlined shrink-0 text-ink-muted" aria-hidden="true">chevron_right</span>
           </button>
-          <button @click="showResetConfirm = true" class="w-full flex items-center justify-between p-4 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
-            <span class="flex items-center gap-3">
-              <span class="material-symbols-outlined text-red-500">delete_forever</span>
-              <span class="text-red-600 dark:text-red-400 font-medium">{{ t('settings.reset') }}</span>
-            </span>
-            <span class="material-symbols-outlined text-slate-400">chevron_right</span>
+          <button type="button" @click="showResetConfirm = true" class="flex min-h-[52px] w-full items-center gap-3 px-4 text-left active:bg-surface-raised">
+            <span class="material-symbols-outlined shrink-0 text-error" aria-hidden="true">delete</span>
+            <span class="min-w-0 flex-1 text-body text-error">{{ t('settings.reset') }}</span>
           </button>
         </div>
       </section>
 
       <!-- About -->
-      <section class="pb-8">
-        <h3 class="text-sm font-semibold text-text-muted dark:text-slate-400 uppercase tracking-wider mb-3">{{ t('settings.about') }}</h3>
-        <div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-slate-200 dark:border-slate-700 p-4">
-          <p class="text-text-main dark:text-white font-medium">Chat Mate</p>
-          <p class="text-sm text-text-muted dark:text-slate-400">{{ t('settings.tagline') }}</p>
+      <section aria-labelledby="settings-about">
+        <h2 id="settings-about" class="mb-2 px-4 text-caption font-medium text-ink-secondary">{{ t('settings.about') }}</h2>
+        <div class="flex min-h-[52px] flex-col justify-center rounded-[14px] border border-hairline bg-surface px-4 py-3">
+          <p class="text-body text-ink">Chat Mate</p>
+          <p class="text-caption text-ink-secondary">{{ t('settings.tagline') }}</p>
         </div>
       </section>
     </div>
 
-    <!-- Reset Confirm Dialog -->
-    <Teleport to="body">
-      <Transition name="fade">
-        <div v-if="showResetConfirm" class="fixed inset-0 z-[100] flex items-center justify-center p-4">
-          <div class="absolute inset-0 bg-black/50" @click="showResetConfirm = false" />
-          <div class="relative bg-surface-light dark:bg-surface-dark rounded-2xl p-6 max-w-sm w-full shadow-xl">
-            <span class="material-symbols-outlined text-4xl text-red-500 mb-3">warning</span>
-            <h3 class="text-lg font-bold text-text-main dark:text-white mb-2">{{ t('settings.resetConfirmTitle') }}</h3>
-            <p class="text-sm text-text-muted dark:text-slate-400 mb-4">{{ t('settings.resetConfirmBody') }}</p>
-            <div class="flex gap-3">
-              <button @click="showResetConfirm = false" class="flex-1 py-2 rounded-xl border border-slate-300 dark:border-slate-600 text-text-main dark:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
-                {{ t('common.cancel') }}
-              </button>
-              <button @click="handleReset" class="flex-1 py-2 rounded-xl bg-red-500 text-white font-bold hover:bg-red-600 transition-colors">
-                {{ t('settings.resetButton') }}
-              </button>
-            </div>
-          </div>
+    <!-- Reset confirmation: bottom sheet on phones -->
+    <CmBottomSheet
+      v-if="showResetConfirm"
+      :title="t('settings.resetConfirmTitle')"
+      :description="t('settings.resetConfirmBody')"
+      :close-label="t('common.close')"
+      @close="showResetConfirm = false"
+    >
+      <template #actions>
+        <div class="grid grid-cols-2 gap-3">
+          <CmButton variant="secondary" @click="showResetConfirm = false">{{ t('common.cancel') }}</CmButton>
+          <button type="button" @click="handleReset" class="min-h-12 rounded-[10px] bg-error px-4 text-body font-medium text-on-accent">
+            {{ t('settings.resetButton') }}
+          </button>
         </div>
-      </Transition>
-    </Teleport>
+      </template>
+    </CmBottomSheet>
   </div>
 </template>
-
-<style scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.2s ease;
-}
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-</style>

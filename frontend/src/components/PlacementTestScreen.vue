@@ -1,10 +1,14 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onBeforeUnmount } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { usePlacementTest } from '../composables/usePlacementTest'
 import { useNavState } from '../composables/useNavState'
 import { levels } from '../data/characters'
+import { levelCode } from '../utils/levelCode'
+import CmAppBar from './ui/CmAppBar.vue'
+import CmButton from './ui/CmButton.vue'
+import CmProgress from './ui/CmProgress.vue'
 
 const { t, locale } = useI18n()
 const router = useRouter()
@@ -22,6 +26,23 @@ const isAnswered = ref(false)
 
 const currentQuestion = computed(() => questions.value[currentIndex.value] || null)
 const total = computed(() => questions.value.length || 1)
+const markers = ['A', 'B', 'C', 'D', 'E', 'F']
+let advanceTimer = null
+
+// Announced through the live region after each answer
+const answerFeedback = computed(() => {
+  if (!isAnswered.value || !currentQuestion.value) return ''
+  return selectedAnswer.value === currentQuestion.value.answer
+    ? t('placementTest.correct')
+    : t('placementTest.wrongAnswer', { answer: currentQuestion.value.options[currentQuestion.value.answer] })
+})
+
+function optionState(i) {
+  if (!isAnswered.value) return 'idle'
+  if (i === currentQuestion.value.answer) return 'correct'
+  if (i === selectedAnswer.value) return 'wrong'
+  return 'dim'
+}
 
 function selectAnswer(index) {
   if (isAnswered.value) return
@@ -29,7 +50,8 @@ function selectAnswer(index) {
   isAnswered.value = true
   answers.value.push(index)
 
-  setTimeout(() => {
+  advanceTimer = setTimeout(() => {
+    advanceTimer = null
     if (currentIndex.value < total.value - 1) {
       currentIndex.value++
       selectedAnswer.value = null
@@ -40,6 +62,8 @@ function selectAnswer(index) {
     }
   }, 600)
 }
+
+onBeforeUnmount(() => clearTimeout(advanceTimer))
 
 function retake() {
   currentIndex.value = 0
@@ -67,71 +91,68 @@ function handleDone() {
 </script>
 
 <template>
-  <div class="min-h-screen bg-background-light dark:bg-background-dark flex flex-col">
-    <!-- Header -->
-    <div class="flex items-center gap-3 p-4 border-b border-slate-200 dark:border-slate-700 safe-area-top">
-      <button @click="router.push('/')" class="text-text-muted dark:text-slate-400 hover:text-text-main dark:hover:text-white">
-        <span class="material-symbols-outlined">arrow_back</span>
-      </button>
-      <h1 class="text-lg font-bold text-text-main dark:text-white">{{ t('placementTest.title') }}</h1>
-    </div>
+  <div class="flex min-h-screen flex-col bg-page">
+    <CmAppBar :title="t('placementTest.title')" :back-label="t('common.back')" @back="router.push('/')">
+      <template v-if="!(showResult && result) && currentQuestion" #below>
+        <div class="flex items-center gap-3 px-4 pb-3 min-[375px]:px-5">
+          <span class="shrink-0 text-meta text-ink-muted tabular-nums">{{ t('placementTest.question', { current: currentIndex + 1, total }) }}</span>
+          <CmProgress class="flex-1" :value="currentIndex + 1" :max="total" :label="t('placementTest.question', { current: currentIndex + 1, total })" />
+        </div>
+      </template>
+    </CmAppBar>
 
     <!-- Result -->
-    <div v-if="showResult && result" class="flex-1 flex flex-col items-center justify-center p-8">
-      <div class="text-center">
-        <span class="material-symbols-outlined text-6xl text-primary mb-4">emoji_events</span>
-        <h2 class="text-2xl font-bold text-text-main dark:text-white mb-2">{{ t('placementTest.result') }}</h2>
-        <p class="text-lg text-text-muted dark:text-slate-400 mb-4">{{ t('placementTest.score', { score: result.score }) }}</p>
-        <div class="inline-block px-6 py-3 rounded-2xl bg-primary/10 dark:bg-primary/20 border-2 border-primary mb-6">
-          <p class="text-sm text-text-muted dark:text-slate-400">{{ t('placementTest.recommended', { level: '' }) }}</p>
-          <p class="text-2xl font-bold text-primary capitalize">{{ t(`levels.${result.level}.name`) }}</p>
-        </div>
-        <div class="flex gap-3 justify-center">
-          <button @click="retake" class="px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 text-text-main dark:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
-            {{ t('placementTest.retake') }}
-          </button>
-          <button @click="handleDone" class="px-6 py-2 rounded-lg bg-primary text-[#0d171b] font-bold hover:bg-primary/90 transition-colors">
-            {{ t('setup.startChatting') }}
-          </button>
+    <div v-if="showResult && result" class="flex flex-1 flex-col justify-center px-4 py-8 min-[375px]:px-5">
+      <div class="mx-auto w-full max-w-md">
+        <p class="text-caption text-ink-secondary">{{ t('placementTest.result') }}</p>
+        <p class="mt-1 text-display font-medium text-ink">{{ t(`levels.${result.level}.name`) }}</p>
+        <p class="mt-1 text-caption text-ink-muted tabular-nums">{{ levelCode(result.level) }} · {{ t('placementTest.score', { score: result.score }) }}</p>
+        <div class="mt-8 grid grid-cols-1 gap-3 min-[375px]:grid-cols-2">
+          <CmButton variant="secondary" @click="retake">{{ t('placementTest.retake') }}</CmButton>
+          <CmButton @click="handleDone">{{ t('placementTest.useLevel') }}</CmButton>
         </div>
       </div>
     </div>
 
     <!-- Questions -->
-    <div v-else-if="currentQuestion" class="flex-1 flex flex-col p-6">
-      <!-- Progress -->
-      <div class="mb-6">
-        <div class="flex justify-between text-sm text-text-muted dark:text-slate-400 mb-2">
-          <span>{{ t('placementTest.question', { current: currentIndex + 1, total }) }}</span>
-        </div>
-        <div class="h-2 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden">
-          <div class="h-full rounded-full bg-primary transition-all duration-300" :style="{ width: `${((currentIndex + 1) / total) * 100}%` }" />
-        </div>
-      </div>
+    <div v-else-if="currentQuestion" class="flex flex-1 flex-col justify-center px-4 py-8 min-[375px]:px-5">
+      <div class="mx-auto w-full max-w-md">
+        <h2 class="text-section font-medium text-ink">{{ currentQuestion.q }}</h2>
 
-      <!-- Question -->
-      <div class="flex-1 flex flex-col justify-center">
-        <h2 class="text-xl font-bold text-text-main dark:text-white mb-6 text-center">
-          {{ currentQuestion.q }}
-        </h2>
-
-        <div class="space-y-3 max-w-md mx-auto w-full">
+        <div class="mt-6 space-y-2.5" role="group" :aria-label="currentQuestion.q">
           <button
             v-for="(option, i) in currentQuestion.options"
             :key="i"
+            type="button"
             @click="selectAnswer(i)"
-            class="w-full p-4 rounded-xl border-2 text-left font-medium transition-all"
-            :class="{
-              'border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark hover:border-primary text-text-main dark:text-white': !isAnswered,
-              'border-green-400 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300': isAnswered && i === currentQuestion.answer,
-              'border-red-400 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300': isAnswered && i === selectedAnswer && i !== currentQuestion.answer,
-              'border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark opacity-50': isAnswered && i !== selectedAnswer && i !== currentQuestion.answer,
-            }"
             :disabled="isAnswered"
+            class="flex min-h-14 w-full items-center gap-3 rounded-[10px] border px-3 py-2.5 text-left text-body disabled:cursor-default"
+            :class="{
+              'border-hairline bg-surface text-ink active:bg-surface-raised': optionState(i) === 'idle',
+              'border-success/30 bg-success-soft text-ink': optionState(i) === 'correct',
+              'border-error/30 bg-error-soft text-ink': optionState(i) === 'wrong',
+              'border-hairline bg-surface text-ink opacity-55': optionState(i) === 'dim',
+            }"
           >
-            {{ option }}
+            <span
+              class="flex size-6 shrink-0 items-center justify-center rounded-[6px] text-meta font-medium"
+              :class="{
+                'bg-surface-raised text-ink-secondary': optionState(i) === 'idle' || optionState(i) === 'dim',
+                'bg-success text-on-accent': optionState(i) === 'correct',
+                'bg-error text-on-accent': optionState(i) === 'wrong',
+              }"
+              aria-hidden="true"
+            >{{ markers[i] }}</span>
+            <span class="min-w-0 flex-1">{{ option }}</span>
+            <span v-if="optionState(i) === 'correct'" class="flex shrink-0 items-center gap-1 text-caption text-success">
+              <span class="material-symbols-outlined !text-[18px]" aria-hidden="true">check</span>{{ t('placementTest.correctLabel') }}
+            </span>
+            <span v-else-if="optionState(i) === 'wrong'" class="flex shrink-0 items-center gap-1 text-caption text-error">
+              <span class="material-symbols-outlined !text-[18px]" aria-hidden="true">close</span>{{ t('placementTest.wrongLabel') }}
+            </span>
           </button>
         </div>
+        <p class="sr-only" aria-live="polite">{{ answerFeedback }}</p>
       </div>
     </div>
   </div>

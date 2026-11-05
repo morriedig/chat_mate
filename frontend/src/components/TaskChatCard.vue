@@ -10,7 +10,7 @@ const { motherTongue } = useMotherTongue()
 defineProps({
   // Today's daily-practice patterns
   patterns: { type: Array, default: () => [] },
-  // Highlighted as the next step once daily practice is done
+  // Current step once daily practice is done: accent-soft fill + margin rule
   recommended: { type: Boolean, default: false },
 })
 const emit = defineEmits(['open'])
@@ -25,19 +25,20 @@ const task = computed(() => taskText(pickTask(), motherTongue.value))
     @click="emit('open')"
     @keydown.enter.prevent="emit('open')"
     @keydown.space.prevent="emit('open')"
-    class="cursor-pointer text-left p-4 rounded-2xl border-2 transition-all hover:scale-[1.01] active:scale-[0.99]"
-    :class="recommended
-      ? 'border-primary bg-gradient-to-br from-primary/15 to-amber-50 dark:from-primary/25 dark:to-amber-900/10'
-      : 'border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark'"
+    class="relative min-h-16 cursor-pointer rounded-[14px] border p-4 text-left shadow-[var(--cm-shadow-small)]"
+    :class="recommended ? 'border-accent/30 bg-accent-soft pl-[18px]' : 'border-hairline bg-surface'"
   >
-    <div class="flex items-start gap-3">
-      <span class="material-symbols-outlined text-2xl shrink-0 text-primary">forum</span>
-      <div class="flex-1 min-w-0">
-        <h3 class="font-bold text-text-main dark:text-white">{{ t('taskChat.cardTitle') }}</h3>
-        <p class="text-sm text-text-main dark:text-slate-200 mt-1 leading-snug">{{ task }}</p>
-        <p class="text-xs text-text-muted dark:text-slate-400 mt-1.5">{{ t('taskChat.cardHint', { count: patterns.length }) }}</p>
+    <span v-if="recommended" class="absolute left-0 top-3.5 h-9 w-[3px] rounded-r-[3px] bg-accent" aria-hidden="true"></span>
+    <div class="flex items-start gap-2.5">
+      <span class="material-symbols-outlined shrink-0 text-accent" aria-hidden="true">chat_bubble</span>
+      <div class="min-w-0 flex-1">
+        <div class="flex items-start justify-between gap-2">
+          <h3 class="text-body font-medium text-ink">{{ t('taskChat.cardTitle') }}</h3>
+          <span v-if="patterns.length" class="shrink-0 pt-0.5 text-meta text-ink-muted tabular-nums">{{ t('taskChat.cardCount', { count: patterns.length }) }}</span>
+        </div>
+        <p class="mt-0.5 text-caption text-ink-secondary">{{ task }}</p>
+        <p class="mt-1 text-meta text-ink-muted">{{ t('taskChat.cardHint', { count: patterns.length }) }}</p>
       </div>
-      <span class="material-symbols-outlined text-primary shrink-0 self-center">arrow_forward</span>
     </div>
   </div>
 </template>

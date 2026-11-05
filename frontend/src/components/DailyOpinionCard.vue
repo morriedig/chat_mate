@@ -3,6 +3,7 @@ import { computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useMotherTongue } from '../composables/useMotherTongue'
 import { useDailyOpinion, getConnectorInfo } from '../composables/useDailyOpinion'
+import CmChip from './ui/CmChip.vue'
 
 const { t } = useI18n()
 const emit = defineEmits(['open'])
@@ -14,6 +15,7 @@ onMounted(refreshDay)
 
 const gloss = computed(() => (motherTongue.value === 'en' ? '' : question.value[motherTongue.value]))
 const connectors = computed(() => connectorIds.value.map(id => getConnectorInfo(id, motherTongue.value)))
+const doneDays = computed(() => last7Days.value.filter(d => d.done).length)
 </script>
 
 <template>
@@ -24,60 +26,49 @@ const connectors = computed(() => connectorIds.value.map(id => getConnectorInfo(
     @click="emit('open')"
     @keydown.enter.prevent="emit('open')"
     @keydown.space.prevent="emit('open')"
-    class="cursor-pointer text-left p-4 rounded-2xl border-2 transition-all hover:scale-[1.01] active:scale-[0.99]"
-    :class="isDoneToday
-      ? 'border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/20'
-      : 'border-primary/40 bg-gradient-to-br from-primary/10 to-sky-400/5 dark:from-primary/20 dark:to-sky-400/10'"
+    class="cursor-pointer rounded-[14px] border border-hairline bg-surface p-4 text-left shadow-[var(--cm-shadow-small)]"
   >
     <div class="flex items-start gap-3">
       <span
-        class="material-symbols-outlined text-2xl shrink-0"
-        :class="isDoneToday ? 'text-green-500' : 'text-primary'"
-      >{{ isDoneToday ? 'check_circle' : 'lightbulb' }}</span>
-      <div class="flex-1 min-w-0">
-        <div class="flex items-center justify-between gap-2">
-          <h3 class="font-bold text-text-main dark:text-white">{{ t('dailyOpinion.cardTitle') }}</h3>
-          <span
-            class="shrink-0 text-xs font-semibold px-2 py-0.5 rounded-full"
-            :class="isDoneToday
-              ? 'bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300'
-              : 'bg-primary/15 text-sky-700 dark:text-primary'"
-          >{{ isDoneToday ? t('dailyOpinion.doneToday') : t('dailyOpinion.notDoneToday') }}</span>
+        class="material-symbols-outlined shrink-0"
+        :class="isDoneToday ? 'text-success' : 'text-ink-muted'"
+        aria-hidden="true"
+      >{{ isDoneToday ? 'task_alt' : 'lightbulb' }}</span>
+      <div class="min-w-0 flex-1">
+        <div class="flex items-start justify-between gap-2">
+          <h3 class="text-body font-medium text-ink">{{ t('dailyOpinion.cardTitle') }}</h3>
+          <span class="shrink-0 pt-0.5 text-meta" :class="isDoneToday ? 'text-success' : 'text-ink-muted'">
+            {{ isDoneToday ? t('dailyOpinion.doneToday') : t('dailyOpinion.cardDuration') }}
+          </span>
         </div>
 
-        <p class="text-sm font-medium text-text-main dark:text-slate-200 mt-1.5 break-words">{{ question.en }}</p>
-        <p v-if="gloss" class="text-xs text-text-muted dark:text-slate-400 mt-0.5 break-words">{{ gloss }}</p>
+        <p lang="en" class="mt-0.5 text-caption text-ink break-words">{{ question.en }}</p>
+        <p v-if="gloss" class="text-meta text-ink-secondary break-words">{{ gloss }}</p>
 
-        <div class="flex flex-wrap items-center gap-1.5 mt-2">
-          <span class="text-xs text-text-muted dark:text-slate-400">{{ t('dailyOpinion.todaysConnectors') }}:</span>
-          <span
-            v-for="c in connectors"
-            :key="c.id"
-            class="text-xs font-semibold px-2 py-0.5 rounded-md bg-white/70 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-text-main dark:text-slate-200"
-          >{{ c.word }}</span>
+        <div class="mt-2 flex flex-wrap items-center gap-1.5">
+          <span class="text-meta text-ink-muted">{{ t('dailyOpinion.todaysConnectors') }}</span>
+          <CmChip v-for="c in connectors" :key="c.id">{{ c.word }}</CmChip>
         </div>
 
-        <!-- 7-day dot row -->
-        <div class="flex items-center gap-2 mt-3">
-          <div class="flex items-center gap-1.5" :aria-label="t('dailyOpinion.last7Days')">
+        <!-- 7-day record: filled square = done; today has an accent outline -->
+        <div class="mt-3 flex items-center gap-2">
+          <div class="flex items-center gap-1.5" role="img" :aria-label="t('dailyOpinion.last7Days', { count: doneDays })">
             <span
               v-for="d in last7Days"
               :key="d.key"
               :title="d.key"
-              class="size-2.5 rounded-full"
+              class="size-2.5 rounded-[2px] border"
               :class="[
-                d.done ? 'bg-green-500' : 'bg-slate-200 dark:bg-slate-700',
-                d.isToday ? 'ring-2 ring-offset-1 ring-primary/60 ring-offset-transparent' : '',
+                d.done ? 'bg-success border-success' : 'bg-surface-raised border-transparent',
+                d.isToday && !d.done ? '!border-accent' : '',
               ]"
             ></span>
           </div>
-          <span v-if="streak > 0" class="text-xs text-amber-600 dark:text-amber-400 flex items-center gap-0.5">
-            <span class="material-symbols-outlined text-[14px]">local_fire_department</span>
+          <span v-if="streak > 0" class="text-meta text-ink-muted tabular-nums">
             {{ t('dailyOpinion.streakDays', { count: streak }) }}
           </span>
         </div>
       </div>
-      <span class="material-symbols-outlined text-text-muted dark:text-slate-500 shrink-0 self-center">chevron_right</span>
     </div>
   </div>
 </template>

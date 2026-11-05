@@ -38,26 +38,28 @@ function dismiss() {
     <Transition name="pwa-toast">
       <div
         v-if="needRefresh"
-        class="fixed bottom-4 left-4 right-4 z-[9999] mx-auto max-w-md rounded-xl bg-gray-900 p-4 shadow-lg shadow-black/20 ring-1 ring-white/10"
+        class="fixed inset-x-4 bottom-[max(16px,env(safe-area-inset-bottom))] z-[9999] mx-auto max-w-md rounded-[14px] border border-hairline bg-surface p-4 shadow-[var(--cm-shadow-float)]"
         role="alert"
       >
         <div class="flex items-start gap-3">
-          <span class="mt-0.5 text-xl">🔄</span>
+          <span class="material-symbols-outlined mt-0.5 shrink-0 text-accent" aria-hidden="true">system_update</span>
           <div class="min-w-0 flex-1">
-            <p class="text-sm font-medium text-white">{{ t('pwa.updateAvailable') }}</p>
-            <p class="mt-0.5 text-xs text-gray-400">{{ t('pwa.updateMessage') }}</p>
+            <p class="text-body font-medium text-ink">{{ t('pwa.updateAvailable') }}</p>
+            <p class="mt-0.5 text-caption text-ink-secondary">{{ t('pwa.updateMessage') }}</p>
           </div>
         </div>
-        <div class="mt-3 flex gap-2 justify-end">
+        <div class="mt-3 flex justify-end gap-2">
           <button
+            type="button"
             @click="dismiss"
-            class="rounded-lg px-3 py-1.5 text-xs font-medium text-gray-400 transition-colors hover:text-white"
+            class="min-h-11 rounded-[10px] px-3 text-caption font-medium text-ink-secondary active:bg-surface-raised"
           >
             {{ t('pwa.later') }}
           </button>
           <button
+            type="button"
             @click="update"
-            class="rounded-lg bg-[#2badee] px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-[#2badee]/80"
+            class="min-h-11 rounded-[10px] bg-accent px-4 text-caption font-medium text-on-accent active:bg-accent-pressed"
           >
             {{ t('pwa.update') }}
           </button>
@@ -68,18 +70,13 @@ function dismiss() {
 </template>
 
 <style scoped>
-.pwa-toast-enter-active {
-  transition: all 0.3s ease-out;
-}
+.pwa-toast-enter-active,
 .pwa-toast-leave-active {
-  transition: all 0.2s ease-in;
+  transition: opacity var(--motion-sheet) var(--ease-cm), transform var(--motion-sheet) var(--ease-cm);
 }
-.pwa-toast-enter-from {
-  opacity: 0;
-  transform: translateY(16px);
-}
+.pwa-toast-enter-from,
 .pwa-toast-leave-to {
   opacity: 0;
-  transform: translateY(16px);
+  transform: translateY(12px);
 }
 </style>
