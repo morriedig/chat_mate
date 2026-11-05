@@ -24,11 +24,11 @@ defineProps({
         class="flex flex-col p-3 sm:p-4 bg-white dark:bg-[#1e2930] rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm shrink-0 w-48 sm:w-auto sm:shrink"
       >
         <div class="mb-2">
-          <span class="font-bold text-primary text-lg">{{ hint.word }}</span>
+          <span class="font-bold text-primary text-lg break-words">{{ hint.word }}</span>
         </div>
-        <p class="text-xs text-slate-500 dark:text-slate-400 mb-2 font-medium">{{ hint.description }}</p>
+        <p class="text-xs text-slate-500 dark:text-slate-400 mb-2 font-medium break-words">{{ hint.description }}</p>
         <div class="mt-auto pt-2 border-t border-slate-100 dark:border-slate-700">
-          <p class="text-xs italic text-text-main dark:text-slate-300">"{{ hint.example }}"</p>
+          <p class="text-xs italic text-text-main dark:text-slate-300 [overflow-wrap:anywhere]">"{{ hint.example }}"</p>
         </div>
       </div>
     </div>

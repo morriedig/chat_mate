@@ -276,18 +276,18 @@ onMounted(() => {
   <div class="min-h-screen bg-background-light dark:bg-background-dark">
     <!-- Header -->
     <header class="sticky top-0 z-10 bg-surface-light dark:bg-surface-dark border-b border-slate-200 dark:border-slate-700 safe-area-top">
-      <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between gap-2">
         <button
           @click="selectedChapter ? backToChapters() : router.push('/')"
-          class="flex items-center gap-2 text-text-muted hover:text-text-main dark:text-slate-400 dark:hover:text-white transition-colors"
+          class="flex items-center gap-1 sm:gap-2 shrink-0 whitespace-nowrap text-text-muted hover:text-text-main dark:text-slate-400 dark:hover:text-white transition-colors"
         >
           <span class="material-symbols-outlined">arrow_back</span>
           <span class="text-sm font-medium">{{ selectedChapter ? t('learning.backToChapters') : t('learning.backToSetup') }}</span>
         </button>
 
-        <div class="flex items-center gap-4">
+        <div class="flex items-center gap-2 sm:gap-4 min-w-0">
           <!-- Voice Speed Select -->
-          <div class="relative">
+          <div class="relative shrink-0">
             <select
               v-model="voiceSpeed"
               class="appearance-none pl-8 pr-8 py-1.5 rounded-full text-sm font-medium bg-slate-100 dark:bg-slate-800 text-text-main dark:text-slate-300 border-none cursor-pointer focus:ring-2 focus:ring-primary focus:outline-none"
@@ -303,7 +303,7 @@ onMounted(() => {
           <!-- Bilingual Toggle -->
           <button
             @click="isBilingual = !isBilingual"
-            class="flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-medium transition-colors"
+            class="flex items-center gap-1 px-2.5 sm:px-3 py-1.5 rounded-full text-sm font-medium transition-colors shrink-0"
             :class="isBilingual
               ? 'bg-primary/10 text-primary'
               : 'bg-slate-100 dark:bg-slate-800 text-text-muted dark:text-slate-400'"
@@ -312,9 +312,9 @@ onMounted(() => {
             <span class="hidden sm:inline">{{ t('learning.bilingual') }}</span>
           </button>
 
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-1 sm:gap-2 shrink-0">
             <span class="text-2xl">{{ props.level.icon }}</span>
-            <span class="font-semibold text-text-main dark:text-white">{{ t(`levels.${props.level.id}.name`) }}</span>
+            <span class="hidden min-[360px]:inline whitespace-nowrap font-semibold text-text-main dark:text-white">{{ t(`levels.${props.level.id}.name`) }}</span>
           </div>
         </div>
       </div>
@@ -536,10 +536,10 @@ onMounted(() => {
           </div>
 
           <!-- Mode Tabs: Pre-lesson modes -->
-          <div v-if="isPreLessonSelected" class="flex bg-slate-100 dark:bg-slate-800 rounded-xl p-1">
+          <div v-if="isPreLessonSelected" class="flex overflow-x-auto bg-slate-100 dark:bg-slate-800 rounded-xl p-1">
             <button
               @click="setMode('cards')"
-              class="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+              class="flex flex-1 sm:flex-none items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors"
               :class="learningMode === 'cards'
                 ? 'bg-white dark:bg-slate-700 text-primary shadow-sm'
                 : 'text-text-muted dark:text-slate-400 hover:text-text-main dark:hover:text-white'"
@@ -549,7 +549,7 @@ onMounted(() => {
             </button>
             <button
               @click="setMode('grid')"
-              class="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+              class="flex flex-1 sm:flex-none items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors"
               :class="learningMode === 'grid'
                 ? 'bg-white dark:bg-slate-700 text-primary shadow-sm'
                 : 'text-text-muted dark:text-slate-400 hover:text-text-main dark:hover:text-white'"
@@ -559,7 +559,7 @@ onMounted(() => {
             </button>
             <button
               @click="setMode('match')"
-              class="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+              class="flex flex-1 sm:flex-none items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors"
               :class="learningMode === 'match'
                 ? 'bg-white dark:bg-slate-700 text-primary shadow-sm'
                 : 'text-text-muted dark:text-slate-400 hover:text-text-main dark:hover:text-white'"
@@ -569,7 +569,7 @@ onMounted(() => {
             </button>
             <button
               @click="setMode('quiz')"
-              class="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+              class="flex flex-1 sm:flex-none items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors"
               :class="learningMode === 'quiz'
                 ? 'bg-white dark:bg-slate-700 text-primary shadow-sm'
                 : 'text-text-muted dark:text-slate-400 hover:text-text-main dark:hover:text-white'"
@@ -580,7 +580,7 @@ onMounted(() => {
             <button
               v-if="hasToneData"
               @click="setMode('tones')"
-              class="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+              class="flex flex-1 sm:flex-none items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors"
               :class="learningMode === 'tones'
                 ? 'bg-white dark:bg-slate-700 text-primary shadow-sm'
                 : 'text-text-muted dark:text-slate-400 hover:text-text-main dark:hover:text-white'"
@@ -591,10 +591,10 @@ onMounted(() => {
           </div>
 
           <!-- Mode Tabs: Regular chapter modes -->
-          <div v-else class="flex bg-slate-100 dark:bg-slate-800 rounded-xl p-1">
+          <div v-else class="flex overflow-x-auto bg-slate-100 dark:bg-slate-800 rounded-xl p-1">
             <button
               @click="setMode('list')"
-              class="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+              class="flex flex-1 sm:flex-none items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors"
               :class="learningMode === 'list'
                 ? 'bg-white dark:bg-slate-700 text-primary shadow-sm'
                 : 'text-text-muted dark:text-slate-400 hover:text-text-main dark:hover:text-white'"
@@ -604,7 +604,7 @@ onMounted(() => {
             </button>
             <button
               @click="setMode('flashcard')"
-              class="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+              class="flex flex-1 sm:flex-none items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors"
               :class="learningMode === 'flashcard'
                 ? 'bg-white dark:bg-slate-700 text-primary shadow-sm'
                 : 'text-text-muted dark:text-slate-400 hover:text-text-main dark:hover:text-white'"
@@ -614,7 +614,7 @@ onMounted(() => {
             </button>
             <button
               @click="setMode('quiz')"
-              class="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+              class="flex flex-1 sm:flex-none items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors"
               :class="learningMode === 'quiz'
                 ? 'bg-white dark:bg-slate-700 text-primary shadow-sm'
                 : 'text-text-muted dark:text-slate-400 hover:text-text-main dark:hover:text-white'"
@@ -625,7 +625,7 @@ onMounted(() => {
             <button
               v-if="!isReviewMode"
               @click="setMode('conversation')"
-              class="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+              class="flex flex-1 sm:flex-none items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors"
               :class="learningMode === 'conversation'
                 ? 'bg-white dark:bg-slate-700 text-primary shadow-sm'
                 : 'text-text-muted dark:text-slate-400 hover:text-text-main dark:hover:text-white'"

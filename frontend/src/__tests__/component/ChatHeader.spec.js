@@ -94,12 +94,12 @@ describe('ChatHeader', () => {
 
     it('should show toggle article button when in article mode', () => {
       const wrapper = createWrapper({ isArticleMode: true, showArticle: true })
-      expect(wrapper.text()).toContain('Hide')
+      expect(wrapper.text()).toContain('chat.hideArticle')
     })
 
     it('should show "Show" text when article is hidden', () => {
       const wrapper = createWrapper({ isArticleMode: true, showArticle: false })
-      expect(wrapper.text()).toContain('Show')
+      expect(wrapper.text()).toContain('chat.showArticle')
     })
   })
 
@@ -114,7 +114,7 @@ describe('ChatHeader', () => {
 
     it('should emit toggle-article event when toggle button is clicked', async () => {
       const wrapper = createWrapper({ isArticleMode: true })
-      const toggleButton = wrapper.findAll('button').find(btn => btn.text().includes('Hide') || btn.text().includes('Show'))
+      const toggleButton = wrapper.findAll('button').find(btn => btn.text().includes('chat.hideArticle') || btn.text().includes('chat.showArticle'))
 
       if (toggleButton) {
         await toggleButton.trigger('click')
@@ -124,11 +124,8 @@ describe('ChatHeader', () => {
 
     it('should emit renew-chat event when new chat button is clicked', async () => {
       const wrapper = createWrapper()
-      const renewButton = wrapper.findAll('button').find(btn => btn.text().includes('New Chat') || btn.find('.material-symbols-outlined')?.text() === 'refresh')
-
-      const buttons = wrapper.findAll('button')
-      const lastButton = buttons[buttons.length - 1]
-      await lastButton.trigger('click')
+      const renewButton = wrapper.findAll('button').find(btn => btn.text().includes('chat.newChat'))
+      await renewButton.trigger('click')
 
       expect(wrapper.emitted('renew-chat')).toBeTruthy()
     })
@@ -137,16 +134,14 @@ describe('ChatHeader', () => {
   describe('loading state', () => {
     it('should disable new chat button when loading', () => {
       const wrapper = createWrapper({ isLoading: true })
-      const buttons = wrapper.findAll('button')
-      const renewButton = buttons[buttons.length - 1]
+      const renewButton = wrapper.findAll('button').find(btn => btn.text().includes('chat.newChat'))
 
       expect(renewButton.attributes('disabled')).toBeDefined()
     })
 
     it('should not disable new chat button when not loading', () => {
       const wrapper = createWrapper({ isLoading: false })
-      const buttons = wrapper.findAll('button')
-      const renewButton = buttons[buttons.length - 1]
+      const renewButton = wrapper.findAll('button').find(btn => btn.text().includes('chat.newChat'))
 
       expect(renewButton.attributes('disabled')).toBeUndefined()
     })
@@ -160,6 +155,35 @@ describe('ChatHeader', () => {
       )
 
       expect(darkModeButton).toBeTruthy()
+    })
+  })
+
+  describe('phone menu', () => {
+    const openMenu = async (props = {}) => {
+      const wrapper = createWrapper(props)
+      await wrapper.find('[aria-label="chat.menu"]').trigger('click')
+      return wrapper
+    }
+    const menuButton = (wrapper, text) => wrapper.findAll('.absolute button').find(btn => btn.text().includes(text))
+
+    it('opens the vocabulary bank and closes itself', async () => {
+      const wrapper = await openMenu()
+      await menuButton(wrapper, 'chat.vocabBank').trigger('click')
+      expect(wrapper.emitted('toggle-vocab-bank')).toBeTruthy()
+      expect(menuButton(wrapper, 'chat.vocabBank')).toBeUndefined()
+    })
+
+    it('shows memories only when there are some', async () => {
+      expect(menuButton(await openMenu(), 'chat.memories')).toBeUndefined()
+      const wrapper = await openMenu({ memoryCount: 2 })
+      await menuButton(wrapper, 'chat.memories').trigger('click')
+      expect(wrapper.emitted('show-memories')).toBeTruthy()
+    })
+
+    it('toggles the article in article mode', async () => {
+      const wrapper = await openMenu({ isArticleMode: true, showArticle: true })
+      await menuButton(wrapper, 'chat.hideArticle').trigger('click')
+      expect(wrapper.emitted('toggle-article')).toBeTruthy()
     })
   })
 })

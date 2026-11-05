@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { characters, levels } from '../data/characters.js'
@@ -111,6 +111,13 @@ function dismissPlacementBanner() {
 const availableTargetLanguages = computed(() => {
   return supportedLanguages.filter(lang => lang.id !== motherTongue.value)
 })
+
+// With only one language to learn there is nothing to choose, so pick it
+watch(availableTargetLanguages, (langs) => {
+  if (langs.length === 1 && selectedTargetLanguage.value !== langs[0].id) {
+    selectedTargetLanguage.value = langs[0].id
+  }
+}, { immediate: true })
 
 // Handle mother tongue change - also updates UI language
 function handleMotherTongueChange(langId) {

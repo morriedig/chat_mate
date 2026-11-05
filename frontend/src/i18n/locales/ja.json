@@ -5,7 +5,7 @@
   },
   "setup": {
     "choosePartner": "チャット相手を選ぶ",
-    "yourLevel": "あなたの日本語レベル",
+    "yourLevel": "あなたの英語レベル",
     "chooseMode": "チャットタイプ",
     "startChatting": "チャットを始める",
     "startLearning": "学習を始める",
@@ -45,7 +45,15 @@
     "tryUsing": "使ってみよう:",
     "articleMode": "記事",
     "rateLimitError": "ちょっと休憩が必要！メッセージが多すぎました。少し待ってからもう一度試してください。",
-    "genericError": "うーん、何か問題が起きました。もう一度試してみましょう？"
+    "genericError": "うーん、何か問題が起きました。もう一度試してみましょう？",
+    "menu": "その他",
+    "vocabBank": "単語帳",
+    "memories": "{name}が覚えていること",
+    "showArticle": "記事を表示",
+    "hideArticle": "記事を隠す",
+    "newChat": "新しいチャット",
+    "darkMode": "ダークモード",
+    "lightMode": "ライトモード"
   },
   "articles": {
     "title": "記事を選ぶ",

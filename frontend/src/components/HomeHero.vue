@@ -31,7 +31,7 @@ const daysToMilestone = computed(() => {
 })
 
 // Rank progress
-const rankProgressPct = computed(() => Math.round((progressToNextRank.value || 0) * 100))
+const rankProgressPct = computed(() => progressToNextRank.value || 0)
 
 // Daily goal ring math
 const goalPct = computed(() => Math.min(1, goalProgress.value))

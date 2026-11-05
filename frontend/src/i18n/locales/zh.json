@@ -5,7 +5,7 @@
   },
   "setup": {
     "choosePartner": "選擇聊天夥伴",
-    "yourLevel": "你的中文程度",
+    "yourLevel": "你的英文程度",
     "chooseMode": "聊天類型",
     "startChatting": "開始聊天",
     "startLearning": "開始學習",
@@ -45,7 +45,15 @@
     "tryUsing": "試試用：",
     "articleMode": "文章",
     "rateLimitError": "我需要休息一下！訊息太多了。請等幾秒鐘再試。",
-    "genericError": "嗯，出了點問題。我們再試一次？"
+    "genericError": "嗯，出了點問題。我們再試一次？",
+    "menu": "更多",
+    "vocabBank": "單字庫",
+    "memories": "{name} 記得的事",
+    "showArticle": "顯示文章",
+    "hideArticle": "收起文章",
+    "newChat": "重新開始聊天",
+    "darkMode": "深色模式",
+    "lightMode": "淺色模式"
   },
   "articles": {
     "title": "選擇文章",

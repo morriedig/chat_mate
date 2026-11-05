@@ -6,6 +6,8 @@
 html, body {
   overflow-x: hidden;
   max-width: 100vw;
+  /* A long word or URL wraps instead of running past its box */
+  overflow-wrap: break-word;
 }
 
 @theme {

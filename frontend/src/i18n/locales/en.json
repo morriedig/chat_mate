@@ -45,7 +45,15 @@
     "tryUsing": "Try using:",
     "articleMode": "Article",
     "rateLimitError": "I need a quick breather! Too many messages at once. Wait a few seconds and try again.",
-    "genericError": "Hmm, something went wrong. Let's try that again?"
+    "genericError": "Hmm, something went wrong. Let's try that again?",
+    "menu": "More",
+    "vocabBank": "Vocabulary bank",
+    "memories": "Things {name} remembers",
+    "showArticle": "Show article",
+    "hideArticle": "Hide article",
+    "newChat": "New chat",
+    "darkMode": "Dark mode",
+    "lightMode": "Light mode"
   },
   "articles": {
     "title": "Choose an Article",

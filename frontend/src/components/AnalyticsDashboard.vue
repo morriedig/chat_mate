@@ -60,7 +60,7 @@ const stats = computed(() => [
   { label: 'Achievements', value: (progress.value.unlockedAchievements || []).length, icon: 'military_tech', color: 'text-pink-500' },
 ])
 
-const rankProgress = computed(() => Math.round(progressToNextRank.value * 100))
+const rankProgress = computed(() => progressToNextRank.value)
 </script>
 
 <template>

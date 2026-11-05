@@ -24,7 +24,7 @@ const showAchievements = ref(false)
     <!-- Achievements Button -->
     <button
       @click="showAchievements = !showAchievements"
-      class="flex items-center gap-1 px-2 py-1 rounded-lg bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/30 dark:to-amber-900/30 border border-yellow-200 dark:border-yellow-700 hover:border-yellow-400 dark:hover:border-yellow-500 transition-colors"
+      class="hidden min-[360px]:flex items-center gap-1 px-2 py-1 rounded-lg bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/30 dark:to-amber-900/30 border border-yellow-200 dark:border-yellow-700 hover:border-yellow-400 dark:hover:border-yellow-500 transition-colors"
     >
       <span class="text-base">🏆</span>
       <span class="text-xs font-bold text-yellow-600 dark:text-yellow-400">{{ unlockedAchievements.length }}/{{ ACHIEVEMENTS.length }}</span>
@@ -35,11 +35,11 @@ const showAchievements = ref(false)
       <span class="text-base animate-pulse">🔥</span>
       <span class="text-xs font-bold text-red-600 dark:text-red-400">{{ progress.currentStreak }}</span>
       <span class="hidden sm:inline text-[10px] text-red-500 dark:text-red-400">{{ t('rank.days') }}</span>
-      <span v-if="progress.streakFreezes > 0" class="text-[10px] text-blue-500 dark:text-blue-400 ml-0.5" :title="t('rank.streakFreeze', { count: progress.streakFreezes })">🛡️{{ progress.streakFreezes }}</span>
+      <span v-if="progress.streakFreezes > 0" class="hidden sm:inline text-[10px] text-blue-500 dark:text-blue-400 ml-0.5" :title="t('rank.streakFreeze', { count: progress.streakFreezes })">🛡️{{ progress.streakFreezes }}</span>
     </div>
 
-    <!-- Rank Badge -->
-    <div class="relative group">
+    <!-- Rank Badge (its details are a hover tooltip, so phones skip it) -->
+    <div class="relative group hidden sm:block">
       <div class="flex items-center gap-1.5 px-1.5 sm:px-2 py-1 rounded-lg bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-900/30 dark:to-orange-900/30 border border-amber-200 dark:border-amber-700">
         <span class="text-base">{{ currentRank.icon }}</span>
         <div class="hidden sm:flex flex-col">
