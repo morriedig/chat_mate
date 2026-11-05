@@ -599,7 +599,7 @@
   },
   "dailyOpinion": {
     "title": "Daily Opinion",
-    "cardTitle": "Daily Opinion (3 min)",
+    "cardTitle": "Give your view in three sentences",
     "subtitle": "Opinion → Reason → Wrap-up",
     "doneToday": "Done today",
     "notDoneToday": "Not yet",
@@ -611,7 +611,7 @@
     "placeholder": "Answer in English: say what you think, give a reason, then wrap up.",
     "structureProgress": "Structure {count}/3",
     "livePreview": "Connectors spotted",
-    "submit": "Send to my friend",
+    "submit": "Ask {name} for feedback",
     "cancelRewrite": "Cancel rewrite",
     "back": "Back",
     "connectorsUsed": "Connectors you used",
@@ -620,10 +620,10 @@
     "saveSentence": "Save this sentence",
     "sentenceSaved": "Saved to your vocabulary bank",
     "offlineFeedback": "You're offline. Your answer is saved — your friend's feedback will come when you reconnect.",
-    "doneSeeYouTomorrow": "Done — see you tomorrow",
-    "cheerBoth": "Nice! You used both {a} and {b} today.",
-    "cheerOne": "You used {a} — nice! Try the other one tomorrow too.",
-    "cheerOther": "You used {a} — good connector, even if it wasn't today's target.",
+    "doneSeeYouTomorrow": "Done",
+    "cheerBoth": "You used {a} and {b}",
+    "cheerOne": "You used {a}. Try the other one tomorrow too.",
+    "cheerOther": "You used {a}. It wasn't today's target, but it works well.",
     "cheerNone": "No connectors spotted yet. Next time try adding a \"because…\" after your opinion."
   },
   "dailyPractice": {
@@ -636,13 +636,13 @@
     "reviewWord": "Review word",
     "listen": "Listen",
     "startPractice": "Practice it",
-    "correct": "Nice, that's the natural one!",
-    "notQuite": "Not quite — here's why:",
+    "correct": "This is the more natural sentence",
+    "notQuite": "See what changed",
     "next": "Next",
     "check": "Ask my friend",
     "checking": "Checking…",
     "skip": "Skip",
-    "usedPattern": "You used the pattern ✓",
+    "usedPattern": "You used the pattern",
     "missedPattern": "The pattern isn't in your sentence yet.",
     "corrected": "Fixed: ",
     "better": "Another way: ",
@@ -650,10 +650,10 @@
     "howWell": "How well do you know it now?",
     "rating": {
       "hard": "Not yet",
-      "ok": "Getting there",
-      "easy": "Got it"
+      "ok": "Familiar",
+      "easy": "Easy"
     },
-    "doneTitle": "Done for today!",
+    "doneTitle": "Today’s practice is complete",
     "doneSummary": "{patterns} patterns and {words} words practiced.",
     "useThemHint": "Try using today's patterns for real:",
     "writeOpinion": "Write today's opinion",
@@ -666,8 +666,12 @@
     "reveal": "Reveal",
     "noSavedMeaning": "You didn't save a meaning. Think about where you saw it.",
     "doneExtras": "You also reviewed {count} of your own cards (past mistakes, saved words).",
-    "mistakeReview": "Fix it",
-    "cardExtras": ", plus {count} review and listening cards"
+    "mistakeReview": "Try the sentence again",
+    "cardExtras": ", plus {count} review and listening cards",
+    "levelLabel": "Level",
+    "levelChangeTitle": "Change level?",
+    "levelChangeBody": "Changing level switches to a different set for today. Your answer to this item won't be saved.",
+    "levelChangeConfirm": "Change level"
   },
   "voiceChat": {
     "enter": "Voice conversation",
@@ -791,10 +795,13 @@
     "yourFix": "Your fix",
     "compare": "Check",
     "showHint": "Hint",
-    "matched": "Exactly right!",
-    "unchanged": "You didn't change it this time. Here's what to fix:",
-    "compareHint": "Compare with the suggestion (green = changed):",
-    "remove": "This sentence was fine — don't show it again"
+    "matched": "Matches the suggested sentence",
+    "unchanged": "You didn't change it this time. Here's what to fix",
+    "compareHint": "Compare with the suggested sentence",
+    "remove": "This sentence was fine — don't show it again",
+    "youWrote": "You wrote",
+    "suggested": "Suggested",
+    "hintLabel": "Hint"
   },
   "listening": {
     "label": "Listening",
@@ -804,7 +811,7 @@
     "slow": "Slow",
     "typeWhatYouHear": "Type what you hear…",
     "check": "Check",
-    "correct": "All correct!",
+    "correct": "You heard it all correctly",
     "answerWas": "The sentence was:",
     "missedWords": "Highlighted words were missed or misheard."
   },
@@ -837,7 +844,7 @@
   },
   "retell": {
     "title": "Say it three times",
-    "subtitle": "A fluency drill that gets smoother each round",
+    "subtitle": "Say the same idea more smoothly each round",
     "back": "Back",
     "cardTitle": "Say it three times",
     "cardSubtitle": "Plan for 30 seconds, then tell the same thing three times with less time each round.",
@@ -868,12 +875,14 @@
     "stats": "{words} words · {sec}s",
     "nextHint": "Next round: only {sec} seconds for the same content.",
     "nextRound": "Start round {n}",
-    "resultImproved": "Smoother every round!",
-    "resultSteady": "You said it three times. Nice work!",
+    "resultImproved": "The third round was smoother",
+    "resultSteady": "All three rounds complete",
     "roundShort": "Round {n} ({sec}s)",
     "wpmNote": "More words per minute each round means you're getting more fluent.",
     "showTranscripts": "See what you said",
     "again": "Go again",
-    "home": "Home"
+    "home": "Home",
+    "sequence": "Plan {plan}s → {a}s → {b}s → {c}s",
+    "timeLeft": "Time left"
   }
 }

@@ -11,6 +11,15 @@ import { bankSrsId } from '../composables/useDailyPractice'
 import MistakeCard from './practice/MistakeCard.vue'
 import BankWordCard from './practice/BankWordCard.vue'
 import ListeningCard from './practice/ListeningCard.vue'
+import PracticeCard from './practice/PracticeCard.vue'
+import PracticeRating from './practice/PracticeRating.vue'
+import CmAppBar from './ui/CmAppBar.vue'
+import CmButton from './ui/CmButton.vue'
+import CmIconButton from './ui/CmIconButton.vue'
+import CmChip from './ui/CmChip.vue'
+import CmProgress from './ui/CmProgress.vue'
+import CmSegmentedControl from './ui/CmSegmentedControl.vue'
+import CmBottomSheet from './ui/CmBottomSheet.vue'
 import { useTaskChatLauncher } from '../composables/useTaskChatLauncher'
 import { getDailyVocab } from '../data/dailyLoader'
 import { playTTS, stopTTS } from '../utils/tts'
@@ -151,12 +160,6 @@ function skipWriting() {
 }
 
 // ---------- Rate ----------
-const RATINGS = [
-  { key: 'hard', confidence: 2 },
-  { key: 'ok', confidence: 3 },
-  { key: 'easy', confidence: 5 },
-]
-
 function rate(confidence) {
   const entry = current.value
   // A wrong quiz answer or an unused pattern means the item comes back sooner
@@ -185,8 +188,54 @@ function handleBack() {
   router.push('/')
 }
 
-const progressPercent = computed(() =>
-  totalCount.value ? Math.round((doneCount.value / totalCount.value) * 100) : 0)
+// ---------- Level ----------
+const levelOptions = computed(() => levels.map(lv => ({ value: lv, label: t(`levels.${lv}.name`) })))
+// Switching level replaces today's plan, so ask first when an answer is in progress
+const pendingLevel = ref(null)
+const midAnswer = computed(() => {
+  const entry = current.value
+  if (!entry || isDoneToday.value || (entry.kind !== 'pattern' && entry.kind !== 'word')) return false
+  return picked.value !== null || sentence.value.trim().length > 0 || stage.value === 'write' || stage.value === 'rate'
+})
+
+function requestLevel(lv) {
+  if (lv === level.value) return
+  if (midAnswer.value) pendingLevel.value = lv
+  else setLevel(lv)
+}
+
+function confirmLevel() {
+  const lv = pendingLevel.value
+  pendingLevel.value = null
+  if (lv) setLevel(lv)
+}
+
+// Plain label above the current card
+const sectionLabel = computed(() => {
+  const entry = current.value
+  if (!entry) return ''
+  if (entry.kind === 'mistake') return t('dailyPractice.mistakeReview')
+  if (entry.kind === 'bank') return t('dailyPractice.savedWord')
+  if (entry.kind === 'listen') return t('listening.label')
+  if (entry.kind === 'pattern') return isNew(entry.item.id) ? t('dailyPractice.newPattern') : t('dailyPractice.reviewPattern')
+  return isNew(entry.item.id) ? t('dailyPractice.newWord') : t('dailyPractice.reviewWord')
+})
+
+// Answer rows: icon + semantic-soft fill, never color alone
+const OPTION_CLASS = {
+  idle: 'border-hairline bg-surface text-ink active:bg-surface-raised',
+  right: 'border-success/40 bg-success-soft text-ink',
+  wrong: 'border-error/40 bg-error-soft text-ink',
+  other: 'border-hairline bg-surface text-ink-muted',
+}
+const OPTION_ICON = { idle: 'radio_button_unchecked', right: 'check_circle', wrong: 'cancel', other: 'radio_button_unchecked' }
+const OPTION_ICON_CLASS = { idle: 'text-ink-muted', right: 'text-success', wrong: 'text-error', other: 'text-ink-muted' }
+
+function optionState(id) {
+  if (picked.value === null) return 'idle'
+  if (id === correctOptionId.value) return 'right'
+  return id === picked.value ? 'wrong' : 'other'
+}
 const patternsDone = computed(() => todayPatterns.value.filter(p => isDone(p.id)).length)
 const wordsDone = computed(() => todayWords.value.filter(w => isDone(w.id)).length)
 const extrasDone = computed(() =>
@@ -204,246 +253,245 @@ onBeforeUnmount(() => {
 })
 </script>
 
+
 <template>
-  <div class="flex h-screen w-full max-w-[100vw] overflow-hidden">
-    <div class="flex flex-1 min-w-0 flex-col h-full relative bg-background-light dark:bg-background-dark">
-      <!-- Header -->
-      <header class="flex items-center justify-between border-b border-[#e7eff3] dark:border-slate-800 px-3 sm:px-6 py-3 sm:py-4 bg-surface-light dark:bg-surface-dark z-10 shadow-sm overflow-hidden safe-area-top">
-        <div class="flex items-center gap-2 sm:gap-3 text-text-main dark:text-white min-w-0 shrink">
-          <button @click="handleBack" class="flex items-center justify-center shrink-0" :aria-label="t('dailyPractice.back')">
-            <span class="material-symbols-outlined cursor-pointer">arrow_back</span>
-          </button>
-          <div class="flex flex-col min-w-0">
-            <h2 class="text-sm sm:text-base font-bold leading-tight truncate">{{ t('dailyPractice.title') }}</h2>
-            <span class="text-xs text-text-muted dark:text-slate-400 truncate">
-              {{ t('dailyPractice.progress', { done: doneCount, total: totalCount }) }}
-            </span>
+  <div class="flex h-screen w-full max-w-[100vw] overflow-hidden bg-page">
+    <div class="relative flex h-full min-w-0 flex-1 flex-col">
+      <!-- Header, level control and progress stay fixed; content scrolls -->
+      <CmAppBar
+        :title="t('dailyPractice.title')"
+        :subtitle="t('dailyPractice.progress', { done: doneCount, total: totalCount })"
+        :back-label="t('dailyPractice.back')"
+        @back="handleBack"
+      >
+        <template #below>
+          <div class="px-4 pb-2 min-[375px]:px-5">
+            <CmSegmentedControl
+              :options="levelOptions"
+              :model-value="level"
+              :label="t('dailyPractice.levelLabel')"
+              @update:model-value="requestLevel"
+            />
           </div>
-        </div>
-      </header>
-      <div class="flex gap-1.5 px-3 sm:px-6 py-2 bg-surface-light dark:bg-surface-dark border-b border-[#e7eff3] dark:border-slate-800">
-        <button
-          v-for="lv in levels"
-          :key="lv"
-          @click="setLevel(lv)"
-          class="flex-1 min-w-0 px-2 py-1.5 rounded-full text-xs font-semibold border transition-colors truncate"
-          :class="lv === level
-            ? 'bg-primary text-white border-primary'
-            : 'border-slate-200 dark:border-slate-700 text-text-muted dark:text-slate-400'"
-        >{{ t(`levels.${lv}.name`) }}</button>
-      </div>
-      <div class="h-1 bg-slate-100 dark:bg-slate-800">
-        <div class="h-1 bg-primary transition-all" :style="{ width: progressPercent + '%' }"></div>
-      </div>
+          <CmProgress :value="doneCount" :max="totalCount || 1" :label="t('dailyPractice.progress', { done: doneCount, total: totalCount })" />
+        </template>
+      </CmAppBar>
 
       <div class="flex-1 overflow-y-auto">
-        <div class="max-w-2xl mx-auto px-4 py-4 sm:py-6 space-y-4">
+        <div class="mx-auto max-w-2xl space-y-3 px-4 py-5 min-[375px]:px-5">
           <!-- ========== DONE ========== -->
           <template v-if="isDoneToday || !current">
-            <div class="p-6 rounded-2xl bg-surface-light dark:bg-surface-dark border border-slate-100 dark:border-slate-800 shadow-sm text-center space-y-2">
-              <p class="text-4xl">🎉</p>
-              <p class="text-lg font-bold text-text-main dark:text-white">{{ t('dailyPractice.doneTitle') }}</p>
-              <p class="text-sm text-text-muted dark:text-slate-400">
+            <section class="flex flex-col items-center gap-3 rounded-[14px] border border-hairline bg-surface p-6 text-center shadow-[var(--cm-shadow-small)]">
+              <span class="flex size-16 items-center justify-center rounded-[14px] bg-accent-soft text-accent">
+                <span class="material-symbols-outlined !text-[32px]" aria-hidden="true">task_alt</span>
+              </span>
+              <h2 class="text-section font-medium text-ink">{{ t('dailyPractice.doneTitle') }}</h2>
+              <p class="text-caption text-ink-secondary tabular-nums">
                 {{ t('dailyPractice.doneSummary', { patterns: patternsDone, words: wordsDone }) }}
               </p>
-              <p v-if="extrasDone" class="text-sm text-text-muted dark:text-slate-400">
+              <p v-if="extrasDone" class="text-caption text-ink-secondary tabular-nums">
                 {{ t('dailyPractice.doneExtras', { count: extrasDone }) }}
               </p>
+            </section>
+            <div class="space-y-2 pt-5">
+              <p class="text-caption font-medium text-ink-secondary">{{ t('dailyPractice.useThemHint') }}</p>
+              <ul class="flex flex-wrap gap-2">
+                <li v-for="p in todayPatterns" :key="p.id" class="max-w-full"><CmChip>{{ p.pattern }}</CmChip></li>
+              </ul>
             </div>
-            <p class="text-sm font-medium text-text-main dark:text-slate-200">{{ t('dailyPractice.useThemHint') }}</p>
-            <ul class="space-y-1.5">
-              <li v-for="p in todayPatterns" :key="p.id" class="text-sm text-text-main dark:text-slate-200 px-3 py-2 rounded-lg bg-primary/10 dark:bg-primary/20 break-words">{{ p.pattern }}</li>
-            </ul>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              <button @click="startTaskChat" class="sm:col-span-2 py-3 rounded-xl bg-primary text-white font-semibold">{{ t('taskChat.startFromPractice') }}</button>
-              <button @click="router.push('/daily-opinion')" class="py-3 rounded-xl border border-slate-200 dark:border-slate-700 text-text-main dark:text-slate-200 font-semibold">{{ t('dailyPractice.writeOpinion') }}</button>
-              <button @click="router.push('/')" class="py-3 rounded-xl border border-slate-200 dark:border-slate-700 text-text-main dark:text-slate-200 font-semibold">{{ t('dailyPractice.backHome') }}</button>
-            </div>
-          </template>
-
-          <!-- ========== MISTAKE / SAVED WORD / LISTENING ========== -->
-          <template v-else-if="current.kind === 'mistake'">
-            <p class="text-xs font-semibold text-amber-600 dark:text-amber-400 uppercase tracking-wider">{{ t('dailyPractice.mistakeReview') }}</p>
-            <MistakeCard :mistake="current.item" @done="finishCard(current, $event)" @remove="dropMistake(current)" />
-          </template>
-          <template v-else-if="current.kind === 'bank'">
-            <BankWordCard :word="current.item" @done="finishCard(current, $event)" />
-          </template>
-          <template v-else-if="current.kind === 'listen'">
-            <ListeningCard :item="current.item" @done="finishCard(current, $event)" />
-          </template>
-
-          <!-- ========== PATTERN ========== -->
-          <template v-else-if="current.kind === 'pattern'">
-            <p class="text-xs font-semibold text-primary uppercase tracking-wider">
-              {{ isNew(current.item.id) ? t('dailyPractice.newPattern') : t('dailyPractice.reviewPattern') }}
-            </p>
-
-            <!-- Study card: shown first for new patterns, after the quiz for reviews -->
-            <div
-              v-if="stage !== 'quiz' || picked !== null"
-              class="p-4 rounded-2xl bg-surface-light dark:bg-surface-dark border border-slate-100 dark:border-slate-800 shadow-sm space-y-3"
-            >
-              <div class="flex items-start justify-between gap-2">
-                <p class="text-lg font-bold text-text-main dark:text-white break-words">{{ current.item.pattern }}</p>
-                <button @click="speak(current.item.examples[0].en)" class="shrink-0 text-primary" :aria-label="t('dailyPractice.listen')">
-                  <span class="material-symbols-outlined">volume_up</span>
-                </button>
-              </div>
-              <p class="text-sm font-medium text-text-main dark:text-slate-200">{{ current.item.meaning }}</p>
-              <p class="text-sm text-text-muted dark:text-slate-400">{{ current.item.when }}</p>
-              <div v-for="(ex, i) in current.item.examples" :key="i" class="pl-3 border-l-2 border-primary/40">
-                <button @click="speak(ex.en)" class="text-left text-sm text-text-main dark:text-slate-200 break-words">{{ ex.en }}</button>
-                <p class="text-xs text-text-muted dark:text-slate-400 break-words">{{ ex.zh }}</p>
-              </div>
-              <div v-if="current.item.mistake" class="p-3 rounded-xl bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 text-sm space-y-1">
-                <p class="text-amber-700 dark:text-amber-300 line-through break-words">{{ current.item.mistake.wrong }}</p>
-                <p class="text-green-700 dark:text-green-400 break-words">{{ current.item.mistake.right }}</p>
-                <p class="text-text-muted dark:text-slate-400">{{ current.item.mistake.why }}</p>
-              </div>
-              <button v-if="stage === 'learn'" @click="stage = 'quiz'" class="w-full py-3 rounded-xl bg-primary text-white font-semibold">
-                {{ t('dailyPractice.startPractice') }}
-              </button>
-            </div>
-
-            <!-- Quiz: pick the natural sentence -->
-            <div v-if="stage === 'quiz'" class="space-y-2">
-              <p class="text-sm font-medium text-text-main dark:text-slate-200">{{ current.item.choice.situation }}</p>
-              <button
-                v-for="opt in quizOptions"
-                :key="opt.id"
-                @click="pick(opt.id)"
-                class="w-full text-left p-3 rounded-xl border text-sm break-words transition-colors"
-                :class="picked === null
-                  ? 'border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark text-text-main dark:text-slate-200 hover:border-primary/50'
-                  : opt.id === correctOptionId
-                    ? 'border-green-400 bg-green-50 dark:bg-green-900/20 text-text-main dark:text-slate-200'
-                    : opt.id === picked
-                      ? 'border-red-300 bg-red-50 dark:bg-red-900/20 text-text-main dark:text-slate-200'
-                      : 'border-slate-200 dark:border-slate-700 text-text-muted dark:text-slate-500'"
-              >{{ opt.text }}</button>
-              <template v-if="picked !== null">
-                <p class="text-sm" :class="isCorrect ? 'text-green-700 dark:text-green-400' : 'text-red-600 dark:text-red-400'">
-                  {{ isCorrect ? t('dailyPractice.correct') : t('dailyPractice.notQuite') }}
-                </p>
-                <p class="text-sm text-text-muted dark:text-slate-400">{{ current.item.choice.explain }}</p>
-                <button @click="afterQuiz" class="w-full py-3 rounded-xl bg-primary text-white font-semibold">{{ t('dailyPractice.next') }}</button>
-              </template>
-            </div>
-
-            <!-- Write your own sentence -->
-            <div v-if="stage === 'write' || stage === 'rate'" class="space-y-2">
-              <p class="text-sm font-medium text-text-main dark:text-slate-200">{{ current.item.task }}</p>
-              <textarea
-                v-model="sentence"
-                :disabled="stage === 'rate'"
-                rows="3"
-                class="w-full p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark text-text-main dark:text-slate-200 text-base focus:ring-2 focus:ring-primary focus:outline-none"
-                :placeholder="current.item.pattern"
-              ></textarea>
-              <div v-if="stage === 'write'" class="flex gap-2">
-                <button
-                  @click="submitSentence"
-                  :disabled="!sentence.trim() || isChecking"
-                  class="flex-1 py-3 rounded-xl bg-primary text-white font-semibold disabled:opacity-50"
-                >{{ isChecking ? t('dailyPractice.checking') : t('dailyPractice.check') }}</button>
-                <button @click="skipWriting" class="px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 text-text-muted dark:text-slate-400 text-sm">
-                  {{ t('dailyPractice.skip') }}
-                </button>
-              </div>
-
-              <!-- AI friend's check -->
-              <div v-if="check" class="p-3 rounded-xl bg-surface-light dark:bg-surface-dark border border-slate-100 dark:border-slate-800 text-sm space-y-2">
-                <p :class="check.usedPattern ? 'text-green-700 dark:text-green-400' : 'text-amber-700 dark:text-amber-300'">
-                  {{ check.usedPattern ? t('dailyPractice.usedPattern') : t('dailyPractice.missedPattern') }}
-                </p>
-                <p class="text-text-main dark:text-slate-200">{{ check.comment }}</p>
-                <p v-if="check.corrected && check.corrected.trim() !== sentence.trim()" class="break-words">
-                  <span class="text-text-muted dark:text-slate-400">{{ t('dailyPractice.corrected') }}</span>
-                  <span class="text-text-main dark:text-slate-200">{{ check.corrected }}</span>
-                </p>
-                <button @click="speak(check.better)" class="text-left break-words">
-                  <span class="text-text-muted dark:text-slate-400">{{ t('dailyPractice.better') }}</span>
-                  <span class="text-primary">{{ check.better }}</span>
-                </button>
-              </div>
-              <p v-else-if="checkFailed" class="text-sm text-text-muted dark:text-slate-400">
-                {{ localUsedPattern ? t('dailyPractice.usedPattern') : t('dailyPractice.missedPattern') }}
-                {{ t('dailyPractice.checkUnavailable') }}
-              </p>
+            <div class="grid grid-cols-1 gap-2 pt-5 sm:grid-cols-2">
+              <CmButton class="sm:col-span-2" @click="startTaskChat">{{ t('taskChat.startFromPractice') }}</CmButton>
+              <CmButton variant="secondary" @click="router.push('/daily-opinion')">{{ t('dailyPractice.writeOpinion') }}</CmButton>
+              <CmButton variant="secondary" @click="router.push('/')">{{ t('dailyPractice.backHome') }}</CmButton>
             </div>
           </template>
 
-          <!-- ========== WORD ========== -->
-          <template v-else-if="current.kind === 'word'">
-            <p class="text-xs font-semibold text-primary uppercase tracking-wider">
-              {{ isNew(current.item.id) ? t('dailyPractice.newWord') : t('dailyPractice.reviewWord') }}
-            </p>
+          <template v-else>
+            <p class="text-caption font-medium text-ink-secondary">{{ sectionLabel }}</p>
 
-            <!-- Quiz: meaning → word -->
-            <div v-if="stage === 'quiz'" class="space-y-2">
-              <p class="text-base font-semibold text-text-main dark:text-white">{{ current.item.meaning }}</p>
-              <button
-                v-for="opt in quizOptions"
-                :key="opt.id"
-                @click="pick(opt.id)"
-                class="w-full text-left p-3 rounded-xl border text-base transition-colors"
-                :class="picked === null
-                  ? 'border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark text-text-main dark:text-slate-200 hover:border-primary/50'
-                  : opt.id === correctOptionId
-                    ? 'border-green-400 bg-green-50 dark:bg-green-900/20 text-text-main dark:text-slate-200'
-                    : opt.id === picked
-                      ? 'border-red-300 bg-red-50 dark:bg-red-900/20 text-text-main dark:text-slate-200'
-                      : 'border-slate-200 dark:border-slate-700 text-text-muted dark:text-slate-500'"
-              >{{ opt.text }}</button>
-            </div>
+            <!-- ========== MISTAKE / SAVED WORD / LISTENING ========== -->
+            <MistakeCard v-if="current.kind === 'mistake'" :mistake="current.item" @done="finishCard(current, $event)" @remove="dropMistake(current)" />
+            <BankWordCard v-else-if="current.kind === 'bank'" :word="current.item" @done="finishCard(current, $event)" />
+            <ListeningCard v-else-if="current.kind === 'listen'" :item="current.item" @done="finishCard(current, $event)" />
 
-            <!-- Word card: first for new words, after answering for reviews -->
-            <div
-              v-if="stage !== 'quiz' || picked !== null"
-              class="p-4 rounded-2xl bg-surface-light dark:bg-surface-dark border border-slate-100 dark:border-slate-800 shadow-sm space-y-2"
-            >
-              <div class="flex items-center justify-between gap-2">
-                <div class="min-w-0">
-                  <p class="text-xl font-bold text-text-main dark:text-white break-words">{{ current.item.word }}</p>
-                  <p class="text-xs text-text-muted dark:text-slate-400">{{ current.item.pos }} {{ current.item.phonetic }}</p>
+            <!-- ========== PATTERN ========== -->
+            <PracticeCard v-else-if="current.kind === 'pattern'">
+              <!-- Study: shown first for new patterns, after the quiz for reviews -->
+              <template v-if="stage !== 'quiz' || picked !== null">
+                <div class="flex items-start justify-between gap-2">
+                  <p class="min-w-0 text-section font-medium text-ink break-words">{{ current.item.pattern }}</p>
+                  <CmIconButton icon="volume_up" :label="t('dailyPractice.listen')" class="-mr-2 -mt-2" @click="speak(current.item.examples[0].en)" />
                 </div>
-                <button @click="speak(current.item.word)" class="shrink-0 text-primary" :aria-label="t('dailyPractice.listen')">
-                  <span class="material-symbols-outlined">volume_up</span>
-                </button>
-              </div>
-              <p class="text-sm font-medium text-text-main dark:text-slate-200">{{ current.item.meaning }}</p>
-              <div class="pl-3 border-l-2 border-primary/40">
-                <button @click="speak(current.item.example.en)" class="text-left text-sm text-text-main dark:text-slate-200 break-words">{{ current.item.example.en }}</button>
-                <p class="text-xs text-text-muted dark:text-slate-400 break-words">{{ current.item.example.zh }}</p>
-              </div>
-              <div v-if="current.item.collocations?.length" class="flex flex-wrap gap-1.5">
-                <span v-for="c in current.item.collocations" :key="c" class="text-xs px-2 py-1 rounded-lg bg-primary/10 dark:bg-primary/20 text-text-main dark:text-slate-200">{{ c }}</span>
-              </div>
-              <p v-if="current.item.note" class="text-sm text-text-muted dark:text-slate-400">{{ current.item.note }}</p>
-              <button v-if="stage === 'learn'" @click="stage = 'quiz'" class="w-full py-3 rounded-xl bg-primary text-white font-semibold">
-                {{ t('dailyPractice.startPractice') }}
-              </button>
-              <button v-else-if="stage === 'quiz' && picked !== null" @click="afterQuiz" class="w-full py-3 rounded-xl bg-primary text-white font-semibold">
-                {{ t('dailyPractice.next') }}
-              </button>
-            </div>
-          </template>
+                <div class="space-y-1">
+                  <p class="text-body font-medium text-ink">{{ current.item.meaning }}</p>
+                  <p class="text-caption text-ink-secondary">{{ current.item.when }}</p>
+                </div>
+                <ul class="space-y-1">
+                  <li v-for="(ex, i) in current.item.examples" :key="i">
+                    <button type="button" @click="speak(ex.en)" class="flex min-h-11 w-full items-start gap-2 rounded-[10px] py-1 text-left active:bg-surface-raised">
+                      <span class="material-symbols-outlined mt-0.5 shrink-0 !text-[18px] text-ink-muted" aria-hidden="true">volume_up</span>
+                      <span class="min-w-0">
+                        <span class="block text-body text-ink break-words">{{ ex.en }}</span>
+                        <span class="block text-caption text-ink-secondary break-words">{{ ex.zh }}</span>
+                      </span>
+                    </button>
+                  </li>
+                </ul>
+                <div v-if="current.item.mistake" class="space-y-1.5 rounded-[10px] border border-hairline bg-surface-sunken px-3 py-3 text-caption">
+                  <p class="flex items-start gap-1.5 text-ink-secondary break-words">
+                    <span class="material-symbols-outlined mt-px shrink-0 !text-[18px] text-error" aria-hidden="true">close</span>
+                    <span class="min-w-0 line-through decoration-error">{{ current.item.mistake.wrong }}</span>
+                  </p>
+                  <p class="flex items-start gap-1.5 text-ink break-words">
+                    <span class="material-symbols-outlined mt-px shrink-0 !text-[18px] text-success" aria-hidden="true">check</span>
+                    <span class="min-w-0">{{ current.item.mistake.right }}</span>
+                  </p>
+                  <p class="text-ink-secondary">{{ current.item.mistake.why }}</p>
+                </div>
+                <CmButton v-if="stage === 'learn'" block @click="stage = 'quiz'">{{ t('dailyPractice.startPractice') }}</CmButton>
+              </template>
 
-          <!-- Self-rating: how well do you know it now? -->
-          <div v-if="current && !isDoneToday && stage === 'rate' && (current.kind === 'pattern' || current.kind === 'word')" class="space-y-2">
-            <p class="text-sm font-medium text-text-main dark:text-slate-200">{{ t('dailyPractice.howWell') }}</p>
-            <div class="grid grid-cols-3 gap-2">
-              <button
-                v-for="r in RATINGS"
-                :key="r.key"
-                @click="rate(r.confidence)"
-                class="py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark text-sm font-semibold text-text-main dark:text-slate-200 hover:border-primary/50"
-              >{{ t(`dailyPractice.rating.${r.key}`) }}</button>
-            </div>
-          </div>
+              <!-- Quiz: pick the natural sentence -->
+              <div v-if="stage === 'quiz'" class="space-y-2" :class="picked !== null ? 'border-t border-hairline pt-4' : ''">
+                <p class="text-body font-medium text-ink">{{ current.item.choice.situation }}</p>
+                <div role="radiogroup" :aria-label="current.item.choice.situation" class="space-y-2">
+                  <button
+                    v-for="opt in quizOptions"
+                    :key="opt.id"
+                    type="button"
+                    role="radio"
+                    :aria-checked="opt.id === picked"
+                    :aria-disabled="picked !== null"
+                    @click="pick(opt.id)"
+                    class="flex min-h-12 w-full items-start gap-3 rounded-[10px] border px-3 py-3 text-left text-body break-words"
+                    :class="OPTION_CLASS[optionState(opt.id)]"
+                  >
+                    <span class="material-symbols-outlined mt-0.5 shrink-0" :class="OPTION_ICON_CLASS[optionState(opt.id)]" aria-hidden="true">{{ OPTION_ICON[optionState(opt.id)] }}</span>
+                    <span class="min-w-0 flex-1">{{ opt.text }}</span>
+                  </button>
+                </div>
+                <template v-if="picked !== null">
+                  <p class="flex items-center gap-1.5 pt-1 text-caption font-medium" :class="isCorrect ? 'text-success' : 'text-error'" role="status">
+                    <span class="material-symbols-outlined !text-[18px]" aria-hidden="true">{{ isCorrect ? 'check_circle' : 'info' }}</span>
+                    {{ isCorrect ? t('dailyPractice.correct') : t('dailyPractice.notQuite') }}
+                  </p>
+                  <p class="text-caption text-ink-secondary">{{ current.item.choice.explain }}</p>
+                  <CmButton block class="!mt-4" @click="afterQuiz">{{ t('dailyPractice.next') }}</CmButton>
+                </template>
+              </div>
+
+              <!-- Write your own sentence -->
+              <div v-if="stage === 'write' || stage === 'rate'" class="space-y-3 border-t border-hairline pt-4">
+                <label for="dp-own-sentence" class="block text-body font-medium text-ink">{{ current.item.task }}</label>
+                <textarea
+                  id="dp-own-sentence"
+                  v-model="sentence"
+                  :disabled="stage === 'rate'"
+                  rows="3"
+                  class="block w-full resize-none rounded-[10px] border border-hairline bg-surface-sunken px-3 py-3 text-base leading-6 text-ink placeholder:text-ink-muted focus:border-accent focus:outline-none disabled:text-ink-secondary"
+                  :placeholder="current.item.pattern"
+                ></textarea>
+                <div v-if="stage === 'write'" class="flex gap-2">
+                  <CmButton class="min-w-0 flex-1" :disabled="!sentence.trim() || isChecking" @click="submitSentence">
+                    {{ isChecking ? t('dailyPractice.checking') : t('dailyPractice.check') }}
+                  </CmButton>
+                  <CmButton variant="secondary" class="shrink-0" @click="skipWriting">{{ t('dailyPractice.skip') }}</CmButton>
+                </div>
+
+                <!-- AI friend's check -->
+                <div v-if="check" class="space-y-2 rounded-[10px] border border-hairline bg-surface-sunken px-3 py-3 text-caption" role="status">
+                  <p class="flex items-center gap-1.5 font-medium" :class="check.usedPattern ? 'text-success' : 'text-warning'">
+                    <span class="material-symbols-outlined !text-[18px]" aria-hidden="true">{{ check.usedPattern ? 'check_circle' : 'info' }}</span>
+                    {{ check.usedPattern ? t('dailyPractice.usedPattern') : t('dailyPractice.missedPattern') }}
+                  </p>
+                  <p class="text-ink break-words">{{ check.comment }}</p>
+                  <p v-if="check.corrected && check.corrected.trim() !== sentence.trim()" class="break-words">
+                    <span class="text-ink-muted">{{ t('dailyPractice.corrected') }}</span>
+                    <span class="text-ink">{{ check.corrected }}</span>
+                  </p>
+                  <button v-if="check.better" type="button" @click="speak(check.better)" class="block min-h-11 w-full text-left break-words">
+                    <span class="text-ink-muted">{{ t('dailyPractice.better') }}</span>
+                    <span class="text-accent">{{ check.better }}</span>
+                  </button>
+                </div>
+                <p v-else-if="checkFailed" class="text-caption text-ink-secondary">
+                  {{ localUsedPattern ? t('dailyPractice.usedPattern') : t('dailyPractice.missedPattern') }}
+                  {{ t('dailyPractice.checkUnavailable') }}
+                </p>
+              </div>
+
+              <PracticeRating v-if="stage === 'rate'" class="border-t border-hairline pt-4" @rate="rate" />
+            </PracticeCard>
+
+            <!-- ========== WORD ========== -->
+            <PracticeCard v-else-if="current.kind === 'word'">
+              <!-- Quiz: meaning → word -->
+              <div v-if="stage === 'quiz'" class="space-y-2">
+                <p class="text-title font-medium text-ink">{{ current.item.meaning }}</p>
+                <div role="radiogroup" :aria-label="current.item.meaning" class="space-y-2">
+                  <button
+                    v-for="opt in quizOptions"
+                    :key="opt.id"
+                    type="button"
+                    role="radio"
+                    :aria-checked="opt.id === picked"
+                    :aria-disabled="picked !== null"
+                    @click="pick(opt.id)"
+                    class="flex min-h-12 w-full items-center gap-3 rounded-[10px] border px-3 py-2.5 text-left text-body break-words"
+                    :class="OPTION_CLASS[optionState(opt.id)]"
+                  >
+                    <span class="material-symbols-outlined shrink-0" :class="OPTION_ICON_CLASS[optionState(opt.id)]" aria-hidden="true">{{ OPTION_ICON[optionState(opt.id)] }}</span>
+                    <span class="min-w-0 flex-1">{{ opt.text }}</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Word card: first for new words, after answering for reviews -->
+              <div v-if="stage !== 'quiz' || picked !== null" class="space-y-3" :class="stage === 'quiz' ? 'border-t border-hairline pt-4' : ''">
+                <div class="flex items-start justify-between gap-2">
+                  <div class="min-w-0">
+                    <p class="text-section font-medium text-ink break-words">{{ current.item.word }}</p>
+                    <p class="text-meta text-ink-muted">{{ current.item.pos }} {{ current.item.phonetic }}</p>
+                  </div>
+                  <CmIconButton icon="volume_up" :label="t('dailyPractice.listen')" class="-mr-2 -mt-1" @click="speak(current.item.word)" />
+                </div>
+                <p class="text-body font-medium text-ink">{{ current.item.meaning }}</p>
+                <button type="button" @click="speak(current.item.example.en)" class="flex min-h-11 w-full items-start gap-2 rounded-[10px] py-1 text-left active:bg-surface-raised">
+                  <span class="material-symbols-outlined mt-0.5 shrink-0 !text-[18px] text-ink-muted" aria-hidden="true">volume_up</span>
+                  <span class="min-w-0">
+                    <span class="block text-body text-ink break-words">{{ current.item.example.en }}</span>
+                    <span class="block text-caption text-ink-secondary break-words">{{ current.item.example.zh }}</span>
+                  </span>
+                </button>
+                <ul v-if="current.item.collocations?.length" class="flex flex-wrap gap-2">
+                  <li v-for="c in current.item.collocations" :key="c" class="max-w-full"><CmChip>{{ c }}</CmChip></li>
+                </ul>
+                <p v-if="current.item.note" class="text-caption text-ink-secondary">{{ current.item.note }}</p>
+                <CmButton v-if="stage === 'learn'" block @click="stage = 'quiz'">{{ t('dailyPractice.startPractice') }}</CmButton>
+                <CmButton v-else-if="stage === 'quiz' && picked !== null" block @click="afterQuiz">{{ t('dailyPractice.next') }}</CmButton>
+              </div>
+
+              <PracticeRating v-if="stage === 'rate'" class="border-t border-hairline pt-4" @rate="rate" />
+            </PracticeCard>
+          </template>
         </div>
       </div>
     </div>
+
+    <!-- Changing level while answering replaces today's plan: confirm first -->
+    <CmBottomSheet
+      v-if="pendingLevel"
+      :title="t('dailyPractice.levelChangeTitle')"
+      :description="t('dailyPractice.levelChangeBody')"
+      :close-label="t('common.cancel')"
+      @close="pendingLevel = null"
+    >
+      <template #actions>
+        <div class="grid grid-cols-2 gap-2">
+          <CmButton variant="secondary" @click="pendingLevel = null">{{ t('common.cancel') }}</CmButton>
+          <CmButton @click="confirmLevel">{{ t('dailyPractice.levelChangeConfirm') }}</CmButton>
+        </div>
+      </template>
+    </CmBottomSheet>
   </div>
 </template>

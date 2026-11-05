@@ -14,6 +14,11 @@ import { characters } from '../data/characters'
 import { detectConnectors, segmentByConnectors } from '../utils/connectorDetect'
 import { analyzeStructure, splitSentences, pickBestSentence } from '../utils/opinionStructure'
 import DiaryFeedback from './diary/DiaryFeedback.vue'
+import CmAppBar from './ui/CmAppBar.vue'
+import CmButton from './ui/CmButton.vue'
+import CmChip from './ui/CmChip.vue'
+import CmIconButton from './ui/CmIconButton.vue'
+import PracticeCard from './practice/PracticeCard.vue'
 
 const { t } = useI18n()
 const router = useRouter()
@@ -63,6 +68,8 @@ const liveTargetsUsed = computed(() => detectConnectors(body.value, connectorIds
 const liveStructure = computed(() => analyzeStructure(body.value))
 const liveSegments = computed(() => segmentByConnectors(body.value))
 const hasLiveHighlights = computed(() => liveSegments.value.some(s => s.id))
+// The stepper's helper line follows the first step not written yet
+const activeStep = computed(() => SCAFFOLD_STEPS.find(s => !liveStructure.value[s.key]) || SCAFFOLD_STEPS[SCAFFOLD_STEPS.length - 1])
 
 let draftTimer = null
 watch(body, (val) => {
@@ -242,97 +249,82 @@ function handleBack() {
 </script>
 
 <template>
-  <div class="flex h-screen w-full max-w-[100vw] overflow-hidden">
-    <div class="flex flex-1 min-w-0 flex-col h-full relative bg-background-light dark:bg-background-dark">
-      <!-- Header -->
-      <header class="flex items-center justify-between border-b border-[#e7eff3] dark:border-slate-800 px-3 sm:px-6 py-3 sm:py-4 bg-surface-light dark:bg-surface-dark z-10 shadow-sm overflow-hidden safe-area-top">
-        <div class="flex items-center gap-2 sm:gap-3 text-text-main dark:text-white min-w-0 shrink">
-          <button @click="handleBack" class="flex items-center justify-center shrink-0" :aria-label="t('dailyOpinion.back')">
-            <span class="material-symbols-outlined cursor-pointer">arrow_back</span>
-          </button>
-          <div class="flex flex-col min-w-0">
-            <h2 class="text-sm sm:text-base font-bold leading-tight tracking-[-0.015em] truncate">{{ t('dailyOpinion.title') }}</h2>
-            <span class="text-xs text-text-muted dark:text-slate-400 truncate">{{ t('dailyOpinion.subtitle') }}</span>
-          </div>
-        </div>
-        <div class="flex items-center gap-1 sm:gap-2">
-          <span v-if="streak > 0" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 text-xs font-semibold">
-            <span class="material-symbols-outlined text-[14px]">local_fire_department</span>
-            {{ streak }}
+  <div class="flex h-screen w-full max-w-[100vw] overflow-hidden bg-page">
+    <div class="relative flex h-full min-w-0 flex-1 flex-col">
+      <CmAppBar
+        :title="t('dailyOpinion.title')"
+        :subtitle="t('dailyOpinion.subtitle')"
+        :back-label="t('dailyOpinion.back')"
+        @back="handleBack"
+      >
+        <template #actions>
+          <span v-if="streak > 0" class="px-2 text-meta text-ink-muted tabular-nums">{{ t('dailyOpinion.streakDays', { count: streak }) }}</span>
+          <span class="hidden sm:contents">
+            <CmIconButton
+              :icon="isDark ? 'light_mode' : 'dark_mode'"
+              :label="t('setup.toggleDark')"
+              @click="toggleDark"
+            />
           </span>
-          <button
-            @click="toggleDark"
-            class="hidden sm:flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-text-main dark:text-slate-200 transition-colors"
-          >
-            <span class="material-symbols-outlined text-[18px]">{{ isDark ? 'light_mode' : 'dark_mode' }}</span>
-          </button>
-        </div>
-      </header>
+        </template>
+      </CmAppBar>
 
       <!-- Content -->
       <div class="flex-1 overflow-y-auto">
-        <div class="max-w-2xl mx-auto px-4 py-4 sm:py-6 space-y-4">
-          <!-- Question -->
-          <div class="p-4 rounded-2xl bg-surface-light dark:bg-surface-dark border border-slate-100 dark:border-slate-800 shadow-sm">
-            <p class="text-xs font-semibold text-primary uppercase tracking-wider flex items-center gap-1.5 mb-1.5">
-              <span class="material-symbols-outlined text-[16px]">help</span>
-              {{ t('dailyOpinion.todaysQuestion') }}
-            </p>
-            <p class="text-base sm:text-lg font-semibold text-text-main dark:text-white break-words">{{ question.en }}</p>
-            <p v-if="questionGloss" class="text-sm text-text-muted dark:text-slate-400 mt-1 break-words">{{ questionGloss }}</p>
-          </div>
+        <div class="mx-auto max-w-2xl space-y-5 px-4 py-5 min-[375px]:px-5">
+          <!-- Question (hero) with the gloss directly below -->
+          <PracticeCard>
+            <div class="space-y-1">
+              <p class="text-caption font-medium text-ink-secondary">{{ t('dailyOpinion.todaysQuestion') }}</p>
+              <p class="text-section font-medium text-ink break-words">{{ question.en }}</p>
+              <p v-if="questionGloss" class="text-caption text-ink-secondary break-words">{{ questionGloss }}</p>
+            </div>
+          </PracticeCard>
 
           <!-- ========== WRITE MODE ========== -->
           <template v-if="isWriting">
-            <!-- 3-step scaffold (hints in mother tongue); ticks light up live -->
-            <div class="grid grid-cols-3 gap-2">
-              <button
-                v-for="(step, i) in SCAFFOLD_STEPS"
-                :key="step.key"
-                type="button"
-                @click="insertStarter(step.starter.split(' / ')[0])"
-                class="text-left p-2.5 sm:p-3 rounded-xl border transition-colors"
-                :class="liveStructure[step.key]
-                  ? 'border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/20'
-                  : 'border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark hover:border-primary/50'"
-              >
-                <div class="flex items-center gap-1">
-                  <span class="text-[11px] font-bold text-text-muted dark:text-slate-500">{{ i + 1 }}</span>
-                  <span class="text-sm font-semibold text-text-main dark:text-white">{{ step.label[mt] || step.label.en }}</span>
-                  <span v-if="liveStructure[step.key]" class="material-symbols-outlined text-green-500 text-[16px] ml-auto">check_circle</span>
-                </div>
-                <p class="text-[11px] sm:text-xs text-text-muted dark:text-slate-400 mt-1 leading-snug">{{ step.hint[mt] || step.hint.en }}</p>
-                <p class="text-[11px] sm:text-xs text-primary mt-1 italic truncate">{{ step.starter }}</p>
-              </button>
-            </div>
-
-            <!-- Today's connectors -->
-            <div class="space-y-2">
-              <p class="text-xs font-semibold text-text-muted dark:text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-                <span class="material-symbols-outlined text-[16px]">link</span>
-                {{ t('dailyOpinion.todaysConnectors') }}
+            <!-- 3-step stepper; tapping a step inserts its starter, ticks follow the live text -->
+            <section class="space-y-2">
+              <ol class="grid grid-cols-3 gap-1 rounded-[10px] bg-surface-raised p-1">
+                <li v-for="(step, i) in SCAFFOLD_STEPS" :key="step.key" class="min-w-0">
+                  <button
+                    type="button"
+                    @click="insertStarter(step.starter.split(' / ')[0])"
+                    class="flex min-h-11 w-full min-w-0 items-center justify-center gap-1.5 rounded-[8px] border px-1.5 text-caption font-medium"
+                    :class="liveStructure[step.key]
+                      ? 'border-transparent text-success'
+                      : step.key === activeStep.key
+                        ? 'border-accent/30 bg-surface text-accent shadow-[var(--cm-shadow-small)]'
+                        : 'border-transparent text-ink-secondary'"
+                    :aria-label="`${i + 1}. ${step.label[mt] || step.label.en}: ${step.starter}`"
+                  >
+                    <span v-if="liveStructure[step.key]" class="material-symbols-outlined shrink-0 !text-[18px]" aria-hidden="true">check</span>
+                    <span v-else class="shrink-0 text-meta tabular-nums" aria-hidden="true">{{ i + 1 }}</span>
+                    <span class="truncate">{{ step.label[mt] || step.label.en }}</span>
+                  </button>
+                </li>
+              </ol>
+              <p class="px-1 text-caption text-ink-secondary">
+                {{ activeStep.hint[mt] || activeStep.hint.en }}
+                <span class="text-accent">{{ activeStep.starter }}</span>
               </p>
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                <div
-                  v-for="c in targets"
-                  :key="c.id"
-                  class="p-3 rounded-xl border transition-colors"
-                  :class="liveTargetsUsed.includes(c.id)
-                    ? 'border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/20'
-                    : 'border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark'"
-                >
-                  <div class="flex items-center gap-2">
-                    <span class="font-bold text-text-main dark:text-white">{{ c.word }}</span>
-                    <span v-if="c.nativeWord" class="text-xs text-text-muted dark:text-slate-400">{{ c.nativeWord }}</span>
-                    <span v-if="liveTargetsUsed.includes(c.id)" class="ml-auto text-xs font-semibold text-green-600 dark:text-green-400 flex items-center gap-0.5">
-                      <span class="material-symbols-outlined text-[14px]">check</span>{{ t('dailyOpinion.used') }}
-                    </span>
+            </section>
+
+            <!-- Today's connectors: two pattern chips -->
+            <section class="space-y-2">
+              <h2 class="text-caption font-medium text-ink-secondary">{{ t('dailyOpinion.todaysConnectors') }}</h2>
+              <ul class="space-y-3">
+                <li v-for="c in targets" :key="c.id" class="space-y-1">
+                  <div class="flex flex-wrap items-center gap-2">
+                    <CmChip :done="liveTargetsUsed.includes(c.id)">{{ c.word }}</CmChip>
+                    <span v-if="c.nativeWord" class="text-meta text-ink-muted">{{ c.nativeWord }}</span>
+                    <span v-if="liveTargetsUsed.includes(c.id)" class="text-meta text-success">{{ t('dailyOpinion.used') }}</span>
                   </div>
-                  <p class="text-xs text-text-muted dark:text-slate-400 mt-1 leading-snug">{{ c.meaning }}</p>
-                  <p class="text-xs text-text-main/80 dark:text-slate-300 mt-1 italic">"{{ c.example }}"</p>
-                </div>
-              </div>
-            </div>
+                  <p class="text-caption text-ink-secondary">{{ c.meaning }}</p>
+                  <p class="text-caption text-ink break-words">“{{ c.example }}”</p>
+                </li>
+              </ul>
+            </section>
 
             <!-- Textarea -->
             <div>
@@ -340,144 +332,138 @@ function handleBack() {
                 ref="textareaRef"
                 v-model="body"
                 :placeholder="t('dailyOpinion.placeholder')"
+                :aria-label="question.en"
                 :disabled="submitting"
-                class="w-full resize-none rounded-2xl border border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark text-text-main dark:text-white px-4 py-4 text-base leading-relaxed focus:border-primary focus:ring-1 focus:ring-primary dark:focus:ring-primary placeholder-slate-400 disabled:opacity-50 transition-colors"
-                style="min-height: 140px; max-height: 50vh;"
+                class="block w-full resize-none rounded-[14px] border border-hairline bg-surface px-4 py-4 text-base leading-7 text-ink placeholder:text-ink-muted focus:border-accent focus:outline-none disabled:opacity-55"
+                style="min-height: 160px; max-height: 50vh;"
               ></textarea>
-              <div class="mt-2 flex items-center justify-between text-xs text-text-muted dark:text-slate-400">
+              <div class="mt-2 flex items-center justify-between px-1 text-meta text-ink-muted tabular-nums">
                 <span>{{ t('diary.wordCount', { count: wordCount }) }}</span>
                 <span>{{ t('dailyOpinion.structureProgress', { count: SCAFFOLD_STEPS.filter(s => liveStructure[s.key]).length }) }}</span>
               </div>
             </div>
 
-            <!-- Live highlight preview -->
-            <div v-if="hasLiveHighlights" class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
-              <p class="text-[11px] font-semibold text-text-muted dark:text-slate-400 uppercase tracking-wider mb-1">{{ t('dailyOpinion.livePreview') }}</p>
-              <p class="text-sm text-text-main dark:text-slate-200 whitespace-pre-wrap break-words leading-relaxed"><template
+            <!-- Live connector preview: only once a connector is detected -->
+            <div v-if="hasLiveHighlights" class="rounded-[10px] border border-hairline bg-surface-sunken px-3 py-3">
+              <p class="mb-1 text-meta text-ink-muted">{{ t('dailyOpinion.livePreview') }}</p>
+              <p class="whitespace-pre-wrap break-words text-body text-ink"><template
                 v-for="(seg, i) in liveSegments"
                 :key="i"
-              ><mark
+              ><span
                 v-if="seg.id"
-                class="rounded px-0.5 font-semibold text-text-main dark:text-white"
-                :class="connectorIds.includes(seg.id) ? 'bg-primary/30' : 'bg-amber-200/70 dark:bg-amber-700/40'"
-              >{{ seg.text }}</mark><template v-else>{{ seg.text }}</template></template></p>
+                class="border-b-2 font-medium"
+                :class="connectorIds.includes(seg.id) ? 'border-accent' : 'border-warning'"
+              >{{ seg.text }}</span><template v-else>{{ seg.text }}</template></template></p>
             </div>
 
-            <button
+            <CmButton
               v-if="todayRecord?.rewriting"
+              variant="quiet"
+              class="!text-ink-secondary"
               @click="handleCancelRewrite"
-              class="text-xs text-text-muted dark:text-slate-400 underline"
-            >{{ t('dailyOpinion.cancelRewrite') }}</button>
+            >{{ t('dailyOpinion.cancelRewrite') }}</CmButton>
           </template>
 
           <!-- ========== RESULT MODE ========== -->
           <template v-else>
-            <!-- Your answer, highlighted -->
-            <div class="p-3 sm:p-4 rounded-2xl bg-primary/10 dark:bg-primary/20 border border-primary/20">
-              <p class="text-xs font-medium text-text-muted dark:text-slate-400 mb-1">{{ t('feedback.you') }}</p>
-              <p class="text-sm sm:text-base text-text-main dark:text-slate-200 whitespace-pre-wrap break-words leading-relaxed"><template
-                v-for="(seg, i) in resultSegments"
-                :key="i"
-              ><mark
-                v-if="seg.id"
-                class="rounded px-0.5 font-semibold text-text-main dark:text-white"
-                :class="(todayRecord?.connectorIds || []).includes(seg.id) ? 'bg-primary/40' : 'bg-amber-200/70 dark:bg-amber-700/40'"
-              >{{ seg.text }}</mark><template v-else>{{ seg.text }}</template></template></p>
-            </div>
+            <!-- One summary card: answer, connectors, structure, save a sentence (works offline) -->
+            <section class="space-y-5 rounded-[14px] border border-hairline bg-surface p-4 shadow-[var(--cm-shadow-small)]">
+              <div>
+                <p class="mb-1 text-meta text-ink-muted">{{ t('feedback.you') }}</p>
+                <p class="whitespace-pre-wrap break-words text-body text-ink"><template
+                  v-for="(seg, i) in resultSegments"
+                  :key="i"
+                ><span
+                  v-if="seg.id"
+                  class="border-b-2 font-medium"
+                  :class="(todayRecord?.connectorIds || []).includes(seg.id) ? 'border-accent' : 'border-warning'"
+                >{{ seg.text }}</span><template v-else>{{ seg.text }}</template></template></p>
+              </div>
 
-            <!-- Local check (works offline) -->
-            <div class="p-4 rounded-2xl bg-surface-light dark:bg-surface-dark border border-slate-100 dark:border-slate-800 shadow-sm space-y-4">
-              <p class="text-sm font-medium text-text-main dark:text-slate-200">{{ localCheer }}</p>
+              <p class="border-t border-hairline pt-4 text-body font-medium text-ink">{{ localCheer }}</p>
 
               <!-- Connectors -->
               <div>
-                <p class="text-xs font-semibold text-text-muted dark:text-slate-400 uppercase tracking-wider mb-2">{{ t('dailyOpinion.connectorsUsed') }}</p>
-                <div class="flex flex-wrap gap-1.5">
-                  <span
-                    v-for="c in resultTargets"
-                    :key="c.id"
-                    class="inline-flex items-center gap-1 text-xs font-semibold px-2 py-1 rounded-lg border"
-                    :class="c.used
-                      ? 'border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300'
-                      : 'border-dashed border-slate-300 dark:border-slate-600 text-text-muted dark:text-slate-400'"
-                  >
-                    <span class="material-symbols-outlined text-[14px]">{{ c.used ? 'check' : 'radio_button_unchecked' }}</span>
-                    {{ c.word }}
-                  </span>
-                  <span
-                    v-for="c in otherConnectorsUsed"
-                    :key="c.id"
-                    class="inline-flex items-center gap-1 text-xs font-semibold px-2 py-1 rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/20 text-amber-700 dark:text-amber-300"
-                  >
-                    <span class="material-symbols-outlined text-[14px]">add</span>
-                    {{ c.word }}
-                  </span>
-                </div>
+                <h2 class="mb-2 text-caption font-medium text-ink-secondary">{{ t('dailyOpinion.connectorsUsed') }}</h2>
+                <ul class="flex flex-wrap gap-2">
+                  <li v-for="c in resultTargets" :key="c.id" class="max-w-full">
+                    <CmChip v-if="c.used" done>{{ c.word }}</CmChip>
+                    <span v-else class="inline-flex max-w-full items-start gap-1 rounded-[6px] border border-dashed border-hairline px-2 py-1.5 text-caption font-medium text-ink-muted break-words">
+                      <span class="material-symbols-outlined !text-[18px]" aria-hidden="true">check_box_outline_blank</span>
+                      <span class="min-w-0">{{ c.word }}</span>
+                    </span>
+                  </li>
+                  <li v-for="c in otherConnectorsUsed" :key="c.id" class="max-w-full">
+                    <CmChip>
+                      <span class="inline-flex items-start gap-1">
+                        <span class="material-symbols-outlined !text-[18px] text-ink-muted" aria-hidden="true">add</span>{{ c.word }}
+                      </span>
+                    </CmChip>
+                  </li>
+                </ul>
               </div>
 
               <!-- 3 parts -->
               <div>
-                <p class="text-xs font-semibold text-text-muted dark:text-slate-400 uppercase tracking-wider mb-2">
+                <h2 class="mb-2 text-caption font-medium text-ink-secondary tabular-nums">
                   {{ t('dailyOpinion.structureTitle') }} · {{ structureCount }}/3
-                </p>
-                <div class="grid grid-cols-3 gap-2">
-                  <div
+                </h2>
+                <ul class="grid grid-cols-3 gap-2">
+                  <li
                     v-for="step in SCAFFOLD_STEPS"
                     :key="step.key"
-                    class="flex items-center gap-1.5 p-2 rounded-lg text-sm"
-                    :class="structure[step.key]
-                      ? 'bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300'
-                      : 'bg-slate-50 dark:bg-slate-800/50 text-text-muted dark:text-slate-400'"
+                    class="flex min-w-0 items-center gap-1.5 text-caption"
+                    :class="structure[step.key] ? 'text-success' : 'text-ink-muted'"
                   >
-                    <span class="material-symbols-outlined text-[16px]">{{ structure[step.key] ? 'check_circle' : 'radio_button_unchecked' }}</span>
-                    {{ step.label[mt] || step.label.en }}
-                  </div>
-                </div>
-                <p v-if="structureCount < 3" class="text-xs text-text-muted dark:text-slate-400 mt-2">
+                    <span class="material-symbols-outlined shrink-0 !text-[18px]" aria-hidden="true">{{ structure[step.key] ? 'check_circle' : 'radio_button_unchecked' }}</span>
+                    <span class="truncate">{{ step.label[mt] || step.label.en }}</span>
+                  </li>
+                </ul>
+                <p v-if="structureCount < 3" class="mt-2 text-caption text-ink-secondary">
                   {{ SCAFFOLD_STEPS.find(s => !structure[s.key]).hint[mt] || SCAFFOLD_STEPS.find(s => !structure[s.key]).hint.en }}
                 </p>
               </div>
 
               <!-- Save a sentence -->
               <div v-if="sentences.length">
-                <p class="text-xs font-semibold text-text-muted dark:text-slate-400 uppercase tracking-wider mb-2">{{ t('dailyOpinion.saveSentenceTitle') }}</p>
-                <div class="space-y-1.5">
+                <h2 class="mb-2 text-caption font-medium text-ink-secondary">{{ t('dailyOpinion.saveSentenceTitle') }}</h2>
+                <div role="radiogroup" :aria-label="t('dailyOpinion.saveSentenceTitle')" class="space-y-2">
                   <button
                     v-for="(s, i) in sentences"
                     :key="i"
                     type="button"
+                    role="radio"
+                    :aria-checked="s === sentenceToSave"
                     @click="selectedSentence = s"
-                    class="w-full text-left text-sm px-3 py-2 rounded-lg border transition-colors break-words"
+                    class="flex min-h-11 w-full items-start gap-2 rounded-[10px] border px-3 py-2.5 text-left text-caption break-words"
                     :class="s === sentenceToSave
-                      ? 'border-primary bg-primary/10 text-text-main dark:text-white'
-                      : 'border-slate-200 dark:border-slate-700 text-text-muted dark:text-slate-400 hover:border-primary/50'"
-                  >{{ s }}</button>
+                      ? 'border-accent bg-accent-soft text-ink'
+                      : 'border-hairline text-ink-secondary active:bg-surface-raised'"
+                  >
+                    <span class="material-symbols-outlined shrink-0 !text-[18px]" :class="s === sentenceToSave ? 'text-accent' : 'text-ink-muted'" aria-hidden="true">{{ s === sentenceToSave ? 'radio_button_checked' : 'radio_button_unchecked' }}</span>
+                    <span class="min-w-0">{{ s }}</span>
+                  </button>
                 </div>
-                <button
-                  v-if="!sentenceSaved"
-                  @click="handleSaveSentence"
-                  class="mt-2 flex items-center gap-1 text-sm font-semibold text-primary hover:text-primary/80 transition-colors"
-                >
-                  <span class="material-symbols-outlined text-[18px]">bookmark_add</span>
+                <CmButton v-if="!sentenceSaved" variant="quiet" class="mt-1 -ml-2" @click="handleSaveSentence">
+                  <span class="material-symbols-outlined !text-[18px]" aria-hidden="true">bookmark_add</span>
                   {{ t('dailyOpinion.saveSentence') }}
-                </button>
-                <span v-else class="mt-2 flex items-center gap-1 text-sm font-semibold text-green-600 dark:text-green-400">
-                  <span class="material-symbols-outlined text-[18px]">check_circle</span>
+                </CmButton>
+                <p v-else class="mt-1 flex min-h-11 items-center gap-1.5 text-caption font-medium text-success" role="status">
+                  <span class="material-symbols-outlined !text-[18px]" aria-hidden="true">check_circle</span>
                   {{ t('dailyOpinion.sentenceSaved') }}
-                </span>
+                </p>
               </div>
-            </div>
+            </section>
 
             <!-- AI friend feedback -->
-            <div
+            <p
               v-if="feedbackStatus === 'pending'"
-              class="p-4 rounded-xl bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 text-sm text-amber-700 dark:text-amber-300"
+              class="flex items-start gap-2 rounded-[10px] bg-warning-soft px-3 py-3 text-caption text-warning"
+              role="status"
             >
-              <div class="flex items-center gap-2">
-                <span class="material-symbols-outlined text-base">wifi_off</span>
-                {{ t('dailyOpinion.offlineFeedback') }}
-              </div>
-            </div>
+              <span class="material-symbols-outlined mt-px shrink-0 !text-[18px]" aria-hidden="true">wifi_off</span>
+              <span class="min-w-0">{{ t('dailyOpinion.offlineFeedback') }}</span>
+            </p>
             <DiaryFeedback
               v-else-if="feedbackLoading || feedbackStatus === 'error' || todayRecord?.feedback"
               :feedback="todayRecord?.feedback"
@@ -489,51 +475,41 @@ function handleBack() {
             />
 
             <!-- Actions -->
-            <div class="flex flex-col sm:flex-row gap-3 pt-2 pb-6">
-              <button
-                v-if="!todayRecord?.feedback"
-                @click="handleRewrite"
-                class="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 text-text-main dark:text-slate-200 font-medium hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
-              >
-                <span class="material-symbols-outlined text-[20px]">edit_note</span>
+            <div class="flex flex-col gap-2 pb-6 sm:flex-row">
+              <CmButton v-if="!todayRecord?.feedback" variant="secondary" class="flex-1" @click="handleRewrite">
+                <span class="material-symbols-outlined" aria-hidden="true">edit_note</span>
                 {{ t('diary.rewrite') }}
-              </button>
-              <button
-                @click="router.push('/')"
-                class="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-primary text-[#0d171b] font-semibold shadow-md hover:bg-primary/90 transition-colors"
-              >
-                <span class="material-symbols-outlined text-[20px]">check</span>
+              </CmButton>
+              <CmButton class="flex-1" @click="router.push('/')">
+                <span class="material-symbols-outlined" aria-hidden="true">check</span>
                 {{ t('dailyOpinion.doneSeeYouTomorrow') }}
-              </button>
+              </CmButton>
             </div>
           </template>
         </div>
       </div>
 
-      <!-- Footer (write mode): mic + submit -->
-      <div v-if="isWriting" class="p-4 sm:p-6 bg-surface-light dark:bg-surface-dark border-t border-[#e7eff3] dark:border-slate-800 z-10 safe-area-bottom">
-        <div class="flex items-center gap-3 max-w-2xl mx-auto">
+      <!-- Footer (write mode): mic + submit, sticky at the bottom -->
+      <div v-if="isWriting" class="z-10 border-t border-hairline bg-surface px-4 pt-3 pb-[max(12px,env(safe-area-inset-bottom))] min-[375px]:px-5">
+        <div class="mx-auto flex max-w-2xl items-center gap-2">
           <button
             v-if="speechSupported"
+            type="button"
             @click="toggleSpeech"
             :disabled="submitting"
             :aria-label="isListening ? t('common.stopVoiceInput') : t('common.startVoiceInput')"
-            class="shrink-0 flex items-center justify-center size-12 rounded-full transition-all disabled:opacity-50"
+            :aria-pressed="isListening"
+            class="flex size-12 shrink-0 items-center justify-center rounded-[10px] border disabled:opacity-55"
             :class="isListening
-              ? 'bg-red-500 text-white animate-pulse shadow-lg shadow-red-500/30'
-              : 'bg-slate-100 dark:bg-slate-800 text-text-muted dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'"
+              ? 'border-error/30 bg-error-soft text-error'
+              : 'border-hairline bg-surface-raised text-ink-secondary active:bg-surface-sunken'"
           >
-            <span class="material-symbols-outlined text-[22px]">{{ isListening ? 'mic_off' : 'mic' }}</span>
+            <span class="material-symbols-outlined" aria-hidden="true">{{ isListening ? 'mic_off' : 'mic' }}</span>
           </button>
-          <button
-            @click="handleSubmit"
-            :disabled="!canSubmit"
-            class="flex-1 flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-primary text-[#0d171b] font-semibold shadow-lg hover:bg-primary/90 hover:scale-[1.01] active:scale-[0.99] transition-all disabled:opacity-50 disabled:hover:scale-100"
-          >
-            <span v-if="submitting" class="material-symbols-outlined text-[20px] animate-spin">progress_activity</span>
-            <span v-else class="material-symbols-outlined text-[20px]">send</span>
-            {{ submitting ? t('diary.submitting') : t('dailyOpinion.submit') }}
-          </button>
+          <CmButton class="min-w-0 flex-1" :disabled="!canSubmit" @click="handleSubmit">
+            <span v-if="!submitting" class="material-symbols-outlined" aria-hidden="true">send</span>
+            {{ submitting ? t('diary.submitting') : t('dailyOpinion.submit', { name: character.name }) }}
+          </CmButton>
         </div>
       </div>
     </div>

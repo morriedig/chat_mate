@@ -599,7 +599,7 @@
   },
   "dailyOpinion": {
     "title": "今日觀點",
-    "cardTitle": "今日觀點（3 分鐘）",
+    "cardTitle": "用三句話說看法",
     "subtitle": "看法 → 理由 → 收尾",
     "doneToday": "今天已完成",
     "notDoneToday": "還沒做",
@@ -611,7 +611,7 @@
     "placeholder": "用英文回答：先講看法，再給理由，最後收尾。",
     "structureProgress": "結構 {count}/3",
     "livePreview": "偵測到的連接詞",
-    "submit": "傳給朋友看",
+    "submit": "請 {name} 看看",
     "cancelRewrite": "取消重寫",
     "back": "返回",
     "connectorsUsed": "你用到的連接詞",
@@ -620,10 +620,10 @@
     "saveSentence": "存下這句",
     "sentenceSaved": "已存進單字庫",
     "offlineFeedback": "你目前離線。回答已儲存，連線後朋友就會給你回饋。",
-    "doneSeeYouTomorrow": "完成，明天見",
-    "cheerBoth": "讚！今天 {a} 和 {b} 都用上了。",
-    "cheerOne": "你用了 {a}，很好！明天也試試另一個。",
-    "cheerOther": "你用了 {a}，雖然不是今天的目標，也很自然！",
+    "doneSeeYouTomorrow": "完成",
+    "cheerBoth": "今天用了 {a} 和 {b}",
+    "cheerOne": "你用了 {a}。明天也試試另一個。",
+    "cheerOther": "你用了 {a}，雖然不是今天的目標，用得很自然。",
     "cheerNone": "這次還沒用到連接詞。下次在看法後面加一句「because…」試試看。"
   },
   "dailyPractice": {
@@ -636,13 +636,13 @@
     "reviewWord": "複習單字",
     "listen": "聽發音",
     "startPractice": "開始練習",
-    "correct": "對！這句最自然。",
-    "notQuite": "差一點，原因是：",
+    "correct": "這句較自然",
+    "notQuite": "看看差在哪裡",
     "next": "下一步",
     "check": "請朋友看看",
     "checking": "朋友在看……",
     "skip": "先跳過",
-    "usedPattern": "有用到這個句型 ✓",
+    "usedPattern": "有用到這個句型",
     "missedPattern": "句子裡還沒用到這個句型。",
     "corrected": "修正：",
     "better": "也可以說：",
@@ -653,7 +653,7 @@
       "ok": "有點印象",
       "easy": "很熟了"
     },
-    "doneTitle": "今天練完了！",
+    "doneTitle": "今天的練習完成",
     "doneSummary": "練了 {patterns} 個句型、{words} 個單字。",
     "useThemHint": "試著把今天的句型真的用出來：",
     "writeOpinion": "寫今日觀點",
@@ -666,8 +666,12 @@
     "reveal": "翻開看看",
     "noSavedMeaning": "存的時候沒有寫意思，想想看你在哪裡看到它。",
     "doneExtras": "也複習了 {count} 張你自己的卡片（之前的錯誤、存下的單字）。",
-    "mistakeReview": "改改看",
-    "cardExtras": "，再加 {count} 張複習和聽力"
+    "mistakeReview": "再改一次",
+    "cardExtras": "，再加 {count} 張複習和聽力",
+    "levelLabel": "程度",
+    "levelChangeTitle": "要換程度嗎？",
+    "levelChangeBody": "換程度會換成另一組今日練習，這一題目前的作答不會保存。",
+    "levelChangeConfirm": "換程度"
   },
   "voiceChat": {
     "enter": "語音對話",
@@ -791,10 +795,13 @@
     "yourFix": "你的改法",
     "compare": "對答案",
     "showHint": "給我提示",
-    "matched": "完全正確！",
-    "unchanged": "這次沒有改，看看哪裡要改：",
-    "compareHint": "跟建議的寫法比一比（綠色是改過的地方）：",
-    "remove": "這句其實沒問題，以後不用再出現"
+    "matched": "和建議寫法一致",
+    "unchanged": "這次沒有改動，看看哪裡要改",
+    "compareHint": "和建議寫法比一比",
+    "remove": "這句其實沒問題，以後不用再出現",
+    "youWrote": "你寫的",
+    "suggested": "建議寫法",
+    "hintLabel": "提示"
   },
   "listening": {
     "label": "聽力",
@@ -804,7 +811,7 @@
     "slow": "慢速",
     "typeWhatYouHear": "聽到什麼就打什麼…",
     "check": "對答案",
-    "correct": "全對！",
+    "correct": "全部聽對了",
     "answerWas": "正確的句子：",
     "missedWords": "標起來的是漏掉或聽錯的字。"
   },
@@ -837,7 +844,7 @@
   },
   "retell": {
     "title": "同一題講三次",
-    "subtitle": "越講越順的流暢度練習",
+    "subtitle": "同一個想法，逐次說得更順",
     "back": "返回",
     "cardTitle": "同一題講三次",
     "cardSubtitle": "準備 30 秒，同一件事講三遍，一次比一次短。",
@@ -868,12 +875,14 @@
     "stats": "{words} 個字 · {sec} 秒",
     "nextHint": "下一次只有 {sec} 秒，講一樣的內容。",
     "nextRound": "開始第 {n} 次",
-    "resultImproved": "越講越順了！",
-    "resultSteady": "同一件事講了三次，做得好！",
+    "resultImproved": "第三次更順",
+    "resultSteady": "三次都完成了",
     "roundShort": "第 {n} 次（{sec} 秒）",
     "wpmNote": "每分鐘的字數越來越多，表示你越講越流暢。",
     "showTranscripts": "看看三次說了什麼",
     "again": "再練一次",
-    "home": "回首頁"
+    "home": "回首頁",
+    "sequence": "準備 {plan} 秒 → {a} 秒 → {b} 秒 → {c} 秒",
+    "timeLeft": "剩餘時間"
   }
 }

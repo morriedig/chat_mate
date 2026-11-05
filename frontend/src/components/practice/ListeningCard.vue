@@ -4,6 +4,8 @@ import { useI18n } from 'vue-i18n'
 import { playTTS, stopTTS } from '../../utils/tts'
 import { shuffleArray } from '../../utils/shuffle'
 import { diffWords } from '../../utils/wordDiff'
+import PracticeCard from './PracticeCard.vue'
+import CmButton from '../ui/CmButton.vue'
 
 const { t } = useI18n()
 
@@ -38,74 +40,84 @@ function finish() {
   emit('done', { correct: correct.value, confidence: correct.value ? 4 : 2 })
 }
 
+function optionState(option) {
+  if (picked.value === null) return 'idle'
+  if (option === props.item.en) return 'right'
+  return option === picked.value ? 'wrong' : 'other'
+}
+
 onBeforeUnmount(stopTTS)
 </script>
 
 <template>
-  <div class="p-5 rounded-2xl bg-surface-light dark:bg-surface-dark border border-slate-100 dark:border-slate-800 shadow-sm space-y-4">
-    <div>
-      <p class="text-xs font-semibold text-primary">{{ t('listening.label') }}</p>
-      <p class="mt-1 text-base font-semibold text-text-main dark:text-white">
-        {{ item.mode === 'choose' ? t('listening.chooseTitle') : t('listening.dictationTitle') }}
-      </p>
+  <PracticeCard>
+    <p class="text-title font-medium text-ink">
+      {{ item.mode === 'choose' ? t('listening.chooseTitle') : t('listening.dictationTitle') }}
+    </p>
+
+    <div class="grid grid-cols-2 gap-2">
+      <CmButton @click="play('normal')">
+        <span class="material-symbols-outlined" aria-hidden="true">volume_up</span>{{ t('listening.play') }}
+      </CmButton>
+      <CmButton variant="secondary" @click="play('slow')">
+        <span class="material-symbols-outlined" aria-hidden="true">slow_motion_video</span>{{ t('listening.slow') }}
+      </CmButton>
     </div>
 
-    <div class="flex gap-2">
-      <button @click="play('normal')" class="flex-1 flex items-center justify-center gap-1.5 py-3 rounded-xl bg-primary text-white font-semibold">
-        <span class="material-symbols-outlined">volume_up</span>{{ t('listening.play') }}
-      </button>
-      <button @click="play('slow')" class="flex-1 flex items-center justify-center gap-1.5 py-3 rounded-xl border border-slate-200 dark:border-slate-700 text-text-main dark:text-slate-200 font-semibold">
-        <span class="material-symbols-outlined">slow_motion_video</span>{{ t('listening.slow') }}
-      </button>
-    </div>
-
-    <!-- Which sentence did you hear? -->
-    <div v-if="item.mode === 'choose'" class="space-y-2">
+    <!-- Which sentence did you hear? Full-width radio rows -->
+    <div v-if="item.mode === 'choose'" role="radiogroup" :aria-label="t('listening.chooseTitle')" class="space-y-2">
       <button
         v-for="option in options"
         :key="option"
+        type="button"
+        role="radio"
+        :aria-checked="option === picked"
+        :aria-disabled="picked !== null"
         @click="picked === null && (picked = option)"
-        class="w-full text-left px-4 py-3 rounded-xl border text-sm leading-relaxed transition-colors"
-        :class="picked === null
-          ? 'border-slate-200 dark:border-slate-700 text-text-main dark:text-slate-200'
-          : option === item.en
-            ? 'border-green-400 bg-green-50 dark:bg-green-900/20 text-text-main dark:text-white'
-            : option === picked
-              ? 'border-red-300 bg-red-50 dark:bg-red-900/20 text-text-main dark:text-white'
-              : 'border-slate-200 dark:border-slate-700 text-text-muted dark:text-slate-500'"
-      >{{ option }}</button>
+        class="flex min-h-12 w-full items-start gap-3 rounded-[10px] border px-3 py-3 text-left text-body break-words"
+        :class="{
+          idle: 'border-hairline bg-surface text-ink active:bg-surface-raised',
+          right: 'border-success/40 bg-success-soft text-ink',
+          wrong: 'border-error/40 bg-error-soft text-ink',
+          other: 'border-hairline bg-surface text-ink-muted',
+        }[optionState(option)]"
+      >
+        <span
+          class="material-symbols-outlined mt-0.5 shrink-0"
+          :class="{ idle: 'text-ink-muted', right: 'text-success', wrong: 'text-error', other: 'text-ink-muted' }[optionState(option)]"
+          aria-hidden="true"
+        >{{ { right: 'check_circle', wrong: 'cancel' }[optionState(option)] || 'radio_button_unchecked' }}</span>
+        <span class="min-w-0 flex-1">{{ option }}</span>
+      </button>
     </div>
 
-    <!-- Dictation -->
-    <div v-else class="space-y-2">
+    <!-- Dictation: same field style as mistake review -->
+    <div v-else class="space-y-3">
       <textarea
         v-model="typed"
         :disabled="checked"
         rows="2"
         autocapitalize="sentences"
         :placeholder="t('listening.typeWhatYouHear')"
-        class="w-full resize-none rounded-xl border border-slate-200 dark:border-slate-700 bg-background-light dark:bg-background-dark text-text-main dark:text-white px-3 py-2.5 text-base focus:border-primary focus:ring-1 focus:ring-primary disabled:opacity-70"
+        :aria-label="t('listening.dictationTitle')"
+        class="block w-full resize-none rounded-[10px] border border-hairline bg-surface-sunken px-3 py-3 text-base leading-6 text-ink placeholder:text-ink-muted focus:border-accent focus:outline-none disabled:text-ink-secondary"
       ></textarea>
-      <button
-        v-if="!checked"
-        @click="checked = true"
-        :disabled="!typed.trim()"
-        class="w-full py-3 rounded-xl bg-primary text-white font-semibold disabled:opacity-50"
-      >{{ t('listening.check') }}</button>
+      <CmButton v-if="!checked" block :disabled="!typed.trim()" @click="checked = true">{{ t('listening.check') }}</CmButton>
     </div>
 
-    <div v-if="answered" class="rounded-xl p-4 space-y-1.5" :class="correct ? 'bg-green-50 dark:bg-green-900/20' : 'bg-primary/5 dark:bg-primary/10'">
-      <p class="text-sm font-semibold" :class="correct ? 'text-green-700 dark:text-green-300' : 'text-text-main dark:text-slate-200'">
+    <div v-if="answered" class="space-y-1.5 rounded-[10px] p-3" :class="correct ? 'bg-success-soft' : 'bg-surface-sunken border border-hairline'" role="status">
+      <p class="flex items-center gap-1.5 text-caption font-medium" :class="correct ? 'text-success' : 'text-ink'">
+        <span class="material-symbols-outlined !text-[18px]" :class="correct ? '' : 'text-error'" aria-hidden="true">{{ correct ? 'check_circle' : 'cancel' }}</span>
         {{ correct ? t('listening.correct') : t('listening.answerWas') }}
       </p>
-      <p class="text-base leading-relaxed text-text-main dark:text-white">
-        <template v-if="item.mode === 'dictation'"><template v-for="(part, i) in diff.parts" :key="i"><span :class="part.same ? '' : 'font-semibold text-amber-600 dark:text-amber-400 underline decoration-2 underline-offset-2'">{{ part.text }}</span>{{ ' ' }}</template></template>
+      <p class="text-body text-ink break-words">
+        <template v-if="item.mode === 'dictation'"><template v-for="(part, i) in diff.parts" :key="i"><span :class="part.same ? '' : 'rounded-[4px] bg-error-soft px-0.5 font-medium text-error underline decoration-1 underline-offset-4'">{{ part.text }}</span>{{ ' ' }}</template></template>
         <template v-else>{{ item.en }}</template>
       </p>
-      <p v-if="item.zh" class="text-sm text-text-muted dark:text-slate-400">{{ item.zh }}</p>
-      <p v-if="item.mode === 'dictation' && !correct" class="text-xs text-text-muted dark:text-slate-400">{{ t('listening.missedWords') }}</p>
+      <p v-if="item.zh" class="text-caption text-ink-secondary break-words">{{ item.zh }}</p>
+      <p v-if="item.mode === 'dictation' && !correct" class="text-meta text-ink-muted">{{ t('listening.missedWords') }}</p>
     </div>
 
-    <button v-if="answered" @click="finish" class="w-full py-3 rounded-xl bg-primary text-white font-semibold">{{ t('dailyPractice.next') }}</button>
-  </div>
+    <CmButton v-if="answered" block @click="finish">{{ t('dailyPractice.next') }}</CmButton>
+  </PracticeCard>
 </template>

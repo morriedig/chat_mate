@@ -4,6 +4,9 @@ import { useI18n } from 'vue-i18n'
 import { diffWords } from '../../utils/wordDiff'
 import { playTTS } from '../../utils/tts'
 import PracticeRating from './PracticeRating.vue'
+import PracticeCard from './PracticeCard.vue'
+import CmButton from '../ui/CmButton.vue'
+import CmIconButton from '../ui/CmIconButton.vue'
 
 const { t } = useI18n()
 
@@ -25,6 +28,8 @@ watch(() => props.mistake.id, () => {
 }, { immediate: true })
 
 const diff = computed(() => diffWords(attempt.value, props.mistake.corrected))
+// The learner's words, marked where they differ from the suggestion (shown struck through)
+const attemptParts = computed(() => diffWords(props.mistake.corrected, attempt.value).parts)
 const changedNothing = computed(() => attempt.value.trim() === props.mistake.original.trim())
 
 function compare() {
@@ -37,51 +42,74 @@ function rate(confidence) {
 </script>
 
 <template>
-  <div class="p-5 rounded-2xl bg-surface-light dark:bg-surface-dark border border-slate-100 dark:border-slate-800 shadow-sm space-y-4">
+  <PracticeCard>
     <div>
-      <p class="text-xs font-semibold text-amber-600 dark:text-amber-400">{{ t(`mistakes.source.${mistake.source}`, t('mistakes.source.chat')) }}</p>
-      <p class="mt-1 text-sm text-text-muted dark:text-slate-400">{{ t('mistakes.prompt') }}</p>
-      <p class="mt-2 text-base text-text-main dark:text-white leading-relaxed">“{{ mistake.original }}”</p>
+      <p class="text-meta font-medium text-warning">{{ t(`mistakes.source.${mistake.source}`, t('mistakes.source.chat')) }}</p>
+      <p class="mt-1 text-caption text-ink-secondary">{{ t('mistakes.prompt') }}</p>
+      <p class="mt-2 text-title font-medium text-ink break-words">“{{ mistake.original }}”</p>
     </div>
 
     <template v-if="stage === 'fix'">
       <textarea
         v-model="attempt"
         :rows="Math.min(6, Math.ceil(attempt.length / 30) + 1)"
-        class="w-full resize-none rounded-xl border border-slate-200 dark:border-slate-700 bg-background-light dark:bg-background-dark text-text-main dark:text-white px-3 py-2.5 text-base leading-relaxed focus:border-primary focus:ring-1 focus:ring-primary"
+        class="block w-full resize-none rounded-[10px] border border-hairline bg-surface-sunken px-3 py-3 text-base leading-6 text-ink focus:border-accent focus:outline-none"
         :aria-label="t('mistakes.yourFix')"
       ></textarea>
-      <p v-if="showHint && mistake.hint" class="text-sm text-primary">💡 {{ mistake.hint }}</p>
+      <p v-if="showHint && mistake.hint" class="rounded-[10px] bg-accent-soft px-3 py-2 text-caption text-ink break-words">
+        <span class="font-medium text-accent">{{ t('mistakes.hintLabel') }}</span>
+        {{ mistake.hint }}
+      </p>
       <div class="flex gap-2">
-        <button
-          @click="compare"
-          class="flex-1 py-3 rounded-xl bg-primary text-white font-semibold"
-        >{{ t('mistakes.compare') }}</button>
-        <button
+        <CmButton class="flex-1" @click="compare">{{ t('mistakes.compare') }}</CmButton>
+        <CmButton
           v-if="mistake.hint && !showHint"
+          variant="secondary"
+          class="shrink-0"
           @click="showHint = true"
-          class="px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 text-sm font-semibold text-text-main dark:text-slate-200"
-        >{{ t('mistakes.showHint') }}</button>
+        >{{ t('mistakes.showHint') }}</CmButton>
       </div>
     </template>
 
     <template v-else>
-      <div class="rounded-xl p-4 space-y-2" :class="diff.matches ? 'bg-green-50 dark:bg-green-900/20' : 'bg-primary/5 dark:bg-primary/10'">
-        <p class="text-sm font-semibold" :class="diff.matches ? 'text-green-700 dark:text-green-300' : 'text-text-main dark:text-slate-200'">
-          {{ diff.matches ? t('mistakes.matched') : changedNothing ? t('mistakes.unchanged') : t('mistakes.compareHint') }}
+      <!-- Matches: icon + text + success-soft, never color alone -->
+      <div v-if="diff.matches" class="space-y-2 rounded-[10px] bg-success-soft p-3" role="status">
+        <p class="flex items-center gap-1.5 text-caption font-medium text-success">
+          <span class="material-symbols-outlined !text-[18px]" aria-hidden="true">check_circle</span>
+          {{ t('mistakes.matched') }}
         </p>
-        <div class="flex items-start gap-2">
-          <p class="flex-1 text-base leading-relaxed text-text-main dark:text-white">
-            <template v-for="(part, i) in diff.parts" :key="i"><span :class="part.same ? '' : 'font-semibold text-green-700 dark:text-green-300 underline decoration-2 underline-offset-2'">{{ part.text }}</span>{{ ' ' }}</template>
-          </p>
-          <button @click="playTTS(mistake.corrected, 'en', 'normal')" class="shrink-0 text-primary" :aria-label="t('dailyPractice.listen')">
-            <span class="material-symbols-outlined">volume_up</span>
-          </button>
+        <div class="flex items-start gap-1">
+          <p class="flex-1 min-w-0 py-2.5 text-body text-ink break-words">{{ mistake.corrected }}</p>
+          <CmIconButton icon="volume_up" :label="t('dailyPractice.listen')" @click="playTTS(mistake.corrected, 'en', 'normal')" />
         </div>
-        <p v-if="mistake.explanation" class="text-sm text-text-muted dark:text-slate-400 leading-relaxed">{{ mistake.explanation }}</p>
       </div>
+
+      <div v-else class="space-y-3" role="status">
+        <p class="text-caption font-medium text-ink">
+          {{ changedNothing ? t('mistakes.unchanged') : t('mistakes.compareHint') }}
+        </p>
+        <div class="rounded-[10px] border border-hairline bg-surface-sunken px-3 py-2.5">
+          <p class="text-meta text-ink-muted">{{ t('mistakes.youWrote') }}</p>
+          <p class="mt-1 text-body text-ink-secondary break-words">
+            <template v-for="(part, i) in attemptParts" :key="i"><span :class="part.same ? '' : 'rounded-[4px] bg-error-soft px-0.5 text-error line-through'">{{ part.text }}</span>{{ ' ' }}</template>
+          </p>
+        </div>
+        <div class="rounded-[10px] border border-hairline bg-surface px-3 py-2.5">
+          <div class="flex items-start gap-1">
+            <div class="min-w-0 flex-1">
+              <p class="text-meta text-ink-muted">{{ t('mistakes.suggested') }}</p>
+              <p class="mt-1 text-body text-ink break-words">
+                <template v-for="(part, i) in diff.parts" :key="i"><span :class="part.same ? '' : 'rounded-[4px] bg-success-soft px-0.5 font-medium text-success underline decoration-1 underline-offset-4'">{{ part.text }}</span>{{ ' ' }}</template>
+              </p>
+            </div>
+            <CmIconButton icon="volume_up" :label="t('dailyPractice.listen')" class="-mr-2" @click="playTTS(mistake.corrected, 'en', 'normal')" />
+          </div>
+        </div>
+      </div>
+      <p v-if="mistake.explanation" class="text-caption text-ink-secondary break-words">{{ mistake.explanation }}</p>
+
       <PracticeRating @rate="rate" />
-      <button @click="emit('remove')" class="w-full text-xs text-text-muted dark:text-slate-500 underline">{{ t('mistakes.remove') }}</button>
+      <CmButton variant="quiet" block class="!text-ink-muted !text-caption !font-normal" @click="emit('remove')">{{ t('mistakes.remove') }}</CmButton>
     </template>
-  </div>
+  </PracticeCard>
 </template>
