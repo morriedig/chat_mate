@@ -113,117 +113,116 @@ async function playSentence() {
 </script>
 
 <template>
-  <div class="p-4 rounded-xl bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 transition-colors">
-    <div class="flex items-start gap-4">
-      <!-- Audio Button for Word -->
+  <article class="rounded-[14px] border border-hairline bg-surface p-4 shadow-[var(--cm-shadow-small)]" data-testid="vocabulary-card">
+    <!-- Word (hero) + quiet play control -->
+    <div class="flex items-start gap-2">
+      <div class="min-w-0 flex-1">
+        <div class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+          <h3 class="break-words text-section font-medium text-ink" data-heading>{{ word.word }}</h3>
+          <span v-if="bilingual && word.nativeWord" class="text-body text-ink-secondary">({{ word.nativeWord }})</span>
+        </div>
+        <div v-if="word.phonetic || word.reading" class="mt-0.5 flex flex-wrap gap-x-2 text-caption">
+          <span v-if="word.phonetic" class="text-ink-muted">{{ word.phonetic }}</span>
+          <span v-if="word.reading" class="text-accent">{{ word.reading }}</span>
+        </div>
+      </div>
       <button
+        type="button"
         @click="playWord"
         :disabled="isPlayingWord"
-        class="shrink-0 flex items-center justify-center size-12 rounded-full bg-primary/10 hover:bg-primary/20 text-primary transition-colors disabled:opacity-50"
-        :class="{ 'animate-pulse': isPlayingWord }"
+        :aria-label="t('learning.listen')"
+        data-testid="play-word"
+        class="-mr-2 -mt-1 inline-flex size-11 shrink-0 items-center justify-center rounded-[10px] text-accent active:bg-surface-raised disabled:opacity-55"
       >
-        <span class="material-symbols-outlined text-xl">
+        <span class="material-symbols-outlined" aria-hidden="true">
           {{ isPlayingWord ? 'volume_up' : 'play_arrow' }}
         </span>
       </button>
+    </div>
 
-      <!-- Word Content -->
-      <div class="flex-1 min-w-0">
-        <div class="flex items-baseline gap-2 flex-wrap">
-          <h3 class="text-xl font-bold text-text-main dark:text-white">{{ word.word }}</h3>
-          <span v-if="bilingual && word.nativeWord" class="text-lg text-primary font-medium">({{ word.nativeWord }})</span>
-          <span v-if="word.phonetic" class="text-sm text-text-muted dark:text-slate-400">{{ word.phonetic }}</span>
-          <span v-if="word.reading" class="text-sm text-primary">{{ word.reading }}</span>
-        </div>
-
-        <!-- Meaning with play button -->
-        <div class="flex items-start gap-2 mt-1">
-          <button
-            @click="playMeaning"
-            :disabled="isPlayingMeaning"
-            class="shrink-0 flex items-center justify-center size-6 rounded-full bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 text-text-muted dark:text-slate-400 transition-colors disabled:opacity-50"
-            :class="{ 'animate-pulse': isPlayingMeaning }"
-          >
-            <span class="material-symbols-outlined text-sm">
-              {{ isPlayingMeaning ? 'volume_up' : 'volume_up' }}
-            </span>
-          </button>
-          <div>
-            <!-- Word-by-word highlight mode -->
-            <p v-if="voiceSpeed === 'word' && highlightMeaningIndex >= 0" class="text-text-muted dark:text-slate-300">
-              <span
-                v-for="(w, i) in meaningWords"
-                :key="i"
-                :class="i === highlightMeaningIndex ? 'bg-primary/30 text-primary font-semibold px-0.5 rounded' : ''"
-              >{{ w }}{{ i < meaningWords.length - 1 ? ' ' : '' }}</span>
-            </p>
-            <p v-else class="text-text-muted dark:text-slate-300">{{ word.meaning }}</p>
-            <p v-if="bilingual && word.nativeMeaning" class="text-sm text-slate-500 dark:text-slate-400">{{ word.nativeMeaning }}</p>
-          </div>
-        </div>
-
-        <!-- Example sentence with play button -->
-        <div class="mt-3 p-3 rounded-lg bg-slate-50 dark:bg-slate-800/50 border-l-4 border-primary">
-          <div class="flex items-start gap-2">
-            <button
-              @click="playSentence"
-              :disabled="isPlayingSentence"
-              class="shrink-0 flex items-center justify-center size-6 rounded-full bg-white dark:bg-slate-700 hover:bg-slate-100 dark:hover:bg-slate-600 text-primary transition-colors disabled:opacity-50 shadow-sm"
-              :class="{ 'animate-pulse': isPlayingSentence }"
-            >
-              <span class="material-symbols-outlined text-sm">volume_up</span>
-            </button>
-            <div>
-              <!-- Word-by-word highlight mode for sentence -->
-              <p v-if="voiceSpeed === 'word' && highlightSentenceIndex >= 0" class="text-sm text-text-main dark:text-slate-200 italic">
-                "<span
-                  v-for="(w, i) in sentenceWords"
-                  :key="i"
-                  :class="i === highlightSentenceIndex ? 'bg-primary/30 text-primary font-semibold not-italic px-0.5 rounded' : ''"
-                >{{ w }}{{ i < sentenceWords.length - 1 ? ' ' : '' }}</span>"
-              </p>
-              <p v-else class="text-sm text-text-main dark:text-slate-200 italic">
-                "{{ word.example }}"
-              </p>
-              <p v-if="bilingual && word.nativeExample" class="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                "{{ word.nativeExample }}"
-              </p>
-            </div>
-          </div>
-        </div>
+    <!-- Meaning -->
+    <div class="mt-2 flex items-start gap-1">
+      <button
+        type="button"
+        @click="playMeaning"
+        :disabled="isPlayingMeaning"
+        :aria-label="t('learning.conversation.playAudio')"
+        class="-ml-3 -my-2 inline-flex size-11 shrink-0 items-center justify-center rounded-[10px] text-ink-muted active:bg-surface-raised disabled:opacity-55"
+      >
+        <span class="material-symbols-outlined !text-[18px]" aria-hidden="true">volume_up</span>
+      </button>
+      <div class="min-w-0">
+        <!-- Word-by-word highlight mode -->
+        <p v-if="voiceSpeed === 'word' && highlightMeaningIndex >= 0" class="text-body text-ink-secondary">
+          <span
+            v-for="(w, i) in meaningWords"
+            :key="i"
+            :class="i === highlightMeaningIndex ? 'rounded-[4px] bg-accent-soft px-0.5 text-accent' : ''"
+          >{{ w }}{{ i < meaningWords.length - 1 ? ' ' : '' }}</span>
+        </p>
+        <p v-else class="text-body text-ink-secondary">{{ word.meaning }}</p>
+        <p v-if="bilingual && word.nativeMeaning" class="text-caption text-ink-muted">{{ word.nativeMeaning }}</p>
       </div>
     </div>
 
-    <!-- Pronunciation Check -->
+    <!-- Example sentence in a sunken field -->
+    <div class="mt-3 flex items-start gap-1 rounded-[10px] bg-surface-sunken p-3 pl-1" data-testid="example">
+      <button
+        type="button"
+        @click="playSentence"
+        :disabled="isPlayingSentence"
+        :aria-label="t('learning.conversation.playAudio')"
+        class="-my-2 inline-flex size-11 shrink-0 items-center justify-center rounded-[10px] text-accent active:bg-surface-raised disabled:opacity-55"
+      >
+        <span class="material-symbols-outlined !text-[18px]" aria-hidden="true">volume_up</span>
+      </button>
+      <div class="min-w-0">
+        <!-- Word-by-word highlight mode for sentence -->
+        <p v-if="voiceSpeed === 'word' && highlightSentenceIndex >= 0" class="break-words text-body text-ink">
+          "<span
+            v-for="(w, i) in sentenceWords"
+            :key="i"
+            :class="i === highlightSentenceIndex ? 'rounded-[4px] bg-accent-soft px-0.5 text-accent' : ''"
+          >{{ w }}{{ i < sentenceWords.length - 1 ? ' ' : '' }}</span>"
+        </p>
+        <p v-else class="break-words text-body text-ink">
+          "{{ word.example }}"
+        </p>
+        <p v-if="bilingual && word.nativeExample" class="mt-1 text-caption text-ink-muted">
+          "{{ word.nativeExample }}"
+        </p>
+      </div>
+    </div>
+
+    <!-- Pronunciation check -->
     <div v-if="pronSupported" class="mt-3 flex items-center gap-3">
       <button
+        type="button"
         @click="handlePronCheck"
-        class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all"
+        :aria-pressed="isListening"
+        class="inline-flex min-h-11 items-center gap-1.5 rounded-[10px] border px-3 text-caption font-medium"
         :class="isListening
-          ? 'bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 animate-pulse'
-          : 'bg-slate-100 dark:bg-slate-700 text-text-muted dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-600'"
+          ? 'border-transparent bg-error-soft text-error'
+          : 'border-hairline bg-surface-raised text-ink-secondary active:bg-surface-sunken'"
       >
-        <span class="material-symbols-outlined text-sm">{{ isListening ? 'mic' : 'mic_none' }}</span>
+        <span class="material-symbols-outlined !text-[18px]" aria-hidden="true">{{ isListening ? 'mic' : 'mic_none' }}</span>
         {{ isListening ? t('common.listening') : t('learning.trySayingIt') }}
       </button>
-      <div v-if="pronScore !== null" class="flex items-center gap-1.5">
-        <div class="w-16 h-1.5 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden">
-          <div
-            class="h-full rounded-full transition-all"
-            :class="pronScore >= 80 ? 'bg-green-400' : pronScore >= 50 ? 'bg-amber-400' : 'bg-red-400'"
-            :style="{ width: `${pronScore}%` }"
+      <div v-if="pronScore !== null" class="flex items-center gap-2">
+        <span class="h-1 w-16 overflow-hidden bg-surface-raised" aria-hidden="true">
+          <span
+            class="block h-full w-full origin-left rounded-r-[2px] bg-accent transition-transform duration-[180ms]"
+            :style="{ transform: `scaleX(${Math.min(1, Math.max(0, pronScore / 100))})` }"
           />
-        </div>
-        <span class="text-xs font-bold" :class="pronScore >= 80 ? 'text-green-500' : pronScore >= 50 ? 'text-amber-500' : 'text-red-500'">
-          {{ pronScore }}%
         </span>
+        <span class="text-meta font-medium tabular-nums text-ink-secondary">{{ pronScore }}%</span>
       </div>
     </div>
 
     <!-- Audio Error -->
-    <p v-if="audioError || pronError" class="mt-2 text-xs text-amber-600 dark:text-amber-400 flex items-center gap-1">
-      <span class="material-symbols-outlined text-sm">warning</span>
+    <p v-if="audioError || pronError" class="mt-2 flex items-center gap-1 text-meta text-warning" role="status">
+      <span class="material-symbols-outlined !text-[16px]" aria-hidden="true">warning</span>
       {{ t('learning.audioNotAvailable') }}
     </p>
-  </div>
+  </article>
 </template>

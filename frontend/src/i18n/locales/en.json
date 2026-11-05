@@ -393,7 +393,7 @@
     "tips": "Tips"
   },
   "srs": {
-    "dailyReview": "Daily Review",
+    "dailyReview": "Due today",
     "dailyReviewDescription": "Review words from all chapters that are due today",
     "wordsToReview": "{count} words to review",
     "noWordsToReview": "All caught up! No words to review right now.",
@@ -413,10 +413,10 @@
       "slow": "Slow",
       "word": "Word by Word"
     },
-    "chooseChapter": "Choose a Chapter",
+    "chooseChapter": "Learning",
     "chapterDescription": "Select a chapter to start learning vocabulary",
     "noChapters": "No Chapters Available",
-    "noChaptersDescription": "Add YAML files to the chapters folder to create new chapters",
+    "noChaptersDescription": "There are no chapters for this level yet. Try a different level.",
     "words": "words",
     "categories": {
       "travel": "Travel",
@@ -442,12 +442,12 @@
     "keyboardHints": "Use arrow keys to navigate, space to flip",
     "question": "Question",
     "whatMeans": "What does this word mean?",
-    "correct": "Correct!",
-    "incorrect": "Not quite...",
+    "correct": "Correct",
+    "incorrect": "Not quite",
     "nextQuestion": "Next Question",
     "finishQuiz": "See Results",
-    "quizComplete": "Quiz Complete!",
-    "yourScore": "Here's how you did:",
+    "quizComplete": "Quiz complete",
+    "yourScore": "Your score",
     "earned": "earned",
     "reviewAnswers": "Review Answers",
     "tryAgain": "Try Again",
@@ -473,10 +473,10 @@
       "contextHint": "Topic: {category}",
       "progress": "{current}/{min} messages - keep chatting!",
       "prompt": {
-        "title": "Practice with Conversation?",
+        "title": "Practice with a conversation?",
         "description": "Want to practice using the words you just learned in a real conversation?",
-        "start": "Let's Chat!",
-        "skip": "Maybe Later"
+        "start": "Start chatting",
+        "skip": "Maybe later"
       }
     },
     "fillBlank": "Fill in the blank",
@@ -484,14 +484,18 @@
     "useInChat": "Use it in chat",
     "useInChatHint": "Chat with a friend about something you have an opinion on, and try to slip in 3 of these connectors.",
     "tryDifferentLevel": "Try a different level",
-    "trySayingIt": "Try saying it"
+    "trySayingIt": "Try saying it",
+    "more": "More options",
+    "speed": "Speech speed",
+    "previousCard": "Previous card",
+    "nextCard": "Next card"
   },
   "diary": {
     "title": "Daily Diary",
     "todaysDiary": "Today's Diary",
     "history": "History",
     "prompt": {
-      "label": "TODAY'S PROMPT",
+      "label": "Today's prompt",
       "useThis": "Use this",
       "another": "Another"
     },
@@ -502,15 +506,15 @@
     },
     "wordCount": "{count} words",
     "charCount": "{count} characters",
-    "getFeedback": "Get Feedback",
+    "getFeedback": "Ask {name} for feedback",
     "submitting": "Your friend is reading...",
     "feedback": {
       "friendSays": "Your friend says:",
-      "niceJob": "Nice job on these!",
-      "tryNext": "A few things to try",
+      "niceJob": "Keep these parts",
+      "tryNext": "Try this next time",
       "wordsToTry": "Words to try next time",
       "addToVocab": "Add to vocab bank",
-      "added": "Added!",
+      "added": "Added",
       "saveWord": "Save",
       "retry": "Retry",
       "betterExpressions": "Better expressions",
@@ -521,9 +525,9 @@
     },
     "writeAnother": "Write another",
     "saveAndClose": "Save & close",
-    "noEntries": "Your diary is empty",
-    "noEntriesDesc": "Start writing to track your progress!",
-    "writeFirst": "Write your first entry",
+    "noEntries": "No diary entries yet",
+    "noEntriesDesc": "Write about one small thing from today and your friend will reply.",
+    "writeFirst": "Write the first entry",
     "writingStreak": "Writing streak",
     "days": "{count} days",
     "entries": "{count} entries",
@@ -540,10 +544,15 @@
     "export": "Export",
     "status": {
       "reviewed": "Reviewed",
-      "reviewing": "Reviewing...",
+      "reviewing": "Reviewing",
       "pending": "Pending",
       "error": "Error"
-    }
+    },
+    "back": "Back",
+    "reading": "{name} is reading your entry",
+    "gridLabel": "Writing over the last 8 weeks",
+    "prevMonth": "Previous month",
+    "nextMonth": "Next month"
   },
   "foundation": {
     "title": "Foundation",
@@ -569,7 +578,7 @@
     "stateNew": "New",
     "tapCharacterYouHear": "Tap the character you hear",
     "nextCharacter": "Next",
-    "matchComplete": "Match Complete!",
+    "matchComplete": "Match complete",
     "xpEarned": "+{xp} XP earned",
     "tone1": "1st tone (high flat)",
     "tone2": "2nd tone (rising)",

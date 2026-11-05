@@ -28,41 +28,35 @@ function cyclePrompt() {
 </script>
 
 <template>
-  <div class="relative bg-gradient-to-r from-primary/10 to-sky-400/10 dark:from-primary/20 dark:to-sky-400/20 border border-primary/20 dark:border-primary/30 rounded-2xl p-4">
-    <!-- Dismiss -->
+  <!-- Quiet 48 px strip: prompt text, use / another / dismiss (DESIGN.md "Diary") -->
+  <section
+    class="flex min-h-12 items-center gap-1 border-y border-hairline py-1"
+    :aria-label="t('diary.prompt.label')"
+  >
+    <span class="material-symbols-outlined shrink-0 !text-[18px] text-ink-muted" aria-hidden="true">lightbulb</span>
+    <p class="min-w-0 flex-1 px-1 text-caption text-ink">{{ currentPrompt }}</p>
     <button
-      @click="emit('dismiss')"
-      class="absolute top-2 right-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
-      :aria-label="t('common.dismissPrompt')"
+      type="button"
+      @click="emit('use-prompt', currentPrompt)"
+      class="inline-flex min-h-11 shrink-0 items-center rounded-[10px] px-2 text-caption font-medium text-accent active:bg-surface-raised"
     >
-      <span class="material-symbols-outlined text-[18px]">close</span>
+      {{ t('diary.prompt.useThis') }}
     </button>
-
-    <!-- Icon + Label -->
-    <div class="flex items-center gap-2 mb-2">
-      <span class="material-symbols-outlined text-primary text-[20px]">lightbulb</span>
-      <span class="text-xs font-semibold text-primary uppercase tracking-wider">{{ t('diary.prompt.label') }}</span>
-    </div>
-
-    <!-- Prompt Text -->
-    <p class="text-sm text-text-main dark:text-white font-medium mb-3 pr-6">{{ currentPrompt }}</p>
-
-    <!-- Action Buttons -->
-    <div class="flex items-center gap-4">
-      <button
-        @click="emit('use-prompt', currentPrompt)"
-        class="text-xs font-semibold text-primary hover:text-primary/80 transition-colors flex items-center gap-1"
-      >
-        <span class="material-symbols-outlined text-[16px]">edit</span>
-        {{ t('diary.prompt.useThis') }}
-      </button>
-      <button
-        @click="cyclePrompt"
-        class="text-xs font-semibold text-text-muted dark:text-slate-400 hover:text-primary dark:hover:text-primary transition-colors flex items-center gap-1"
-      >
-        <span class="material-symbols-outlined text-[16px]">refresh</span>
-        {{ t('diary.prompt.another') }}
-      </button>
-    </div>
-  </div>
+    <button
+      type="button"
+      @click="cyclePrompt"
+      :aria-label="t('diary.prompt.another')"
+      class="inline-flex size-11 shrink-0 items-center justify-center rounded-[10px] text-ink-muted active:bg-surface-raised"
+    >
+      <span class="material-symbols-outlined" aria-hidden="true">refresh</span>
+    </button>
+    <button
+      type="button"
+      @click="emit('dismiss')"
+      :aria-label="t('common.dismissPrompt')"
+      class="-mr-2 inline-flex size-11 shrink-0 items-center justify-center rounded-[10px] text-ink-muted active:bg-surface-raised"
+    >
+      <span class="material-symbols-outlined" aria-hidden="true">close</span>
+    </button>
+  </section>
 </template>

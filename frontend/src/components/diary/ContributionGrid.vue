@@ -10,7 +10,7 @@ const props = defineProps({
   },
 })
 
-const { locale } = useI18n()
+const { t, locale } = useI18n()
 
 // Show localized labels for Mon, Wed, Fri only (rows 0, 2, 4)
 const dayLabels = computed(() => {
@@ -71,40 +71,40 @@ const grid = computed(() => {
 })
 
 function intensityClass(wordCount, isFuture) {
-  if (isFuture) return 'bg-slate-50 dark:bg-slate-800/50'
-  if (wordCount === 0) return 'bg-slate-100 dark:bg-slate-800'
-  if (wordCount <= 50) return 'bg-primary/20'
-  if (wordCount <= 100) return 'bg-primary/40'
-  if (wordCount <= 200) return 'bg-primary/60'
-  return 'bg-primary'
+  if (isFuture) return 'bg-surface-sunken'
+  if (wordCount === 0) return 'bg-surface-raised'
+  if (wordCount <= 50) return 'bg-accent/25'
+  if (wordCount <= 100) return 'bg-accent/45'
+  if (wordCount <= 200) return 'bg-accent/70'
+  return 'bg-accent'
 }
 </script>
 
 <template>
-  <div class="w-full">
+  <div class="w-full" role="img" :aria-label="t('diary.gridLabel')">
     <div class="flex gap-[3px]">
       <!-- Day labels column -->
-      <div class="flex flex-col gap-[3px] shrink-0 pr-1">
+      <div class="flex shrink-0 flex-col gap-[3px] pr-1" aria-hidden="true">
         <div
           v-for="(label, idx) in dayLabels"
           :key="idx"
-          class="flex items-center justify-end h-[14px] w-4"
+          class="flex h-[14px] w-4 items-center justify-end"
         >
-          <span v-if="label" class="text-[9px] text-text-muted dark:text-slate-500 leading-none">{{ label }}</span>
+          <span v-if="label" class="text-[10px] leading-none text-ink-muted">{{ label }}</span>
         </div>
       </div>
 
       <!-- Grid columns (weeks) -->
-      <div class="flex gap-[3px] flex-1 justify-end">
+      <div class="flex flex-1 gap-[3px]" aria-hidden="true">
         <div
           v-for="(week, wIdx) in grid"
           :key="wIdx"
           class="flex flex-col gap-[3px]"
         >
           <div
-            v-for="(day, dIdx) in week"
+            v-for="day in week"
             :key="day.key"
-            class="w-[14px] h-[14px] rounded-sm transition-colors"
+            class="h-[14px] w-[14px] rounded-[3px]"
             :class="intensityClass(day.wordCount, day.isFuture)"
           />
         </div>

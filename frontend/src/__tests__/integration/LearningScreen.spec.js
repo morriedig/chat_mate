@@ -76,7 +76,7 @@ vi.mock('../../data/chapterLoader', () => ({
       id: 'travel-basics',
       title: 'Travel Basics',
       description: 'Essential words for your travel adventures',
-      icon: '✈️',
+      icon: '🧳',
       level: 'beginner',
       wordCount: 4,
       order: 1
@@ -85,7 +85,7 @@ vi.mock('../../data/chapterLoader', () => ({
       id: 'food-dining',
       title: 'Food & Dining',
       description: 'Words for restaurants and food',
-      icon: '🍜',
+      icon: '✈️',
       level: 'beginner',
       wordCount: 2,
       order: 2
@@ -229,9 +229,11 @@ describe('LearningScreen Integration', () => {
       expect(wrapper.text()).toContain('Food & Dining')
     })
 
-    it('should show chapter icons', () => {
-      expect(wrapper.text()).toContain('✈️')
-      expect(wrapper.text()).toContain('🍜')
+    it('maps YAML emoji icons to Material Symbols, unknown ones to menu_book', () => {
+      const icons = wrapper.findAll('[data-testid="chapter-icon"]').map(el => el.text())
+      expect(icons).toEqual(['luggage', 'menu_book'])
+      expect(wrapper.text()).not.toContain('🧳')
+      expect(wrapper.text()).not.toContain('✈️')
     })
 
     it('should show word count per chapter', () => {
@@ -245,14 +247,14 @@ describe('LearningScreen Integration', () => {
     })
 
     it('should show chapter numbers', () => {
-      const chapterNumbers = wrapper.findAll('.flex-shrink-0.w-12.h-12')
+      const chapterNumbers = wrapper.findAll('[data-testid="chapter-number"]')
       expect(chapterNumbers.length).toBe(2)
       expect(chapterNumbers[0].text()).toContain('1')
       expect(chapterNumbers[1].text()).toContain('2')
     })
 
     it('should select chapter when clicked', async () => {
-      const chapterCards = wrapper.findAll('.rounded-2xl.border-2.cursor-pointer')
+      const chapterCards = wrapper.findAll('[data-testid="chapter-row"]')
 
       await chapterCards[0].trigger('click')
 
@@ -268,7 +270,7 @@ describe('LearningScreen Integration', () => {
   describe('learning modes', () => {
     beforeEach(async () => {
       // Select a chapter first
-      const chapterCards = wrapper.findAll('.rounded-2xl.border-2.cursor-pointer')
+      const chapterCards = wrapper.findAll('[data-testid="chapter-row"]')
       await chapterCards[0].trigger('click')
     })
 
@@ -279,7 +281,7 @@ describe('LearningScreen Integration', () => {
 
     it('should switch to flashcard mode', async () => {
       // Find mode tabs inside the mode selector container
-      const modeTabs = wrapper.findAll('.flex.bg-slate-100 button')
+      const modeTabs = wrapper.findAll('[data-testid="mode-tabs"] button')
       await modeTabs[1].trigger('click')
 
       // Flashcard component should be visible (FlashcardMode is not stubbed, it renders)
@@ -288,7 +290,7 @@ describe('LearningScreen Integration', () => {
     })
 
     it('should switch to quiz mode', async () => {
-      const modeTabs = wrapper.findAll('.flex.bg-slate-100 button')
+      const modeTabs = wrapper.findAll('[data-testid="mode-tabs"] button')
       await modeTabs[2].trigger('click')
 
       // Quiz elements should be visible
@@ -306,7 +308,7 @@ describe('LearningScreen Integration', () => {
 
     it('should go back to chapters when clicking back from learning view', async () => {
       // Select a chapter
-      const chapterCards = wrapper.findAll('.rounded-2xl.border-2.cursor-pointer')
+      const chapterCards = wrapper.findAll('[data-testid="chapter-row"]')
       await chapterCards[0].trigger('click')
 
       // Click back button
@@ -317,34 +319,35 @@ describe('LearningScreen Integration', () => {
       expect(wrapper.text()).toContain('learning.chooseChapter')
     })
 
-    it('should show correct back button text', async () => {
-      // Initially should show "back to setup"
-      expect(wrapper.text()).toContain('learning.backToSetup')
+    it('should label the back button for its destination', async () => {
+      // Initially goes back to setup
+      expect(wrapper.find('button').attributes('aria-label')).toBe('learning.backToSetup')
 
       // Select chapter
-      const chapterCards = wrapper.findAll('.rounded-2xl.border-2.cursor-pointer')
+      const chapterCards = wrapper.findAll('[data-testid="chapter-row"]')
       await chapterCards[0].trigger('click')
 
-      // Should show "back to chapters"
-      expect(wrapper.text()).toContain('learning.backToChapters')
+      // Then goes back to the chapter list
+      expect(wrapper.find('button').attributes('aria-label')).toBe('learning.backToChapters')
     })
   })
 
   describe('header display', () => {
-    it('should show level icon and name', () => {
-      expect(wrapper.text()).toContain('🌱')
+    it('should show level name and CEFR range as text, not emoji', () => {
       expect(wrapper.text()).toContain('levels.beginner.name')
+      expect(wrapper.text()).toContain('A1–A2')
+      expect(wrapper.text()).not.toContain('🌱')
     })
   })
 
   describe('quiz completion and XP', () => {
     beforeEach(async () => {
       // Select a chapter
-      const chapterCards = wrapper.findAll('.rounded-2xl.border-2.cursor-pointer')
+      const chapterCards = wrapper.findAll('[data-testid="chapter-row"]')
       await chapterCards[0].trigger('click')
 
       // Switch to quiz mode
-      const modeTabs = wrapper.findAll('.flex.bg-slate-100 button')
+      const modeTabs = wrapper.findAll('[data-testid="mode-tabs"] button')
       await modeTabs[2].trigger('click')
     })
 
@@ -356,30 +359,30 @@ describe('LearningScreen Integration', () => {
 
   describe('mode switching', () => {
     beforeEach(async () => {
-      const chapterCards = wrapper.findAll('.rounded-2xl.border-2.cursor-pointer')
+      const chapterCards = wrapper.findAll('[data-testid="chapter-row"]')
       await chapterCards[0].trigger('click')
     })
 
     it('should highlight active mode tab', async () => {
-      const tabs = wrapper.findAll('.flex.bg-slate-100 button')
+      const tabs = wrapper.findAll('[data-testid="mode-tabs"] button')
 
       // List mode should be active by default
-      expect(tabs[0].classes()).toContain('bg-white')
+      expect(tabs[0].attributes('aria-selected')).toBe('true')
 
       // Switch to flashcard
       await tabs[1].trigger('click')
-      const updatedTabs1 = wrapper.findAll('.flex.bg-slate-100 button')
-      expect(updatedTabs1[1].classes()).toContain('bg-white')
+      const updatedTabs1 = wrapper.findAll('[data-testid="mode-tabs"] button')
+      expect(updatedTabs1[1].attributes('aria-selected')).toBe('true')
 
       // Switch to quiz
       await updatedTabs1[2].trigger('click')
-      const updatedTabs2 = wrapper.findAll('.flex.bg-slate-100 button')
-      expect(updatedTabs2[2].classes()).toContain('bg-white')
+      const updatedTabs2 = wrapper.findAll('[data-testid="mode-tabs"] button')
+      expect(updatedTabs2[2].attributes('aria-selected')).toBe('true')
     })
 
     it('should preserve mode when navigating back and forth', async () => {
       // Switch to flashcard mode
-      const tabs = wrapper.findAll('.flex.bg-slate-100 button')
+      const tabs = wrapper.findAll('[data-testid="mode-tabs"] button')
       await tabs[1].trigger('click')
 
       // Go back to chapters
@@ -387,7 +390,7 @@ describe('LearningScreen Integration', () => {
       await backButton.trigger('click')
 
       // Select chapter again
-      const chapterCards = wrapper.findAll('.rounded-2xl.border-2.cursor-pointer')
+      const chapterCards = wrapper.findAll('[data-testid="chapter-row"]')
       await chapterCards[0].trigger('click')
 
       // Should be in list mode again (reset)
@@ -397,12 +400,12 @@ describe('LearningScreen Integration', () => {
 
   describe('chapter info display', () => {
     beforeEach(async () => {
-      const chapterCards = wrapper.findAll('.rounded-2xl.border-2.cursor-pointer')
+      const chapterCards = wrapper.findAll('[data-testid="chapter-row"]')
       await chapterCards[0].trigger('click')
     })
 
     it('should show chapter icon', () => {
-      expect(wrapper.text()).toContain('✈️')
+      expect(wrapper.find('[data-testid="chapter-icon"]').text()).toBe('luggage')
     })
 
     it('should show word count in selected chapter', () => {
@@ -412,7 +415,7 @@ describe('LearningScreen Integration', () => {
 
   describe('list mode', () => {
     beforeEach(async () => {
-      const chapterCards = wrapper.findAll('.rounded-2xl.border-2.cursor-pointer')
+      const chapterCards = wrapper.findAll('[data-testid="chapter-row"]')
       await chapterCards[0].trigger('click')
     })
 
@@ -432,8 +435,8 @@ describe('LearningScreen Integration', () => {
       mockLearningLevel.value = { id: 'advanced', icon: '🎓' }
       await wrapper.vm.$nextTick()
 
-      // Should show new level icon
-      expect(wrapper.text()).toContain('🎓')
+      // Should show the new level's CEFR range
+      expect(wrapper.text()).toContain('C1–C2')
     })
 
     it('should render with min-h-screen class', () => {

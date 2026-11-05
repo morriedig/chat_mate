@@ -393,7 +393,7 @@
     "tips": "小提示"
   },
   "srs": {
-    "dailyReview": "每日複習",
+    "dailyReview": "今天到期的複習",
     "dailyReviewDescription": "複習所有章節中需要複習的單字",
     "wordsToReview": "{count} 個單字待複習",
     "noWordsToReview": "沒有需要複習的單字，做得好！",
@@ -413,10 +413,10 @@
       "slow": "慢速",
       "word": "逐字"
     },
-    "chooseChapter": "選擇章節",
+    "chooseChapter": "學習內容",
     "chapterDescription": "選擇一個章節開始學習詞彙",
     "noChapters": "沒有章節",
-    "noChaptersDescription": "在chapters資料夾中新增YAML檔案來建立新章節",
+    "noChaptersDescription": "這個程度還沒有章節，換一個程度試試。",
     "words": "個單字",
     "categories": {
       "travel": "旅行",
@@ -442,12 +442,12 @@
     "keyboardHints": "使用方向鍵導航，空白鍵翻轉",
     "question": "問題",
     "whatMeans": "這個字是什麼意思？",
-    "correct": "正確！",
-    "incorrect": "不太對...",
+    "correct": "答對了",
+    "incorrect": "答錯了",
     "nextQuestion": "下一題",
     "finishQuiz": "查看結果",
-    "quizComplete": "測驗完成！",
-    "yourScore": "你的成績：",
+    "quizComplete": "測驗完成",
+    "yourScore": "你的成績",
     "earned": "獲得",
     "reviewAnswers": "查看答案",
     "tryAgain": "再試一次",
@@ -475,7 +475,7 @@
       "prompt": {
         "title": "用對話練習？",
         "description": "想在真實對話中使用你剛學的詞彙嗎？",
-        "start": "開始聊！",
+        "start": "開始聊",
         "skip": "下次再說"
       }
     },
@@ -484,7 +484,11 @@
     "useInChat": "去聊天用用看",
     "useInChatHint": "跟朋友聊聊你的看法，試著自然地用出 3 個連接詞。",
     "tryDifferentLevel": "換個等級試試",
-    "trySayingIt": "說說看"
+    "trySayingIt": "說說看",
+    "more": "更多選項",
+    "speed": "語速",
+    "previousCard": "上一張",
+    "nextCard": "下一張"
   },
   "diary": {
     "title": "每日日記",
@@ -502,15 +506,15 @@
     },
     "wordCount": "{count} 字",
     "charCount": "{count} 字",
-    "getFeedback": "取得回饋",
+    "getFeedback": "請 {name} 看看",
     "submitting": "你的朋友正在閱讀...",
     "feedback": {
       "friendSays": "你的朋友說：",
-      "niceJob": "這些寫得很好！",
-      "tryNext": "可以試試看",
+      "niceJob": "保留這些寫法",
+      "tryNext": "下次可以這樣寫",
       "wordsToTry": "下次試試這些詞",
       "addToVocab": "加入單字本",
-      "added": "已加入！",
+      "added": "已加入",
       "saveWord": "儲存",
       "retry": "重試",
       "betterExpressions": "更自然的說法",
@@ -521,9 +525,9 @@
     },
     "writeAnother": "再寫一篇",
     "saveAndClose": "儲存並關閉",
-    "noEntries": "日記還是空的",
-    "noEntriesDesc": "開始寫作來追蹤你的進步！",
-    "writeFirst": "寫下第一篇日記",
+    "noEntries": "還沒有日記",
+    "noEntriesDesc": "寫下今天的一件小事，朋友會給你回饋。",
+    "writeFirst": "寫第一篇",
     "writingStreak": "寫作連續天數",
     "days": "{count} 天",
     "entries": "{count} 篇",
@@ -540,10 +544,15 @@
     "export": "匯出",
     "status": {
       "reviewed": "已審閱",
-      "reviewing": "審閱中...",
+      "reviewing": "審閱中",
       "pending": "等待中",
       "error": "錯誤"
-    }
+    },
+    "back": "返回",
+    "reading": "{name} 正在讀你的日記",
+    "gridLabel": "近 8 週的寫作紀錄",
+    "prevMonth": "上個月",
+    "nextMonth": "下個月"
   },
   "foundation": {
     "title": "基礎",
@@ -569,7 +578,7 @@
     "stateNew": "新的",
     "tapCharacterYouHear": "點擊你聽到的字",
     "nextCharacter": "下一個",
-    "matchComplete": "配對完成！",
+    "matchComplete": "配對完成",
     "xpEarned": "+{xp} XP 獲得",
     "tone1": "第一聲（高平）",
     "tone2": "第二聲（上升）",

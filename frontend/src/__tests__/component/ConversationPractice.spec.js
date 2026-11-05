@@ -113,7 +113,7 @@ describe('ConversationPractice', () => {
     it('should show conversation dialogue after selecting', async () => {
       const wrapper = createWrapper()
       // Click on the first conversation button in the list
-      const convButtons = wrapper.findAll('.space-y-3 button')
+      const convButtons = wrapper.findAll('[data-testid="conversation-item"]')
       await convButtons[0].trigger('click')
       await wrapper.vm.$nextTick()
 
@@ -124,7 +124,7 @@ describe('ConversationPractice', () => {
 
     it('should show Play All button when conversation is selected', async () => {
       const wrapper = createWrapper()
-      const convButtons = wrapper.findAll('.space-y-3 button')
+      const convButtons = wrapper.findAll('[data-testid="conversation-item"]')
       await convButtons[0].trigger('click')
       await wrapper.vm.$nextTick()
 
@@ -133,7 +133,7 @@ describe('ConversationPractice', () => {
 
     it('should show practice dialogue subtitle when conversation is selected', async () => {
       const wrapper = createWrapper()
-      const convButtons = wrapper.findAll('.space-y-3 button')
+      const convButtons = wrapper.findAll('[data-testid="conversation-item"]')
       await convButtons[0].trigger('click')
       await wrapper.vm.$nextTick()
 
@@ -142,7 +142,7 @@ describe('ConversationPractice', () => {
 
     it('should show role labels for messages', async () => {
       const wrapper = createWrapper()
-      const convButtons = wrapper.findAll('.space-y-3 button')
+      const convButtons = wrapper.findAll('[data-testid="conversation-item"]')
       await convButtons[0].trigger('click')
       await wrapper.vm.$nextTick()
 
@@ -152,7 +152,7 @@ describe('ConversationPractice', () => {
 
     it('should show native text in bilingual mode', async () => {
       const wrapper = createWrapper({ bilingual: true })
-      const convButtons = wrapper.findAll('.space-y-3 button')
+      const convButtons = wrapper.findAll('[data-testid="conversation-item"]')
       await convButtons[0].trigger('click')
       await wrapper.vm.$nextTick()
 
@@ -161,7 +161,7 @@ describe('ConversationPractice', () => {
 
     it('should show practice tip', async () => {
       const wrapper = createWrapper()
-      const convButtons = wrapper.findAll('.space-y-3 button')
+      const convButtons = wrapper.findAll('[data-testid="conversation-item"]')
       await convButtons[0].trigger('click')
       await wrapper.vm.$nextTick()
 
@@ -174,7 +174,7 @@ describe('ConversationPractice', () => {
     it('should go back to list when back button clicked from conversation view', async () => {
       const wrapper = createWrapper()
       // Select a conversation first
-      const convButtons = wrapper.findAll('.space-y-3 button')
+      const convButtons = wrapper.findAll('[data-testid="conversation-item"]')
       await convButtons[0].trigger('click')
       await wrapper.vm.$nextTick()
 
@@ -193,7 +193,7 @@ describe('ConversationPractice', () => {
   describe('audio playback', () => {
     it('should have volume buttons for each message', async () => {
       const wrapper = createWrapper()
-      const convButtons = wrapper.findAll('.space-y-3 button')
+      const convButtons = wrapper.findAll('[data-testid="conversation-item"]')
       await convButtons[0].trigger('click')
       await wrapper.vm.$nextTick()
 
@@ -206,7 +206,7 @@ describe('ConversationPractice', () => {
   describe('selected conversation title', () => {
     it('should display the selected conversation title in the header', async () => {
       const wrapper = createWrapper()
-      const convButtons = wrapper.findAll('.space-y-3 button')
+      const convButtons = wrapper.findAll('[data-testid="conversation-item"]')
       await convButtons[0].trigger('click')
       await wrapper.vm.$nextTick()
 

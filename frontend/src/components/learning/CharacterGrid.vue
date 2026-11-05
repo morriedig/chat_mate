@@ -80,11 +80,11 @@ function getCellClasses(characterId) {
   const state = getCellState(characterId)
   switch (state) {
     case 'learned':
-      return 'bg-green-100 dark:bg-green-900/30 border-green-400 dark:border-green-600 text-text-main dark:text-white'
+      return 'border-success/40 bg-success-soft text-ink'
     case 'in-progress':
-      return 'bg-amber-100 dark:bg-amber-900/30 border-amber-400 dark:border-amber-600 text-text-main dark:text-white'
+      return 'border-warning/40 bg-warning-soft text-ink'
     default:
-      return 'bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-400 dark:text-slate-500'
+      return 'border-hairline bg-surface-raised text-ink-muted active:bg-surface-sunken'
   }
 }
 
@@ -108,35 +108,33 @@ const gridStyle = computed(() => ({
 
 <template>
   <div class="w-full">
-    <!-- Summary -->
-    <div class="flex items-center justify-between mb-4">
-      <span class="text-sm text-text-muted dark:text-slate-400">
+    <!-- Summary + legend -->
+    <div class="mb-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+      <span class="text-caption tabular-nums text-ink-secondary">
         {{ t('prelesson.collected', { learned: learnedSet.size, total: characters.length }) }}
       </span>
-      <div class="flex items-center gap-3 text-xs text-text-muted dark:text-slate-400">
+      <div class="flex items-center gap-3 text-meta text-ink-muted">
         <span class="flex items-center gap-1">
-          <span class="inline-block size-3 rounded-sm bg-green-400"></span>
+          <span class="inline-block size-3 rounded-[3px] border border-success/40 bg-success-soft" aria-hidden="true"></span>
           {{ t('prelesson.stateLearned') }}
         </span>
         <span class="flex items-center gap-1">
-          <span class="inline-block size-3 rounded-sm bg-amber-400"></span>
+          <span class="inline-block size-3 rounded-[3px] border border-warning/40 bg-warning-soft" aria-hidden="true"></span>
           {{ t('prelesson.stateInProgress') }}
         </span>
         <span class="flex items-center gap-1">
-          <span class="inline-block size-3 rounded-sm bg-slate-300 dark:bg-slate-600"></span>
+          <span class="inline-block size-3 rounded-[3px] border border-hairline bg-surface-raised" aria-hidden="true"></span>
           {{ t('prelesson.stateNew') }}
         </span>
       </div>
     </div>
 
-    <!-- Grid by Row Groups -->
+    <!-- Grid by row groups -->
     <div v-for="group in groupedCharacters" :key="group.row || 'all'" class="mb-4">
-      <!-- Row Header -->
-      <p v-if="group.row" class="text-xs font-semibold text-text-muted dark:text-slate-400 uppercase tracking-wide mb-2">
+      <p v-if="group.row" class="mb-2 text-meta font-medium text-ink-muted">
         {{ group.row }}
       </p>
 
-      <!-- Character Grid -->
       <div
         class="grid gap-1.5"
         :style="gridStyle"
@@ -144,51 +142,33 @@ const gridStyle = computed(() => ({
         <button
           v-for="character in group.characters"
           :key="character.id"
+          type="button"
           @click="handleSelect(character)"
           :aria-label="character.char + ' ' + character.romaji"
-          class="relative flex flex-col items-center justify-center p-1.5 rounded-lg border-2 transition-all touch-target active:scale-95 character-cell"
+          :data-state="getCellState(character.id)"
+          class="touch-target relative flex flex-col items-center justify-center rounded-[10px] border p-1.5"
           :class="getCellClasses(character.id)"
         >
-          <!-- Character -->
-          <span class="text-2xl font-bold leading-tight">
+          <span class="text-title font-medium leading-tight">
             {{ character.char }}
           </span>
-          <!-- Romaji -->
-          <span class="text-xs leading-tight mt-0.5">
+          <span class="mt-0.5 text-meta leading-tight">
             {{ character.romaji }}
           </span>
-          <!-- Status Indicator -->
+          <!-- Status marker: icon, not color alone -->
           <span
             v-if="isLearned(character.id)"
-            class="absolute -top-1 -right-1 flex items-center justify-center size-4 rounded-full bg-green-500 text-white"
-          >
-            <span class="material-symbols-outlined text-xs" style="font-size: 10px;">check</span>
-          </span>
+            data-testid="learned-mark"
+            class="absolute right-0.5 top-0.5 material-symbols-outlined !text-[14px] text-success"
+            aria-hidden="true"
+          >check</span>
           <span
             v-else-if="isInProgress(character.id)"
-            class="absolute -top-1 -right-1 flex items-center justify-center size-4 rounded-full bg-amber-500"
-          >
-            <span class="text-white text-xs font-bold" style="font-size: 8px; line-height: 1;">...</span>
-          </span>
+            class="absolute right-0.5 top-0.5 material-symbols-outlined !text-[14px] text-warning"
+            aria-hidden="true"
+          >more_horiz</span>
         </button>
       </div>
     </div>
   </div>
 </template>
-
-<style scoped>
-.character-cell:active {
-  transform: scale(0.95);
-}
-
-/* Green pulse animation for learned cells on tap */
-.character-cell.bg-green-100:active,
-.character-cell.dark\:bg-green-900\/30:active {
-  animation: greenPulse 0.4s ease-out;
-}
-
-@keyframes greenPulse {
-  0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5); }
-  100% { box-shadow: 0 0 0 12px rgba(34, 197, 94, 0); }
-}
-</style>

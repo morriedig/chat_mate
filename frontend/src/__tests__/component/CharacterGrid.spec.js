@@ -93,7 +93,7 @@ describe('CharacterGrid', () => {
       const wrapper = createWrapper({
         learnedIds: new Set(['a', 'i'])
       })
-      const learnedCells = wrapper.findAll('.bg-green-100')
+      const learnedCells = wrapper.findAll('[data-state="learned"]')
       expect(learnedCells.length).toBe(2)
     })
 
@@ -101,13 +101,13 @@ describe('CharacterGrid', () => {
       const wrapper = createWrapper({
         inProgressIds: new Set(['ka'])
       })
-      const inProgressCells = wrapper.findAll('.bg-amber-100')
+      const inProgressCells = wrapper.findAll('[data-state="in-progress"]')
       expect(inProgressCells.length).toBe(1)
     })
 
     it('should show not-started state with slate styling', () => {
       const wrapper = createWrapper()
-      const notStartedCells = wrapper.findAll('.bg-slate-100')
+      const notStartedCells = wrapper.findAll('[data-state="not-started"]')
       expect(notStartedCells.length).toBe(10)
     })
 
@@ -116,7 +116,7 @@ describe('CharacterGrid', () => {
         learnedIds: new Set(['a'])
       })
       // The learned cell should have the green check badge
-      const checkBadges = wrapper.findAll('.bg-green-500')
+      const checkBadges = wrapper.findAll('[data-testid="learned-mark"]')
       expect(checkBadges.length).toBe(1)
     })
 
@@ -124,7 +124,7 @@ describe('CharacterGrid', () => {
       const wrapper = createWrapper({
         learnedIds: ['a', 'i', 'u']
       })
-      const learnedCells = wrapper.findAll('.bg-green-100')
+      const learnedCells = wrapper.findAll('[data-state="learned"]')
       expect(learnedCells.length).toBe(3)
     })
   })
@@ -162,10 +162,12 @@ describe('CharacterGrid', () => {
   })
 
   describe('dark mode', () => {
-    it('should include dark mode classes', () => {
+    it('uses theme tokens instead of fixed palette colors', () => {
       const wrapper = createWrapper()
       const html = wrapper.html()
-      expect(html).toContain('dark:')
+      // Light/dark come from the token variables, so no per-theme palette utilities
+      expect(html).toMatch(/bg-surface|bg-accent/)
+      expect(html).not.toMatch(/(slate|gray|green|amber|red|violet)-\d{2,3}/)
     })
   })
 })

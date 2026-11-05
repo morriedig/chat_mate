@@ -3,6 +3,8 @@ import { ref, watch, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useFlashcard } from '../../composables/useFlashcard'
 import { playTTS, isTTSAvailable, splitTextForHighlight } from '../../utils/tts'
+import CmButton from '../ui/CmButton.vue'
+import CmProgress from '../ui/CmProgress.vue'
 
 const { t } = useI18n()
 
@@ -132,209 +134,166 @@ watch(() => props.words, (newWords) => initCards(newWords), { immediate: true })
 </script>
 
 <template>
-  <div class="flex flex-col items-center">
-    <!-- Progress Bar -->
-    <div class="w-full max-w-lg mb-6">
-      <div class="flex justify-between text-sm text-text-muted dark:text-slate-400 mb-2">
-        <span>{{ currentIndex + 1 }} / {{ totalCards }}</span>
-        <span>{{ Math.round(progress) }}%</span>
-      </div>
-      <div class="h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
-        <div
-          class="h-full bg-gradient-to-r from-primary to-green-400 rounded-full transition-all duration-300"
-          :style="{ width: `${progress}%` }"
-        ></div>
-      </div>
+  <div class="mx-auto flex w-full max-w-lg flex-col">
+    <!-- Progress -->
+    <div class="mb-4 flex items-center gap-3">
+      <CmProgress class="flex-1" :value="currentIndex + 1" :max="totalCards" :label="t('learning.modes.flashcard')" />
+      <span class="text-meta tabular-nums text-ink-muted">{{ currentIndex + 1 }} / {{ totalCards }}</span>
+      <span class="sr-only">{{ Math.round(progress) }}%</span>
     </div>
 
-    <!-- Flashcard -->
+    <!-- One surface; front/back crossfade (no 3D spin) -->
     <div
+      role="button"
+      tabindex="0"
+      data-testid="flashcard"
+      :data-flipped="isFlipped ? 'true' : 'false'"
+      :aria-pressed="isFlipped"
+      :aria-label="t('learning.tapToFlip')"
       @click="handleFlipCard"
-      class="flashcard-wrap w-full max-w-lg aspect-[4/3] perspective-1000 cursor-pointer group"
+      @keydown.enter.prevent="handleFlipCard"
+      @keydown.space.prevent="handleFlipCard"
+      class="relative flex min-h-72 w-full cursor-pointer flex-col overflow-hidden rounded-[14px] border border-hairline p-5 shadow-[var(--cm-shadow-small)]"
+      :class="isFlipped ? 'bg-surface' : 'bg-accent-soft'"
     >
-      <div
-        class="flashcard-inner transition-transform duration-500 relative w-full h-full transform-style-3d"
-        :class="{ 'rotate-y-180': isFlipped }"
-      >
+      <span v-if="!isFlipped" class="absolute left-0 top-5 h-9 w-[3px] rounded-r-[3px] bg-accent" aria-hidden="true"></span>
+      <Transition name="cm-card" mode="out-in">
         <!-- Front (Word) -->
-        <div class="absolute inset-0 backface-hidden rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 dark:from-primary/30 dark:to-primary/10 border-2 border-primary/30 shadow-lg flex flex-col items-center justify-center p-8">
-          <span class="text-4xl sm:text-5xl font-bold text-text-main dark:text-white text-center mb-2">
+        <div v-if="!isFlipped" key="front" class="flex flex-1 flex-col items-center justify-center text-center">
+          <span class="break-words text-display font-medium text-ink" data-heading>
             {{ currentWord?.word }}
           </span>
-          <span v-if="bilingual && currentWord?.nativeWord" class="text-2xl text-primary font-medium mb-2">
+          <span v-if="bilingual && currentWord?.nativeWord" class="mt-1 text-body text-ink-secondary">
             ({{ currentWord.nativeWord }})
           </span>
-          <span v-if="currentWord?.reading" class="text-xl text-primary mb-2">{{ currentWord.reading }}</span>
-          <span v-if="currentWord?.phonetic" class="text-lg text-text-muted dark:text-slate-400">{{ currentWord.phonetic }}</span>
+          <span v-if="currentWord?.reading" class="mt-1 text-body text-accent">{{ currentWord.reading }}</span>
+          <span v-if="currentWord?.phonetic" class="mt-1 text-caption text-ink-muted">{{ currentWord.phonetic }}</span>
 
-          <!-- Audio Button -->
           <button
+            type="button"
+            data-testid="flashcard-listen"
             @click.stop="playWord"
             :disabled="isPlayingWord"
-            class="mt-6 flex items-center gap-2 px-4 py-2 rounded-full bg-white dark:bg-slate-800 shadow-md hover:shadow-lg transition-shadow"
-            :class="{ 'animate-pulse': isPlayingWord }"
+            class="mt-5 inline-flex min-h-11 items-center gap-2 rounded-[10px] border border-hairline bg-surface px-4 text-caption font-medium text-ink active:bg-surface-raised disabled:opacity-55"
           >
-            <span class="material-symbols-outlined text-primary">
+            <span class="material-symbols-outlined text-accent" aria-hidden="true">
               {{ isPlayingWord ? 'volume_up' : 'play_arrow' }}
             </span>
-            <span class="text-sm font-medium text-text-main dark:text-white">{{ t('learning.listen') }}</span>
+            {{ t('learning.listen') }}
           </button>
-
-          <p class="absolute bottom-4 text-sm text-text-muted dark:text-slate-400">{{ t('learning.tapToFlip') }}</p>
         </div>
 
         <!-- Back (Meaning) -->
-        <div class="absolute inset-0 backface-hidden rotate-y-180 rounded-2xl bg-gradient-to-br from-green-100 to-emerald-50 dark:from-green-900/30 dark:to-emerald-900/20 border-2 border-green-300 dark:border-green-700 shadow-lg flex flex-col items-center justify-center p-6">
-          <!-- Meaning with voice -->
-          <div class="flex items-start gap-2 mb-2">
+        <div v-else key="back" class="flex flex-1 flex-col justify-center">
+          <div class="flex items-start gap-1">
             <button
+              type="button"
               @click.stop="playMeaning"
               :disabled="isPlayingMeaning"
-              class="flex-shrink-0 p-1.5 rounded-full hover:bg-white/50 dark:hover:bg-slate-700/50 transition-colors"
-              :class="{ 'animate-pulse text-primary': isPlayingMeaning }"
+              :aria-label="t('learning.conversation.playAudio')"
+              class="-ml-2 -mt-2 inline-flex size-11 shrink-0 items-center justify-center rounded-[10px] text-accent active:bg-surface-raised disabled:opacity-55"
             >
-              <span class="material-symbols-outlined text-xl text-green-600 dark:text-green-400">
-                {{ isPlayingMeaning ? 'volume_up' : 'volume_up' }}
-              </span>
+              <span class="material-symbols-outlined" aria-hidden="true">volume_up</span>
             </button>
-            <div class="text-center">
+            <div class="min-w-0">
               <!-- Word-by-word highlight mode -->
-              <p v-if="voiceSpeed === 'word' && highlightMeaningIndex >= 0" class="text-lg sm:text-xl text-text-main dark:text-white">
+              <p v-if="voiceSpeed === 'word' && highlightMeaningIndex >= 0" class="text-title text-ink">
                 <span
                   v-for="(w, i) in meaningWords"
                   :key="i"
-                  :class="i === highlightMeaningIndex ? 'bg-primary/40 text-primary font-bold px-1 rounded' : ''"
+                  :class="i === highlightMeaningIndex ? 'rounded-[4px] bg-accent-soft px-0.5 text-accent' : ''"
                 >{{ w }}{{ i < meaningWords.length - 1 ? ' ' : '' }}</span>
               </p>
-              <p v-else class="text-lg sm:text-xl text-text-main dark:text-white">
+              <p v-else class="text-title text-ink">
                 {{ currentWord?.meaning }}
               </p>
-              <p v-if="bilingual && currentWord?.nativeMeaning" class="text-sm text-slate-600 dark:text-slate-400">
+              <p v-if="bilingual && currentWord?.nativeMeaning" class="text-caption text-ink-secondary">
                 {{ currentWord.nativeMeaning }}
               </p>
             </div>
           </div>
 
           <!-- Sentence with voice -->
-          <div class="p-3 rounded-xl bg-white/50 dark:bg-slate-800/50 w-full mt-2">
-            <div class="flex items-start gap-2">
-              <button
-                @click.stop="playSentence"
-                :disabled="isPlayingSentence"
-                class="flex-shrink-0 p-1.5 rounded-full hover:bg-white/70 dark:hover:bg-slate-700/70 transition-colors"
-                :class="{ 'animate-pulse text-primary': isPlayingSentence }"
-              >
-                <span class="material-symbols-outlined text-xl text-green-600 dark:text-green-400">
-                  {{ isPlayingSentence ? 'volume_up' : 'volume_up' }}
-                </span>
-              </button>
-              <div>
-                <!-- Word-by-word highlight mode for sentence -->
-                <p v-if="voiceSpeed === 'word' && highlightSentenceIndex >= 0" class="text-text-muted dark:text-slate-300 italic text-sm">
-                  "<span
-                    v-for="(w, i) in sentenceWords"
-                    :key="i"
-                    :class="i === highlightSentenceIndex ? 'bg-primary/40 text-primary font-bold not-italic px-0.5 rounded' : ''"
-                  >{{ w }}{{ i < sentenceWords.length - 1 ? ' ' : '' }}</span>"
-                </p>
-                <p v-else class="text-text-muted dark:text-slate-300 italic text-sm">
-                  "{{ currentWord?.example }}"
-                </p>
-                <p v-if="bilingual && currentWord?.nativeExample" class="text-xs text-slate-500 dark:text-slate-400 italic mt-1">
-                  "{{ currentWord.nativeExample }}"
-                </p>
-              </div>
+          <div class="mt-4 flex items-start gap-1 rounded-[10px] bg-surface-sunken p-3 pl-1">
+            <button
+              type="button"
+              @click.stop="playSentence"
+              :disabled="isPlayingSentence"
+              :aria-label="t('learning.conversation.playAudio')"
+              class="-my-2 inline-flex size-11 shrink-0 items-center justify-center rounded-[10px] text-accent active:bg-surface-raised disabled:opacity-55"
+            >
+              <span class="material-symbols-outlined !text-[18px]" aria-hidden="true">volume_up</span>
+            </button>
+            <div class="min-w-0">
+              <!-- Word-by-word highlight mode for sentence -->
+              <p v-if="voiceSpeed === 'word' && highlightSentenceIndex >= 0" class="break-words text-body text-ink">
+                "<span
+                  v-for="(w, i) in sentenceWords"
+                  :key="i"
+                  :class="i === highlightSentenceIndex ? 'rounded-[4px] bg-accent-soft px-0.5 text-accent' : ''"
+                >{{ w }}{{ i < sentenceWords.length - 1 ? ' ' : '' }}</span>"
+              </p>
+              <p v-else class="break-words text-body text-ink">
+                "{{ currentWord?.example }}"
+              </p>
+              <p v-if="bilingual && currentWord?.nativeExample" class="mt-1 text-caption text-ink-muted">
+                "{{ currentWord.nativeExample }}"
+              </p>
             </div>
           </div>
-          <p class="absolute bottom-4 text-sm text-text-muted dark:text-slate-400">{{ t('learning.tapToFlip') }}</p>
         </div>
-      </div>
+      </Transition>
+      <p class="mt-4 text-center text-meta text-ink-muted">{{ t('learning.tapToFlip') }}</p>
     </div>
 
     <!-- Navigation -->
-    <div class="flex items-center gap-4 mt-8">
+    <div class="mt-5 flex items-center justify-center gap-3">
       <button
+        type="button"
+        data-testid="flashcard-prev"
         @click="handlePrevCard"
         :disabled="isFirstCard"
-        class="flex items-center justify-center size-12 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+        :aria-label="t('learning.previousCard')"
+        class="inline-flex size-12 items-center justify-center rounded-[10px] border border-hairline bg-surface-raised text-ink active:bg-surface-sunken disabled:cursor-not-allowed disabled:opacity-40"
       >
-        <span class="material-symbols-outlined text-text-main dark:text-white">chevron_left</span>
+        <span class="material-symbols-outlined" aria-hidden="true">chevron_left</span>
       </button>
 
-      <button
-        @click="handleShuffle"
-        class="flex items-center gap-2 px-6 py-3 rounded-xl bg-primary/10 hover:bg-primary/20 text-primary font-medium transition-colors"
-      >
-        <span class="material-symbols-outlined">replay</span>
+      <CmButton variant="secondary" data-testid="flashcard-shuffle" @click="handleShuffle">
+        <span class="material-symbols-outlined" aria-hidden="true">shuffle</span>
         {{ t('learning.shuffle') }}
-      </button>
+      </CmButton>
 
       <button
+        type="button"
+        data-testid="flashcard-next"
         @click="handleNextCard"
         :disabled="isLastCard"
-        class="flex items-center justify-center size-12 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+        :aria-label="t('learning.nextCard')"
+        class="inline-flex size-12 items-center justify-center rounded-[10px] border border-hairline bg-surface-raised text-ink active:bg-surface-sunken disabled:cursor-not-allowed disabled:opacity-40"
       >
-        <span class="material-symbols-outlined text-text-main dark:text-white">chevron_right</span>
+        <span class="material-symbols-outlined" aria-hidden="true">chevron_right</span>
       </button>
     </div>
 
     <!-- Keyboard Hints -->
-    <p class="mt-4 text-xs text-text-muted dark:text-slate-400 hidden sm:block">
+    <p class="mt-4 hidden text-center text-meta text-ink-muted sm:block">
       {{ t('learning.keyboardHints') }}
     </p>
   </div>
 </template>
 
 <style scoped>
-.perspective-1000 {
-  perspective: 1600px;
+/* Crossfade + 8 px rise; reduced motion collapses durations globally */
+.cm-card-enter-active,
+.cm-card-leave-active {
+  transition: opacity 180ms var(--ease-cm), transform 180ms var(--ease-cm);
 }
-
-.transform-style-3d {
-  transform-style: preserve-3d;
-}
-
-.backface-hidden {
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
-
-.flashcard-inner {
-  transition: transform 620ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  will-change: transform;
-}
-
-.rotate-y-180 {
-  transform: rotateY(180deg);
-}
-
-.flashcard-wrap {
-  transition: transform 280ms ease, filter 280ms ease;
-}
-.flashcard-wrap:hover {
-  transform: translateY(-2px);
-  filter: drop-shadow(0 10px 20px rgba(15, 23, 42, 0.08));
-}
-.flashcard-wrap:active .flashcard-inner {
-  transition-duration: 150ms;
-  transform: scale(0.98);
-}
-.flashcard-wrap:active.rotate-applied .flashcard-inner {
-  transform: rotateY(180deg) scale(0.98);
-}
-
-/* Subtle sheen that sweeps on flip */
-.flashcard-inner > div::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.2) 50%, transparent 60%);
+.cm-card-enter-from {
   opacity: 0;
-  transition: opacity 400ms ease;
+  transform: translateY(8px);
 }
-.flashcard-wrap:hover .flashcard-inner > div::after {
-  opacity: 1;
+.cm-card-leave-to {
+  opacity: 0;
 }
 </style>

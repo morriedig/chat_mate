@@ -42,12 +42,12 @@ describe('CharacterMatchGame', () => {
 
     it('should display progress bar', () => {
       const wrapper = createWrapper()
-      expect(wrapper.find('.h-2.bg-slate-200').exists()).toBe(true)
+      expect(wrapper.find('[role="progressbar"]').exists()).toBe(true)
     })
 
     it('should display audio prompt card', () => {
       const wrapper = createWrapper()
-      expect(wrapper.find('.rounded-2xl').exists()).toBe(true)
+      expect(wrapper.find('[data-testid="match-prompt"]').exists()).toBe(true)
     })
 
     it('should display question count', () => {
@@ -88,7 +88,7 @@ describe('CharacterMatchGame', () => {
     it('should not throw error when audio button is clicked', async () => {
       const wrapper = createWrapper()
       // Find the large audio button in the prompt card
-      const audioButton = wrapper.find('.size-16')
+      const audioButton = wrapper.find('[data-testid="match-play"]')
       if (audioButton.exists()) {
         await audioButton.trigger('click')
       }
@@ -150,7 +150,7 @@ describe('CharacterMatchGame', () => {
         } else {
           // Click any button and then advance manually
           await optionButtons[0].trigger('click')
-          const nextBtn = wrapper.find('.w-full.py-4.rounded-xl.bg-primary')
+          const nextBtn = wrapper.find('[data-testid="match-next"]')
           if (nextBtn.exists()) {
             await nextBtn.trigger('click')
           }
@@ -182,7 +182,7 @@ describe('CharacterMatchGame', () => {
         await wrapper.vm.$nextTick()
 
         // For wrong answers, click next button
-        const nextBtn = wrapper.find('.w-full.py-4.rounded-xl.bg-primary')
+        const nextBtn = wrapper.find('[data-testid="match-next"]')
         if (nextBtn.exists() && nextBtn.text().includes('prelesson.nextCharacter')) {
           await nextBtn.trigger('click')
         }
@@ -211,7 +211,7 @@ describe('CharacterMatchGame', () => {
         vi.advanceTimersByTime(900)
         await wrapper.vm.$nextTick()
 
-        const nextBtn = wrapper.find('.w-full.py-4.rounded-xl.bg-primary')
+        const nextBtn = wrapper.find('[data-testid="match-next"]')
         if (nextBtn.exists() && nextBtn.text().includes('prelesson.nextCharacter')) {
           await nextBtn.trigger('click')
         }
@@ -240,10 +240,12 @@ describe('CharacterMatchGame', () => {
   })
 
   describe('dark mode', () => {
-    it('should include dark mode classes', () => {
+    it('uses theme tokens instead of fixed palette colors', () => {
       const wrapper = createWrapper()
       const html = wrapper.html()
-      expect(html).toContain('dark:')
+      // Light/dark come from the token variables, so no per-theme palette utilities
+      expect(html).toMatch(/bg-surface|bg-accent/)
+      expect(html).not.toMatch(/(slate|gray|green|amber|red|violet)-\d{2,3}/)
     })
   })
 })

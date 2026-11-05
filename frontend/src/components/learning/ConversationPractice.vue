@@ -161,158 +161,145 @@ function getRoleLabel(role) {
   return role === 'partner' ? t('learning.conversation.partner') : t('learning.conversation.you')
 }
 
-function getRoleColor(role) {
-  return role === 'partner'
-    ? 'bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-light'
-    : 'bg-accent/10 dark:bg-accent/20 text-accent dark:text-accent-light'
-}
 </script>
 
 <template>
-  <div class="flex flex-col h-[600px] max-h-[80vh] bg-surface-light dark:bg-surface-dark rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700">
+  <div class="flex h-[600px] max-h-[80vh] flex-col overflow-hidden rounded-[14px] border border-hairline bg-surface">
     <!-- Header -->
-    <div class="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-primary/10 to-accent/10 dark:from-primary/20 dark:to-accent/20 border-b border-slate-200 dark:border-slate-700">
-      <div class="flex items-center gap-3">
-        <button
-          @click="selectedConversation ? goBackToList() : emit('back')"
-          class="p-1 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
-        >
-          <span class="material-symbols-outlined text-text-muted dark:text-slate-400">arrow_back</span>
-        </button>
-        <div>
-          <h3 class="font-semibold text-text-main dark:text-white text-sm">
-            {{ selectedConversation ? selectedConversation.title : t('learning.conversation.title') }}
-          </h3>
-          <p class="text-xs text-text-muted dark:text-slate-400">
-            {{ selectedConversation ? t('learning.conversation.practiceDialogue') : t('learning.conversation.selectDialogue') }}
-          </p>
-        </div>
+    <div class="flex items-center gap-2 border-b border-hairline py-1 pl-1 pr-3">
+      <button
+        type="button"
+        @click="selectedConversation ? goBackToList() : emit('back')"
+        :aria-label="t('learning.backToSetup')"
+        class="inline-flex size-11 shrink-0 items-center justify-center rounded-[10px] text-ink-secondary active:bg-surface-raised"
+      >
+        <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
+      </button>
+      <div class="min-w-0 flex-1">
+        <h3 class="truncate text-body font-medium text-ink">
+          {{ selectedConversation ? selectedConversation.title : t('learning.conversation.title') }}
+        </h3>
+        <p class="truncate text-meta text-ink-muted">
+          {{ selectedConversation ? t('learning.conversation.practiceDialogue') : t('learning.conversation.selectDialogue') }}
+        </p>
       </div>
 
-      <!-- Play All Button -->
+      <!-- Play All -->
       <button
         v-if="selectedConversation"
+        type="button"
+        data-testid="play-all"
         @click="playAllMessages"
-        class="flex items-center gap-2 px-4 py-2 rounded-xl font-medium transition-all"
+        :aria-pressed="isPlayingAll"
+        class="inline-flex min-h-11 shrink-0 items-center gap-1.5 rounded-[10px] px-3 text-caption font-medium"
         :class="isPlayingAll
-          ? 'bg-red-500 text-white hover:bg-red-600'
-          : 'bg-primary text-white hover:bg-primary/90'"
+          ? 'border border-hairline bg-surface-raised text-ink active:bg-surface-sunken'
+          : 'bg-accent text-on-accent active:bg-accent-pressed'"
       >
-        <span class="material-symbols-outlined text-lg">
+        <span class="material-symbols-outlined !text-[18px]" aria-hidden="true">
           {{ isPlayingAll ? 'stop' : 'play_arrow' }}
         </span>
-        <span class="text-sm">{{ isPlayingAll ? t('learning.conversation.stop') : t('learning.conversation.playAll') }}</span>
+        {{ isPlayingAll ? t('learning.conversation.stop') : t('learning.conversation.playAll') }}
       </button>
     </div>
 
     <!-- Conversation List -->
     <div v-if="!selectedConversation" class="flex-1 overflow-y-auto p-4">
-      <div v-if="conversations.length === 0" class="flex flex-col items-center justify-center h-full text-center">
-        <span class="text-4xl mb-3">💬</span>
-        <p class="text-text-muted dark:text-slate-400">{{ t('learning.conversation.noConversations') }}</p>
+      <div v-if="conversations.length === 0" class="flex h-full flex-col items-center justify-center gap-3 text-center">
+        <span class="flex size-16 items-center justify-center rounded-[14px] bg-accent-soft text-accent">
+          <span class="material-symbols-outlined !text-[32px]" aria-hidden="true">forum</span>
+        </span>
+        <p class="text-caption text-ink-secondary">{{ t('learning.conversation.noConversations') }}</p>
       </div>
 
-      <div v-else class="space-y-3">
-        <button
-          v-for="conv in conversations"
-          :key="conv.id"
-          @click="selectConversation(conv)"
-          class="w-full p-4 bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 hover:border-primary dark:hover:border-primary transition-colors text-left group"
-        >
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-3">
-              <span class="text-2xl">💬</span>
-              <div>
-                <h4 class="font-medium text-text-main dark:text-white group-hover:text-primary transition-colors">
-                  {{ conv.title }}
-                </h4>
-                <p class="text-xs text-text-muted dark:text-slate-400">
-                  {{ conv.messages.length }} {{ t('learning.conversation.messages') }}
-                </p>
-              </div>
-            </div>
-            <span class="material-symbols-outlined text-text-muted dark:text-slate-400 group-hover:text-primary transition-colors">
-              chevron_right
+      <ul v-else class="divide-y divide-hairline overflow-hidden rounded-[14px] border border-hairline">
+        <li v-for="conv in conversations" :key="conv.id">
+          <button
+            type="button"
+            data-testid="conversation-item"
+            @click="selectConversation(conv)"
+            class="flex min-h-14 w-full items-center gap-3 px-4 py-2 text-left active:bg-surface-raised"
+          >
+            <span class="material-symbols-outlined shrink-0 text-ink-muted" aria-hidden="true">forum</span>
+            <span class="min-w-0 flex-1">
+              <span class="block truncate text-body font-medium text-ink">{{ conv.title }}</span>
+              <span class="block text-meta tabular-nums text-ink-muted">{{ conv.messages.length }} {{ t('learning.conversation.messages') }}</span>
             </span>
-          </div>
-        </button>
-      </div>
+            <span class="material-symbols-outlined shrink-0 text-ink-muted" aria-hidden="true">chevron_right</span>
+          </button>
+        </li>
+      </ul>
     </div>
 
-    <!-- Conversation Dialogue -->
-    <div v-else class="flex-1 overflow-y-auto p-4 space-y-4">
-      <div
-        v-for="(message, index) in selectedConversation.messages"
-        :key="index"
-        class="flex gap-3"
-        :class="message.role === 'user' ? 'flex-row-reverse' : ''"
-      >
-        <!-- Voice Button -->
-        <button
-          @click="playMessage(message, index)"
-          class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-all"
-          :class="[
-            playingMessageIndex === index
-              ? 'bg-primary text-white animate-pulse'
-              : 'bg-slate-100 dark:bg-slate-700 text-text-muted dark:text-slate-400 hover:bg-primary/20 hover:text-primary'
-          ]"
-          :title="t('learning.conversation.playAudio')"
+    <!-- Dialogue rows: only the line being played gets the accent rule -->
+    <div v-else class="flex-1 overflow-y-auto p-4">
+      <ol class="space-y-2">
+        <li
+          v-for="(message, index) in selectedConversation.messages"
+          :key="index"
+          class="relative flex items-start gap-2 rounded-[10px] py-2 pl-3 pr-2"
+          :class="playingMessageIndex === index ? 'bg-accent-soft' : ''"
+          :aria-current="playingMessageIndex === index ? 'true' : undefined"
         >
-          <span class="material-symbols-outlined text-xl">
-            {{ playingMessageIndex === index ? 'stop' : 'volume_up' }}
-          </span>
-        </button>
-
-        <!-- Message Bubble -->
-        <div
-          class="flex-1 max-w-[80%] rounded-2xl p-4"
-          :class="message.role === 'partner'
-            ? 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700'
-            : 'bg-primary/10 dark:bg-primary/20'"
-        >
-          <!-- Role Label -->
           <span
-            class="inline-block px-2 py-0.5 rounded-full text-xs font-medium mb-2"
-            :class="getRoleColor(message.role)"
-          >
-            {{ getRoleLabel(message.role) }}
-          </span>
-
-          <!-- Message Text -->
-          <p v-if="voiceSpeed === 'word' && highlightMessageIndex === index && highlightWordIndex >= 0"
-             class="text-text-main dark:text-white text-base leading-relaxed">
+            v-if="playingMessageIndex === index"
+            class="absolute left-0 top-3 h-9 w-[3px] rounded-r-[3px] bg-accent"
+            aria-hidden="true"
+          ></span>
+          <div class="min-w-0 flex-1">
             <span
-              v-for="(w, wi) in getMessageWords(message.text)"
-              :key="wi"
-              :class="wi === highlightWordIndex ? 'bg-primary/40 text-primary font-bold px-0.5 rounded' : ''"
-            >{{ w }}{{ wi < getMessageWords(message.text).length - 1 ? ' ' : '' }}</span>
-          </p>
-          <p v-else class="text-text-main dark:text-white text-base leading-relaxed">
-            {{ message.text }}
-          </p>
+              class="text-meta"
+              :class="message.role === 'partner' ? 'text-ink-muted' : 'font-medium text-accent'"
+            >{{ getRoleLabel(message.role) }}</span>
 
-          <!-- Native Translation (bilingual mode) -->
-          <p
-            v-if="bilingual && message.nativeText && message.nativeText !== message.text"
-            class="mt-2 text-sm text-text-muted dark:text-slate-400 italic border-t border-slate-200 dark:border-slate-600 pt-2"
-          >
-            {{ message.nativeText }}
-          </p>
-        </div>
-      </div>
+            <p
+              v-if="voiceSpeed === 'word' && highlightMessageIndex === index && highlightWordIndex >= 0"
+              class="break-words text-body text-ink"
+            >
+              <span
+                v-for="(w, wi) in getMessageWords(message.text)"
+                :key="wi"
+                :class="wi === highlightWordIndex ? 'rounded-[4px] bg-surface px-0.5 text-accent' : ''"
+              >{{ w }}{{ wi < getMessageWords(message.text).length - 1 ? ' ' : '' }}</span>
+            </p>
+            <p v-else class="break-words text-body text-ink">
+              {{ message.text }}
+            </p>
 
-      <!-- Practice Tip -->
-      <div class="mt-6 p-4 bg-amber-50 dark:bg-amber-900/20 rounded-xl border border-amber-200 dark:border-amber-800">
-        <div class="flex items-start gap-3">
-          <span class="text-xl">💡</span>
-          <div>
-            <h4 class="font-medium text-amber-800 dark:text-amber-200 text-sm mb-1">
-              {{ t('learning.conversation.practiceTip') }}
-            </h4>
-            <p class="text-xs text-amber-700 dark:text-amber-300">
-              {{ t('learning.conversation.practiceTipText') }}
+            <!-- Native translation (bilingual mode) -->
+            <p
+              v-if="bilingual && message.nativeText && message.nativeText !== message.text"
+              class="mt-1 border-t border-hairline pt-1 text-caption text-ink-muted"
+            >
+              {{ message.nativeText }}
             </p>
           </div>
+
+          <button
+            type="button"
+            @click="playMessage(message, index)"
+            :aria-label="t('learning.conversation.playAudio')"
+            :aria-pressed="playingMessageIndex === index"
+            class="inline-flex size-11 shrink-0 items-center justify-center rounded-[10px] active:bg-surface-raised"
+            :class="playingMessageIndex === index ? 'text-accent' : 'text-ink-muted'"
+          >
+            <span class="material-symbols-outlined" aria-hidden="true">
+              {{ playingMessageIndex === index ? 'stop' : 'volume_up' }}
+            </span>
+          </button>
+        </li>
+      </ol>
+
+      <!-- Practice tip -->
+      <div class="mt-6 flex items-start gap-3 rounded-[14px] bg-surface-sunken p-4">
+        <span class="material-symbols-outlined shrink-0 text-ink-muted" aria-hidden="true">record_voice_over</span>
+        <div>
+          <h4 class="text-caption font-medium text-ink">
+            {{ t('learning.conversation.practiceTip') }}
+          </h4>
+          <p class="text-caption text-ink-secondary">
+            {{ t('learning.conversation.practiceTipText') }}
+          </p>
         </div>
       </div>
     </div>
