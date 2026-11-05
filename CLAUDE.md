@@ -198,6 +198,7 @@ chat_mate/
 | `/diary` | DiaryScreen | Daily diary writing + AI feedback |
 | `/daily-opinion` | DailyOpinionScreen | Daily opinion drill (Opinion → Reason → Wrap-up) |
 | `/daily-practice` | DailyPracticeScreen | Today's 3 patterns + 5 words by level (SRS), with AI sentence check |
+| `/retell` | RetellScreen | Say-it-three-times fluency drill (30s plan, 90/60/45s rounds) |
 | `/placement-test` | PlacementTestScreen | Level placement |
 
 Router uses **hash mode** (`/#/chat`) for GitHub Pages compatibility.
@@ -333,6 +334,9 @@ All user progress stored in localStorage:
 - `chatmate_diary_pending_feedback` - Offline feedback queue
 - `chatmate_daily_opinion` - Daily opinion drill: per-day answer, connectors used, feedback
 - `chatmate_daily_practice` - Daily practice level and per-day plans (pattern/word ids, done flags); reviews go to `chatmate_srsProgress` as `pattern:<level>:<id>` / `word:<level>:<id>`
+- `chatmate_mistakes` - Mistakes from chat feedback, sentence checks, diaries and chat summaries; reviewed in daily practice as `mistake:<id>` (vocab-bank words as `bank:<id>`)
+- `chatmate_retell` - Say-it-three-times results (topic, per-round words and WPM)
+- `chatmate_voice_pause_ms` - Silence before a spoken answer is sent (1500/2500/4000, default 2500)
 
 ### Composable Patterns
 - **Singleton state**: `useNavState` uses module-level refs shared across components
