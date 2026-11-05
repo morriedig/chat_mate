@@ -19,6 +19,7 @@ import HomeHero from './HomeHero.vue'
 import DailyOpinionCard from './DailyOpinionCard.vue'
 import DailyPracticeCard from './DailyPracticeCard.vue'
 import TaskChatCard from './TaskChatCard.vue'
+import RetellCard from './RetellCard.vue'
 import { useTaskChatLauncher } from '../composables/useTaskChatLauncher'
 import { useDailyPractice } from '../composables/useDailyPractice'
 import WelcomeOnboarding from './WelcomeOnboarding.vue'
@@ -290,7 +291,10 @@ function handleStart() {
             <span class="shrink-0 mt-4 flex items-center justify-center size-6 rounded-full bg-primary/15 text-xs font-bold text-sky-700 dark:text-primary">2</span>
             <TaskChatCard class="flex-1 min-w-0" :patterns="todayPatterns" :recommended="practiceDone" @open="startTaskChat" />
           </li>
-          <!-- RETELL_CARD -->
+          <li class="flex gap-2 min-w-0">
+            <span class="shrink-0 mt-4 flex items-center justify-center size-6 rounded-full bg-primary/15 text-xs font-bold text-sky-700 dark:text-primary">3</span>
+            <RetellCard class="flex-1 min-w-0" />
+          </li>
         </ol>
       </section>
 

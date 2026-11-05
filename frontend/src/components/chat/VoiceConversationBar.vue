@@ -2,9 +2,11 @@
 import { ref, watch, onBeforeUnmount } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { playTTS, stopTTS, isTTSAvailable } from '../../utils/tts'
-import { listenOnce, stopListening, isSTTAvailable } from '../../utils/stt'
+import { listenOnce, stopListening, extendListening, isSTTAvailable } from '../../utils/stt'
+import { useVoiceSettings } from '../../composables/useVoiceSettings'
 
 const { t } = useI18n()
+const { pauseMs, setPauseMs, PAUSE_CHOICES } = useVoiceSettings()
 
 const props = defineProps({
   // Latest assistant reply; a change means the friend just answered
@@ -36,6 +38,18 @@ const relaxed = ref(false)
 const canListen = isSTTAvailable()
 const canSpeak = isTTSAvailable()
 let stopped = false
+const extended = ref(false)
+
+// "I'm still thinking": hold the turn open a little longer
+function stillThinking() {
+  if (status.value === 'listening' && extendListening()) extended.value = true
+}
+
+// Cycle through the pause lengths that end your turn
+function cyclePause() {
+  const next = PAUSE_CHOICES[(PAUSE_CHOICES.indexOf(pauseMs.value) + 1) % PAUSE_CHOICES.length]
+  setPauseMs(next)
+}
 
 async function speak(text) {
   if (!text || !canSpeak) return
@@ -56,6 +70,7 @@ async function listen() {
   }
   notice.value = ''
   heard.value = ''
+  extended.value = false
   status.value = 'listening'
   try {
     const text = await listenOnce({ language: props.language, onInterim: s => { heard.value = s } })
@@ -168,7 +183,19 @@ onBeforeUnmount(() => {
         </button>
       </div>
 
-      <div class="flex items-center gap-4 text-xs">
+      <button
+        v-if="status === 'listening'"
+        @click="stillThinking"
+        class="still-thinking px-4 py-1.5 rounded-full border text-sm font-medium transition-colors"
+        :class="extended ? 'border-primary text-primary bg-primary/10' : 'border-slate-200 dark:border-slate-700 text-text-main dark:text-slate-200'"
+      >
+        {{ extended ? t('voiceChat.takeYourTime') : t('voiceChat.stillThinking') }}
+      </button>
+
+      <div class="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs">
+        <button @click="cyclePause" class="pause-length text-text-muted dark:text-slate-400" :aria-label="t('voiceChat.pauseHint')">
+          {{ t('voiceChat.pauseLength', { sec: pauseMs / 1000 }) }}
+        </button>
         <button @click="relaxed = !relaxed" :class="relaxed ? 'text-primary font-semibold' : 'text-text-muted dark:text-slate-400'">
           {{ t('voiceChat.slower') }}
         </button>

@@ -3,6 +3,7 @@
  */
 import { Capacitor } from '@capacitor/core'
 import { SpeechRecognition as NativeRecognition } from '@capgo/capacitor-speech-recognition'
+import { getPauseMs } from '../composables/useVoiceSettings'
 
 const LANG_MAP = {
   en: 'en-US',
@@ -16,19 +17,40 @@ const SpeechRecognition = typeof window !== 'undefined'
 
 const isNative = Capacitor.isNativePlatform()
 
-// Native recognition doesn't end on its own; stop after this much quiet
-const SILENCE_AFTER_SPEECH_MS = 1500
+// Recognition doesn't end on its own reliably; stop after this much quiet
 const SILENCE_BEFORE_SPEECH_MS = 8000
 const MAX_LISTEN_MS = 30000
+// Extra quiet allowed after "I'm still thinking"
+export const THINKING_GRACE_MS = 8000
 
 export function isSTTAvailable() {
   return isNative || !!SpeechRecognition
 }
 
-let active = null
-let finishNative = null
+// The listen in progress: { finish, extend } for whichever path is running
+let current = null
 
-async function listenNative({ language, onInterim }) {
+/**
+ * Silence/max timers shared by both paths.
+ * waitForSilence(ms) restarts the quiet countdown; extend() gives one longer countdown.
+ */
+function createTimers({ pauseMs, maxMs, onDone }) {
+  let silenceTimer = null
+  let heardSpeech = false
+  const maxTimer = setTimeout(onDone, maxMs)
+  const waitForSilence = ms => {
+    clearTimeout(silenceTimer)
+    silenceTimer = setTimeout(onDone, ms)
+  }
+  return {
+    start: () => waitForSilence(SILENCE_BEFORE_SPEECH_MS),
+    heard: () => { heardSpeech = true; waitForSilence(pauseMs) },
+    extend: () => waitForSilence((heardSpeech ? pauseMs : 0) + THINKING_GRACE_MS),
+    clear: () => { clearTimeout(silenceTimer); clearTimeout(maxTimer) },
+  }
+}
+
+async function listenNative({ language, onInterim, pauseMs, maxMs }) {
   let permission = await NativeRecognition.checkPermissions()
   if (permission.speechRecognition !== 'granted') {
     permission = await NativeRecognition.requestPermissions()
@@ -38,25 +60,22 @@ async function listenNative({ language, onInterim }) {
   return new Promise((resolve, reject) => {
     let text = ''
     let done = false
-    let silenceTimer = null
     const handles = []
 
+    const cleanup = () => {
+      done = true
+      timers.clear()
+      current = null
+      handles.forEach(handle => handle.remove())
+    }
     const finish = async () => {
       if (done) return
-      done = true
-      clearTimeout(silenceTimer)
-      clearTimeout(maxTimer)
-      finishNative = null
+      cleanup()
       try { await NativeRecognition.stop() } catch { /* already stopped */ }
-      handles.forEach(handle => handle.remove())
       resolve(text.trim())
     }
-    const waitForSilence = ms => {
-      clearTimeout(silenceTimer)
-      silenceTimer = setTimeout(finish, ms)
-    }
-    const maxTimer = setTimeout(finish, MAX_LISTEN_MS)
-    finishNative = finish
+    const timers = createTimers({ pauseMs, maxMs, onDone: finish })
+    current = { finish, extend: () => { if (!done) timers.extend() } }
 
     Promise.all([
       NativeRecognition.addListener('partialResults', event => {
@@ -64,7 +83,7 @@ async function listenNative({ language, onInterim }) {
         if (!heard) return
         text = heard
         onInterim?.(heard.trim())
-        waitForSilence(SILENCE_AFTER_SPEECH_MS)
+        timers.heard()
       }),
       NativeRecognition.addListener('listeningState', event => {
         if ((event.state || event.status) === 'stopped') finish()
@@ -72,7 +91,7 @@ async function listenNative({ language, onInterim }) {
     ]).then(listeners => {
       handles.push(...listeners)
       if (done) listeners.forEach(handle => handle.remove())
-      waitForSilence(SILENCE_BEFORE_SPEECH_MS)
+      timers.start()
       return NativeRecognition.start({
         language: LANG_MAP[language] || 'en-US',
         partialResults: true,
@@ -81,26 +100,13 @@ async function listenNative({ language, onInterim }) {
       })
     }).catch(error => {
       if (done) return
-      done = true
-      clearTimeout(silenceTimer)
-      clearTimeout(maxTimer)
-      finishNative = null
-      handles.forEach(handle => handle.remove())
+      cleanup()
       reject(error)
     })
   })
 }
 
-/**
- * Listen for one utterance and resolve with the final transcript ('' when nothing was heard).
- * Rejects with the recognition error code (e.g. 'not-allowed') when listening can't start.
- * @param {Object} options
- * @param {string} [options.language='en']
- * @param {Function} [options.onInterim] - called with the transcript so far while the user speaks
- * @returns {Promise<string>}
- */
-export function listenOnce({ language = 'en', onInterim } = {}) {
-  if (isNative) return listenNative({ language, onInterim })
+function listenWeb({ language, onInterim, pauseMs, maxMs }) {
   return new Promise((resolve, reject) => {
     if (!SpeechRecognition) {
       reject(new Error('unsupported'))
@@ -111,10 +117,17 @@ export function listenOnce({ language = 'en', onInterim } = {}) {
     const recognition = new SpeechRecognition()
     recognition.lang = LANG_MAP[language] || 'en-US'
     recognition.interimResults = true
-    recognition.continuous = false
+    // Keep listening through short pauses; our own timer decides when the turn ends
+    recognition.continuous = true
 
     let finalText = ''
     let failed = false
+    let ended = false
+    const finish = () => {
+      if (ended) return
+      try { recognition.stop() } catch { /* already stopping */ }
+    }
+    const timers = createTimers({ pauseMs, maxMs, onDone: finish })
 
     recognition.onresult = (event) => {
       let interim = ''
@@ -126,6 +139,7 @@ export function listenOnce({ language = 'en', onInterim } = {}) {
         }
       }
       onInterim?.((finalText + interim).trim())
+      timers.heard()
     }
 
     recognition.onerror = (event) => {
@@ -135,31 +149,54 @@ export function listenOnce({ language = 'en', onInterim } = {}) {
       reject(new Error(event.error))
     }
 
+    // Browsers may still end recognition on their own; "still thinking" can't revive it
     recognition.onend = () => {
-      if (active === recognition) active = null
+      ended = true
+      timers.clear()
+      if (current?.recognition === recognition) current = null
       if (!failed) resolve(finalText.trim())
     }
 
-    active = recognition
+    current = { recognition, finish, extend: () => { if (!ended) timers.extend() } }
     try {
       recognition.start()
+      timers.start()
     } catch (e) {
-      active = null
+      timers.clear()
+      current = null
       reject(e)
     }
   })
 }
 
 /**
+ * Listen for one utterance and resolve with the final transcript ('' when nothing was heard).
+ * Rejects with the recognition error code (e.g. 'not-allowed') when listening can't start.
+ * @param {Object} options
+ * @param {string} [options.language='en']
+ * @param {Function} [options.onInterim] - called with the transcript so far while the user speaks
+ * @param {number} [options.pauseMs] - quiet after speech that ends the turn (default: the user's setting)
+ * @param {number} [options.maxMs=30000] - hard stop
+ * @returns {Promise<string>}
+ */
+export function listenOnce({ language = 'en', onInterim, pauseMs = getPauseMs(), maxMs = MAX_LISTEN_MS } = {}) {
+  const options = { language, onInterim, pauseMs, maxMs }
+  return isNative ? listenNative(options) : listenWeb(options)
+}
+
+/**
+ * "I'm still thinking": keep the current listen open a little longer (THINKING_GRACE_MS)
+ * @returns {boolean} whether a listen was running
+ */
+export function extendListening() {
+  if (!current) return false
+  current.extend()
+  return true
+}
+
+/**
  * Stop listening; a pending listenOnce resolves with what was heard so far
  */
 export function stopListening() {
-  if (finishNative) {
-    finishNative()
-    return
-  }
-  if (active) {
-    active.stop()
-    active = null
-  }
+  current?.finish()
 }
