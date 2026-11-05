@@ -633,7 +633,8 @@
     "retry": "もう一度",
     "dismiss": "閉じる",
     "cancel": "キャンセル",
-    "listening": "聞いています…"
+    "listening": "聞いています…",
+    "dailyLimit": "今日のAI利用分を使い切りました。また明日話そう！オフラインの練習はできます。"
   },
   "analytics": {
     "title": "学習データ",
@@ -666,7 +667,9 @@
     "streakHint": "チャット・学習・日記、どれでも連続記録になります。",
     "minutes": "{count}分",
     "goalToday": "/今日 {goal}分",
-    "remembersYou": "{name}はあなたのことを覚えています"
+    "remembersYou": "{name}はあなたのことを覚えています",
+    "todayPath": "今日のルート",
+    "more": "その他（フリーチャット、学習、日記…）"
   },
   "settings": {
     "title": "設定",
@@ -711,5 +714,63 @@
     "definition": "意味",
     "explanation": "説明",
     "example": "例文"
+  },
+  "dailyPractice": {
+    "savedWord": "単語帳の単語",
+    "recallMeaning": "意味を思い出してから開いてみよう。",
+    "reveal": "開く",
+    "noSavedMeaning": "意味は保存されていません。どこで見たか思い出してみよう。",
+    "doneExtras": "自分のカード（前のミス、保存した単語）も {count} 枚復習しました。",
+    "mistakeReview": "直してみよう",
+    "cardExtras": "、さらに復習とリスニング {count} 枚"
+  },
+  "mistakes": {
+    "source": {
+      "chat": "チャットで書いた文",
+      "practice": "練習で書いた文",
+      "diary": "日記で書いた文",
+      "summary": "チャットのまとめから"
+    },
+    "prompt": "前に直された文です。自分で直せるかな？",
+    "yourFix": "あなたの直し方",
+    "compare": "答え合わせ",
+    "showHint": "ヒント",
+    "matched": "完璧！",
+    "unchanged": "今回は直していません。直すところはここ：",
+    "compareHint": "おすすめの書き方と比べよう（緑が直した所）：",
+    "remove": "この文は問題なかったので、もう出さない"
+  },
+  "listening": {
+    "label": "リスニング",
+    "chooseTitle": "聞こえたのはどの文？",
+    "dictationTitle": "ディクテーション：聞こえた文を入力しよう",
+    "play": "再生",
+    "slow": "ゆっくり",
+    "typeWhatYouHear": "聞こえたとおりに入力…",
+    "check": "答え合わせ",
+    "correct": "全部正解！",
+    "answerWas": "正しい文：",
+    "missedWords": "印の付いた単語は聞き逃し・聞き間違いです。"
+  },
+  "taskChat": {
+    "title": "今日のタスク",
+    "cardTitle": "今日の文型でタスクに挑戦",
+    "cardHint": "チャットで今日の文型 {count} 個を使ってみよう。最後にまとめが出ます。",
+    "complete": "今日の文型を全部使えた！",
+    "seeSummary": "まとめを見る",
+    "endChat": "終わり、まとめを見る",
+    "startFromPractice": "今日の文型でチャットする",
+    "summaryTitle": "チャットのまとめ",
+    "summaryIntro": "{name} が今回のチャットをまとめたよ",
+    "patternsUsed": "使えた文型：{used} / {total}",
+    "tryNextTime": "使えなかったものは次に試そう。",
+    "toFix": "もっと良くなるところ",
+    "loading": "{name} がまとめています……",
+    "unavailable": "今はまとめを作れません。後でもう一度試してね。",
+    "nothingToFix": "今回は直すところがほとんどないよ。すごい！",
+    "showAnswer": "答えを見る",
+    "savedForReview": "これらの文は今日の練習の復習カードに追加されました。",
+    "keepChatting": "続けて話す",
+    "backHome": "ホーム"
   }
 }

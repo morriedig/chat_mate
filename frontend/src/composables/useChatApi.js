@@ -168,7 +168,7 @@ export function useChatApi() {
             }
           }
         }
-        throw { isRateLimit: data.isRateLimit, isTokenError: data.isTokenError, message: data.error }
+        throw { isRateLimit: data.isRateLimit, isDailyLimit: data.isDailyLimit, isTokenError: data.isTokenError, message: data.error }
       }
 
       return {
@@ -185,7 +185,7 @@ export function useChatApi() {
   }
 
   async function sendFeedback(config) {
-    const { userMessage, context, level, language } = config
+    const { userMessage, context, level, language, nativeLanguage } = config
 
     try {
       if (!API_URL) {
@@ -208,6 +208,7 @@ export function useChatApi() {
         context,
         level,
         language,
+        nativeLanguage,
         clientId: getClientId(),
         origin: window.location.origin,
         authToken: token,

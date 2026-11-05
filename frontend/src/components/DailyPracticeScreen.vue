@@ -6,6 +6,12 @@ import { useMotherTongue } from '../composables/useMotherTongue'
 import { useDailyGoal } from '../composables/useDailyGoal'
 import { useDailyPractice } from '../composables/useDailyPractice'
 import { useSentenceCheck, usesPattern } from '../composables/useSentenceCheck'
+import { useMistakes, srsId as mistakeSrsId } from '../composables/useMistakes'
+import { bankSrsId } from '../composables/useDailyPractice'
+import MistakeCard from './practice/MistakeCard.vue'
+import BankWordCard from './practice/BankWordCard.vue'
+import ListeningCard from './practice/ListeningCard.vue'
+import { useTaskChatLauncher } from '../composables/useTaskChatLauncher'
 import { getDailyVocab } from '../data/dailyLoader'
 import { playTTS, stopTTS } from '../utils/tts'
 import { shuffleArray } from '../utils/shuffle'
@@ -15,12 +21,17 @@ const router = useRouter()
 const { motherTongue } = useMotherTongue()
 const { startTimer, stopTimer } = useDailyGoal()
 const { isChecking, checkSentence } = useSentenceCheck()
+const { addMistake, removeMistake } = useMistakes()
+const { startTaskChat } = useTaskChatLauncher()
 
 const {
   levels,
   level,
   todayPatterns,
   todayWords,
+  todayMistakes,
+  todayBankWords,
+  todayListening,
   totalCount,
   doneCount,
   isDoneToday,
@@ -31,12 +42,15 @@ const {
   ensureTodayPlan,
 } = useDailyPractice()
 
-// One queue: patterns first, then words
+// One queue: yesterday's mistakes, today's patterns and words, saved words, then listening
 const queue = computed(() => [
-  ...todayPatterns.value.map(item => ({ kind: 'pattern', item })),
-  ...todayWords.value.map(item => ({ kind: 'word', item })),
+  ...todayMistakes.value.map(item => ({ kind: 'mistake', key: mistakeSrsId(item.id), item })),
+  ...todayPatterns.value.map(item => ({ kind: 'pattern', key: item.id, item })),
+  ...todayWords.value.map(item => ({ kind: 'word', key: item.id, item })),
+  ...todayBankWords.value.map(item => ({ kind: 'bank', key: bankSrsId(item.id), item })),
+  ...todayListening.value.map(item => ({ kind: 'listen', key: item.id, item })),
 ])
-const current = computed(() => queue.value.find(entry => !isDone(entry.item.id)) || null)
+const current = computed(() => queue.value.find(entry => !isDone(entry.key)) || null)
 
 // ---------- Per-item state ----------
 // stage: 'learn' (study card) → 'quiz' (pick an answer) → 'write' (patterns only) → 'rate'
@@ -57,7 +71,7 @@ function resetItem() {
   stopTTS()
 }
 
-watch(() => current.value?.item.id, resetItem, { immediate: true })
+watch(() => current.value?.key, resetItem, { immediate: true })
 
 // ---------- Quiz ----------
 // Words: pick the English word for the Chinese meaning, distractors from the same level
@@ -73,12 +87,14 @@ const quizOptions = computed(() => {
   const entry = current.value
   if (!entry) return []
   if (entry.kind === 'word') return wordOptions.value
+  if (entry.kind !== 'pattern') return []
   return entry.item.choice.options.map((text, i) => ({ id: i, text }))
 })
 const correctOptionId = computed(() => {
   const entry = current.value
   if (!entry) return null
-  return entry.kind === 'word' ? entry.item.id : entry.item.choice.answer
+  if (entry.kind === 'word') return entry.item.id
+  return entry.kind === 'pattern' ? entry.item.choice.answer : null
 })
 const isCorrect = computed(() => picked.value !== null && picked.value === correctOptionId.value)
 
@@ -114,6 +130,16 @@ async function submitSentence() {
   })
   if (result) {
     check.value = result
+    // A corrected sentence comes back later as a review card
+    if (result.corrected) {
+      addMistake({
+        original: sentence.value.trim(),
+        corrected: result.corrected,
+        explanation: result.comment,
+        type: result.errorType,
+        source: 'practice',
+      })
+    }
   } else {
     checkFailed.value = true
   }
@@ -137,7 +163,17 @@ function rate(confidence) {
   const usedPattern = check.value ? check.value.usedPattern : localUsedPattern.value
   const wrote = sentence.value.trim().length > 0
   const correct = isCorrect.value && (entry.kind === 'word' || !wrote || usedPattern)
-  completeItem(entry.item.id, { correct, confidence })
+  completeItem(entry.key, { correct, confidence })
+}
+
+// Mistake, saved-word and listening cards report their own result
+function finishCard(entry, result) {
+  completeItem(entry.key, { ...result, track: entry.kind !== 'listen' })
+}
+
+function dropMistake(entry) {
+  completeItem(entry.key, { correct: true, confidence: 5, track: false })
+  removeMistake(entry.item.id)
 }
 
 // ---------- Misc ----------
@@ -153,6 +189,9 @@ const progressPercent = computed(() =>
   totalCount.value ? Math.round((doneCount.value / totalCount.value) * 100) : 0)
 const patternsDone = computed(() => todayPatterns.value.filter(p => isDone(p.id)).length)
 const wordsDone = computed(() => todayWords.value.filter(w => isDone(w.id)).length)
+const extrasDone = computed(() =>
+  todayMistakes.value.filter(m => isDone(mistakeSrsId(m.id))).length
+  + todayBankWords.value.filter(w => isDone(bankSrsId(w.id))).length)
 
 onMounted(() => {
   ensureTodayPlan()
@@ -207,15 +246,31 @@ onBeforeUnmount(() => {
               <p class="text-sm text-text-muted dark:text-slate-400">
                 {{ t('dailyPractice.doneSummary', { patterns: patternsDone, words: wordsDone }) }}
               </p>
+              <p v-if="extrasDone" class="text-sm text-text-muted dark:text-slate-400">
+                {{ t('dailyPractice.doneExtras', { count: extrasDone }) }}
+              </p>
             </div>
             <p class="text-sm font-medium text-text-main dark:text-slate-200">{{ t('dailyPractice.useThemHint') }}</p>
             <ul class="space-y-1.5">
               <li v-for="p in todayPatterns" :key="p.id" class="text-sm text-text-main dark:text-slate-200 px-3 py-2 rounded-lg bg-primary/10 dark:bg-primary/20 break-words">{{ p.pattern }}</li>
             </ul>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              <button @click="router.push('/daily-opinion')" class="py-3 rounded-xl bg-primary text-white font-semibold">{{ t('dailyPractice.writeOpinion') }}</button>
+              <button @click="startTaskChat" class="sm:col-span-2 py-3 rounded-xl bg-primary text-white font-semibold">{{ t('taskChat.startFromPractice') }}</button>
+              <button @click="router.push('/daily-opinion')" class="py-3 rounded-xl border border-slate-200 dark:border-slate-700 text-text-main dark:text-slate-200 font-semibold">{{ t('dailyPractice.writeOpinion') }}</button>
               <button @click="router.push('/')" class="py-3 rounded-xl border border-slate-200 dark:border-slate-700 text-text-main dark:text-slate-200 font-semibold">{{ t('dailyPractice.backHome') }}</button>
             </div>
+          </template>
+
+          <!-- ========== MISTAKE / SAVED WORD / LISTENING ========== -->
+          <template v-else-if="current.kind === 'mistake'">
+            <p class="text-xs font-semibold text-amber-600 dark:text-amber-400 uppercase tracking-wider">{{ t('dailyPractice.mistakeReview') }}</p>
+            <MistakeCard :mistake="current.item" @done="finishCard(current, $event)" @remove="dropMistake(current)" />
+          </template>
+          <template v-else-if="current.kind === 'bank'">
+            <BankWordCard :word="current.item" @done="finishCard(current, $event)" />
+          </template>
+          <template v-else-if="current.kind === 'listen'">
+            <ListeningCard :item="current.item" @done="finishCard(current, $event)" />
           </template>
 
           <!-- ========== PATTERN ========== -->
@@ -320,7 +375,7 @@ onBeforeUnmount(() => {
           </template>
 
           <!-- ========== WORD ========== -->
-          <template v-else>
+          <template v-else-if="current.kind === 'word'">
             <p class="text-xs font-semibold text-primary uppercase tracking-wider">
               {{ isNew(current.item.id) ? t('dailyPractice.newWord') : t('dailyPractice.reviewWord') }}
             </p>
@@ -376,7 +431,7 @@ onBeforeUnmount(() => {
           </template>
 
           <!-- Self-rating: how well do you know it now? -->
-          <div v-if="current && !isDoneToday && stage === 'rate'" class="space-y-2">
+          <div v-if="current && !isDoneToday && stage === 'rate' && (current.kind === 'pattern' || current.kind === 'word')" class="space-y-2">
             <p class="text-sm font-medium text-text-main dark:text-slate-200">{{ t('dailyPractice.howWell') }}</p>
             <div class="grid grid-cols-3 gap-2">
               <button

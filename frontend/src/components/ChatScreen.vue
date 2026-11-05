@@ -29,6 +29,8 @@ import { detectConnectors } from '../utils/connectorDetect'
 import MicroReward from './MicroReward.vue'
 import ConnectorMissionBar from './chat/ConnectorMissionBar.vue'
 import { MISSION_TYPE, getUsedTargetIds } from '../composables/useConnectorMission'
+import { PATTERN_TASK_TYPE, getUsedPatternIds, taskText } from '../composables/usePatternTask'
+import ChatSummaryPanel from './chat/ChatSummaryPanel.vue'
 
 const { t } = useI18n()
 const router = useRouter()
@@ -53,7 +55,10 @@ const isArticleMode = computed(() => mode.value === 'article' && article.value)
 const isOpinionMode = computed(() => mode.value === 'opinion')
 // Connector mission ("use it in chat" bridge from a chapter quiz).
 // The two modes are exclusive: setChatState() clears the scenario for opinion chats.
-const mission = computed(() => !isOpinionMode.value && scenario.value?.type === MISSION_TYPE ? scenario.value : null)
+const mission = computed(() => !isOpinionMode.value && [MISSION_TYPE, PATTERN_TASK_TYPE].includes(scenario.value?.type) ? scenario.value : null)
+// Task chat: today's patterns, a goal, and an AI summary at the end
+const isTaskMode = computed(() => mission.value?.type === PATTERN_TASK_TYPE)
+const showTaskSummary = ref(false)
 
 // Storage config
 const storageConfig = computed(() => ({
@@ -89,6 +94,7 @@ const { onChatMessage: onQuestChatMessage } = useWeeklyQuests()
 
 // Scenario roleplay
 import { useScenarioRoleplay } from '../composables/useScenarioRoleplay'
+import { useMistakes, parseCorrectionText } from '../composables/useMistakes'
 const { buildScenarioPrompt, buildOpinionPrompt } = useScenarioRoleplay()
 
 // Opinion chat (chat-first prototype): connector hints, highlights and summary
@@ -102,6 +108,17 @@ const {
   targets: connectorTargets,
 } = useOpinionChat()
 const { motherTongue } = useMotherTongue()
+const { addMistake } = useMistakes()
+
+// Chat corrections like `"I am agree" → "I agree" — …` come back as review cards
+function saveFeedbackMistakes(feedback) {
+  const corrections = feedback?.grammar?.corrections || []
+  const types = feedback?.grammar?.correctionTypes || []
+  corrections.forEach((text, i) => {
+    const parsed = parseCorrectionText(text)
+    if (parsed) addMistake({ ...parsed, type: types[i], source: 'chat' })
+  })
+}
 const SUMMARY_OFFER_TURNS = 6
 const hintsDismissed = ref(false)
 const showOpinionSummary = ref(false)
@@ -135,7 +152,9 @@ const promptDismissed = ref(false)
 const missionJustUsed = ref(null) // phrase of the connector just used
 
 // Mission targets used so far, derived from the user's messages
-const missionUsedIds = computed(() => getUsedTargetIds(mission.value, messages.value))
+const missionUsedIds = computed(() => isTaskMode.value
+  ? getUsedPatternIds(mission.value, messages.value)
+  : getUsedTargetIds(mission.value, messages.value))
 
 // Show daily prompt only for fresh chat conversations (not article/scenario mode)
 const showDailyPrompt = computed(() =>
@@ -381,9 +400,11 @@ async function getAIResponse(isGreeting = false) {
     }
   } catch (err) {
     console.error('Chat error:', err)
-    errorMessage.value = err.isRateLimit
-      ? t('chat.rateLimitError')
-      : t('chat.genericError')
+    errorMessage.value = err.isDailyLimit
+      ? t('common.dailyLimit')
+      : err.isRateLimit
+        ? t('chat.rateLimitError')
+        : t('chat.genericError')
   }
 
   scrollToBottom()
@@ -411,9 +432,11 @@ async function handleExplain(message) {
       context,
       level: level.value.id,
       language: language.value,
+      nativeLanguage: motherTongue.value,
     })
 
     message.feedback = feedback
+    saveFeedbackMistakes(feedback)
   } catch (err) {
     console.error('Feedback error:', err)
     message.feedback = null
@@ -521,7 +544,10 @@ function handleBack() {
         :targets="mission.targets"
         :used-ids="missionUsedIds"
         :just-used="missionJustUsed"
+        :task="isTaskMode ? taskText(mission.task, motherTongue) : ''"
+        :can-end="userTurnCount > 0 && !isLoading"
         @back="handleBack"
+        @end="showTaskSummary = true"
       />
 
       <!-- Content Area -->
@@ -729,6 +755,19 @@ function handleBack() {
       @close="showOpinionSummary = false"
       @new-topic="handleOpinionNewTopic"
       @home="handleOpinionHome"
+    />
+
+    <!-- Task Chat Summary -->
+    <ChatSummaryPanel
+      v-if="showTaskSummary && isTaskMode && character"
+      :mission="mission"
+      :messages="messages"
+      :used-ids="missionUsedIds"
+      :character="character"
+      :level="level.id"
+      :mother-tongue="motherTongue"
+      @close="showTaskSummary = false"
+      @home="showTaskSummary = false; router.push('/')"
     />
 
     <!-- Character Memory Panel -->

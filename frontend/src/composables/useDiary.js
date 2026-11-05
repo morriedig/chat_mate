@@ -5,6 +5,7 @@ import { useDiaryPrompts } from './useDiaryPrompts'
 import { useUserProgress } from './useUserProgress'
 import { useVocabularyBank } from './useVocabularyBank'
 import { useWeeklyQuests } from './useWeeklyQuests'
+import { useMistakes } from './useMistakes'
 import { toLocalDateKey, getTodayKey } from '../utils/dateUtils'
 
 const DIARY_XP = 15
@@ -20,6 +21,14 @@ export function useDiary() {
   const { addXP, progress, onDiarySubmitted } = useUserProgress()
   const { words: vocabWords } = useVocabularyBank()
   const { onDiaryEntry, onDiaryVocabUsed, onDiaryWordCount } = useWeeklyQuests()
+  const { addMistake } = useMistakes()
+
+  // Corrections come back later as review cards in daily practice
+  function saveMistakes(result) {
+    for (const c of result?.corrections || []) {
+      addMistake({ original: c.original, corrected: c.corrected, explanation: c.explanation, type: c.type, source: 'diary' })
+    }
+  }
 
   // Check if an entry exists for today
   const todayEntry = computed(() => {
@@ -174,6 +183,7 @@ export function useDiary() {
       })
 
       if (result) {
+        saveMistakes(result)
         entry.feedbackStatus = 'done'
         entry.feedback = result
       } else {
@@ -204,6 +214,7 @@ export function useDiary() {
       })
 
       if (result) {
+        saveMistakes(result)
         entry.feedbackStatus = 'done'
         entry.feedback = result
         storage.saveEntry(entry)
@@ -230,6 +241,7 @@ export function useDiary() {
     })
 
     if (result) {
+      saveMistakes(result)
       entry.feedback = result
       entry.feedbackStatus = 'done'
     } else {

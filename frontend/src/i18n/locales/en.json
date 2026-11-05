@@ -660,7 +660,14 @@
     "backHome": "Back home",
     "cardTitle": "Today's practice",
     "cardSubtitle": "{patterns} patterns + {words} words, about 10 minutes",
-    "cardDone": "Done today — see you tomorrow"
+    "cardDone": "Done today — see you tomorrow",
+    "savedWord": "Saved word",
+    "recallMeaning": "Try to recall what it means before you reveal it.",
+    "reveal": "Reveal",
+    "noSavedMeaning": "You didn't save a meaning. Think about where you saw it.",
+    "doneExtras": "You also reviewed {count} of your own cards (past mistakes, saved words).",
+    "mistakeReview": "Fix it",
+    "cardExtras": ", plus {count} review and listening cards"
   },
   "voiceChat": {
     "enter": "Voice conversation",
@@ -687,7 +694,8 @@
     "retry": "Retry",
     "dismiss": "Dismiss",
     "cancel": "Cancel",
-    "listening": "Listening..."
+    "listening": "Listening...",
+    "dailyLimit": "You've used today's AI chats. Come back tomorrow! Offline practice still works."
   },
   "analytics": {
     "title": "Learning Analytics",
@@ -720,7 +728,9 @@
     "streakHint": "Chat, learn, or write — any activity counts toward your daily streak.",
     "minutes": "{count}m",
     "goalToday": "/{goal}m today",
-    "remembersYou": "{name} remembers things about you"
+    "remembersYou": "{name} remembers things about you",
+    "todayPath": "Today's path",
+    "more": "More (free chat, learning, diary…)"
   },
   "settings": {
     "title": "Settings",
@@ -765,5 +775,54 @@
     "definition": "Definition",
     "explanation": "Explanation",
     "example": "Example"
+  },
+  "mistakes": {
+    "source": {
+      "chat": "From a chat",
+      "practice": "From a practice sentence",
+      "diary": "From your diary",
+      "summary": "From a chat summary"
+    },
+    "prompt": "Your friend corrected this sentence before. Can you fix it yourself?",
+    "yourFix": "Your fix",
+    "compare": "Check",
+    "showHint": "Hint",
+    "matched": "Exactly right!",
+    "unchanged": "You didn't change it this time. Here's what to fix:",
+    "compareHint": "Compare with the suggestion (green = changed):",
+    "remove": "This sentence was fine — don't show it again"
+  },
+  "listening": {
+    "label": "Listening",
+    "chooseTitle": "Which sentence did you hear?",
+    "dictationTitle": "Dictation: type the sentence you hear",
+    "play": "Play",
+    "slow": "Slow",
+    "typeWhatYouHear": "Type what you hear…",
+    "check": "Check",
+    "correct": "All correct!",
+    "answerWas": "The sentence was:",
+    "missedWords": "Highlighted words were missed or misheard."
+  },
+  "taskChat": {
+    "title": "Today's task",
+    "cardTitle": "Use today's patterns in a task",
+    "cardHint": "Try to use today's {count} patterns while you chat. You'll get a summary at the end.",
+    "complete": "You used all of today's patterns!",
+    "seeSummary": "See summary",
+    "endChat": "Done — see summary",
+    "startFromPractice": "Chat using today's patterns",
+    "summaryTitle": "Chat summary",
+    "summaryIntro": "{name} put together a quick recap",
+    "patternsUsed": "Patterns used: {used} / {total}",
+    "tryNextTime": "Try the others next time.",
+    "toFix": "Things to improve",
+    "loading": "{name} is putting it together…",
+    "unavailable": "The summary isn't available right now. Try again later.",
+    "nothingToFix": "Almost nothing to fix this time. Great job!",
+    "showAnswer": "Show answer",
+    "savedForReview": "These sentences were added to your daily practice reviews.",
+    "keepChatting": "Keep chatting",
+    "backHome": "Home"
   }
 }

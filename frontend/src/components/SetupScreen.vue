@@ -18,6 +18,9 @@ import AnalyticsDashboard from './AnalyticsDashboard.vue'
 import HomeHero from './HomeHero.vue'
 import DailyOpinionCard from './DailyOpinionCard.vue'
 import DailyPracticeCard from './DailyPracticeCard.vue'
+import TaskChatCard from './TaskChatCard.vue'
+import { useTaskChatLauncher } from '../composables/useTaskChatLauncher'
+import { useDailyPractice } from '../composables/useDailyPractice'
 import WelcomeOnboarding from './WelcomeOnboarding.vue'
 
 const { t, locale } = useI18n()
@@ -133,6 +136,19 @@ const canStartLearning = computed(() => selectedLearningLevel.value && selectedT
 
 // The AI friend always speaks English while the app focuses on English
 const CHAT_LANGUAGE = 'en'
+
+// Main path: today's practice → task chat with today's patterns → retell drill.
+// Everything else (free chat setup, learning, extras) sits under "More".
+const { startTaskChat, todayPatterns } = useTaskChatLauncher()
+const { isDoneToday: practiceDone } = useDailyPractice()
+const MORE_KEY = 'chatmate_home_more_open'
+const moreOpen = ref((() => {
+  try { return localStorage.getItem(MORE_KEY) === '1' } catch { return false }
+})())
+function toggleMore() {
+  moreOpen.value = !moreOpen.value
+  try { localStorage.setItem(MORE_KEY, moreOpen.value ? '1' : '0') } catch { /* storage unavailable */ }
+}
 
 // Opinion chat entry (chat-first prototype): always English, intermediate level
 const { topic: opinionTopic } = useOpinionChat()
@@ -262,11 +278,39 @@ function handleStart() {
         </div>
       </Transition>
 
-      <!-- Practice entries: Daily Practice (patterns + words), Daily Opinion drill (3 min) + Opinion Chat.
-           Grid stretches each card full width and lets them shrink (no x-overflow). -->
+      <!-- Today's path: practice → task chat (with summary) → retell. Grid cards shrink (no x-overflow). -->
+      <section class="mb-6">
+        <h2 class="text-sm font-semibold text-text-muted dark:text-slate-400 mb-2">{{ t('home.todayPath') }}</h2>
+        <ol class="grid grid-cols-1 gap-3">
+          <li class="flex gap-2 min-w-0">
+            <span class="shrink-0 mt-4 flex items-center justify-center size-6 rounded-full bg-primary/15 text-xs font-bold text-sky-700 dark:text-primary">1</span>
+            <DailyPracticeCard class="flex-1 min-w-0" @open="router.push('/daily-practice')" />
+          </li>
+          <li class="flex gap-2 min-w-0">
+            <span class="shrink-0 mt-4 flex items-center justify-center size-6 rounded-full bg-primary/15 text-xs font-bold text-sky-700 dark:text-primary">2</span>
+            <TaskChatCard class="flex-1 min-w-0" :patterns="todayPatterns" :recommended="practiceDone" @open="startTaskChat" />
+          </li>
+          <!-- RETELL_CARD -->
+        </ol>
+      </section>
+
       <section class="grid grid-cols-1 gap-3 mb-6">
-        <DailyPracticeCard class="min-w-0" @open="router.push('/daily-practice')" />
         <DailyOpinionCard class="min-w-0" @open="router.push('/daily-opinion')" />
+      </section>
+
+      <!-- More: free chat, learning, diary and extras -->
+      <button
+        type="button"
+        @click="toggleMore"
+        :aria-expanded="moreOpen"
+        class="w-full flex items-center justify-between px-4 py-3 mb-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark text-sm font-semibold text-text-main dark:text-slate-200"
+      >
+        <span class="flex items-center gap-2"><span class="material-symbols-outlined text-[20px]">apps</span>{{ t('home.more') }}</span>
+        <span class="material-symbols-outlined text-[20px] transition-transform" :class="moreOpen ? 'rotate-180' : ''">expand_more</span>
+      </button>
+
+      <div v-show="moreOpen">
+      <section class="grid grid-cols-1 gap-3 mb-6">
         <button
           type="button"
           @click="handleStartOpinionChat"
@@ -548,7 +592,7 @@ function handleStart() {
       <button
         @click="handleStart"
         :disabled="(primaryMode === 'chat' && !canStartChat) || (primaryMode === 'learning' && !canStartLearning)"
-        class="w-full py-4 rounded-xl font-bold text-lg transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none"
+        class="start-button w-full py-4 rounded-xl font-bold text-lg transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none"
         :class="(primaryMode === 'chat' && canStartChat) || (primaryMode === 'learning' && canStartLearning) || primaryMode === 'diary'
           ? 'bg-primary text-[#0d171b] hover:bg-primary/90 hover:scale-[1.02] active:scale-[0.98]'
           : 'bg-slate-300 dark:bg-slate-700 text-slate-500 dark:text-slate-400'"
@@ -558,6 +602,7 @@ function handleStart() {
           {{ primaryMode === 'chat' ? t('setup.startChatting') : primaryMode === 'diary' ? t('diary.mode') : t('setup.startLearning') }}
         </span>
       </button>
+      </div>
     </div>
 
     <!-- Weekly Quests Panel -->

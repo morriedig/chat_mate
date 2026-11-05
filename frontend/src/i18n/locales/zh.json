@@ -660,7 +660,14 @@
     "backHome": "回首頁",
     "cardTitle": "今日練習",
     "cardSubtitle": "{patterns} 個句型 + {words} 個單字，約 10 分鐘",
-    "cardDone": "今天練完了，明天見"
+    "cardDone": "今天練完了，明天見",
+    "savedWord": "單字本的字",
+    "recallMeaning": "先想想看這個字是什麼意思，再翻開。",
+    "reveal": "翻開看看",
+    "noSavedMeaning": "存的時候沒有寫意思，想想看你在哪裡看到它。",
+    "doneExtras": "也複習了 {count} 張你自己的卡片（之前的錯誤、存下的單字）。",
+    "mistakeReview": "改改看",
+    "cardExtras": "，再加 {count} 張複習和聽力"
   },
   "voiceChat": {
     "enter": "語音對話",
@@ -687,7 +694,8 @@
     "retry": "再試一次",
     "dismiss": "關閉",
     "cancel": "取消",
-    "listening": "聆聽中…"
+    "listening": "聆聽中…",
+    "dailyLimit": "今天的 AI 用量用完了，明天再來聊吧！離線的練習還是可以做。"
   },
   "analytics": {
     "title": "學習分析",
@@ -720,7 +728,9 @@
     "streakHint": "聊天、學習或寫日記都算，做任何一項就能累積連續天數。",
     "minutes": "{count} 分",
     "goalToday": "/今天 {goal} 分",
-    "remembersYou": "{name} 記得你的一些事"
+    "remembersYou": "{name} 記得你的一些事",
+    "todayPath": "今天的路線",
+    "more": "更多（自由聊天、學習、日記…）"
   },
   "settings": {
     "title": "設定",
@@ -765,5 +775,54 @@
     "definition": "意思",
     "explanation": "說明",
     "example": "例句"
+  },
+  "mistakes": {
+    "source": {
+      "chat": "聊天時寫的",
+      "practice": "造句時寫的",
+      "diary": "日記裡寫的",
+      "summary": "聊天小結抓到的"
+    },
+    "prompt": "這句之前被朋友改過，你能自己改對嗎？",
+    "yourFix": "你的改法",
+    "compare": "對答案",
+    "showHint": "給我提示",
+    "matched": "完全正確！",
+    "unchanged": "這次沒有改，看看哪裡要改：",
+    "compareHint": "跟建議的寫法比一比（綠色是改過的地方）：",
+    "remove": "這句其實沒問題，以後不用再出現"
+  },
+  "listening": {
+    "label": "聽力",
+    "chooseTitle": "你聽到的是哪一句？",
+    "dictationTitle": "聽寫：把聽到的句子打出來",
+    "play": "播放",
+    "slow": "慢速",
+    "typeWhatYouHear": "聽到什麼就打什麼…",
+    "check": "對答案",
+    "correct": "全對！",
+    "answerWas": "正確的句子：",
+    "missedWords": "標起來的是漏掉或聽錯的字。"
+  },
+  "taskChat": {
+    "title": "今天的任務",
+    "cardTitle": "用今天的句型完成任務",
+    "cardHint": "跟朋友聊天時試著用上今天的 {count} 個句型，聊完會有小結。",
+    "complete": "今天的句型都用到了！",
+    "seeSummary": "看小結",
+    "endChat": "聊完了，看小結",
+    "startFromPractice": "用今天的句型去聊天",
+    "summaryTitle": "聊天小結",
+    "summaryIntro": "{name} 幫你整理了這次聊天",
+    "patternsUsed": "用到的句型：{used} / {total}",
+    "tryNextTime": "沒用到的下次再試試。",
+    "toFix": "可以更好的地方",
+    "loading": "{name} 正在整理……",
+    "unavailable": "現在沒辦法整理小結，晚點再試。",
+    "nothingToFix": "這次幾乎沒有要改的，很棒！",
+    "showAnswer": "看答案",
+    "savedForReview": "這些句子已加入今日練習的複習卡。",
+    "keepChatting": "繼續聊",
+    "backHome": "回首頁"
   }
 }

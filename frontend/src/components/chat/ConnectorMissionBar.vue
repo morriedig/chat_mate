@@ -18,10 +18,19 @@ const props = defineProps({
   justUsed: {
     type: String,
     default: null
+  },
+  // Task chat: the goal line, and an "end chat" button that opens the summary
+  task: {
+    type: String,
+    default: ''
+  },
+  canEnd: {
+    type: Boolean,
+    default: false
   }
 })
 
-const emit = defineEmits(['back'])
+const emit = defineEmits(['back', 'end'])
 
 const usedCount = computed(() => props.targets.filter(tg => props.usedIds.includes(tg.id)).length)
 const isComplete = computed(() => props.targets.length > 0 && usedCount.value === props.targets.length)
@@ -37,12 +46,14 @@ const isComplete = computed(() => props.targets.length > 0 && usedCount.value ==
     <div class="flex items-center justify-between gap-2 mb-1.5">
       <span class="flex items-center gap-1 text-xs font-semibold text-text-muted dark:text-slate-400">
         <span class="material-symbols-outlined text-[16px]">flag</span>
-        {{ t('mission.title') }}
+        {{ task ? t('taskChat.title') : t('mission.title') }}
       </span>
       <span class="text-xs font-semibold" :class="isComplete ? 'text-green-600 dark:text-green-400' : 'text-primary'">
         {{ usedCount }} / {{ targets.length }}
       </span>
     </div>
+
+    <p v-if="task" class="mb-1.5 text-sm font-medium text-text-main dark:text-slate-200 leading-snug">{{ task }}</p>
 
     <!-- Target chips -->
     <div class="flex flex-wrap gap-1.5">
@@ -63,17 +74,24 @@ const isComplete = computed(() => props.targets.length > 0 && usedCount.value ==
 
     <!-- Friend-style note -->
     <p v-if="isComplete" class="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-green-700 dark:text-green-300">
-      <span>{{ t('mission.complete') }}</span>
+      <span>{{ task ? t('taskChat.complete') : t('mission.complete') }}</span>
       <button
-        @click="emit('back')"
+        @click="task ? emit('end') : emit('back')"
         class="inline-flex items-center gap-0.5 text-xs font-semibold underline underline-offset-2 hover:opacity-80"
       >
-        {{ t('mission.backToLearning') }}
+        {{ task ? t('taskChat.seeSummary') : t('mission.backToLearning') }}
       </button>
     </p>
     <p v-else-if="justUsed" class="mt-2 text-sm text-primary">
       {{ t('mission.nice', { phrase: justUsed }) }}
     </p>
+    <button
+      v-if="task && canEnd && !isComplete"
+      @click="emit('end')"
+      class="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-text-muted dark:text-slate-400 underline underline-offset-2"
+    >
+      <span class="material-symbols-outlined text-[14px]">flag</span>{{ t('taskChat.endChat') }}
+    </button>
   </div>
 </template>
 

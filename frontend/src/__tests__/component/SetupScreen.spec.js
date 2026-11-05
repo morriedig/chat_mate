@@ -257,7 +257,7 @@ describe('SetupScreen', () => {
       const modeCards = wrapper.findAll('.grid.grid-cols-3 > div')
       await modeCards[0].trigger('click')
 
-      const startButton = wrapper.find('button.w-full')
+      const startButton = wrapper.find('button.start-button')
       expect(startButton.attributes('disabled')).toBeDefined()
     })
 
@@ -288,7 +288,7 @@ describe('SetupScreen', () => {
       const modeCards = wrapper.findAll('.grid.grid-cols-3 > div')
       await modeCards[2].trigger('click')
 
-      const startButton = wrapper.find('button.w-full')
+      const startButton = wrapper.find('button.start-button')
       expect(startButton.attributes('disabled')).toBeUndefined()
     })
   })
@@ -310,7 +310,7 @@ describe('SetupScreen', () => {
       await levelCards[3].trigger('click')
 
       // Click start
-      const startButton = wrapper.find('button.w-full')
+      const startButton = wrapper.find('button.start-button')
       await startButton.trigger('click')
 
       expect(mockPush).toHaveBeenCalledWith('/chat')
@@ -324,7 +324,7 @@ describe('SetupScreen', () => {
       await modeCards[2].trigger('click')
 
       // Click start
-      const startButton = wrapper.find('button.w-full')
+      const startButton = wrapper.find('button.start-button')
       await startButton.trigger('click')
 
       expect(mockPush).toHaveBeenCalledWith('/diary')

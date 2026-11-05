@@ -1,11 +1,13 @@
 <script setup>
-import { onMounted } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useDailyPractice } from '../composables/useDailyPractice'
 
 const { t } = useI18n()
 const emit = defineEmits(['open'])
 const { level, todayPatterns, todayWords, doneCount, totalCount, isDoneToday, ensureTodayPlan } = useDailyPractice()
+// Mistake, saved-word and listening cards on top of the patterns and words
+const extraCount = computed(() => totalCount.value - todayPatterns.value.length - todayWords.value.length)
 
 // Date may have rolled over since the app was opened
 onMounted(ensureTodayPlan)
@@ -40,6 +42,7 @@ onMounted(ensureTodayPlan)
           {{ isDoneToday
             ? t('dailyPractice.cardDone')
             : t('dailyPractice.cardSubtitle', { patterns: todayPatterns.length, words: todayWords.length }) }}
+          <template v-if="!isDoneToday && extraCount > 0">{{ t('dailyPractice.cardExtras', { count: extraCount }) }}</template>
         </p>
         <div v-if="todayPatterns.length" class="flex flex-wrap gap-1.5 mt-2">
           <span
