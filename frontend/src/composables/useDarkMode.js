@@ -12,7 +12,7 @@ export function useDarkMode() {
     // Update theme-color meta tag for mobile browsers
     const meta = document.querySelector('meta[name="theme-color"]')
     if (meta) {
-      meta.setAttribute('content', isDark.value ? '#101c22' : '#2badee')
+      meta.setAttribute('content', isDark.value ? '#131918' : '#F6F3EC')
     }
   }
 

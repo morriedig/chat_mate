@@ -2,9 +2,12 @@
 import { useI18n } from 'vue-i18n'
 import PwaUpdatePrompt from './components/PwaUpdatePrompt.vue'
 import { useOnlineStatus } from './composables/useOnlineStatus'
+import { useDarkMode } from './composables/useDarkMode'
 
 const { t } = useI18n()
 const { isOnline } = useOnlineStatus()
+// Apply the saved theme on every screen, not only after Home mounts
+useDarkMode()
 </script>
 
 <template>
