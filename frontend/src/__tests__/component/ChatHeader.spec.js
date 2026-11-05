@@ -1,26 +1,22 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import ChatHeader from '../../components/chat/ChatHeader.vue'
 
 // Mock vue-i18n
 vi.mock('vue-i18n', () => ({
   useI18n: () => ({
-    t: (key) => key
+    t: (key, params) => (params ? `${key}:${JSON.stringify(params)}` : key)
   })
 }))
 
 // Mock useDarkMode
+const toggleDark = vi.fn()
 vi.mock('../../composables/useDarkMode', () => ({
   useDarkMode: () => ({
     isDark: { value: false },
-    toggle: vi.fn()
+    toggle: toggleDark
   })
 }))
-
-// Mock RankBadge component
-const RankBadgeStub = {
-  template: '<div class="rank-badge-stub"></div>'
-}
 
 describe('ChatHeader', () => {
   const mockCharacter = {
@@ -41,13 +37,16 @@ describe('ChatHeader', () => {
         level: mockLevel,
         ...props
       },
-      global: {
-        stubs: {
-          RankBadge: RankBadgeStub
-        }
-      }
+      attachTo: document.body
     })
   }
+
+  const openMenu = async (props = {}) => {
+    const wrapper = createWrapper(props)
+    await wrapper.find('[aria-label="chat.menu"]').trigger('click')
+    return wrapper
+  }
+  const menuItem = (wrapper, text) => wrapper.findAll('[role="menuitem"]').find(btn => btn.text().includes(text))
 
   describe('rendering', () => {
     it('should render header element', () => {
@@ -55,135 +54,119 @@ describe('ChatHeader', () => {
       expect(wrapper.find('header').exists()).toBe(true)
     })
 
-    it('should display character avatar', () => {
+    it('should show a monogram avatar instead of the emoji', () => {
       const wrapper = createWrapper()
-      expect(wrapper.text()).toContain('🌸')
+      const avatar = wrapper.find('[role="img"]')
+      expect(avatar.text()).toBe('S')
+      expect(avatar.attributes('aria-label')).toBe('Sakura')
+      expect(wrapper.text()).not.toContain('🌸')
     })
 
-    it('should display character name', () => {
+    it('should display character name and level', () => {
       const wrapper = createWrapper()
-      expect(wrapper.text()).toContain('Sakura')
-    })
-
-    it('should display level name', () => {
-      const wrapper = createWrapper()
+      expect(wrapper.find('h1').text()).toBe('Sakura')
       expect(wrapper.text()).toContain('levels.beginner.name')
     })
 
-    it('should show online status', () => {
-      const wrapper = createWrapper()
-      expect(wrapper.text()).toContain('chat.online')
+    it('should show which conversation this is after the first', () => {
+      expect(createWrapper({ conversationCount: 1 }).text()).not.toContain('chat.conversationNumber')
+      expect(createWrapper({ conversationCount: 3 }).text()).toContain('chat.conversationNumber:{"n":3}')
     })
 
-    it('should render RankBadge component', () => {
+    it('keeps only back, friend and the overflow menu in the bar', () => {
       const wrapper = createWrapper()
-      expect(wrapper.find('.rank-badge-stub').exists()).toBe(true)
+      // No online badge, rank, streak or daily goal in a conversation header
+      expect(wrapper.text()).not.toContain('chat.online')
+      expect(wrapper.find('.rank-badge-stub').exists()).toBe(false)
+      expect(wrapper.findAll('button').length).toBe(2)
     })
   })
 
   describe('article mode', () => {
-    it('should show article mode badge when in article mode', () => {
-      const wrapper = createWrapper({ isArticleMode: true })
-      expect(wrapper.text()).toContain('chat.articleMode')
+    it('should mark article mode in the subtitle', () => {
+      expect(createWrapper({ isArticleMode: true }).text()).toContain('chat.articleMode')
+      expect(createWrapper({ isArticleMode: false }).text()).not.toContain('chat.articleMode')
     })
 
-    it('should not show article mode badge when not in article mode', () => {
-      const wrapper = createWrapper({ isArticleMode: false })
-      expect(wrapper.text()).not.toContain('chat.articleMode')
+    it('offers "hide article" or "show article" in the menu', async () => {
+      expect(menuItem(await openMenu({ isArticleMode: true, showArticle: true }), 'chat.hideArticle')).toBeTruthy()
+      expect(menuItem(await openMenu({ isArticleMode: true, showArticle: false }), 'chat.showArticle')).toBeTruthy()
+      expect(menuItem(await openMenu({ isArticleMode: false }), 'Article')).toBeUndefined()
     })
 
-    it('should show toggle article button when in article mode', () => {
-      const wrapper = createWrapper({ isArticleMode: true, showArticle: true })
-      expect(wrapper.text()).toContain('chat.hideArticle')
-    })
-
-    it('should show "Show" text when article is hidden', () => {
-      const wrapper = createWrapper({ isArticleMode: true, showArticle: false })
-      expect(wrapper.text()).toContain('chat.showArticle')
+    it('toggles the article from the menu', async () => {
+      const wrapper = await openMenu({ isArticleMode: true, showArticle: true })
+      await menuItem(wrapper, 'chat.hideArticle').trigger('click')
+      expect(wrapper.emitted('toggle-article')).toBeTruthy()
     })
   })
 
   describe('events', () => {
     it('should emit back event when back button is clicked', async () => {
       const wrapper = createWrapper()
-      const backButton = wrapper.find('button')
-      await backButton.trigger('click')
-
+      await wrapper.find('[aria-label="chat.back"]').trigger('click')
       expect(wrapper.emitted('back')).toBeTruthy()
     })
+  })
 
-    it('should emit toggle-article event when toggle button is clicked', async () => {
-      const wrapper = createWrapper({ isArticleMode: true })
-      const toggleButton = wrapper.findAll('button').find(btn => btn.text().includes('chat.hideArticle') || btn.text().includes('chat.showArticle'))
-
-      if (toggleButton) {
-        await toggleButton.trigger('click')
-        expect(wrapper.emitted('toggle-article')).toBeTruthy()
-      }
-    })
-
-    it('should emit renew-chat event when new chat button is clicked', async () => {
+  describe('overflow menu', () => {
+    it('opens and closes, reflecting state in aria-expanded', async () => {
       const wrapper = createWrapper()
-      const renewButton = wrapper.findAll('button').find(btn => btn.text().includes('chat.newChat'))
-      await renewButton.trigger('click')
+      const trigger = wrapper.find('[aria-label="chat.menu"]')
+      expect(trigger.attributes('aria-expanded')).toBe('false')
+      expect(wrapper.find('[role="menu"]').exists()).toBe(false)
 
-      expect(wrapper.emitted('renew-chat')).toBeTruthy()
-    })
-  })
+      await trigger.trigger('click')
+      expect(trigger.attributes('aria-expanded')).toBe('true')
+      expect(wrapper.find('[role="menu"]').exists()).toBe(true)
 
-  describe('loading state', () => {
-    it('should disable new chat button when loading', () => {
-      const wrapper = createWrapper({ isLoading: true })
-      const renewButton = wrapper.findAll('button').find(btn => btn.text().includes('chat.newChat'))
-
-      expect(renewButton.attributes('disabled')).toBeDefined()
+      await trigger.trigger('click')
+      expect(wrapper.find('[role="menu"]').exists()).toBe(false)
     })
 
-    it('should not disable new chat button when not loading', () => {
-      const wrapper = createWrapper({ isLoading: false })
-      const renewButton = wrapper.findAll('button').find(btn => btn.text().includes('chat.newChat'))
-
-      expect(renewButton.attributes('disabled')).toBeUndefined()
+    it('closes on Escape', async () => {
+      const wrapper = await openMenu()
+      document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }))
+      await wrapper.vm.$nextTick()
+      expect(wrapper.find('[role="menu"]').exists()).toBe(false)
     })
-  })
-
-  describe('dark mode toggle', () => {
-    it('should have dark mode toggle button', () => {
-      const wrapper = createWrapper()
-      const darkModeButton = wrapper.findAll('button').find(btn =>
-        btn.text().includes('dark_mode') || btn.text().includes('light_mode')
-      )
-
-      expect(darkModeButton).toBeTruthy()
-    })
-  })
-
-  describe('phone menu', () => {
-    const openMenu = async (props = {}) => {
-      const wrapper = createWrapper(props)
-      await wrapper.find('[aria-label="chat.menu"]').trigger('click')
-      return wrapper
-    }
-    const menuButton = (wrapper, text) => wrapper.findAll('.absolute button').find(btn => btn.text().includes(text))
 
     it('opens the vocabulary bank and closes itself', async () => {
       const wrapper = await openMenu()
-      await menuButton(wrapper, 'chat.vocabBank').trigger('click')
+      await menuItem(wrapper, 'chat.vocabBank').trigger('click')
       expect(wrapper.emitted('toggle-vocab-bank')).toBeTruthy()
-      expect(menuButton(wrapper, 'chat.vocabBank')).toBeUndefined()
+      expect(wrapper.find('[role="menu"]').exists()).toBe(false)
     })
 
     it('shows memories only when there are some', async () => {
-      expect(menuButton(await openMenu(), 'chat.memories')).toBeUndefined()
+      expect(menuItem(await openMenu(), 'chat.memories')).toBeUndefined()
       const wrapper = await openMenu({ memoryCount: 2 })
-      await menuButton(wrapper, 'chat.memories').trigger('click')
+      await menuItem(wrapper, 'chat.memories').trigger('click')
       expect(wrapper.emitted('show-memories')).toBeTruthy()
     })
 
-    it('toggles the article in article mode', async () => {
-      const wrapper = await openMenu({ isArticleMode: true, showArticle: true })
-      await menuButton(wrapper, 'chat.hideArticle').trigger('click')
-      expect(wrapper.emitted('toggle-article')).toBeTruthy()
+    it('opens achievements (moved out of the header)', async () => {
+      const wrapper = await openMenu()
+      await menuItem(wrapper, 'chat.achievements').trigger('click')
+      expect(wrapper.emitted('show-achievements')).toBeTruthy()
+    })
+
+    it('toggles dark mode', async () => {
+      const wrapper = await openMenu()
+      const item = menuItem(wrapper, 'chat.darkMode') || menuItem(wrapper, 'chat.lightMode')
+      await item.trigger('click')
+      expect(toggleDark).toHaveBeenCalled()
+    })
+
+    it('starts a new chat, disabled while loading', async () => {
+      const loading = await openMenu({ isLoading: true })
+      expect(menuItem(loading, 'chat.newChat').attributes('disabled')).toBeDefined()
+
+      const wrapper = await openMenu({ isLoading: false })
+      const renew = menuItem(wrapper, 'chat.newChat')
+      expect(renew.attributes('disabled')).toBeUndefined()
+      await renew.trigger('click')
+      expect(wrapper.emitted('renew-chat')).toBeTruthy()
     })
   })
 })

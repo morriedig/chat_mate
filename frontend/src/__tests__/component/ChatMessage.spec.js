@@ -43,15 +43,16 @@ describe('ChatMessage', () => {
       })
 
       expect(wrapper.text()).toContain('Hello there!')
-      expect(wrapper.text()).toContain('feedback.you')
     })
 
-    it('should show user avatar', () => {
+    it('should not show a "You" label or user avatar', () => {
       const wrapper = createWrapper({
         message: { role: 'user', content: 'Test' }
       })
 
-      expect(wrapper.text()).toContain('👤')
+      expect(wrapper.text()).not.toContain('feedback.you')
+      expect(wrapper.text()).not.toContain('👤')
+      expect(wrapper.find('[role="img"]').exists()).toBe(false)
     })
 
     it('should align user message to the right', () => {
@@ -62,12 +63,27 @@ describe('ChatMessage', () => {
       expect(wrapper.find('.justify-end').exists()).toBe(true)
     })
 
-    it('should apply primary background to user messages', () => {
+    it('should use the accent-soft bubble for user messages', () => {
       const wrapper = createWrapper({
         message: { role: 'user', content: 'Test' }
       })
 
-      expect(wrapper.find('.bg-primary').exists()).toBe(true)
+      expect(wrapper.find('.user-bubble.bg-accent-soft').exists()).toBe(true)
+    })
+
+    it('requests feedback on first open and retries from the panel', async () => {
+      const message = { role: 'user', content: 'I am agree' }
+      const wrapper = mount(ChatMessage, {
+        props: { message, character: mockCharacter },
+        global: { stubs: { FeedbackPanel: { template: '<button class="feedback-retry-stub" @click="$emit(\'retry\')"></button>', emits: ['retry'] } } }
+      })
+
+      await wrapper.find('.explain-toggle').trigger('click')
+      expect(wrapper.emitted('explain')).toEqual([[message]])
+      expect(wrapper.find('.explain-toggle').attributes('aria-expanded')).toBe('true')
+
+      await wrapper.find('.feedback-retry-stub').trigger('click')
+      expect(wrapper.emitted('explain')).toHaveLength(2)
     })
   })
 
@@ -81,12 +97,13 @@ describe('ChatMessage', () => {
       expect(wrapper.text()).toContain('Sakura')
     })
 
-    it('should show character avatar', () => {
+    it('should show a monogram avatar, not the emoji', () => {
       const wrapper = createWrapper({
         message: { role: 'assistant', content: 'Test' }
       })
 
-      expect(wrapper.text()).toContain('🌸')
+      expect(wrapper.find('[role="img"]').attributes('aria-label')).toBe('Sakura')
+      expect(wrapper.text()).not.toContain('🌸')
     })
 
     it('should align assistant message to the left', () => {
@@ -139,7 +156,7 @@ describe('ChatMessage', () => {
         character: { id: 'kenji', name: 'Kenji', avatar: '🎌' }
       })
 
-      expect(wrapper.text()).toContain('🎌')
+      expect(wrapper.find('[role="img"]').text()).toBe('K')
       expect(wrapper.text()).toContain('Kenji')
     })
   })
@@ -153,6 +170,8 @@ describe('ChatMessage', () => {
       expect(marks).toHaveLength(1)
       expect(marks[0].text()).toBe('so that')
       expect(marks[0].attributes('data-connector')).toBe('so-that')
+      // Underline rule, not a filled highlight
+      expect(marks[0].classes()).toContain('border-b-2')
       expect(wrapper.text()).toContain('I left early so that I could rest.')
     })
 

@@ -2,6 +2,7 @@
 import { useI18n } from 'vue-i18n'
 import { useDailyGoal } from '../../composables/useDailyGoal'
 
+// Compact daily-goal ring. Not shown in the chat header any more (DESIGN.md); kept for reuse.
 const { t } = useI18n()
 const { progress, isGoalMet, todayMinutes, goalMinutes } = useDailyGoal()
 
@@ -10,33 +11,35 @@ const circumference = 2 * Math.PI * radius
 </script>
 
 <template>
-  <div class="relative flex items-center justify-center" :title="t('dailyGoal.progress', { current: Math.floor(todayMinutes), goal: goalMinutes })">
-    <svg width="40" height="40" class="transform -rotate-90">
-      <!-- Background circle -->
+  <div
+    class="relative flex size-11 items-center justify-center"
+    role="img"
+    :aria-label="t('dailyGoal.progress', { current: Math.floor(todayMinutes), goal: goalMinutes })"
+    :title="t('dailyGoal.progress', { current: Math.floor(todayMinutes), goal: goalMinutes })"
+  >
+    <svg width="40" height="40" class="-rotate-90" aria-hidden="true">
       <circle
         :r="radius"
         cx="20" cy="20"
         fill="none"
         stroke="currentColor"
         stroke-width="3"
-        class="text-slate-200 dark:text-slate-700"
+        class="text-surface-raised"
       />
-      <!-- Progress circle -->
       <circle
         :r="radius"
         cx="20" cy="20"
         fill="none"
         stroke="currentColor"
         stroke-width="3"
-        stroke-linecap="round"
         :stroke-dasharray="circumference"
         :stroke-dashoffset="circumference * (1 - progress)"
-        class="transition-all duration-500"
-        :class="isGoalMet ? 'text-green-500' : 'text-primary'"
+        class="transition-[stroke-dashoffset] duration-[180ms]"
+        :class="isGoalMet ? 'text-success' : 'text-accent'"
       />
     </svg>
-    <span class="absolute text-[10px] font-bold" :class="isGoalMet ? 'text-green-500' : 'text-text-main dark:text-slate-200'">
-      <span v-if="isGoalMet" class="material-symbols-outlined text-xs">check</span>
+    <span class="absolute text-meta font-medium tabular-nums" :class="isGoalMet ? 'text-success' : 'text-ink'" aria-hidden="true">
+      <span v-if="isGoalMet" class="material-symbols-outlined !text-[16px]">check</span>
       <template v-else>{{ Math.floor(todayMinutes) }}</template>
     </span>
   </div>

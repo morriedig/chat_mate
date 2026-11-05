@@ -31,29 +31,29 @@ function isUnlocked(achievementId) {
     <!-- Header (screen-reader friendly text for tests) -->
     <p class="sr-only">{{ $t('achievements.unlocked') }}</p>
 
-    <!-- Progress Header -->
-    <div class="mb-5">
-      <div class="flex items-baseline justify-between mb-2">
-        <span class="text-2xl font-bold text-text-main dark:text-white">
-          {{ unlockedAchievements.length }}<span class="text-sm font-medium text-text-muted dark:text-slate-400">/{{ ACHIEVEMENTS.length }}</span>
+    <!-- Progress -->
+    <div class="mb-6">
+      <div class="mb-2 flex items-baseline justify-between">
+        <span class="text-section font-medium text-ink tabular-nums">
+          {{ unlockedAchievements.length }}<span class="text-caption font-normal text-ink-muted">/{{ ACHIEVEMENTS.length }}</span>
         </span>
-        <span class="text-sm font-semibold text-amber-500">{{ progressPercent }}%</span>
+        <span class="text-meta text-ink-muted tabular-nums">{{ progressPercent }}%</span>
       </div>
-      <div class="progress-bar-container h-2 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden">
+      <div class="progress-bar-container h-1 overflow-hidden bg-surface-raised" role="progressbar" :aria-valuenow="unlockedAchievements.length" :aria-valuemax="ACHIEVEMENTS.length">
         <div
-          class="progress-bar h-full rounded-full bg-gradient-to-r from-amber-400 to-amber-500 transition-all duration-500"
-          :style="{ width: `${progressPercent}%` }"
+          class="progress-bar h-full w-full origin-left rounded-r-[2px] bg-accent transition-transform duration-[180ms] ease-[var(--ease-cm)]"
+          :style="{ transform: `scaleX(${progressPercent / 100})` }"
         ></div>
       </div>
     </div>
 
     <!-- Categories -->
-    <div v-for="category in categories" :key="category" class="category-section mb-5 last:mb-0">
-      <div class="flex items-center justify-between mb-2">
-        <h4 class="text-[11px] font-bold uppercase tracking-wider text-text-muted dark:text-slate-500">
+    <section v-for="category in categories" :key="category" class="category-section mb-6 last:mb-0">
+      <div class="mb-2 flex items-center justify-between">
+        <h4 class="text-caption font-medium text-ink-secondary">
           {{ $t(`achievements.categories.${category}`) }}
         </h4>
-        <span class="text-[11px] text-text-muted dark:text-slate-500 font-medium">
+        <span class="text-meta text-ink-muted tabular-nums">
           {{ getUnlockedCount(category) }}/{{ getAchievementsByCategory(category).length }}
         </span>
       </div>
@@ -65,7 +65,7 @@ function isUnlocked(achievementId) {
           :is-unlocked="isUnlocked(achievement.id)"
         />
       </div>
-    </div>
+    </section>
   </div>
 </template>
 

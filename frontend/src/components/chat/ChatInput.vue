@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, computed, onBeforeUnmount } from 'vue'
+import { ref, watch, computed, nextTick, onBeforeUnmount } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
@@ -26,11 +26,21 @@ const localValue = ref(props.modelValue)
 
 watch(() => props.modelValue, (val) => {
   localValue.value = val
+  nextTick(autoGrow)
 })
+
+// Grows with the text from 48 px up to 120 px, then scrolls
+function autoGrow() {
+  const el = inputRef.value
+  if (!el) return
+  el.style.height = 'auto'
+  el.style.height = `${Math.min(el.scrollHeight, 120)}px`
+}
 
 function handleInput(e) {
   localValue.value = e.target.value
   emit('update:modelValue', e.target.value)
+  autoGrow()
 }
 
 function handleKeydown(e) {
@@ -118,47 +128,53 @@ defineExpose({ focus })
 </script>
 
 <template>
-  <div class="p-4 sm:p-6 bg-surface-light dark:bg-surface-dark border-t border-[#e7eff3] dark:border-slate-800 z-10 safe-area-bottom">
-    <div class="flex items-center gap-3 max-w-4xl mx-auto">
-      <div class="flex-1 relative">
+  <div class="chat-composer z-10 shrink-0 border-t border-hairline bg-surface px-3 pt-3 pb-[max(12px,env(safe-area-inset-bottom))] sm:px-6">
+    <div class="mx-auto max-w-4xl">
+      <slot name="top" />
+      <div class="flex items-end gap-2">
         <textarea
           ref="inputRef"
           :value="localValue"
           @input="handleInput"
           @keydown="handleKeydown"
           :disabled="disabled"
-          class="w-full resize-none rounded-2xl border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-[#1e2930] text-text-main dark:text-white px-4 py-3 pr-12 text-base focus:border-primary focus:ring-1 focus:ring-primary dark:focus:ring-primary placeholder-slate-400 disabled:opacity-50"
+          :aria-label="t('chat.typeMessage')"
+          class="block min-h-12 min-w-0 flex-1 resize-none rounded-[10px] border border-hairline bg-surface-sunken px-3.5 py-[11px] text-[16px] leading-6 text-ink placeholder:text-ink-muted focus:border-accent focus:outline-none disabled:opacity-55"
           :placeholder="t('chat.typeMessage')"
           rows="1"
-          style="min-height: 50px; max-height: 150px;"
+          style="max-height: 120px;"
         ></textarea>
-      </div>
-      <!-- Mic Button -->
-      <button
-        v-if="speechSupported"
-        @click="toggleSpeech"
-        :disabled="disabled"
-        :aria-label="isListening ? t('common.stopVoiceInput') : t('common.startVoiceInput')"
-        class="shrink-0 flex items-center justify-center size-12 rounded-full transition-all disabled:opacity-50"
-        :class="isListening
-          ? 'bg-red-500 text-white animate-pulse shadow-lg shadow-red-500/30'
-          : 'bg-slate-100 dark:bg-slate-800 text-text-muted dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'"
-      >
-        <span class="material-symbols-outlined text-[22px]">{{ isListening ? 'mic_off' : 'mic' }}</span>
-      </button>
+        <!-- Mic: static listening state, no pulse -->
+        <button
+          v-if="speechSupported"
+          type="button"
+          @click="toggleSpeech"
+          :disabled="disabled"
+          :aria-label="isListening ? t('common.stopVoiceInput') : t('common.startVoiceInput')"
+          :aria-pressed="isListening"
+          class="chat-mic flex size-12 shrink-0 items-center justify-center rounded-[10px] border disabled:opacity-55"
+          :class="isListening
+            ? 'is-listening border-error/30 bg-error-soft text-error'
+            : 'border-hairline bg-surface-raised text-ink-secondary active:bg-surface-sunken'"
+        >
+          <span class="material-symbols-outlined" aria-hidden="true">{{ isListening ? 'stop' : 'mic' }}</span>
+        </button>
 
-      <!-- Send Button -->
-      <button
-        @click="emit('send')"
-        :disabled="!localValue.trim() || disabled"
-        :aria-label="t('chat.sendMessage')"
-        class="shrink-0 flex items-center justify-center size-12 rounded-full bg-primary text-[#0d171b] shadow-lg hover:bg-primary/90 hover:scale-105 active:scale-95 transition-all disabled:opacity-50 disabled:hover:scale-100"
-      >
-        <span class="material-symbols-outlined icon-filled text-[24px]">send</span>
-      </button>
-    </div>
-    <div class="hidden sm:block text-center mt-2">
-      <p class="text-[11px] text-slate-400 dark:text-slate-500">{{ t('chat.enterHint') }}</p>
+        <!-- Send -->
+        <button
+          type="button"
+          @click="emit('send')"
+          :disabled="!localValue.trim() || disabled"
+          :aria-label="t('chat.sendMessage')"
+          class="chat-send flex size-12 shrink-0 items-center justify-center rounded-[10px] bg-accent text-on-accent active:bg-accent-pressed disabled:bg-accent-disabled disabled:opacity-55"
+        >
+          <span class="material-symbols-outlined" aria-hidden="true">send</span>
+        </button>
+      </div>
+      <p v-if="isListening" class="mt-2 flex items-center gap-2 text-meta text-error" role="status">
+        <span class="size-2 rounded-full bg-error" aria-hidden="true"></span>{{ t('voiceChat.listening') }}
+      </p>
+      <p class="mt-2 hidden text-center text-meta text-ink-muted sm:block">{{ t('chat.enterHint') }}</p>
     </div>
   </div>
 </template>

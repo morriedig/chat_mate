@@ -1,9 +1,8 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed, nextTick, onBeforeUnmount } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useDarkMode } from '../../composables/useDarkMode'
-import RankBadge from './RankBadge.vue'
-import DailyGoalRing from './DailyGoalRing.vue'
+import CmAvatar from '../ui/CmAvatar.vue'
 
 const { t } = useI18n()
 const { isDark, toggle: toggleDark } = useDarkMode()
@@ -39,101 +38,111 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['back', 'toggle-article', 'renew-chat', 'toggle-vocab-bank', 'show-memories'])
+const emit = defineEmits(['back', 'toggle-article', 'renew-chat', 'toggle-vocab-bank', 'show-memories', 'show-achievements'])
 
-// On phones the header only has room for the goal ring and rank, so the rest lives in a menu
+// Second line: level, then article mode or which conversation this is
+const subtitle = computed(() => {
+  const parts = [t(`levels.${props.level.id}.name`)]
+  if (props.isArticleMode) parts.push(t('chat.articleMode'))
+  else if (props.conversationCount > 1) parts.push(t('chat.conversationNumber', { n: props.conversationCount }))
+  return parts.join(' · ')
+})
+
+// Everything except back and the friend lives in one overflow menu
 const menuOpen = ref(false)
-function pick(action) {
+const menuRef = ref(null)
+const triggerRef = ref(null)
+
+function onKeydown(e) {
+  if (e.key === 'Escape') closeMenu()
+}
+
+async function openMenu() {
+  menuOpen.value = true
+  document.addEventListener('keydown', onKeydown)
+  await nextTick()
+  menuRef.value?.querySelector('button')?.focus()
+}
+
+function closeMenu(returnFocus = true) {
+  if (!menuOpen.value) return
   menuOpen.value = false
+  document.removeEventListener('keydown', onKeydown)
+  if (returnFocus) triggerRef.value?.focus()
+}
+
+function toggleMenu() {
+  menuOpen.value ? closeMenu() : openMenu()
+}
+
+function pick(action) {
+  closeMenu(false)
   action()
 }
+
+onBeforeUnmount(() => document.removeEventListener('keydown', onKeydown))
+
+const rowClass = 'flex min-h-11 w-full items-center gap-3 px-4 text-left active:bg-surface-raised'
 </script>
 
 <template>
-  <header class="flex items-center justify-between border-b border-[#e7eff3] dark:border-slate-800 px-3 sm:px-6 py-3 sm:py-4 bg-surface-light dark:bg-surface-dark z-10 shadow-sm relative safe-area-top">
-    <div class="flex items-center gap-2 sm:gap-3 text-text-main dark:text-white min-w-0 shrink">
-      <button @click="emit('back')" class="flex items-center justify-center shrink-0">
-        <span class="material-symbols-outlined cursor-pointer">arrow_back</span>
+  <header class="safe-area-top relative z-20 shrink-0 border-b border-hairline bg-surface">
+    <div class="flex min-h-14 items-center gap-1 px-1 sm:px-3">
+      <button
+        type="button"
+        @click="emit('back')"
+        :aria-label="t('chat.back')"
+        class="inline-flex size-11 shrink-0 items-center justify-center rounded-[10px] text-ink active:bg-surface-raised"
+      >
+        <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
       </button>
-      <div class="flex items-center justify-center rounded-full size-8 sm:size-10 shrink-0 shadow-sm border-2 border-white dark:border-slate-700 bg-slate-100 dark:bg-slate-800 text-xl sm:text-2xl">
-        {{ character.avatar }}
+      <CmAvatar :name="character.name" :size="40" />
+      <div class="min-w-0 flex-1 px-2">
+        <h1 class="truncate text-title font-medium text-ink">{{ character.name }}</h1>
+        <p class="truncate text-meta text-ink-muted tabular-nums">{{ subtitle }}</p>
       </div>
-      <div class="flex flex-col min-w-0">
-        <h2 class="text-sm sm:text-base font-bold leading-tight tracking-[-0.015em] truncate">{{ character.name }}</h2>
-        <span class="text-xs text-text-muted dark:text-slate-400 truncate">
-          {{ t(`levels.${level.id}.name`) }}
-          <span v-if="conversationCount > 1" class="ml-1">· #{{ conversationCount }}</span>
-        </span>
-      </div>
-      <span class="hidden sm:inline px-2 py-0.5 rounded-full bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 text-xs font-semibold shrink-0">{{ t('chat.online') }}</span>
-      <span v-if="isArticleMode" class="hidden sm:inline px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 text-xs font-semibold shrink-0">{{ t('chat.articleMode') }}</span>
       <button
-        v-if="memoryCount > 0"
-        @click="emit('show-memories')"
-        class="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 text-xs font-semibold shrink-0 hover:bg-amber-200 dark:hover:bg-amber-900/60 transition-colors"
-        :title="`${character.name} remembers ${memoryCount} thing${memoryCount === 1 ? '' : 's'} about you`"
-      >
-        <span class="material-symbols-outlined text-[14px]">favorite</span>
-        {{ memoryCount }}
-      </button>
-    </div>
-    <div class="flex items-center gap-1 sm:gap-2 shrink-0">
-      <DailyGoalRing />
-      <RankBadge />
-      <button
-        @click="emit('toggle-vocab-bank')"
-        class="hidden sm:flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-text-main dark:text-slate-200 transition-colors"
-      >
-        <span class="material-symbols-outlined text-[18px]">book</span>
-      </button>
-      <button
-        @click="toggleDark"
-        class="hidden sm:flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-text-main dark:text-slate-200 transition-colors"
-      >
-        <span class="material-symbols-outlined text-[18px]">{{ isDark ? 'light_mode' : 'dark_mode' }}</span>
-      </button>
-      <button
-        v-if="isArticleMode"
-        @click="emit('toggle-article')"
-        class="hidden sm:flex h-9 px-3 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-text-main dark:text-slate-200 text-sm font-medium transition-colors"
-      >
-        <span class="mr-1 material-symbols-outlined text-[18px]">article</span>
-        {{ showArticle ? t('chat.hideArticle') : t('chat.showArticle') }}
-      </button>
-      <button
-        @click="emit('renew-chat')"
-        :disabled="isLoading"
-        class="hidden sm:flex h-9 w-9 sm:w-auto sm:px-3 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-text-main dark:text-slate-200 text-sm font-medium transition-colors disabled:opacity-50 shrink-0"
-      >
-        <span class="material-symbols-outlined text-[18px]">refresh</span>
-        <span class="hidden sm:inline ml-1">{{ t('chat.newChat') }}</span>
-      </button>
-      <button
-        @click="menuOpen = !menuOpen"
-        class="sm:hidden flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 text-text-main dark:text-slate-200 shrink-0"
+        ref="triggerRef"
+        type="button"
+        @click="toggleMenu"
+        class="inline-flex size-11 shrink-0 items-center justify-center rounded-[10px] text-ink-secondary active:bg-surface-raised"
+        :class="menuOpen ? 'bg-surface-raised' : ''"
         :aria-label="t('chat.menu')"
+        aria-haspopup="menu"
         :aria-expanded="menuOpen"
       >
-        <span class="material-symbols-outlined text-[20px]">more_vert</span>
+        <span class="material-symbols-outlined" aria-hidden="true">more_vert</span>
       </button>
     </div>
+
     <template v-if="menuOpen">
-      <div class="fixed inset-0 z-40 sm:hidden" @click="menuOpen = false"></div>
-      <div class="absolute right-3 top-full mt-1 z-50 sm:hidden w-56 max-w-[calc(100vw-1.5rem)] py-1 rounded-xl bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-700 shadow-lg text-sm text-text-main dark:text-slate-200">
-        <button @click="pick(() => emit('toggle-vocab-bank'))" class="w-full flex items-center gap-3 px-4 py-2.5 text-left">
-          <span class="material-symbols-outlined text-[20px]">book</span>{{ t('chat.vocabBank') }}
+      <div class="fixed inset-0 z-40" @click="closeMenu()" aria-hidden="true"></div>
+      <div
+        ref="menuRef"
+        role="menu"
+        :aria-label="t('chat.menu')"
+        class="chat-menu absolute right-2 top-full z-50 mt-1 w-56 max-w-[calc(100vw-1rem)] rounded-[10px] border border-hairline bg-surface py-2 text-body text-ink shadow-[var(--cm-shadow-float)]"
+      >
+        <button role="menuitem" type="button" @click="pick(() => emit('toggle-vocab-bank'))" :class="rowClass">
+          <span class="material-symbols-outlined text-ink-muted" aria-hidden="true">bookmarks</span>{{ t('chat.vocabBank') }}
         </button>
-        <button v-if="memoryCount > 0" @click="pick(() => emit('show-memories'))" class="w-full flex items-center gap-3 px-4 py-2.5 text-left">
-          <span class="material-symbols-outlined text-[20px]">favorite</span><span class="min-w-0 truncate">{{ t('chat.memories', { name: character.name }) }} ({{ memoryCount }})</span>
+        <button v-if="memoryCount > 0" role="menuitem" type="button" @click="pick(() => emit('show-memories'))" :class="rowClass">
+          <span class="material-symbols-outlined text-ink-muted" aria-hidden="true">psychology</span>
+          <span class="min-w-0 flex-1 truncate">{{ t('chat.memories', { name: character.name }) }}</span>
+          <span class="text-meta text-ink-muted tabular-nums">{{ memoryCount }}</span>
         </button>
-        <button v-if="isArticleMode" @click="pick(() => emit('toggle-article'))" class="w-full flex items-center gap-3 px-4 py-2.5 text-left">
-          <span class="material-symbols-outlined text-[20px]">article</span>{{ showArticle ? t('chat.hideArticle') : t('chat.showArticle') }}
+        <button v-if="isArticleMode" role="menuitem" type="button" @click="pick(() => emit('toggle-article'))" :class="rowClass">
+          <span class="material-symbols-outlined text-ink-muted" aria-hidden="true">article</span>{{ showArticle ? t('chat.hideArticle') : t('chat.showArticle') }}
         </button>
-        <button @click="pick(toggleDark)" class="w-full flex items-center gap-3 px-4 py-2.5 text-left">
-          <span class="material-symbols-outlined text-[20px]">{{ isDark ? 'light_mode' : 'dark_mode' }}</span>{{ isDark ? t('chat.lightMode') : t('chat.darkMode') }}
+        <button role="menuitem" type="button" @click="pick(() => emit('show-achievements'))" :class="rowClass">
+          <span class="material-symbols-outlined text-ink-muted" aria-hidden="true">military_tech</span>{{ t('chat.achievements') }}
         </button>
-        <button :disabled="isLoading" @click="pick(() => emit('renew-chat'))" class="w-full flex items-center gap-3 px-4 py-2.5 text-left disabled:opacity-50">
-          <span class="material-symbols-outlined text-[20px]">refresh</span>{{ t('chat.newChat') }}
+        <button role="menuitem" type="button" @click="pick(toggleDark)" :class="rowClass">
+          <span class="material-symbols-outlined text-ink-muted" aria-hidden="true">{{ isDark ? 'light_mode' : 'dark_mode' }}</span>{{ isDark ? t('chat.lightMode') : t('chat.darkMode') }}
+        </button>
+        <div class="my-2 border-t border-hairline" role="separator"></div>
+        <button role="menuitem" type="button" :disabled="isLoading" @click="pick(() => emit('renew-chat'))" :class="[rowClass, 'disabled:opacity-55']">
+          <span class="material-symbols-outlined text-ink-muted" aria-hidden="true">refresh</span>{{ t('chat.newChat') }}
         </button>
       </div>
     </template>

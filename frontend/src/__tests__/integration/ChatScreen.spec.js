@@ -163,7 +163,7 @@ describe('ChatScreen', () => {
           WordSavePopup: true,
           VocabularyBankPanel: true,
           DailyPromptCard: true,
-          MicroReward: true,
+          AchievementsPanel: { name: 'AchievementsPanel', template: '<div class="achievements-panel-stub"></div>' },
           Teleport: true
         }
       }
@@ -195,8 +195,7 @@ describe('ChatScreen', () => {
     it('should show date separator', () => {
       const wrapper = createWrapper()
       // The date separator shows a formatted date (e.g., "Mar 15"), not "Today"
-      // Just verify the date separator element exists
-      expect(wrapper.find('.text-xs.font-medium.text-slate-400').exists()).toBe(true)
+      expect(wrapper.find('.chat-date').text()).not.toBe('')
     })
   })
 
@@ -272,7 +271,63 @@ describe('ChatScreen', () => {
       const wrapper = createWrapper()
       // Error banner is conditionally rendered via v-if="errorMessage"
       // When no error, it should not be visible
-      expect(wrapper.find('.bg-red-100').exists()).toBe(false)
+      expect(wrapper.find('.chat-error').exists()).toBe(false)
+    })
+  })
+
+  describe('article layout', () => {
+    const mockArticle = { id: 'article-1', title: 'Test Article', content: 'Article content here' }
+    const setWide = (matches) => {
+      window.matchMedia = vi.fn(() => ({ matches, addEventListener: vi.fn(), removeEventListener: vi.fn() }))
+    }
+
+    it('opens the article as a full-height sheet on phones and closes it from the sheet', async () => {
+      setWide(false)
+      const wrapper = createWrapper({ mode: 'article', article: mockArticle })
+
+      expect(wrapper.find('.article-sheet .article-panel-stub').exists()).toBe(true)
+      await wrapper.find('.article-sheet button').trigger('click')
+      expect(wrapper.find('.article-sheet').exists()).toBe(false)
+
+      // "Article" in the overflow menu brings it back
+      wrapper.findComponent(ChatHeaderStub).vm.$emit('toggle-article')
+      await wrapper.vm.$nextTick()
+      expect(wrapper.find('.article-sheet').exists()).toBe(true)
+      delete window.matchMedia
+    })
+
+    it('uses a split view on wide screens', () => {
+      setWide(true)
+      const wrapper = createWrapper({ mode: 'article', article: mockArticle })
+
+      expect(wrapper.find('.article-sheet').exists()).toBe(false)
+      expect(wrapper.find('.article-panel-stub').exists()).toBe(true)
+      delete window.matchMedia
+    })
+  })
+
+  describe('header actions', () => {
+    it('opens achievements from the overflow menu', async () => {
+      const wrapper = createWrapper()
+      expect(wrapper.findComponent({ name: 'AchievementsPanel' }).exists()).toBe(false)
+
+      wrapper.findComponent(ChatHeaderStub).vm.$emit('show-achievements')
+      await wrapper.vm.$nextTick()
+
+      expect(wrapper.findComponent({ name: 'AchievementsPanel' }).exists()).toBe(true)
+    })
+  })
+
+  describe('opinion chat', () => {
+    it('shows the topic in the shared mission strip, not a second topic bar', () => {
+      const wrapper = createWrapper({ mode: 'opinion' })
+      const strip = wrapper.find('.opinion-topic-bar')
+
+      expect(strip.exists()).toBe(true)
+      expect(strip.find('h2').text()).toContain('opinionChat.topicLabel')
+      expect(strip.find('.mission-end').text()).toBe('opinionChat.endChat')
+      // Disabled until the user has said something
+      expect(strip.find('.mission-end').attributes('disabled')).toBeDefined()
     })
   })
 

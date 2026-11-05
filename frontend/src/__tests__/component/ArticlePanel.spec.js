@@ -110,20 +110,22 @@ describe('ArticlePanel', () => {
 
     it('should render vocabulary cards', () => {
       const wrapper = createWrapper()
-      const vocabCards = wrapper.findAll('.bg-white.border')
+      const vocabCards = wrapper.findAll('.article-keyword')
       expect(vocabCards.length).toBe(2)
     })
   })
 
   describe('responsive design', () => {
-    it('should have width constraints', () => {
+    it('should be a fixed-width column in the split view', () => {
       const wrapper = createWrapper()
-      expect(wrapper.find('.lg\\:w-\\[500px\\]').exists()).toBe(true)
+      expect(wrapper.classes()).toContain('w-[460px]')
+      expect(wrapper.classes()).toContain('border-r')
     })
 
-    it('should have max height on mobile', () => {
-      const wrapper = createWrapper()
-      expect(wrapper.find('.max-h-64').exists()).toBe(true)
+    it('should fill the phone sheet without the split-view width', () => {
+      const wrapper = createWrapper({ inSheet: true })
+      expect(wrapper.classes()).toContain('h-full')
+      expect(wrapper.classes()).not.toContain('w-[460px]')
     })
   })
 

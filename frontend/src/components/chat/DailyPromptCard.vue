@@ -55,40 +55,40 @@ const todayPrompt = computed(() => {
 </script>
 
 <template>
-  <div class="mx-auto max-w-md w-full">
-    <div class="relative bg-gradient-to-r from-primary/10 to-sky-400/10 dark:from-primary/20 dark:to-sky-400/20 border border-primary/20 dark:border-primary/30 rounded-2xl p-4">
-      <!-- Dismiss -->
-      <button
-        @click="emit('dismiss')"
-        class="absolute top-2 right-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
-        :aria-label="t('common.dismissPrompt')"
-      >
-        <span class="material-symbols-outlined text-[18px]">close</span>
-      </button>
-
-      <!-- Icon + Label -->
-      <div class="flex items-center gap-2 mb-2">
-        <span class="material-symbols-outlined text-primary text-[20px]">lightbulb</span>
-        <span class="text-xs font-semibold text-primary uppercase tracking-wider">{{ t('dailyPrompt.label') }}</span>
+  <div class="daily-prompt mx-auto w-full max-w-md">
+    <!-- Shown once inside the message stream, before the first user turn -->
+    <div class="relative rounded-[14px] border border-hairline bg-surface py-3 pl-4 pr-1 shadow-[var(--cm-shadow-small)]">
+      <span class="absolute left-0 top-3.5 h-9 w-[3px] rounded-r-[3px] bg-accent" aria-hidden="true"></span>
+      <div class="flex items-start gap-2">
+        <div class="min-w-0 flex-1 pt-0.5">
+          <p class="text-meta font-medium text-ink-secondary">{{ t('dailyPrompt.label') }}</p>
+          <p class="mt-1 text-body text-ink">{{ todayPrompt }}</p>
+        </div>
+        <button
+          type="button"
+          @click="emit('dismiss')"
+          class="-mt-1 flex size-11 shrink-0 items-center justify-center rounded-[10px] text-ink-muted active:bg-surface-raised"
+          :aria-label="t('common.dismissPrompt')"
+        >
+          <span class="material-symbols-outlined !text-[18px]" aria-hidden="true">close</span>
+        </button>
       </div>
 
-      <!-- Prompt Text -->
-      <p class="text-sm text-text-main dark:text-white font-medium mb-3 pr-6">{{ todayPrompt }}</p>
-
-      <!-- Action Buttons -->
-      <div class="flex items-center gap-4">
+      <div class="mt-1 flex flex-wrap items-center gap-x-4">
         <button
+          type="button"
           @click="emit('use-prompt', todayPrompt)"
-          class="text-xs font-semibold text-primary hover:text-primary/80 transition-colors flex items-center gap-1"
+          class="-ml-1 inline-flex min-h-11 items-center gap-1 rounded-[10px] px-1 text-caption font-medium text-accent"
         >
-          <span class="material-symbols-outlined text-[16px]">edit</span>
+          <span class="material-symbols-outlined !text-[18px]" aria-hidden="true">edit</span>
           {{ t('dailyPrompt.tryIt') }}
         </button>
         <button
+          type="button"
           @click="router.push({ path: '/diary', query: { prompt: todayPrompt } })"
-          class="text-xs font-semibold text-primary hover:text-primary/80 transition-colors flex items-center gap-1"
+          class="inline-flex min-h-11 items-center gap-1 rounded-[10px] px-1 text-caption font-medium text-accent"
         >
-          <span class="material-symbols-outlined text-[16px]">menu_book</span>
+          <span class="material-symbols-outlined !text-[18px]" aria-hidden="true">menu_book</span>
           {{ t('diary.writeInDiary') }}
         </button>
       </div>

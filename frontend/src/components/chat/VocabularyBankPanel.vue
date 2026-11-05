@@ -2,6 +2,8 @@
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useVocabularyBank } from '../../composables/useVocabularyBank'
+import CmBottomSheet from '../ui/CmBottomSheet.vue'
+import CmStateBlock from '../ui/CmStateBlock.vue'
 
 const { t } = useI18n()
 const emit = defineEmits(['close'])
@@ -17,112 +19,65 @@ function handleRemove(id) {
 </script>
 
 <template>
-  <Teleport to="body">
-    <Transition name="slide">
-      <div class="fixed inset-0 z-50 flex justify-end">
-        <!-- Backdrop -->
-        <div class="absolute inset-0 bg-black/30" @click="emit('close')" />
+  <CmBottomSheet
+    :title="t('vocabBank.title')"
+    :description="t('vocabBank.wordCount', { count: wordCount })"
+    :close-label="t('chat.close')"
+    @close="emit('close')"
+  >
+    <div class="vocab-bank-panel">
+      <!-- Search -->
+      <label class="relative mb-3 block">
+        <span class="sr-only">{{ t('vocabBank.search') }}</span>
+        <span class="material-symbols-outlined pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-ink-muted" aria-hidden="true">search</span>
+        <input
+          v-model="searchQuery"
+          type="search"
+          :placeholder="t('vocabBank.search')"
+          class="block min-h-11 w-full rounded-[10px] border border-hairline bg-surface-sunken pl-10 pr-3 text-[16px] text-ink placeholder:text-ink-muted focus:border-accent focus:outline-none"
+        />
+      </label>
 
-        <!-- Panel -->
-        <div class="relative w-full max-w-md h-full bg-white dark:bg-slate-900 shadow-xl flex flex-col">
-          <!-- Header -->
-          <div class="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-700">
-            <div>
-              <h2 class="text-lg font-bold text-text-main dark:text-slate-200">
-                {{ t('vocabBank.title') }}
-              </h2>
-              <p class="text-xs text-text-muted dark:text-slate-400">
-                {{ t('vocabBank.wordCount', { count: wordCount }) }}
-              </p>
-            </div>
-            <button
-              @click="emit('close')"
-              class="material-symbols-outlined text-xl text-text-muted dark:text-slate-400 hover:text-text-main dark:hover:text-slate-200"
-            >
-              close
-            </button>
+      <!-- Empty (no search) -->
+      <CmStateBlock
+        v-if="filteredWords.length === 0 && !searchQuery"
+        icon="bookmark_add"
+        :title="t('vocabBank.empty')"
+        :body="t('vocabBank.emptyHint')"
+      />
+      <!-- Empty (with search) -->
+      <CmStateBlock
+        v-else-if="filteredWords.length === 0 && searchQuery"
+        icon="search_off"
+        :title="t('vocabBank.noResults')"
+        :action="t('vocabBank.clearSearch')"
+        @action="searchQuery = ''"
+      />
+
+      <ul v-else class="divide-y divide-hairline overflow-hidden rounded-[14px] border border-hairline">
+        <li
+          v-for="entry in filteredWords"
+          :key="entry.id"
+          class="flex items-start gap-2 bg-surface py-2 pl-3 pr-1"
+        >
+          <div class="min-w-0 flex-1 py-1">
+            <p class="break-words">
+              <span class="text-body font-medium text-ink">{{ entry.word }}</span>
+              <span v-if="entry.translation" class="ml-2 text-caption text-ink-secondary">{{ entry.translation }}</span>
+            </p>
+            <p v-if="entry.context" class="mt-0.5 truncate text-caption text-ink-muted">“{{ entry.context }}”</p>
+            <p class="mt-0.5 text-meta text-ink-muted tabular-nums">{{ entry.source }} · {{ entry.addedAt }}</p>
           </div>
-
-          <!-- Search -->
-          <div class="p-3 border-b border-slate-100 dark:border-slate-800">
-            <div class="relative">
-              <span class="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-sm text-text-muted dark:text-slate-500">search</span>
-              <input
-                v-model="searchQuery"
-                :placeholder="t('vocabBank.search')"
-                class="w-full text-sm py-2 pl-8 pr-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-text-main dark:text-slate-200 focus:outline-none focus:border-primary"
-              />
-            </div>
-          </div>
-
-          <!-- Word List -->
-          <div class="flex-1 overflow-y-auto p-3 space-y-2">
-            <!-- Empty (no search) -->
-            <div v-if="filteredWords.length === 0 && !searchQuery" class="flex flex-col items-center justify-center py-12 px-4 text-center">
-              <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/10 flex items-center justify-center mb-4">
-                <span class="material-symbols-outlined text-3xl text-primary">bookmark_add</span>
-              </div>
-              <h3 class="text-sm font-semibold text-text-main dark:text-slate-200 mb-1">
-                {{ t('vocabBank.empty') }}
-              </h3>
-              <p class="text-xs text-text-muted dark:text-slate-400 max-w-xs leading-relaxed">
-                {{ t('vocabBank.emptyHint') }}
-              </p>
-            </div>
-            <!-- Empty (with search) -->
-            <div v-else-if="filteredWords.length === 0 && searchQuery" class="text-center py-10">
-              <span class="material-symbols-outlined text-4xl text-slate-300 dark:text-slate-600 mb-2 block">search_off</span>
-              <p class="text-sm text-text-muted dark:text-slate-400">
-                {{ t('vocabBank.noResults') }}
-              </p>
-              <button @click="searchQuery = ''" class="mt-2 text-xs text-primary hover:underline">{{ t('vocabBank.clearSearch') }}</button>
-            </div>
-
-            <div
-              v-for="entry in filteredWords"
-              :key="entry.id"
-              class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700"
-            >
-              <div class="flex items-start justify-between gap-2">
-                <div class="min-w-0 flex-1">
-                  <span class="font-semibold text-sm text-text-main dark:text-slate-200">{{ entry.word }}</span>
-                  <span v-if="entry.translation" class="text-xs text-text-muted dark:text-slate-400 ml-2">{{ entry.translation }}</span>
-                </div>
-                <button
-                  @click="handleRemove(entry.id)"
-                  class="material-symbols-outlined text-base text-slate-400 hover:text-red-500 transition-colors shrink-0"
-                >
-                  delete
-                </button>
-              </div>
-              <p v-if="entry.context" class="text-xs text-text-muted dark:text-slate-400 mt-1 italic truncate">
-                "{{ entry.context }}"
-              </p>
-              <div class="flex items-center gap-2 mt-1.5">
-                <span class="text-[10px] px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-text-muted dark:text-slate-400">
-                  {{ entry.source }}
-                </span>
-                <span class="text-[10px] text-text-muted dark:text-slate-500">{{ entry.addedAt }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </Transition>
-  </Teleport>
+          <button
+            type="button"
+            @click="handleRemove(entry.id)"
+            :aria-label="`${t('vocabBank.remove')} ${entry.word}`"
+            class="flex size-11 shrink-0 items-center justify-center rounded-[10px] text-ink-muted active:bg-surface-raised"
+          >
+            <span class="material-symbols-outlined" aria-hidden="true">delete</span>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </CmBottomSheet>
 </template>
-
-<style scoped>
-.slide-enter-active,
-.slide-leave-active {
-  transition: all 0.3s ease;
-}
-.slide-enter-from,
-.slide-leave-to {
-  opacity: 0;
-}
-.slide-enter-from > div:last-child,
-.slide-leave-to > div:last-child {
-  transform: translateX(100%);
-}
-</style>

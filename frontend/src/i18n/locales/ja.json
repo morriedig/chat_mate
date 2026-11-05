@@ -45,11 +45,11 @@
     "settings": "設定"
   },
   "chat": {
-    "typeMessage": "メッセージを入力...",
+    "typeMessage": "メッセージを入力",
     "send": "送信",
-    "tryUsing": "使ってみよう:",
+    "tryUsing": "使える文型",
     "articleMode": "記事",
-    "rateLimitError": "ちょっと休憩が必要！メッセージが多すぎました。少し待ってからもう一度試してください。",
+    "rateLimitError": "メッセージが多すぎました。少し待ってからもう一度試してください。",
     "genericError": "うーん、何か問題が起きました。もう一度試してみましょう？",
     "menu": "その他",
     "vocabBank": "単語帳",
@@ -63,7 +63,14 @@
     "online": "オンライン",
     "enterHint": "Enterで送信、Shift+Enterで改行",
     "sendMessage": "メッセージを送信",
-    "typing": "が入力中…"
+    "typing": "{name}が返信中",
+    "sendFailed": "メッセージを送信できませんでした",
+    "conversationNumber": "{n}回目の会話",
+    "achievements": "実績",
+    "achievementsDescription": "これまでに解除した実績と進み具合。",
+    "articleSheet": "読んだら{name}と話そう",
+    "back": "戻る",
+    "close": "閉じる"
   },
   "articles": {
     "title": "記事を選ぶ",
@@ -117,22 +124,22 @@
   "rank": {
     "totalXP": "合計 {xp} XP",
     "nextLevel": "次のレベル",
-    "maxLevel": "最高レベル達成！",
+    "maxLevel": "最高レベルに到達",
     "messagesSent": "{count} メッセージ送信",
     "streak": "{count} 日連続",
     "days": "日",
     "currentStreak": "{count} 日連続",
     "longestStreak": "最高: {count} 日",
-    "levelUp": "レベルアップ！",
-    "continue": "学習を続ける！",
-    "streakBonus": "連続ボーナス！",
-    "streakMilestone": "{days} 日連続達成！",
+    "levelUp": "新しいランク",
+    "continue": "続ける",
+    "streakBonus": "連続ボーナス",
+    "streakMilestone": "{days} 日連続",
     "streakFreeze": "ストリークフリーズ {count} 個",
     "streakFreezeUsed": "フリーズを使用！連続記録は守られました。"
   },
   "achievements": {
-    "unlocked": "実績解除！",
-    "continue": "すごい！",
+    "unlocked": "実績を解除",
+    "continue": "続ける",
     "categories": {
       "first_steps": "はじめの一歩",
       "consistency": "継続",
@@ -259,7 +266,9 @@
       "title": "百人書記",
       "description": "日記を100回書く",
       "hint": "100回日記を書いて解除"
-    }
+    },
+    "unlockedState": "解除済み",
+    "lockedState": "未解除"
   },
   "ranks": {
     "novice": "初心者",
@@ -368,18 +377,21 @@
     "alreadySaved": "保存済み",
     "addTranslation": "翻訳を追加（任意）",
     "emptyHint": "チャットの単語をタップするとここに保存できます。保存した単語は学習モードで間隔をあけて復習できます。",
-    "clearSearch": "検索をクリア"
+    "clearSearch": "検索をクリア",
+    "sheetDescription": "単語帳に保存して、あとで復習できます。",
+    "context": "出てきた文"
   },
   "feedback": {
     "you": "あなた",
     "explain": "解説",
-    "analyzing": "メッセージを分析中...",
+    "analyzing": "メッセージを確認中",
     "grammar": "文法",
     "vocabulary": "語彙",
     "naturalness": "自然さ",
     "corrections": "修正点",
     "alternatives": "より良い言い方",
-    "tips": "アドバイス"
+    "tips": "アドバイス",
+    "error": "この文を確認できませんでした"
   },
   "srs": {
     "dailyReview": "今日の復習",
@@ -570,9 +582,11 @@
   },
   "mission": {
     "title": "使ってみよう",
-    "nice": "「{phrase}」、自然に使えてたね！",
-    "complete": "3つとも使えた！理由がしっかり伝わってるよ。",
-    "backToLearning": "学習に戻る"
+    "nice": "「{phrase}」、自然に使えてたね",
+    "complete": "3つとも使えた。理由がしっかり伝わってるよ。",
+    "backToLearning": "学習に戻る",
+    "used": "使えた",
+    "notUsed": "まだ使っていない"
   },
   "opinionChat": {
     "homeTitle": "友だちと意見をおしゃべりしよう",
@@ -582,10 +596,10 @@
     "hintsLabel": "理由を伝える言い方",
     "hideHints": "ヒントを隠す",
     "showHints": "つなぎ言葉のヒントを表示",
-    "offerText": "もう {count} 回話したね、いい感じ！今回の言い方をふり返ってみる？",
+    "offerText": "もう {count} 回話したね。今回の言い方をふり返ってみる？",
     "offerButton": "見てみる",
     "offerLater": "まだ話す",
-    "summaryTitle": "楽しかった！",
+    "summaryTitle": "チャットのまとめ",
     "summaryIntro": "{name} はあなたの考えを聞けてうれしかったよ。今回は {count} 回話したね。",
     "summaryUsed": "こんなふうに理由を伝えていたよ",
     "summaryNoneUsed": "今回はつなぎ言葉なしでも大丈夫。次はこれを使ってみよう",
@@ -756,28 +770,36 @@
     "title": "今日のタスク",
     "cardTitle": "今日の文型でタスクに挑戦",
     "cardHint": "チャットで今日の文型 {count} 個を使ってみよう。最後にまとめが出ます。",
-    "complete": "今日の文型を全部使えた！",
-    "seeSummary": "まとめを見る",
+    "complete": "今日の文型を全部使えた",
+    "seeSummary": "まとめ",
     "endChat": "終わり、まとめを見る",
     "startFromPractice": "今日の文型でチャットする",
     "summaryTitle": "チャットのまとめ",
-    "summaryIntro": "{name} が今回のチャットをまとめたよ",
-    "patternsUsed": "使えた文型：{used} / {total}",
+    "summaryIntro": "今回の会話の文型と直し",
+    "patternsUsed": "{used} / {total} 個の文型を使えた",
     "tryNextTime": "使えなかったものは次に試そう。",
-    "toFix": "もっと良くなるところ",
+    "toFix": "次はこう言ってみよう",
     "loading": "{name} がまとめています……",
     "unavailable": "今はまとめを作れません。後でもう一度試してね。",
-    "nothingToFix": "今回は直すところがほとんどないよ。すごい！",
-    "showAnswer": "答えを見る",
+    "nothingToFix": "今回は直す文はありません",
+    "showAnswer": "おすすめの言い方を見る",
     "savedForReview": "これらの文は今日の練習の復習カードに追加されました。",
     "keepChatting": "続けて話す",
-    "backHome": "ホーム"
+    "backHome": "ホーム",
+    "patternsUsedLabel": "個の文型を使えた",
+    "todayPatterns": "今日の文型",
+    "hint": "ヒント",
+    "suggested": "おすすめの言い方"
   },
   "voiceChat": {
     "stillThinking": "まだ考え中",
     "takeYourTime": "ゆっくりでいいよ、聞いてるよ",
     "pauseLength": "{sec}秒の間で送信",
-    "pauseHint": "話し終えてから送信までの間。タップで切り替え"
+    "pauseHint": "話し終えてから送信までの間。タップで切り替え",
+    "speaking": "{name}が話しています",
+    "thinking": "{name}が返信中",
+    "listening": "あなたの番",
+    "listenFirst": "まず聞いてから文字を見る"
   },
   "voiceSettings": {
     "title": "音声",

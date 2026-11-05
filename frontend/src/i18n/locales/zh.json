@@ -45,11 +45,11 @@
     "settings": "設定"
   },
   "chat": {
-    "typeMessage": "輸入訊息...",
+    "typeMessage": "輸入訊息",
     "send": "發送",
-    "tryUsing": "試試用：",
+    "tryUsing": "可用句型",
     "articleMode": "文章",
-    "rateLimitError": "我需要休息一下！訊息太多了。請等幾秒鐘再試。",
+    "rateLimitError": "訊息太密集了，等幾秒再試一次。",
     "genericError": "嗯，出了點問題。我們再試一次？",
     "menu": "更多",
     "vocabBank": "單字庫",
@@ -63,7 +63,14 @@
     "online": "在線上",
     "enterHint": "按 Enter 送出，Shift+Enter 換行",
     "sendMessage": "送出訊息",
-    "typing": "正在輸入…"
+    "typing": "{name} 正在回覆",
+    "sendFailed": "訊息沒有送出",
+    "conversationNumber": "第 {n} 次對話",
+    "achievements": "成就",
+    "achievementsDescription": "練習累積的成就與進度。",
+    "articleSheet": "讀完再跟 {name} 聊",
+    "back": "返回",
+    "close": "關閉"
   },
   "articles": {
     "title": "選擇文章",
@@ -117,22 +124,22 @@
   "rank": {
     "totalXP": "共 {xp} XP",
     "nextLevel": "下一等級",
-    "maxLevel": "已達最高等級！",
+    "maxLevel": "已達最高等級",
     "messagesSent": "已發送 {count} 則訊息",
     "streak": "連續 {count} 天",
     "days": "天",
     "currentStreak": "連續 {count} 天",
     "longestStreak": "最高：{count} 天",
-    "levelUp": "升級了！",
-    "continue": "繼續學習！",
-    "streakBonus": "連續獎勵！",
-    "streakMilestone": "連續 {days} 天！",
+    "levelUp": "升到新等級",
+    "continue": "繼續",
+    "streakBonus": "連續練習獎勵",
+    "streakMilestone": "連續 {days} 天",
     "streakFreeze": "{count} 個連續保護",
     "streakFreezeUsed": "已使用連續保護！你的連續記錄安全了。"
   },
   "achievements": {
-    "unlocked": "成就解鎖！",
-    "continue": "太棒了！",
+    "unlocked": "解鎖新成就",
+    "continue": "繼續",
     "categories": {
       "first_steps": "第一步",
       "consistency": "堅持",
@@ -259,7 +266,9 @@
       "title": "百篇書記",
       "description": "寫100篇日記",
       "hint": "提交100篇日記解鎖"
-    }
+    },
+    "unlockedState": "已解鎖",
+    "lockedState": "尚未解鎖"
   },
   "ranks": {
     "novice": "新手",
@@ -368,18 +377,21 @@
     "alreadySaved": "已在單字本中",
     "addTranslation": "新增翻譯（選填）",
     "emptyHint": "點聊天訊息裡的任何單字就能存到這裡。存下來的單字會在學習模式裡按間隔重複出現讓你複習。",
-    "clearSearch": "清除搜尋"
+    "clearSearch": "清除搜尋",
+    "sheetDescription": "存進單字本，之後會出現在複習裡。",
+    "context": "出現的句子"
   },
   "feedback": {
     "you": "你",
     "explain": "解析",
-    "analyzing": "正在分析你的訊息...",
+    "analyzing": "正在分析你的訊息",
     "grammar": "文法",
     "vocabulary": "詞彙",
     "naturalness": "自然度",
     "corrections": "修正建議",
     "alternatives": "更好的表達方式",
-    "tips": "小提示"
+    "tips": "小提示",
+    "error": "暫時無法分析這句"
   },
   "srs": {
     "dailyReview": "每日複習",
@@ -570,9 +582,11 @@
   },
   "mission": {
     "title": "試著用出來",
-    "nice": "「{phrase}」用得很自然！",
-    "complete": "三個都用到了！你的理由講得很清楚。",
-    "backToLearning": "回到學習"
+    "nice": "「{phrase}」用得很自然",
+    "complete": "三個都用到了，你的理由講得很清楚。",
+    "backToLearning": "回到學習",
+    "used": "已用到",
+    "notUsed": "還沒用到"
   },
   "opinionChat": {
     "homeTitle": "跟朋友聊聊你的看法",
@@ -582,10 +596,10 @@
     "hintsLabel": "說理由可以用",
     "hideHints": "隱藏提示",
     "showHints": "顯示連接詞提示",
-    "offerText": "已經聊了 {count} 句了，聊得不錯！要看看這次說了哪些嗎？",
+    "offerText": "已經聊了 {count} 句。要看看這次說了哪些嗎？",
     "offerButton": "看看",
     "offerLater": "繼續聊",
-    "summaryTitle": "聊得好開心！",
+    "summaryTitle": "聊天小結",
     "summaryIntro": "{name} 很喜歡聽你的想法。這次你說了 {count} 句。",
     "summaryUsed": "你這次這樣說出理由",
     "summaryNoneUsed": "這次沒用到連接詞也沒關係，下次可以玩玩看這幾個",
@@ -673,9 +687,9 @@
     "enter": "語音對話",
     "start": "開始對話",
     "readyHint": "朋友先說，聽完換你用說的回答。",
-    "speaking": "仔細聽……",
+    "speaking": "{name} 正在說",
     "listening": "換你說了",
-    "thinking": "朋友在想……",
+    "thinking": "{name} 正在回覆",
     "tapToTalk": "按麥克風回答",
     "didntHear": "沒聽清楚，按麥克風再說一次。",
     "micBlocked": "麥克風被關掉了，請到設定允許，或改用打字。",
@@ -689,7 +703,8 @@
     "stillThinking": "我還在想",
     "takeYourTime": "慢慢來，我在聽",
     "pauseLength": "停頓 {sec} 秒送出",
-    "pauseHint": "說完停頓多久才送出，點一下切換"
+    "pauseHint": "說完停頓多久才送出，點一下切換",
+    "listenFirst": "先聽，再看文字"
   },
   "common": {
     "startVoiceInput": "開始語音輸入",
@@ -812,22 +827,26 @@
     "title": "今天的任務",
     "cardTitle": "用今天的句型完成任務",
     "cardHint": "跟朋友聊天時試著用上今天的 {count} 個句型，聊完會有小結。",
-    "complete": "今天的句型都用到了！",
+    "complete": "今天的句型都用到了",
     "seeSummary": "看小結",
     "endChat": "聊完了，看小結",
     "startFromPractice": "用今天的句型去聊天",
     "summaryTitle": "聊天小結",
-    "summaryIntro": "{name} 幫你整理了這次聊天",
-    "patternsUsed": "用到的句型：{used} / {total}",
+    "summaryIntro": "這次對話的句型與修改",
+    "patternsUsed": "{used} / {total} 個句型用到了",
     "tryNextTime": "沒用到的下次再試試。",
-    "toFix": "可以更好的地方",
+    "toFix": "下次可以這樣說",
     "loading": "{name} 正在整理……",
     "unavailable": "現在沒辦法整理小結，晚點再試。",
-    "nothingToFix": "這次幾乎沒有要改的，很棒！",
-    "showAnswer": "看答案",
+    "nothingToFix": "這次沒有需要修改的句子",
+    "showAnswer": "看建議寫法",
     "savedForReview": "這些句子已加入今日練習的複習卡。",
     "keepChatting": "繼續聊",
-    "backHome": "回首頁"
+    "backHome": "回首頁",
+    "patternsUsedLabel": "個句型用到了",
+    "todayPatterns": "今天的句型",
+    "hint": "提示",
+    "suggested": "建議寫法"
   },
   "voiceSettings": {
     "title": "語音",

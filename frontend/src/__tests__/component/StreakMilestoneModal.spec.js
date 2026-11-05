@@ -83,10 +83,10 @@ describe('StreakMilestoneModal', () => {
       }
     })
 
-    it('should display milestone icon', async () => {
+    it('shows a line icon instead of the milestone emoji', async () => {
       const wrapper = createWrapper()
       await wrapper.vm.$nextTick()
-      expect(wrapper.text()).toContain('🔥')
+      expect(wrapper.text()).toContain('event_available')
     })
 
     it('should display streak bonus text', async () => {
@@ -95,11 +95,10 @@ describe('StreakMilestoneModal', () => {
       expect(wrapper.text()).toContain('rank.streakBonus')
     })
 
-    it('should display fire emoji', async () => {
+    it('shows no emoji', async () => {
       const wrapper = createWrapper()
       await wrapper.vm.$nextTick()
-      // The modal has fire emoji in the days count section
-      expect(wrapper.text()).toContain('🔥')
+      expect(wrapper.text()).not.toContain('🔥')
     })
 
     it('should display streak milestone days', async () => {
@@ -162,16 +161,11 @@ describe('StreakMilestoneModal', () => {
       }
     })
 
-    it('should have bouncing icon animation', async () => {
+    it('has no bounce or particles', async () => {
       const wrapper = createWrapper()
       await wrapper.vm.$nextTick()
-      expect(wrapper.find('.animate-bounce').exists()).toBe(true)
-    })
-
-    it('should have fire particle elements', async () => {
-      const wrapper = createWrapper()
-      await wrapper.vm.$nextTick()
-      expect(wrapper.findAll('.fire-particle').length).toBe(15)
+      expect(wrapper.find('.animate-bounce').exists()).toBe(false)
+      expect(wrapper.findAll('.fire-particle').length).toBe(0)
     })
   })
 
@@ -187,7 +181,7 @@ describe('StreakMilestoneModal', () => {
       const wrapper = createWrapper()
       await wrapper.vm.$nextTick()
 
-      expect(wrapper.text()).toContain('🏆')
+      expect(wrapper.text()).not.toContain('🏆')
       expect(wrapper.text()).toContain('+200 XP')
     })
   })

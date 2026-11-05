@@ -1,26 +1,39 @@
 <template>
-  <span class="vocabulary-word-wrapper" @mouseenter="showPopup" @mouseleave="hidePopup">
-    <span class="vocabulary-word">{{ word }}</span>
+  <span
+    class="vocabulary-word-wrapper"
+    @mouseenter="showPopup"
+    @mouseleave="hidePopup"
+  >
+    <span
+      class="vocabulary-word"
+      role="button"
+      tabindex="0"
+      :aria-expanded="isVisible"
+      @click="togglePopup"
+      @keydown.enter.prevent="togglePopup"
+      @keydown.space.prevent="togglePopup"
+      @keydown.esc="isVisible = false"
+    >{{ word }}</span>
     <Transition name="popup">
-      <div v-if="isVisible" class="vocabulary-popup" :class="popupPosition">
-        <div class="popup-header">
+      <span v-if="isVisible" class="vocabulary-popup" :class="popupPosition" role="tooltip">
+        <span class="popup-header">
           <span class="popup-word">{{ word }}</span>
-        </div>
-        <div class="popup-content">
-          <div class="popup-section">
+        </span>
+        <span class="popup-content">
+          <span class="popup-section">
             <span class="popup-label">{{ t('vocabPopup.definition') }}</span>
-            <p class="popup-text">{{ vocabularyData.definition }}</p>
-          </div>
-          <div v-if="vocabularyData.explanation" class="popup-section">
+            <span class="popup-text">{{ vocabularyData.definition }}</span>
+          </span>
+          <span v-if="vocabularyData.explanation" class="popup-section">
             <span class="popup-label">{{ t('vocabPopup.explanation') }}</span>
-            <p class="popup-text">{{ vocabularyData.explanation }}</p>
-          </div>
-          <div v-if="vocabularyData.example" class="popup-section">
+            <span class="popup-text">{{ vocabularyData.explanation }}</span>
+          </span>
+          <span v-if="vocabularyData.example" class="popup-section">
             <span class="popup-label">{{ t('vocabPopup.example') }}</span>
-            <p class="popup-text popup-example">"{{ vocabularyData.example }}"</p>
-          </div>
-        </div>
-      </div>
+            <span class="popup-text popup-example">“{{ vocabularyData.example }}”</span>
+          </span>
+        </span>
+      </span>
     </Transition>
   </span>
 </template>
@@ -48,12 +61,15 @@ const props = defineProps({
 
 const isVisible = ref(false)
 let hideTimeout = null
+// A tap fires mouseenter right before click; don't let that click close it again
+let shownAt = 0
 
 function showPopup() {
   if (hideTimeout) {
     clearTimeout(hideTimeout)
     hideTimeout = null
   }
+  if (!isVisible.value) shownAt = Date.now()
   isVisible.value = true
 }
 
@@ -61,6 +77,17 @@ function hidePopup() {
   hideTimeout = setTimeout(() => {
     isVisible.value = false
   }, 100)
+}
+
+// Touch and keyboard: tap or Enter opens and closes the definition
+function togglePopup() {
+  if (hideTimeout) {
+    clearTimeout(hideTimeout)
+    hideTimeout = null
+  }
+  if (isVisible.value && Date.now() - shownAt < 400) return
+  isVisible.value = !isVisible.value
+  if (isVisible.value) shownAt = Date.now()
 }
 </script>
 
@@ -70,40 +97,37 @@ function hidePopup() {
   display: inline;
 }
 
+/* Accent text with a dotted rule; the rule turns solid on press/focus */
 .vocabulary-word {
-  background: linear-gradient(120deg, #a78bfa 0%, #8b5cf6 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-  font-weight: 600;
-  cursor: help;
-  border-bottom: 2px dotted #a78bfa;
-  transition: all 0.2s ease;
+  color: var(--cm-accent);
+  font-weight: 500;
+  cursor: pointer;
+  border-bottom: 1px dotted var(--cm-accent);
+  border-radius: 2px;
+  transition: border-color var(--motion-micro) var(--ease-cm);
 }
 
-.vocabulary-word:hover {
+.vocabulary-word:hover,
+.vocabulary-word:active,
+.vocabulary-word:focus-visible,
+.vocabulary-word[aria-expanded="true"] {
   border-bottom-style: solid;
-}
-
-.dark .vocabulary-word {
-  background: linear-gradient(120deg, #c4b5fd 0%, #a78bfa 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  border-bottom-color: #c4b5fd;
 }
 
 .vocabulary-popup {
   position: absolute;
-  z-index: 1000;
-  min-width: 280px;
-  max-width: 350px;
+  z-index: 60;
+  display: block;
+  width: 280px;
+  max-width: calc(100vw - 32px);
   padding: 16px;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15), 0 4px 12px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e5e7eb;
+  background: var(--cm-surface);
+  border-radius: 10px;
+  box-shadow: var(--cm-shadow-float);
+  border: 1px solid var(--cm-border);
   left: 50%;
   transform: translateX(-50%);
+  text-align: left;
 }
 
 .vocabulary-popup.bottom {
@@ -114,30 +138,34 @@ function hidePopup() {
   bottom: calc(100% + 8px);
 }
 
-.dark .vocabulary-popup {
-  background: #1f2937;
-  border-color: #374151;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(0, 0, 0, 0.3);
+/* Phones: pin the definition to the bottom edge instead of following the word */
+@media (max-width: 639px) {
+  .vocabulary-popup,
+  .vocabulary-popup.bottom,
+  .vocabulary-popup.top {
+    position: fixed;
+    top: auto;
+    left: 16px;
+    right: 16px;
+    bottom: max(16px, env(safe-area-inset-bottom));
+    width: auto;
+    max-width: none;
+    transform: none;
+  }
 }
 
 .popup-header {
+  display: block;
   margin-bottom: 12px;
   padding-bottom: 8px;
-  border-bottom: 1px solid #e5e7eb;
-}
-
-.dark .popup-header {
-  border-bottom-color: #374151;
+  border-bottom: 1px solid var(--cm-border);
 }
 
 .popup-word {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #7c3aed;
-}
-
-.dark .popup-word {
-  color: #a78bfa;
+  font-size: 1.0625rem;
+  line-height: 1.5rem;
+  font-weight: 500;
+  color: var(--cm-text-primary);
 }
 
 .popup-content {
@@ -149,56 +177,36 @@ function hidePopup() {
 .popup-section {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
 }
 
 .popup-label {
-  font-size: 0.7rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: #9ca3af;
-}
-
-.dark .popup-label {
-  color: #6b7280;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+  color: var(--cm-text-muted);
 }
 
 .popup-text {
   margin: 0;
-  font-size: 0.875rem;
-  line-height: 1.5;
-  color: #374151;
-}
-
-.dark .popup-text {
-  color: #d1d5db;
+  font-size: 0.8125rem;
+  line-height: 1.25rem;
+  color: var(--cm-text-primary);
 }
 
 .popup-example {
-  font-style: italic;
-  color: #6b7280;
+  color: var(--cm-text-secondary);
 }
 
-.dark .popup-example {
-  color: #9ca3af;
-}
-
-/* Transition animations */
+/* Fade + 4 px rise only */
 .popup-enter-active,
 .popup-leave-active {
-  transition: all 0.2s ease;
+  transition: opacity 180ms var(--ease-cm), translate 180ms var(--ease-cm);
 }
 
 .popup-enter-from,
 .popup-leave-to {
   opacity: 0;
-  transform: translateX(-50%) translateY(4px);
-}
-
-.popup-enter-to,
-.popup-leave-from {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
+  translate: 0 4px;
 }
 </style>

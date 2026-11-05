@@ -5,6 +5,8 @@ import { useRouter } from 'vue-router'
 import { articles } from '../data/articles.js'
 import { stripMarkers } from '../composables/useArticleParser'
 import { useNavState } from '../composables/useNavState'
+import CmAppBar from './ui/CmAppBar.vue'
+import CmStateBlock from './ui/CmStateBlock.vue'
 
 const { t, locale } = useI18n()
 const router = useRouter()
@@ -48,92 +50,71 @@ function getPreviewText(content) {
 </script>
 
 <template>
-  <div class="min-h-screen bg-background-light dark:bg-background-dark">
-    <!-- Header -->
-    <header class="sticky top-0 z-10 flex items-center gap-4 px-4 sm:px-6 py-4 bg-surface-light dark:bg-surface-dark border-b border-[#e7eff3] dark:border-slate-800 shadow-sm safe-area-top">
-      <button @click="router.push('/')" class="flex items-center justify-center">
-        <span class="material-symbols-outlined text-text-main dark:text-white cursor-pointer">arrow_back</span>
-      </button>
-      <h1 class="text-lg font-bold text-text-main dark:text-white">{{ t('articles.title') }}</h1>
-    </header>
-
-    <!-- No level selected guard -->
-    <div v-if="!level" class="p-8 max-w-md mx-auto">
-      <div class="flex flex-col items-center text-center py-12">
-        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/10 flex items-center justify-center mb-4">
-          <span class="material-symbols-outlined text-3xl text-primary">tune</span>
-        </div>
-        <h2 class="text-lg font-semibold text-text-main dark:text-white mb-2">{{ t('articles.pickLevelTitle') }}</h2>
-        <p class="text-sm text-text-muted dark:text-slate-400 mb-5">
-          {{ t('articles.pickLevelBody') }}
-        </p>
-        <button
-          @click="router.push('/')"
-          class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-[#0d171b] font-semibold hover:bg-primary/90 transition-colors"
-        >
-          <span class="material-symbols-outlined text-[18px]">home</span>
-          {{ t('articles.backHome') }}
-        </button>
-      </div>
+  <div class="min-h-screen bg-page">
+    <div class="sticky top-0 z-10">
+      <CmAppBar
+        :title="t('articles.title')"
+        :subtitle="level ? `${t('articles.levelLabel')} · ${t(`levels.${level.id}.name`)}` : ''"
+        :back-label="t('chat.back')"
+        @back="router.push('/')"
+      />
     </div>
 
-    <template v-else>
-    <!-- Level Indicator -->
-    <div class="px-4 sm:px-6 py-3 bg-slate-50 dark:bg-slate-900 border-b border-[#e7eff3] dark:border-slate-800">
-      <span class="text-sm text-text-muted dark:text-slate-400">
-        {{ t('articles.levelLabel') }}:
-      </span>
-      <span class="ml-2 text-sm px-2 py-1 rounded-full bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 font-medium">
-        {{ t(`levels.${level.id}.name`) }}
-      </span>
+    <!-- No level selected guard -->
+    <div v-if="!level" class="mx-auto max-w-md px-4 py-12">
+      <CmStateBlock
+        icon="tune"
+        :title="t('articles.pickLevelTitle')"
+        :body="t('articles.pickLevelBody')"
+        :action="t('articles.backHome')"
+        @action="router.push('/')"
+      />
     </div>
 
     <!-- Articles List -->
-    <div class="p-4 sm:p-6 max-w-3xl mx-auto">
-      <div class="grid gap-4">
-        <div
-          v-for="article in filteredArticles"
-          :key="article.id"
-          @click="selectArticle(article)"
-          class="p-5 rounded-xl border border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark cursor-pointer transition-all hover:border-primary/50 hover:shadow-md"
-        >
-          <!-- Title -->
-          <h3 class="font-bold text-lg text-text-main dark:text-white mb-2">{{ article.title }}</h3>
-
-          <!-- Preview -->
-          <p class="text-sm text-text-muted dark:text-slate-400 mb-4 line-clamp-2">{{ getPreviewText(article.content) }}...</p>
-
-          <!-- Vocabulary -->
-          <div class="flex flex-wrap gap-2">
-            <span class="text-xs text-text-muted dark:text-slate-500">{{ t('articles.keyWords') }}:</span>
-            <span
-              v-for="item in article.vocabulary.slice(0, 3)"
-              :key="item.word"
-              class="text-xs px-2 py-1 rounded-md bg-primary/10 text-primary font-medium"
-              :title="item.definition"
-            >
-              {{ item.word }}
-            </span>
-          </div>
-        </div>
-
-        <!-- No articles -->
-        <div v-if="filteredArticles.length === 0" class="flex flex-col items-center justify-center py-16 text-center">
-          <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/10 flex items-center justify-center mb-4">
-            <span class="material-symbols-outlined text-3xl text-primary">article</span>
-          </div>
-          <p class="text-sm font-medium text-text-main dark:text-slate-200 mb-1">{{ t('articles.noArticles') }}</p>
-          <p class="text-xs text-text-muted dark:text-slate-400 max-w-xs mb-5">{{ t('articles.noArticlesHint') }}</p>
+    <div v-else class="mx-auto max-w-3xl px-4 py-5 min-[375px]:px-5 sm:px-6">
+      <ul class="grid gap-3">
+        <li v-for="article in filteredArticles" :key="article.id">
           <button
-            @click="router.push('/')"
-            class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-700 hover:border-primary text-text-main dark:text-slate-200 text-sm font-semibold transition-colors"
+            type="button"
+            @click="selectArticle(article)"
+            class="article-card block w-full cursor-pointer rounded-[14px] border border-hairline bg-surface p-4 text-left shadow-[var(--cm-shadow-small)] active:bg-surface-raised"
           >
-            <span class="material-symbols-outlined text-[18px]">tune</span>
-            {{ t('articles.changeLevel') }}
+            <!-- Title -->
+            <span class="mb-1 flex items-start gap-2">
+              <span class="min-w-0 flex-1 text-title font-medium text-ink">{{ article.title }}</span>
+              <span class="material-symbols-outlined mt-0.5 shrink-0 text-ink-muted" aria-hidden="true">chevron_right</span>
+            </span>
+
+            <!-- Preview -->
+            <span class="mb-3 line-clamp-2 block text-caption text-ink-secondary">{{ getPreviewText(article.content) }}...</span>
+
+            <!-- Vocabulary -->
+            <span class="flex flex-wrap items-center gap-1.5">
+              <span class="text-meta text-ink-muted">{{ t('articles.keyWords') }}</span>
+              <span
+                v-for="item in article.vocabulary.slice(0, 3)"
+                :key="item.word"
+                class="rounded-[6px] border border-hairline bg-surface-raised px-2 py-0.5 text-meta font-medium text-ink"
+                :title="item.definition"
+              >
+                {{ item.word }}
+              </span>
+            </span>
           </button>
-        </div>
-      </div>
+        </li>
+      </ul>
+
+      <!-- No articles -->
+      <CmStateBlock
+        v-if="filteredArticles.length === 0"
+        class="mt-8"
+        icon="article"
+        :title="t('articles.noArticles')"
+        :body="t('articles.noArticlesHint')"
+        :action="t('articles.changeLevel')"
+        @action="router.push('/')"
+      />
     </div>
-    </template>
   </div>
 </template>

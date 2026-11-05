@@ -26,8 +26,10 @@ import OpinionSummaryPanel from './chat/OpinionSummaryPanel.vue'
 import { useOpinionChat, getHintBatch, buildOpinionSummary } from '../composables/useOpinionChat'
 import { useMotherTongue } from '../composables/useMotherTongue'
 import { detectConnectors } from '../utils/connectorDetect'
-import MicroReward from './MicroReward.vue'
 import ConnectorMissionBar from './chat/ConnectorMissionBar.vue'
+import AchievementsPanel from './chat/AchievementsPanel.vue'
+import CmAvatar from './ui/CmAvatar.vue'
+import CmBottomSheet from './ui/CmBottomSheet.vue'
 import { MISSION_TYPE, getUsedTargetIds } from '../composables/useConnectorMission'
 import { PATTERN_TASK_TYPE, getUsedPatternIds, taskText } from '../composables/usePatternTask'
 import ChatSummaryPanel from './chat/ChatSummaryPanel.vue'
@@ -136,9 +138,6 @@ function refreshMemoryState() {
   characterMeta.value = { ...getMeta(character.value.id) }
 }
 
-// Micro-reward
-const showMicroReward = ref(null) // null | 'sparkle' | 'confetti' | 'check'
-
 // State
 const messages = ref([])
 const inputText = ref('')
@@ -148,8 +147,11 @@ const showArticle = ref(true)
 const wordPopup = ref(null)
 const showVocabBank = ref(false)
 const showMemoryPanel = ref(false)
+const showAchievements = ref(false)
 const promptDismissed = ref(false)
 const missionJustUsed = ref(null) // phrase of the connector just used
+// Task/opinion strip: folds to one row after the first turn on short screens (tap to expand)
+const stripCollapsed = ref(false)
 
 // Mission targets used so far, derived from the user's messages
 const missionUsedIds = computed(() => isTaskMode.value
@@ -305,6 +307,7 @@ async function handleSendMessage() {
 
   promptDismissed.value = true
   const usedBefore = missionUsedIds.value
+  if (userTurnCount.value === 0 && window.innerHeight < 700) stripCollapsed.value = true
 
   messages.value.push({
     role: 'user',
@@ -322,18 +325,13 @@ async function handleSendMessage() {
   onQuestChatMessage()
 
   // Track daily challenge progress
-  const challengeJustCompleted = trackChallengeMessage()
-  if (challengeJustCompleted) {
-    showMicroReward.value = 'confetti'
-  }
+  trackChallengeMessage()
 
-  // Connector mission: tick newly used targets with a light celebration
+  // Connector mission: tick newly used targets; the strip shows a short note (no confetti)
   if (mission.value) {
     const newlyUsed = missionUsedIds.value.filter(id => !usedBefore.includes(id))
     if (newlyUsed.length > 0) {
-      const allDone = missionUsedIds.value.length === mission.value.targets.length
       missionJustUsed.value = mission.value.targets.find(tg => tg.id === newlyUsed[0])?.phrase || null
-      showMicroReward.value = allDone ? 'confetti' : 'sparkle'
     }
   }
 
@@ -404,7 +402,7 @@ async function getAIResponse(isGreeting = false) {
       ? t('common.dailyLimit')
       : err.isRateLimit
         ? t('chat.rateLimitError')
-        : t('chat.genericError')
+        : t('chat.sendFailed')
   }
 
   scrollToBottom()
@@ -496,12 +494,30 @@ function handleRetry() {
   getAIResponse(!isAfterUser && messages.value.length === 0)
 }
 
+// When the vocabulary-hint row is visible, the voice-mode entry sits at its end
+const hintsRowShown = computed(() => !isArticleMode.value && currentHints.value.length > 0)
+
+// The word opens a bottom sheet, so the tap position is no longer needed
 function handleWordTap(data) {
-  // Clamp position to viewport
-  const x = Math.max(8, Math.min(data.position.x, window.innerWidth - 270))
-  const y = Math.max(8, Math.min(data.position.y, window.innerHeight - 200))
-  wordPopup.value = { ...data, position: { x, y } }
+  wordPopup.value = data
 }
+
+// Opinion chat strip: connectors used so far, shown as done chips
+const usedConnectorChips = computed(() =>
+  usedConnectorIds.value.map(id => ({ id, phrase: getConnectorInfo(id, motherTongue.value).label }))
+)
+
+const dateLabel = computed(() => new Date().toLocaleDateString(
+  language.value === 'ja' ? 'ja-JP' : language.value === 'zh' ? 'zh-TW' : 'en-US',
+  { month: 'short', day: 'numeric' }
+))
+
+// Article: split view on wide screens, a full-height sheet on phones
+const wideQuery = typeof window !== 'undefined' && window.matchMedia ? window.matchMedia('(min-width: 1024px)') : null
+const isWide = ref(!!wideQuery?.matches)
+function onWideChange(e) { isWide.value = e.matches }
+wideQuery?.addEventListener?.('change', onWideChange)
+onBeforeUnmount(() => wideQuery?.removeEventListener?.('change', onWideChange))
 
 function handleToggleArticle() {
   showArticle.value = !showArticle.value
@@ -520,9 +536,9 @@ function handleBack() {
 </script>
 
 <template>
-  <div class="flex h-screen w-full max-w-[100vw] overflow-hidden">
-    <div class="flex flex-1 flex-col min-w-0 h-full relative bg-background-light dark:bg-background-dark">
-      <!-- Header -->
+  <div class="flex h-screen w-full max-w-[100vw] overflow-hidden bg-page">
+    <div class="relative flex h-full min-w-0 flex-1 flex-col">
+      <!-- Header: back, friend, overflow -->
       <ChatHeader
         :character="character"
         :level="level"
@@ -536,9 +552,10 @@ function handleBack() {
         @renew-chat="handleRenewChat"
         @toggle-vocab-bank="showVocabBank = !showVocabBank"
         @show-memories="showMemoryPanel = true"
+        @show-achievements="showAchievements = true"
       />
 
-      <!-- Connector Mission Bar -->
+      <!-- Task / lesson mission strip -->
       <ConnectorMissionBar
         v-if="mission"
         :targets="mission.targets"
@@ -546,46 +563,40 @@ function handleBack() {
         :just-used="missionJustUsed"
         :task="isTaskMode ? taskText(mission.task, motherTongue) : ''"
         :can-end="userTurnCount > 0 && !isLoading"
+        v-model:collapsed="stripCollapsed"
         @back="handleBack"
         @end="showTaskSummary = true"
       />
 
+      <!-- Opinion chat: the same strip with today's topic and the connectors used -->
+      <ConnectorMissionBar
+        v-else-if="isOpinionMode"
+        class="opinion-topic-bar"
+        :label="t('opinionChat.topicLabel')"
+        :task="opinionTopic.en"
+        :gloss="motherTongue !== 'en' ? opinionTopicText(motherTongue) : ''"
+        :targets="usedConnectorChips"
+        :used-ids="usedConnectorIds"
+        :show-count="false"
+        :end-label="t('opinionChat.endChat')"
+        :can-end="userTurnCount > 0"
+        v-model:collapsed="stripCollapsed"
+        @end="handleEndOpinionChat"
+      />
+
       <!-- Content Area -->
-      <div class="flex flex-1 overflow-hidden" :class="isArticleMode && showArticle ? 'flex-col lg:flex-row' : 'flex-col'">
-        <!-- Article Panel -->
+      <div class="flex flex-1 overflow-hidden">
+        <!-- Article: split view on wide screens -->
         <ArticlePanel
-          v-if="isArticleMode && showArticle"
+          v-if="isArticleMode && showArticle && isWide"
           :article="article"
         />
 
         <!-- Chat Area -->
-        <div class="flex flex-col flex-1 overflow-hidden">
-          <!-- Opinion Chat Topic Bar -->
-          <div
-            v-if="isOpinionMode"
-            class="opinion-topic-bar flex items-center gap-3 px-4 py-2.5 border-b border-slate-100 dark:border-slate-800 bg-primary/5 dark:bg-primary/10"
-          >
-            <span class="material-symbols-outlined text-primary text-[20px] shrink-0">record_voice_over</span>
-            <div class="flex-1 min-w-0">
-              <p class="text-[11px] font-semibold uppercase tracking-wide text-primary">{{ t('opinionChat.topicLabel') }}</p>
-              <p class="text-sm text-text-main dark:text-slate-200 leading-snug">{{ opinionTopic.en }}</p>
-              <p v-if="motherTongue !== 'en'" class="text-xs text-text-muted dark:text-slate-400 leading-snug">{{ opinionTopicText(motherTongue) }}</p>
-            </div>
-            <button
-              @click="handleEndOpinionChat"
-              :disabled="userTurnCount === 0"
-              class="end-opinion-chat shrink-0 inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark hover:bg-slate-50 dark:hover:bg-slate-800 text-text-main dark:text-slate-200 text-xs font-semibold transition-colors disabled:opacity-40"
-            >
-              <span class="material-symbols-outlined text-[16px]">flag</span>
-              {{ t('opinionChat.endChat') }}
-            </button>
-          </div>
-
-          <div ref="messagesContainer" class="flex-1 overflow-y-auto overflow-x-hidden p-4 sm:p-6 space-y-6 scroll-smooth">
-            <!-- Date Separator -->
-            <div class="flex justify-center">
-              <span class="text-xs font-medium text-slate-400 bg-slate-100 dark:bg-slate-800 px-3 py-1 rounded-full">{{ new Date().toLocaleDateString(language === 'ja' ? 'ja-JP' : language === 'zh' ? 'zh-TW' : 'en-US', { month: 'short', day: 'numeric' }) }}</span>
-            </div>
+        <div class="flex min-w-0 flex-1 flex-col overflow-hidden">
+          <div ref="messagesContainer" class="flex-1 space-y-5 overflow-y-auto overflow-x-hidden px-4 py-4 min-[375px]:px-5 sm:px-6">
+            <!-- Date -->
+            <p class="chat-date text-center text-meta text-ink-muted tabular-nums">{{ dateLabel }}</p>
 
             <!-- Messages -->
             <ChatMessage
@@ -600,29 +611,31 @@ function handleBack() {
               @reveal="revealedReplies.push(i)"
             />
 
-            <!-- Typing Indicator -->
+            <!-- Replying: static -->
             <TypingIndicator
               v-if="isLoading"
               :character="character"
             />
 
-            <!-- Error Banner -->
-            <div v-if="errorMessage" class="flex items-start gap-3 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 rounded-xl">
-              <span class="material-symbols-outlined text-xl shrink-0 mt-0.5">error</span>
-              <div class="flex-1 min-w-0">
-                <p class="text-sm">{{ errorMessage }}</p>
-                <div class="flex gap-2 mt-2">
+            <!-- Error: beside the failed message, with Retry -->
+            <div v-if="errorMessage" class="chat-error flex items-start gap-3 rounded-[14px] bg-error-soft p-3" role="alert">
+              <span class="material-symbols-outlined mt-0.5 shrink-0 text-error" aria-hidden="true">error</span>
+              <div class="min-w-0 flex-1">
+                <p class="text-body text-ink">{{ errorMessage }}</p>
+                <div class="-mx-2 mt-1 flex flex-wrap gap-1">
                   <button
+                    type="button"
                     @click="handleRetry"
                     :disabled="isLoading"
-                    class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-red-100 dark:bg-red-900/40 hover:bg-red-200 dark:hover:bg-red-900/60 disabled:opacity-50 text-red-700 dark:text-red-300 text-xs font-semibold transition-colors"
+                    class="inline-flex min-h-11 items-center gap-1 rounded-[10px] px-2 text-caption font-medium text-ink disabled:opacity-55"
                   >
-                    <span class="material-symbols-outlined text-[16px]">refresh</span>
+                    <span class="material-symbols-outlined !text-[18px]" aria-hidden="true">refresh</span>
                     {{ t('common.retry') }}
                   </button>
                   <button
+                    type="button"
                     @click="errorMessage = ''"
-                    class="inline-flex items-center px-3 py-1.5 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/40 text-red-700 dark:text-red-300 text-xs font-semibold transition-colors"
+                    class="inline-flex min-h-11 items-center rounded-[10px] px-2 text-caption text-ink-secondary"
                   >
                     {{ t('common.dismiss') }}
                   </button>
@@ -630,13 +643,7 @@ function handleBack() {
               </div>
             </div>
 
-            <!-- Vocabulary Hints -->
-            <VocabularyHints
-              v-if="!isArticleMode"
-              :hints="currentHints"
-            />
-
-            <!-- Daily Prompt -->
+            <!-- Daily prompt: once, inside the stream -->
             <DailyPromptCard
               v-if="showDailyPrompt"
               :level="level?.id"
@@ -645,81 +652,131 @@ function handleBack() {
               @dismiss="promptDismissed = true"
             />
 
-            <!-- Opinion Chat: soft summary offer -->
+            <!-- Opinion chat: soft summary offer -->
             <div
               v-if="showSummaryOffer"
-              class="summary-offer flex items-center gap-3 p-3 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800"
+              class="summary-offer flex items-start gap-3 rounded-[14px] border border-hairline bg-surface p-3"
             >
-              <span class="text-2xl shrink-0">{{ character?.avatar }}</span>
-              <p class="flex-1 min-w-0 text-sm text-emerald-800 dark:text-emerald-200">
-                {{ t('opinionChat.offerText', { count: userTurnCount }) }}
-              </p>
-              <div class="flex flex-col sm:flex-row gap-1.5 shrink-0">
-                <button
-                  @click="handleEndOpinionChat"
-                  class="px-3 py-1.5 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-semibold transition-colors"
-                >
-                  {{ t('opinionChat.offerButton') }}
-                </button>
-                <button
-                  @click="summaryOfferDismissed = true"
-                  class="px-3 py-1.5 rounded-lg text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 text-xs font-semibold transition-colors"
-                >
-                  {{ t('opinionChat.offerLater') }}
-                </button>
+              <CmAvatar :name="character.name" :size="32" />
+              <div class="min-w-0 flex-1">
+                <p class="text-body text-ink">{{ t('opinionChat.offerText', { count: userTurnCount }) }}</p>
+                <div class="-mx-2 mt-1 flex flex-wrap gap-1">
+                  <button
+                    type="button"
+                    @click="handleEndOpinionChat"
+                    class="inline-flex min-h-11 items-center rounded-[10px] px-2 text-caption font-medium text-accent"
+                  >{{ t('opinionChat.offerButton') }}</button>
+                  <button
+                    type="button"
+                    @click="summaryOfferDismissed = true"
+                    class="inline-flex min-h-11 items-center rounded-[10px] px-2 text-caption text-ink-secondary"
+                  >{{ t('opinionChat.offerLater') }}</button>
+                </div>
               </div>
             </div>
 
-            <!-- Spacer -->
-            <div class="h-4"></div>
+            <div class="h-1" aria-hidden="true"></div>
           </div>
 
-          <!-- Opinion Chat: connector hints -->
+          <!-- Opinion chat: connector hints, a quiet row above the input -->
           <ConnectorHintStrip
             v-if="isOpinionMode && !hintsDismissed"
             :hints="connectorHints"
             @insert="handleInsertConnector"
             @dismiss="hintsDismissed = true"
           />
-          <button
-            v-else-if="isOpinionMode"
-            @click="hintsDismissed = false"
-            class="show-connector-hints self-start mx-4 mt-1 inline-flex items-center gap-1 text-xs text-text-muted dark:text-slate-400 hover:text-primary transition-colors"
-          >
-            <span class="material-symbols-outlined text-[14px]">lightbulb</span>
-            {{ t('opinionChat.showHints') }}
-          </button>
+          <div v-else-if="isOpinionMode" class="shrink-0 border-t border-hairline bg-surface px-2 sm:px-4">
+            <button
+              type="button"
+              @click="hintsDismissed = false"
+              class="show-connector-hints inline-flex min-h-11 items-center gap-1 rounded-[10px] px-2 text-meta text-ink-muted"
+            >
+              <span class="material-symbols-outlined !text-[16px]" aria-hidden="true">expand_less</span>
+              {{ t('opinionChat.showHints') }}
+            </button>
+          </div>
 
-          <!-- Input Area: voice conversation or typing -->
+          <!-- Vocabulary hints: a quiet row immediately above the input -->
+          <VocabularyHints
+            v-if="!isArticleMode && !voiceMode"
+            :hints="currentHints"
+          >
+            <!-- Shares the row with the hints so short screens keep room for the conversation -->
+            <template v-if="!voiceMode" #trailing>
+              <button
+                type="button"
+                @click="startVoiceMode"
+                :aria-label="t('voiceChat.enter')"
+                :title="t('voiceChat.enter')"
+                class="voice-mode-entry inline-flex size-11 items-center justify-center rounded-[10px] text-accent"
+              >
+                <span class="material-symbols-outlined" aria-hidden="true">headphones</span>
+              </button>
+            </template>
+          </VocabularyHints>
+
+          <!-- Input: voice conversation replaces the composer -->
           <VoiceConversationBar
             v-if="voiceMode"
             v-model:show-text="voiceShowText"
             :last-reply="lastReply"
             :is-loading="isLoading"
             :language="language"
+            :friend-name="character?.name || ''"
             @send="handleVoiceSend"
             @exit="voiceMode = false"
           />
-          <template v-else>
-            <button
-              type="button"
-              @click="startVoiceMode"
-              class="voice-mode-entry self-end mx-4 mt-1 inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold text-primary bg-primary/10 hover:bg-primary/20 transition-colors"
-            >
-              <span class="material-symbols-outlined text-[16px]">headphones</span>
-              {{ t('voiceChat.enter') }}
-            </button>
-            <ChatInput
-              ref="chatInputRef"
-              v-model="inputText"
-              :disabled="isLoading"
-              :language="language"
-              @send="handleSendMessage"
-            />
-          </template>
+          <ChatInput
+            v-else
+            ref="chatInputRef"
+            v-model="inputText"
+            :disabled="isLoading"
+            :language="language"
+            @send="handleSendMessage"
+          >
+            <template v-if="!hintsRowShown" #top>
+              <div class="-mt-2 mb-1 flex justify-end">
+                <button
+                  type="button"
+                  @click="startVoiceMode"
+                  class="voice-mode-entry inline-flex min-h-11 items-center gap-1.5 rounded-[10px] px-2 text-caption font-medium text-accent"
+                >
+                  <span class="material-symbols-outlined !text-[18px]" aria-hidden="true">headphones</span>
+                  {{ t('voiceChat.enter') }}
+                </button>
+              </div>
+            </template>
+          </ChatInput>
         </div>
       </div>
     </div>
+
+    <!-- Article on phones: full-height sheet; "Article" in the overflow menu reopens it -->
+    <Teleport to="body">
+      <div
+        v-if="isArticleMode && showArticle && !isWide"
+        class="article-sheet fixed inset-x-0 bottom-0 top-0 z-40 flex flex-col pt-[max(12px,env(safe-area-inset-top))]"
+        role="dialog"
+        aria-modal="true"
+        :aria-label="article.title"
+      >
+        <div class="absolute inset-0 bg-[var(--cm-scrim)]" @click="handleToggleArticle" aria-hidden="true"></div>
+        <div class="article-sheet-panel relative flex min-h-0 flex-1 flex-col overflow-hidden rounded-t-[24px] bg-surface shadow-[var(--cm-shadow-float)]">
+          <div class="flex shrink-0 items-center gap-2 border-b border-hairline py-1 pl-5 pr-2">
+            <p class="min-w-0 flex-1 truncate text-caption text-ink-secondary">{{ t('chat.articleSheet', { name: character?.name }) }}</p>
+            <button
+              type="button"
+              @click="handleToggleArticle"
+              :aria-label="t('chat.hideArticle')"
+              class="inline-flex size-11 shrink-0 items-center justify-center rounded-[10px] text-ink-secondary active:bg-surface-raised"
+            >
+              <span class="material-symbols-outlined" aria-hidden="true">close</span>
+            </button>
+          </div>
+          <ArticlePanel class="min-h-0 flex-1" :article="article" in-sheet />
+        </div>
+      </div>
+    </Teleport>
 
     <!-- Level Up Modal -->
     <LevelUpModal />
@@ -730,7 +787,7 @@ function handleBack() {
     <!-- Achievement Unlock Modal -->
     <AchievementUnlockModal />
 
-    <!-- Word Save Popup -->
+    <!-- Word save: bottom sheet -->
     <WordSavePopup
       v-if="wordPopup"
       :word="wordPopup.word"
@@ -744,6 +801,17 @@ function handleBack() {
       v-if="showVocabBank"
       @close="showVocabBank = false"
     />
+
+    <!-- Achievements (moved out of the chat header into the overflow menu) -->
+    <CmBottomSheet
+      v-if="showAchievements"
+      :title="t('chat.achievements')"
+      :description="t('chat.achievementsDescription')"
+      :close-label="t('chat.close')"
+      @close="showAchievements = false"
+    >
+      <AchievementsPanel class="-mx-5 -mt-4" />
+    </CmBottomSheet>
 
     <!-- Opinion Chat Summary -->
     <OpinionSummaryPanel
@@ -777,46 +845,41 @@ function handleBack() {
       @close="showMemoryPanel = false"
     />
 
-    <!-- New Memory Toast -->
+    <!-- New memory note -->
     <Transition name="memory-toast">
       <div
         v-if="showMemoryToast"
-        class="pointer-events-none fixed top-20 inset-x-0 z-[110] flex justify-center px-4"
+        class="pointer-events-none fixed inset-x-0 top-[calc(env(safe-area-inset-top)+64px)] z-[110] flex justify-center px-4"
+        role="status"
       >
-        <div class="memory-toast-inner pointer-events-auto flex items-start gap-3 p-3 rounded-xl shadow-lg bg-gradient-to-br from-amber-50 to-rose-50 dark:from-amber-900/40 dark:to-rose-900/40 border border-amber-200 dark:border-amber-800 max-w-sm w-full">
-          <span class="material-symbols-outlined text-amber-500 shrink-0 mt-0.5">favorite</span>
-          <div class="flex-1 min-w-0">
-            <p class="text-xs font-semibold text-amber-700 dark:text-amber-300 mb-0.5">
+        <div class="memory-toast-inner pointer-events-auto flex w-full max-w-sm items-start gap-3 rounded-[14px] border border-hairline bg-surface p-3 shadow-[var(--cm-shadow-float)]">
+          <span class="material-symbols-outlined mt-0.5 shrink-0 text-accent" aria-hidden="true">psychology</span>
+          <div class="min-w-0 flex-1">
+            <p class="text-meta font-medium text-ink-secondary">
               {{ t('chat.willRemember', { name: character?.name }) }}
             </p>
-            <p class="text-sm text-text-main dark:text-slate-200 truncate">{{ showMemoryToast.fact }}</p>
+            <p class="truncate text-caption text-ink">{{ showMemoryToast.fact }}</p>
           </div>
         </div>
       </div>
     </Transition>
-
-    <!-- Micro Reward Animation -->
-    <MicroReward
-      v-if="showMicroReward"
-      :type="showMicroReward"
-      @done="showMicroReward = null"
-    />
   </div>
 </template>
 
 <style scoped>
+/* Fade + 8 px slide, no overshoot */
 .memory-toast-enter-active .memory-toast-inner,
 .memory-toast-leave-active .memory-toast-inner {
-  transition: opacity 300ms ease, transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: opacity var(--motion-sheet) var(--ease-cm), transform var(--motion-sheet) var(--ease-cm);
 }
 .memory-toast-enter-from .memory-toast-inner,
 .memory-toast-leave-to .memory-toast-inner {
   opacity: 0;
-  transform: translateY(-20px) scale(0.95);
+  transform: translateY(-8px);
 }
 .memory-toast-enter-active,
 .memory-toast-leave-active {
-  transition: opacity 300ms ease;
+  transition: opacity var(--motion-sheet) var(--ease-cm);
 }
 .memory-toast-enter-from,
 .memory-toast-leave-to {

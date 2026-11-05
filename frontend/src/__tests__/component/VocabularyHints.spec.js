@@ -40,30 +40,29 @@ describe('VocabularyHints', () => {
   describe('rendering', () => {
     it('should render when hints are provided', () => {
       const wrapper = createWrapper()
-      expect(wrapper.exists()).toBe(true)
+      expect(wrapper.find('.vocab-hints').exists()).toBe(true)
     })
 
     it('should not render when hints array is empty', () => {
       const wrapper = createWrapper({ hints: [] })
-      expect(wrapper.find('.max-w-3xl').exists()).toBe(false)
+      expect(wrapper.find('.vocab-hints').exists()).toBe(false)
     })
 
-    it('should display "try using" header', () => {
+    it('should display "try using" label', () => {
       const wrapper = createWrapper()
       expect(wrapper.text()).toContain('chat.tryUsing')
     })
 
-    it('should show auto_awesome icon', () => {
+    it('should not use a sparkle icon', () => {
       const wrapper = createWrapper()
-      expect(wrapper.text()).toContain('auto_awesome')
+      expect(wrapper.text()).not.toContain('auto_awesome')
     })
   })
 
-  describe('hint cards', () => {
-    it('should render all hint cards', () => {
+  describe('hint chips', () => {
+    it('should render one chip per hint', () => {
       const wrapper = createWrapper()
-      const cards = wrapper.findAll('.flex.flex-col.p-3')
-      expect(cards.length).toBe(3)
+      expect(wrapper.findAll('.vocab-hint').length).toBe(3)
     })
 
     it('should display hint word', () => {
@@ -73,44 +72,44 @@ describe('VocabularyHints', () => {
       expect(wrapper.text()).toContain('すみません')
     })
 
-    it('should display hint description', () => {
+    it('shows the description and example in quotes when a chip is tapped', async () => {
       const wrapper = createWrapper()
-      expect(wrapper.text()).toContain('A common greeting used during daytime')
-      expect(wrapper.text()).toContain('Thank you (informal)')
+      expect(wrapper.text()).not.toContain('A common greeting used during daytime')
+
+      await wrapper.findAll('.vocab-hint')[0].trigger('click')
+
+      expect(wrapper.findAll('.vocab-hint')[0].attributes('aria-expanded')).toBe('true')
+      expect(wrapper.find('.vocab-hint-detail').text()).toContain('A common greeting used during daytime')
+      expect(wrapper.find('.vocab-hint-detail').text()).toContain('“こんにちは、元気ですか？”')
     })
 
-    it('should display example in quotes', () => {
+    it('switches to another hint, and closes on a second tap', async () => {
       const wrapper = createWrapper()
-      expect(wrapper.text()).toContain('こんにちは、元気ですか？')
+      const chips = wrapper.findAll('.vocab-hint')
+
+      await chips[0].trigger('click')
+      await chips[1].trigger('click')
+      expect(wrapper.find('.vocab-hint-detail').text()).toContain('Thank you (informal)')
+      expect(wrapper.text()).not.toContain('A common greeting used during daytime')
+
+      await chips[1].trigger('click')
+      expect(wrapper.find('.vocab-hint-detail').exists()).toBe(false)
+    })
+
+    it('closes the detail when new hints arrive', async () => {
+      const wrapper = createWrapper()
+      await wrapper.findAll('.vocab-hint')[0].trigger('click')
+
+      await wrapper.setProps({ hints: [mockHints[2]] })
+
+      expect(wrapper.find('.vocab-hint-detail').exists()).toBe(false)
     })
   })
 
-  describe('single hint', () => {
-    it('should render single hint correctly', () => {
-      const wrapper = createWrapper({
-        hints: [mockHints[0]]
-      })
-
-      expect(wrapper.text()).toContain('こんにちは')
-      expect(wrapper.text()).toContain('A common greeting used during daytime')
-    })
-  })
-
-  describe('styling', () => {
-    it('should have horizontal scrolling on mobile', () => {
+  describe('layout', () => {
+    it('should scroll horizontally as one quiet row', () => {
       const wrapper = createWrapper()
       expect(wrapper.find('.overflow-x-auto').exists()).toBe(true)
-    })
-
-    it('should use grid layout on larger screens', () => {
-      const wrapper = createWrapper()
-      expect(wrapper.find('.sm\\:grid').exists()).toBe(true)
-    })
-
-    it('should have cards with fixed width on mobile', () => {
-      const wrapper = createWrapper()
-      const cards = wrapper.findAll('.w-48')
-      expect(cards.length).toBeGreaterThan(0)
     })
   })
 })

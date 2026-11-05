@@ -2,12 +2,16 @@
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useVocabularyBank, generateWordId } from '../../composables/useVocabularyBank'
+import CmBottomSheet from '../ui/CmBottomSheet.vue'
+import CmButton from '../ui/CmButton.vue'
 
 const { t } = useI18n()
 
+// Bottom sheet on phones, centered panel on wider screens (DESIGN.md "Word popup")
 const props = defineProps({
   word: { type: String, required: true },
   context: { type: String, default: '' },
+  // Tap position; kept for callers, the sheet no longer follows the pointer
   position: { type: Object, default: () => ({ x: 0, y: 0 }) },
 })
 
@@ -41,50 +45,42 @@ function handleRemove() {
 </script>
 
 <template>
-  <div
-    class="fixed inset-0 z-50"
-    @click.self="emit('close')"
+  <CmBottomSheet
+    :title="word"
+    :description="alreadySaved ? t('vocabBank.alreadySaved') : t('vocabBank.sheetDescription')"
+    :close-label="t('chat.close')"
+    @close="emit('close')"
   >
-    <div
-      class="absolute bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 p-3 w-64 z-50"
-      :style="{ left: position.x + 'px', top: position.y + 'px' }"
-    >
-      <!-- Word -->
-      <div class="font-semibold text-sm text-text-main dark:text-slate-200 mb-2">
-        {{ word }}
+    <div class="word-save-sheet space-y-4">
+      <div v-if="context">
+        <p class="mb-1 text-caption text-ink-secondary">{{ t('vocabBank.context') }}</p>
+        <p class="rounded-[10px] border border-hairline bg-surface-sunken px-3 py-2 text-body text-ink"><span class="line-clamp-4 break-words">{{ context }}</span></p>
       </div>
 
-      <template v-if="alreadySaved">
-        <p class="text-xs text-green-600 dark:text-green-400 mb-2">
-          <span class="material-symbols-outlined text-xs align-middle">check_circle</span>
-          {{ t('vocabBank.alreadySaved') }}
-        </p>
-        <button
-          @click="handleRemove"
-          class="w-full text-xs py-1.5 px-3 rounded-lg bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-900/50 transition-colors"
-        >
-          {{ t('vocabBank.remove') }}
-        </button>
-      </template>
-
-      <template v-else>
-        <!-- Translation input -->
+      <label v-if="!alreadySaved" class="block">
+        <span class="mb-1 block text-caption text-ink-secondary">{{ t('vocabBank.addTranslation') }}</span>
         <input
           v-model="translation"
-          :placeholder="t('vocabBank.addTranslation')"
-          class="w-full text-xs py-1.5 px-2 rounded-lg border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-text-main dark:text-slate-200 mb-2 focus:outline-none focus:border-primary"
+          class="block min-h-12 w-full rounded-[10px] border border-hairline bg-surface-sunken px-3 text-[16px] text-ink placeholder:text-ink-muted focus:border-accent focus:outline-none"
           @keydown.enter="handleSave"
         />
-
-        <!-- Save button -->
-        <button
-          @click="handleSave"
-          class="w-full text-xs py-1.5 px-3 rounded-lg bg-primary text-[#0d171b] font-medium hover:bg-primary/90 transition-colors"
-        >
-          <span class="material-symbols-outlined text-xs align-middle mr-1">bookmark_add</span>
-          {{ t('vocabBank.save') }}
-        </button>
-      </template>
+      </label>
     </div>
-  </div>
+
+    <template #actions>
+      <button
+        v-if="alreadySaved"
+        type="button"
+        @click="handleRemove"
+        class="word-remove flex min-h-12 w-full items-center justify-center gap-2 rounded-[10px] border border-hairline bg-surface-raised text-body font-medium text-error active:bg-surface-sunken"
+      >
+        <span class="material-symbols-outlined" aria-hidden="true">bookmark_remove</span>
+        {{ t('vocabBank.remove') }}
+      </button>
+      <CmButton v-else block class="word-save" @click="handleSave">
+        <span class="material-symbols-outlined" aria-hidden="true">bookmark_add</span>
+        {{ t('vocabBank.save') }}
+      </CmButton>
+    </template>
+  </CmBottomSheet>
 </template>

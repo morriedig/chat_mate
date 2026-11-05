@@ -8,59 +8,33 @@ const { showLevelUp, newRank, dismissLevelUp, progress } = useUserProgress()
 
 <template>
   <Teleport to="body">
-    <Transition name="modal">
+    <Transition name="cm-sheet">
       <div
         v-if="showLevelUp && newRank"
-        class="fixed inset-0 z-50 flex items-center justify-center p-4"
+        class="fixed inset-0 z-50 flex items-end justify-center bg-[var(--cm-scrim)] sm:items-center sm:p-4"
+        role="dialog"
+        aria-modal="true"
+        :aria-label="t('rank.levelUp')"
         @click.self="dismissLevelUp"
       >
-        <!-- Backdrop -->
-        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+        <div class="cm-sheet-panel w-full rounded-t-[24px] bg-surface px-5 pt-6 pb-[max(24px,env(safe-area-inset-bottom))] text-center shadow-[var(--cm-shadow-float)] sm:max-w-sm sm:rounded-[20px] sm:pb-6">
+          <span class="mx-auto mb-4 flex size-16 items-center justify-center rounded-[14px] bg-accent-soft text-accent" aria-hidden="true">
+            <span class="material-symbols-outlined !text-[32px]">trending_up</span>
+          </span>
 
-        <!-- Modal Content -->
-        <div class="relative bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-sm w-full overflow-hidden">
-          <!-- Confetti Background -->
-          <div class="absolute inset-0 overflow-hidden pointer-events-none">
-            <div class="confetti-container">
-              <div v-for="i in 20" :key="i" class="confetti" :style="{ '--delay': `${i * 0.1}s`, '--x': `${Math.random() * 100}%` }"></div>
-            </div>
-          </div>
+          <h2 class="mb-1 text-title font-medium text-ink">{{ t('rank.levelUp') }}</h2>
 
-          <!-- Content -->
-          <div class="relative p-6 text-center">
-            <!-- Trophy Animation -->
-            <div class="text-6xl mb-4 animate-bounce">
-              {{ newRank.icon }}
-            </div>
+          <p class="mb-1 text-display font-medium text-ink tabular-nums">Lv.{{ newRank.level }}</p>
+          <p class="mb-1 text-body text-ink-secondary">{{ t(`ranks.${newRank.title.toLowerCase()}`, newRank.title) }}</p>
+          <p class="mb-6 text-caption text-ink-muted tabular-nums">{{ t('rank.totalXP', { xp: progress.totalXP }) }}</p>
 
-            <!-- Level Up Text -->
-            <h2 class="text-2xl font-bold text-text-main dark:text-white mb-2">
-              {{ t('rank.levelUp') }}
-            </h2>
-
-            <!-- New Rank -->
-            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-amber-100 to-orange-100 dark:from-amber-900/50 dark:to-orange-900/50 mb-4">
-              <span class="text-lg font-bold text-amber-700 dark:text-amber-300">
-                Lv.{{ newRank.level }}
-              </span>
-              <span class="text-lg font-semibold text-amber-600 dark:text-amber-400">
-                {{ t(`ranks.${newRank.title.toLowerCase()}`, newRank.title) }}
-              </span>
-            </div>
-
-            <!-- Total XP -->
-            <p class="text-sm text-text-muted dark:text-slate-400 mb-6">
-              {{ t('rank.totalXP', { xp: progress.totalXP }) }}
-            </p>
-
-            <!-- Continue Button -->
-            <button
-              @click="dismissLevelUp"
-              class="w-full py-3 px-6 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold shadow-lg transition-all"
-            >
-              {{ t('rank.continue') }}
-            </button>
-          </div>
+          <button
+            type="button"
+            @click="dismissLevelUp"
+            class="min-h-12 w-full rounded-[10px] bg-accent px-4 text-body font-medium text-on-accent active:bg-accent-pressed"
+          >
+            {{ t('rank.continue') }}
+          </button>
         </div>
       </div>
     </Transition>
@@ -68,76 +42,21 @@ const { showLevelUp, newRank, dismissLevelUp, progress } = useUserProgress()
 </template>
 
 <style scoped>
-.modal-enter-active {
-  animation: modalIn 0.3s ease-out;
+/* Sheet: opacity + 12 px rise only */
+.cm-sheet-enter-active,
+.cm-sheet-leave-active {
+  transition: opacity var(--motion-sheet) var(--ease-cm);
 }
-
-.modal-leave-active {
-  animation: modalOut 0.2s ease-in forwards;
+.cm-sheet-enter-active .cm-sheet-panel,
+.cm-sheet-leave-active .cm-sheet-panel {
+  transition: transform var(--motion-sheet) var(--ease-cm);
 }
-
-@keyframes modalIn {
-  0% {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
+.cm-sheet-enter-from,
+.cm-sheet-leave-to {
+  opacity: 0;
 }
-
-@keyframes modalOut {
-  0% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-}
-
-.confetti-container {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 100%;
-  overflow: hidden;
-}
-
-.confetti {
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  top: -10px;
-  left: var(--x);
-  background: linear-gradient(135deg, #f59e0b, #f97316);
-  border-radius: 2px;
-  animation: confettiFall 3s ease-out var(--delay) infinite;
-}
-
-.confetti:nth-child(odd) {
-  background: linear-gradient(135deg, #fbbf24, #fb923c);
-  width: 8px;
-  height: 8px;
-}
-
-.confetti:nth-child(3n) {
-  background: linear-gradient(135deg, #fcd34d, #fdba74);
-  width: 6px;
-  height: 6px;
-}
-
-@keyframes confettiFall {
-  0% {
-    transform: translateY(0) rotate(0deg);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(300px) rotate(720deg);
-    opacity: 0;
-  }
+.cm-sheet-enter-from .cm-sheet-panel,
+.cm-sheet-leave-to .cm-sheet-panel {
+  transform: translateY(12px);
 }
 </style>

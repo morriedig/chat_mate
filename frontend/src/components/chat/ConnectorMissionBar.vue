@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import CmChip from '../ui/CmChip.vue'
 
 const { t } = useI18n()
 
@@ -19,7 +20,7 @@ const props = defineProps({
     type: String,
     default: null
   },
-  // Task chat: the goal line, and an "end chat" button that opens the summary
+  // Task chat: the goal line, and a summary button that opens the summary
   task: {
     type: String,
     default: ''
@@ -27,82 +28,109 @@ const props = defineProps({
   canEnd: {
     type: Boolean,
     default: false
+  },
+  // Opinion chat reuses the strip: its own label, a gloss under the topic, and an end label
+  label: {
+    type: String,
+    default: ''
+  },
+  gloss: {
+    type: String,
+    default: ''
+  },
+  endLabel: {
+    type: String,
+    default: ''
+  },
+  showCount: {
+    type: Boolean,
+    default: true
+  },
+  // One-row summary (v-model:collapsed); the parent collapses it on short screens
+  collapsed: {
+    type: Boolean,
+    default: false
   }
 })
 
-const emit = defineEmits(['back', 'end'])
+const emit = defineEmits(['back', 'end', 'update:collapsed'])
 
 const usedCount = computed(() => props.targets.filter(tg => props.usedIds.includes(tg.id)).length)
-const isComplete = computed(() => props.targets.length > 0 && usedCount.value === props.targets.length)
+const isComplete = computed(() => props.showCount && props.targets.length > 0 && usedCount.value === props.targets.length)
+const title = computed(() => props.label || (props.task ? t('taskChat.title') : t('mission.title')))
+// Task and opinion chats can end into a summary; a lesson mission goes back to learning
+const hasEnd = computed(() => !!(props.task || props.endLabel))
 </script>
 
 <template>
-  <div
-    class="shrink-0 px-4 py-2.5 border-b transition-colors"
-    :class="isComplete
-      ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800'
-      : 'bg-surface-light dark:bg-surface-dark border-slate-200 dark:border-slate-700'"
-  >
-    <div class="flex items-center justify-between gap-2 mb-1.5">
-      <span class="flex items-center gap-1 text-xs font-semibold text-text-muted dark:text-slate-400">
-        <span class="material-symbols-outlined text-[16px]">flag</span>
-        {{ task ? t('taskChat.title') : t('mission.title') }}
-      </span>
-      <span class="text-xs font-semibold" :class="isComplete ? 'text-green-600 dark:text-green-400' : 'text-primary'">
-        {{ usedCount }} / {{ targets.length }}
-      </span>
-    </div>
+  <section class="mission-strip relative shrink-0 border-b border-hairline bg-surface pl-4 pr-2 pt-1 sm:pl-6 sm:pr-4"
+    :class="collapsed ? 'pb-1' : 'pb-3'" :aria-label="title">
+    <span class="absolute left-0 top-3 w-[3px] rounded-r-[3px] bg-accent" :class="collapsed ? 'h-7' : 'h-10'" aria-hidden="true"></span>
 
-    <p v-if="task" class="mb-1.5 text-sm font-medium text-text-main dark:text-slate-200 leading-snug">{{ task }}</p>
-
-    <!-- Target chips -->
-    <div class="flex flex-wrap gap-1.5">
-      <span
-        v-for="target in targets"
-        :key="target.id"
-        class="mission-chip inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-sm font-medium border transition-all"
-        :class="usedIds.includes(target.id)
-          ? 'bg-green-100 dark:bg-green-900/40 border-green-300 dark:border-green-700 text-green-700 dark:text-green-300 is-used'
-          : 'bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-text-main dark:text-slate-200'"
-      >
-        <span class="material-symbols-outlined text-[16px]">
-          {{ usedIds.includes(target.id) ? 'check_circle' : 'radio_button_unchecked' }}
-        </span>
-        {{ target.phrase }}
-      </span>
-    </div>
-
-    <!-- Friend-style note -->
-    <p v-if="isComplete" class="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-green-700 dark:text-green-300">
-      <span>{{ task ? t('taskChat.complete') : t('mission.complete') }}</span>
+    <div class="flex min-h-11 items-center gap-3">
+      <h2 class="min-w-0 flex-1 text-meta font-medium text-ink-secondary">
+        <!-- Tapping the title collapses the strip to one row (and expands it again) -->
+        <button
+          type="button"
+          @click="emit('update:collapsed', !collapsed)"
+          :aria-expanded="!collapsed"
+          class="mission-toggle -ml-1 flex min-h-11 w-full min-w-0 items-center gap-1 rounded-[10px] px-1 text-left"
+        >
+          <span class="min-w-0 truncate">{{ title }}</span>
+          <span class="material-symbols-outlined shrink-0 !text-[18px] text-ink-muted" aria-hidden="true">{{ collapsed ? 'expand_more' : 'expand_less' }}</span>
+          <span v-if="collapsed && task" class="min-w-0 flex-1 truncate font-normal text-ink">{{ task }}</span>
+        </button>
+      </h2>
+      <span v-if="showCount" class="mission-count shrink-0 text-meta text-ink-muted tabular-nums">{{ usedCount }} / {{ targets.length }}</span>
       <button
-        @click="task ? emit('end') : emit('back')"
-        class="inline-flex items-center gap-0.5 text-xs font-semibold underline underline-offset-2 hover:opacity-80"
-      >
-        {{ task ? t('taskChat.seeSummary') : t('mission.backToLearning') }}
-      </button>
+        v-if="hasEnd"
+        type="button"
+        @click="emit('end')"
+        :disabled="!canEnd"
+        class="mission-end -my-1 inline-flex min-h-11 shrink-0 items-center rounded-[10px] px-2 text-caption font-medium text-accent disabled:text-ink-muted disabled:opacity-55"
+      >{{ endLabel || t('taskChat.seeSummary') }}</button>
+    </div>
+
+    <template v-if="!collapsed">
+    <p v-if="task" class="mission-goal pr-2 text-body text-ink">{{ task }}</p>
+    <p v-if="gloss" class="pr-2 text-caption text-ink-muted">{{ gloss }}</p>
+
+    <!-- Target chips: neutral until used, then success with a check (no pop) -->
+    <ul v-if="targets.length" class="no-scrollbar -mr-2 mt-2 flex gap-1.5 overflow-x-auto pr-2" role="list">
+      <li v-for="target in targets" :key="target.id" class="shrink-0">
+        <CmChip
+          :done="usedIds.includes(target.id)"
+          class="mission-chip whitespace-nowrap"
+          :class="usedIds.includes(target.id) ? 'is-used' : ''"
+        >{{ target.phrase }}<span v-if="usedIds.includes(target.id)" class="sr-only">, {{ t('mission.used') }}</span></CmChip>
+      </li>
+    </ul>
+
+    <!-- One short note -->
+    <p v-if="isComplete" class="mt-2 flex flex-wrap items-center gap-x-2 text-caption text-success" role="status">
+      <span class="inline-flex items-center gap-1">
+        <span class="material-symbols-outlined !text-[18px]" aria-hidden="true">task_alt</span>
+        {{ task ? t('taskChat.complete') : t('mission.complete') }}
+      </span>
+      <button
+        v-if="!hasEnd"
+        type="button"
+        @click="emit('back')"
+        class="inline-flex min-h-11 items-center font-medium text-accent"
+      >{{ t('mission.backToLearning') }}</button>
     </p>
-    <p v-else-if="justUsed" class="mt-2 text-sm text-primary">
+    <p v-else-if="justUsed" class="mt-2 text-caption text-accent" role="status">
       {{ t('mission.nice', { phrase: justUsed }) }}
     </p>
-    <button
-      v-if="task && canEnd && !isComplete"
-      @click="emit('end')"
-      class="mt-2 inline-flex items-center gap-1 text-xs font-semibold text-text-muted dark:text-slate-400 underline underline-offset-2"
-    >
-      <span class="material-symbols-outlined text-[14px]">flag</span>{{ t('taskChat.endChat') }}
-    </button>
-  </div>
+    </template>
+  </section>
 </template>
 
 <style scoped>
-.mission-chip.is-used {
-  animation: chipPop 0.4s ease-out;
+.no-scrollbar {
+  scrollbar-width: none;
 }
-
-@keyframes chipPop {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.12); }
-  100% { transform: scale(1); }
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 </style>

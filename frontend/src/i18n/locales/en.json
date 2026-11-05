@@ -45,11 +45,11 @@
     "settings": "Settings"
   },
   "chat": {
-    "typeMessage": "Type a message...",
+    "typeMessage": "Type a message",
     "send": "Send",
-    "tryUsing": "Try using:",
+    "tryUsing": "Patterns you can use",
     "articleMode": "Article",
-    "rateLimitError": "I need a quick breather! Too many messages at once. Wait a few seconds and try again.",
+    "rateLimitError": "Too many messages at once. Wait a few seconds and try again.",
     "genericError": "Hmm, something went wrong. Let's try that again?",
     "menu": "More",
     "vocabBank": "Vocabulary bank",
@@ -63,7 +63,14 @@
     "online": "Online",
     "enterHint": "Press Enter to send, Shift+Enter for new line",
     "sendMessage": "Send message",
-    "typing": "is typing…"
+    "typing": "{name} is replying",
+    "sendFailed": "Message wasn’t sent",
+    "conversationNumber": "Conversation {n}",
+    "achievements": "Achievements",
+    "achievementsDescription": "What you have unlocked so far, and what is next.",
+    "articleSheet": "Read it, then talk it over with {name}",
+    "back": "Back",
+    "close": "Close"
   },
   "articles": {
     "title": "Choose an Article",
@@ -117,22 +124,22 @@
   "rank": {
     "totalXP": "{xp} XP total",
     "nextLevel": "Next level",
-    "maxLevel": "Max level reached!",
+    "maxLevel": "Highest rank reached",
     "messagesSent": "{count} messages sent",
     "streak": "{count} day streak",
     "days": "days",
     "currentStreak": "{count} day streak",
     "longestStreak": "Best: {count} days",
-    "levelUp": "Level Up!",
-    "continue": "Keep Learning!",
-    "streakBonus": "Streak Bonus!",
-    "streakMilestone": "{days} Day Streak!",
+    "levelUp": "New rank",
+    "continue": "Continue",
+    "streakBonus": "Streak bonus",
+    "streakMilestone": "{days}-day streak",
     "streakFreeze": "{count} streak freeze(s) available",
     "streakFreezeUsed": "Streak freeze used! Your streak is safe."
   },
   "achievements": {
-    "unlocked": "Achievement Unlocked!",
-    "continue": "Awesome!",
+    "unlocked": "Achievement unlocked",
+    "continue": "Continue",
     "categories": {
       "first_steps": "First Steps",
       "consistency": "Consistency",
@@ -259,7 +266,9 @@
       "title": "Centurion Scribe",
       "description": "Write 100 diary entries",
       "hint": "Submit 100 diary entries to unlock"
-    }
+    },
+    "unlockedState": "Unlocked",
+    "lockedState": "Locked"
   },
   "ranks": {
     "novice": "Novice",
@@ -368,18 +377,21 @@
     "alreadySaved": "Already in your bank",
     "addTranslation": "Add translation (optional)",
     "emptyHint": "Tap any word in a chat message to save it here. Your saved words come back for spaced-repetition review in Learning mode.",
-    "clearSearch": "Clear search"
+    "clearSearch": "Clear search",
+    "sheetDescription": "Save it to your word bank to review later.",
+    "context": "From this message"
   },
   "feedback": {
     "you": "You",
     "explain": "Explain",
-    "analyzing": "Analyzing your message...",
+    "analyzing": "Checking your message",
     "grammar": "Grammar",
     "vocabulary": "Vocabulary",
     "naturalness": "Naturalness",
     "corrections": "Corrections",
     "alternatives": "Better ways to say it",
-    "tips": "Tips"
+    "tips": "Tips",
+    "error": "Couldn’t check this sentence"
   },
   "srs": {
     "dailyReview": "Daily Review",
@@ -570,9 +582,11 @@
   },
   "mission": {
     "title": "Try to use these",
-    "nice": "Nice, “{phrase}” sounded really natural!",
-    "complete": "All three used — your reasons came through clearly!",
-    "backToLearning": "Back to lessons"
+    "nice": "“{phrase}” sounded natural",
+    "complete": "All three used. Your reasons came through clearly.",
+    "backToLearning": "Back to lessons",
+    "used": "used",
+    "notUsed": "not used yet"
   },
   "opinionChat": {
     "homeTitle": "Share your opinion with a friend",
@@ -582,10 +596,10 @@
     "hintsLabel": "Ways to give a reason",
     "hideHints": "Hide hints",
     "showHints": "Show connector hints",
-    "offerText": "That's {count} replies already — nice chat! Want a quick look at what you said?",
+    "offerText": "That’s {count} replies. Want a quick look at what you said?",
     "offerButton": "Show me",
     "offerLater": "Keep going",
-    "summaryTitle": "That was fun!",
+    "summaryTitle": "Chat summary",
     "summaryIntro": "{name} enjoyed hearing your take. You shared {count} replies this time.",
     "summaryUsed": "You gave reasons like this",
     "summaryNoneUsed": "No connectors this round — totally fine. Here are a couple to play with next time",
@@ -673,9 +687,9 @@
     "enter": "Voice conversation",
     "start": "Start talking",
     "readyHint": "Your friend speaks first. Listen, then answer out loud.",
-    "speaking": "Listen…",
-    "listening": "Your turn — speak now",
-    "thinking": "Your friend is thinking…",
+    "speaking": "{name} is speaking",
+    "listening": "Your turn",
+    "thinking": "{name} is replying",
     "tapToTalk": "Tap the mic to answer",
     "didntHear": "Didn't catch that. Tap the mic and try again.",
     "micBlocked": "Microphone is blocked. Allow it in settings, or type instead.",
@@ -689,7 +703,8 @@
     "stillThinking": "I'm still thinking",
     "takeYourTime": "Take your time, I'm listening",
     "pauseLength": "Send after {sec}s pause",
-    "pauseHint": "How long a pause sends your answer. Tap to change."
+    "pauseHint": "How long a pause sends your answer. Tap to change.",
+    "listenFirst": "Listen first, then show text"
   },
   "common": {
     "startVoiceInput": "Start voice input",
@@ -812,22 +827,26 @@
     "title": "Today's task",
     "cardTitle": "Use today's patterns in a task",
     "cardHint": "Try to use today's {count} patterns while you chat. You'll get a summary at the end.",
-    "complete": "You used all of today's patterns!",
-    "seeSummary": "See summary",
+    "complete": "You used all of today’s patterns",
+    "seeSummary": "Summary",
     "endChat": "Done — see summary",
     "startFromPractice": "Chat using today's patterns",
     "summaryTitle": "Chat summary",
-    "summaryIntro": "{name} put together a quick recap",
-    "patternsUsed": "Patterns used: {used} / {total}",
+    "summaryIntro": "Patterns and edits from this chat",
+    "patternsUsed": "{used} of {total} patterns used",
     "tryNextTime": "Try the others next time.",
-    "toFix": "Things to improve",
+    "toFix": "Try this next time",
     "loading": "{name} is putting it together…",
     "unavailable": "The summary isn't available right now. Try again later.",
-    "nothingToFix": "Almost nothing to fix this time. Great job!",
-    "showAnswer": "Show answer",
+    "nothingToFix": "No sentences need changes this time",
+    "showAnswer": "Show suggested sentence",
     "savedForReview": "These sentences were added to your daily practice reviews.",
     "keepChatting": "Keep chatting",
-    "backHome": "Home"
+    "backHome": "Home",
+    "patternsUsedLabel": "patterns used",
+    "todayPatterns": "Today’s patterns",
+    "hint": "Hint",
+    "suggested": "Suggested sentence"
   },
   "voiceSettings": {
     "title": "Voice",
