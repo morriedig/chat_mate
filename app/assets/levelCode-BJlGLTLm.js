@@ -1,0 +1,1 @@
+const n={beginner:"A1–A2",intermediate:"B1–B2",advanced:"C1–C2"};function a(e){return n[e]||""}const t={en:"EN",zh:"中文",ja:"日本語"};function r(e){return t[e]||String(e||"").toUpperCase()}export{r as a,a as l};
