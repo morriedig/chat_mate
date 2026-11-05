@@ -32,6 +32,19 @@
 Add a second script property `ANTHROPIC_API_KEY` with a key from https://platform.claude.com/settings/keys .
 When it is set, chat uses `claude-haiku-5-5` and grammar / diary feedback use `claude-sonnet-5-5`.
 Delete the property to switch back to Gemini; no redeploy is needed.
+Sentence check and the end-of-chat summary only work with Claude.
+
+### Optional: daily limits
+
+Every AI request counts toward two daily caps (days in Taiwan time), so a leaked token can't run up the bill:
+
+| Script property | Default | Meaning |
+|---|---|---|
+| `DAILY_CLIENT_LIMIT` | 150 | AI calls per client per day |
+| `DAILY_GLOBAL_LIMIT` | 3000 | AI calls for the whole app per day |
+
+Over a cap the API answers `{ success: false, isDailyLimit: true }`. The counters live in CacheService,
+so they are best effort: an evicted counter starts over.
 
 ## Step 5: Deploy as Web App
 

@@ -264,14 +264,31 @@ cd backend && npm start
 POST /api/chat
   Body: { messages, characterId, levelId, language, isGreeting, article, challengeContext }
   Returns: { reply, hints }
+  With Claude, the character prompt goes in the system field; challengeContext is the practice goal for task chats
 
 POST /api/diary-feedback
   Body: { diaryText, language, level, characterId, nativeLanguage, streakDays }
-  Returns: { feedback: { reaction, didWell, corrections, betterExpressions, newVocabulary, encouragement, score } }
+  Returns: { feedback: { reaction, didWell, corrections: [{ original, corrected, explanation, severity, type }], betterExpressions, newVocabulary, encouragement, score } }
+
+POST /feedback   (GAS: action 'feedback')
+  Body: { userMessage, context, level, language, nativeLanguage? }
+  Returns: { feedback: { grammar: { score, corrections, correctionTypes }, vocabulary, naturalness, alternatives } }
+  corrections[i] reads "<original>" → "<corrected>" — <explanation in nativeLanguage>; correctionTypes[i] is its error type
 
 POST /sentence-check   (GAS: action 'sentence-check'; needs ANTHROPIC_API_KEY)
   Body: { sentence, pattern, meaning, task, level, nativeLanguage }
-  Returns: { check: { usedPattern, isNatural, corrected, comment, better } }
+  Returns: { check: { usedPattern, isNatural, corrected, comment, better, errorType } }
+
+POST /chat-summary   (GAS: action 'chat-summary'; needs ANTHROPIC_API_KEY)
+  Body: { messages: [{ role: 'user'|'assistant', content }], patterns: [{ id, pattern, match }], level, nativeLanguage }
+  Returns: { summary: { points: [{ original, hint, corrected, explanation, type }], usedPatternIds, encouragement } }
+
+Error types: article, tense, third-person-s, plural, connector, word-choice, other
+  (diary corrections[].type, feedback correctionTypes[], sentence-check errorType, chat-summary points[].type)
+nativeLanguage 'zh' adds Mandarin-speaker checks (articles, tense, -s, plurals, connectors) to every feedback prompt.
+
+Daily limit: every AI endpoint counts toward a per-client and a global daily cap (Taiwan time).
+  Over the cap: { success: false, isDailyLimit: true } (HTTP 429 from server.js; GAS always answers 200)
 
 GET /token
   Returns: Auth token (1-hour expiry)
@@ -286,6 +303,8 @@ GET /status
 ANTHROPIC_API_KEY=sk-ant-...      # When set, chat/feedback use Claude instead of Gemini
 GEMINI_API_KEYS=key1,key2,key3    # Comma-separated, auto-rotates on rate limit (used when no Claude key)
 PORT=3000                         # Optional
+DAILY_CLIENT_LIMIT=150            # Optional: AI calls per client per day
+DAILY_GLOBAL_LIMIT=3000           # Optional: AI calls for the whole app per day
 MOCK_API=false                    # Use mock responses for testing
 SKIP_AUTH=true                    # Skip authentication
 ```

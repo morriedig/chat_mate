@@ -119,6 +119,43 @@ function checkRateLimit(clientId) {
   return true;
 }
 
+// === DAILY LIMITS ===
+// Daily caps on AI calls, so a leaked token or a runaway client can't run up the Claude bill.
+// Override with the DAILY_CLIENT_LIMIT / DAILY_GLOBAL_LIMIT script properties.
+var DAILY_LIMIT_RESPONSE = { success: false, isDailyLimit: true, error: 'Daily limit reached. Please come back tomorrow.' };
+var DAILY_CACHE_SECONDS = 21600; // CacheService max; each call refreshes it
+
+function getDailyLimitSetting(name, fallback) {
+  var value = parseInt(PropertiesService.getScriptProperties().getProperty(name), 10);
+  return value > 0 ? value : fallback;
+}
+
+// Counts one AI call; returns false once the client or the whole app is over today's cap (days in Taiwan time).
+// CacheService counters are best effort: an evicted entry starts over, which only ever errs toward allowing.
+function checkDailyLimit(clientId) {
+  var day = Utilities.formatDate(new Date(), 'Asia/Taipei', 'yyyyMMdd');
+  var clientKey = 'daily_' + day + '_' + String(clientId).slice(0, 200);
+  var globalKey = 'daily_' + day + '_all';
+  var lock = LockService.getScriptLock();
+  var locked = lock.tryLock(2000);
+  try {
+    var cache = CacheService.getScriptCache();
+    var counts = cache.getAll([clientKey, globalKey]);
+    var used = parseInt(counts[clientKey], 10) || 0;
+    var total = parseInt(counts[globalKey], 10) || 0;
+    if (used >= getDailyLimitSetting('DAILY_CLIENT_LIMIT', 150) || total >= getDailyLimitSetting('DAILY_GLOBAL_LIMIT', 3000)) {
+      return false;
+    }
+    var update = {};
+    update[clientKey] = String(used + 1);
+    update[globalKey] = String(total + 1);
+    cache.putAll(update, DAILY_CACHE_SECONDS);
+    return true;
+  } finally {
+    if (locked) lock.releaseLock();
+  }
+}
+
 // === TOKEN RATE LIMITING ===
 const TOKEN_RATE_LIMIT_MS = 60000; // 1 token per minute per origin
 
@@ -198,6 +235,10 @@ function doPost(e) {
       return handleSentenceCheck(data);
     }
 
+    if (data.action === 'chat-summary') {
+      return handleChatSummary(data);
+    }
+
     const { messages = [], character = 'emma', level = 'intermediate', language = 'en', isGreeting, article, challengeContext, memoryContext, clientId, origin, authToken } = data;
 
     // Input validation
@@ -248,6 +289,9 @@ function doPost(e) {
     if (!checkRateLimit(clientId)) {
       return createResponse({ success: false, error: 'Too many requests. Please wait 1 second.', isRateLimit: true });
     }
+    if (!checkDailyLimit(clientId)) {
+      return createResponse(DAILY_LIMIT_RESPONSE);
+    }
 
     var systemPrompt = buildSystemPrompt(character, level, language, article);
     if (memoryContext && typeof memoryContext === 'string' && memoryContext.length < 4000) {
@@ -255,11 +299,12 @@ function doPost(e) {
         + '\n\nReference these details naturally when relevant — do NOT recite them. Act like someone who just remembers these things organically.';
     }
     if (challengeContext && typeof challengeContext === 'string' && challengeContext.length < 6000) {
-      systemPrompt += '\n\n' + challengeContext;
+      systemPrompt += '\n\n' + challengeContext + '\n\n## Practice Goal\nThe section above describes expressions the user is practicing in this chat. Steer the conversation so they get natural chances to use them (ask about situations where they fit), but never list them, quiz them, or say that they are practicing.';
     }
-    const geminiMessages = buildGeminiMessages(systemPrompt, messages, isGreeting, article);
-
-    const result = callGemini(geminiMessages);
+    var conversation = buildConversationMessages(messages, isGreeting, article);
+    var result = ANTHROPIC_API_KEY
+      ? callClaude(CLAUDE_CHAT_MODEL, conversation, CHAT_RESPONSE_SCHEMA, 'low', systemPrompt)
+      : callGemini(buildGeminiMessages(systemPrompt, conversation));
 
     // Parse JSON response
     const parsed = JSON.parse(result);
@@ -294,6 +339,111 @@ function createResponse(data) {
   return ContentService.createTextOutput(JSON.stringify(data))
     .setMimeType(ContentService.MimeType.JSON);
 }
+
+// === ERROR TYPES & NATIVE-LANGUAGE RULES ===
+// Every correction is tagged so the app can bring a learner's most common error kinds back for review more often
+var ERROR_TYPES = ['article', 'tense', 'third-person-s', 'plural', 'connector', 'word-choice', 'other'];
+var ERROR_TYPE_DESCRIPTION = 'Error kind: article (a/an/the), tense (verb tense or verb form), third-person-s (he/she/it verb without -s), plural (plurals or countability), connector (linking words, e.g. sentence-initial So/And/But, a fragment starting with Because, "Although ... but"), word-choice (wrong or unnatural word or collocation), other';
+
+// Extra checks for learners whose native language is Mandarin; empty for everyone else
+function getNativeLanguageRules(nativeLanguage) {
+  if (nativeLanguage !== 'zh') return '';
+  return '\n\n## Common errors for Mandarin speakers\n' +
+    'This learner\'s native language is Mandarin Chinese, which has no articles, no tense endings, no subject-verb agreement and no plural endings. Pay particular attention to:\n' +
+    '- Articles: missing or wrong a/an/the ("I bought new phone", "The life is hard")\n' +
+    '- Tense: present used for past events, missing -ed, wrong irregular forms ("Yesterday I go", "I have went")\n' +
+    '- Third-person -s: "she like", "it make me happy"\n' +
+    '- Plurals and countability: "many book", "two informations"\n' +
+    '- Connectors: overusing sentence-initial So/And/But, fragments starting with Because, "Although ... but", "Because ... so"\n' +
+    'When one of these appears, point it out before smaller style issues and tag it with the matching type. Do not invent errors: a correct sentence stays correct.';
+}
+
+// === CHAT SUMMARY (end of a task chat) ===
+var CHAT_SUMMARY_SCHEMA = {
+  type: 'object',
+  properties: {
+    points: {
+      type: 'array',
+      description: 'The 1-3 most useful fixes from the learner\'s own messages, most important first. Empty only if the learner made no real mistakes.',
+      items: {
+        type: 'object',
+        properties: {
+          original: { type: 'string', description: 'The learner\'s exact words that need fixing (a short excerpt of one of their messages)' },
+          hint: { type: 'string', description: 'A short nudge in the learner\'s native language that helps them fix it themselves, without giving the answer' },
+          corrected: { type: 'string', description: 'The corrected version of original, with the minimum changes' },
+          explanation: { type: 'string', description: 'One short sentence in the learner\'s native language explaining why' },
+          type: { type: 'string', enum: ERROR_TYPES, description: ERROR_TYPE_DESCRIPTION }
+        },
+        required: ['original', 'hint', 'corrected', 'explanation', 'type']
+      }
+    },
+    usedPatternIds: {
+      type: 'array',
+      items: { type: 'string' },
+      description: 'Ids of the target patterns the learner actually used naturally in their own messages'
+    },
+    encouragement: { type: 'string', description: 'One warm sentence in the learner\'s native language about something specific they did well' }
+  },
+  required: ['points', 'usedPatternIds', 'encouragement']
+};
+
+var CHAT_SUMMARY_MAX_MESSAGES = 40;
+var CHAT_SUMMARY_MAX_CHARS = 12000;
+
+// Returns an error message, or '' when the chat-summary request body is valid
+function validateChatSummaryInput(messages, patterns, level, nativeLanguage) {
+  if (!Array.isArray(messages) || messages.length === 0 || messages.length > CHAT_SUMMARY_MAX_MESSAGES) return 'Invalid messages';
+  var total = 0;
+  var userLines = 0;
+  for (var i = 0; i < messages.length; i++) {
+    var msg = messages[i];
+    if (!msg || (msg.role !== 'user' && msg.role !== 'assistant') || typeof msg.content !== 'string') return 'Invalid message';
+    total += msg.content.length;
+    if (msg.role === 'user' && msg.content.trim()) userLines++;
+  }
+  if (total > CHAT_SUMMARY_MAX_CHARS) return 'Conversation is too long';
+  if (userLines === 0) return 'No learner messages to review';
+  if (!Array.isArray(patterns) || patterns.length > 5) return 'Invalid patterns';
+  for (var j = 0; j < patterns.length; j++) {
+    var p = patterns[j];
+    if (!p || typeof p.id !== 'string' || p.id.length > 100 || typeof p.pattern !== 'string' || p.pattern.length > 200) return 'Invalid pattern';
+    if (p.match !== undefined && (!Array.isArray(p.match) || p.match.length > 10)) return 'Invalid pattern';
+    for (var k = 0; p.match && k < p.match.length; k++) {
+      if (typeof p.match[k] !== 'string' || p.match[k].length > 100) return 'Invalid pattern';
+    }
+  }
+  if (VALID_LEVELS.indexOf(level) === -1) return 'Invalid level';
+  if (VALID_LANGUAGES.indexOf(nativeLanguage) === -1) return 'Invalid native language';
+  return '';
+}
+
+function buildChatSummaryPrompt(messages, patterns, level, nativeLanguage) {
+  var levelName = level === 'beginner' ? 'A1-A2' : level === 'advanced' ? 'C1' : 'B1-B2';
+  var nativeName = nativeLanguage === 'zh' ? 'Traditional Chinese (Taiwan)' : nativeLanguage === 'ja' ? 'Japanese' : 'English';
+  var transcript = messages.map(function(m) {
+    return (m.role === 'user' ? 'Learner: ' : 'Friend: ') + m.content;
+  }).join('\n');
+  var patternText = patterns.length === 0 ? '(none)' : patterns.map(function(p) {
+    var also = Array.isArray(p.match) && p.match.length ? ' (also counts: ' + p.match.join(', ') + ')' : '';
+    return '- ' + p.id + ': "' + p.pattern + '"' + also;
+  }).join('\n');
+  return 'You are a friendly English-speaking friend helping a ' + levelName + ' learner whose native language is ' + nativeName + '.\n' +
+    'They just finished a practice chat. Pick the 1-3 most useful fixes from the LEARNER\'s lines only (never the friend\'s).\n' +
+    'Judge against their level: skip tiny slips and style preferences, and do not rewrite correct, natural sentences. Prefer mistakes that would confuse a listener or that they repeated.\n' +
+    'Write "hint", "explanation" and "encouragement" in ' + nativeName + ', like a friend, not a teacher. The hint must not contain the corrected words.\n' +
+    'Set usedPatternIds to the ids of the target patterns the learner really used in their own messages (natural variations count).' +
+    getNativeLanguageRules(nativeLanguage) + '\n\n' +
+    'Target patterns:\n' + patternText + '\n\n' +
+    'Chat:\n' + transcript;
+}
+
+var MOCK_CHAT_SUMMARY = {
+  points: [
+    { original: 'Yesterday I go to the office', hint: '這件事是昨天發生的，動詞要怎麼變？', corrected: 'Yesterday I went to the office', explanation: '說過去的事要用過去式，go 的過去式是 went。', type: 'tense' }
+  ],
+  usedPatternIds: [],
+  encouragement: '你一直有在延伸自己的想法，聊起來很自然！'
+};
 
 // === RESPONSE SCHEMAS (shared by Gemini and Claude) ===
 const CHAT_RESPONSE_SCHEMA = {
@@ -331,9 +481,14 @@ const FEEDBACK_RESPONSE_SCHEMA = {
         type: 'object',
         properties: {
           score: { type: 'integer', description: 'Grammar score 0-100' },
-          corrections: { type: 'array', items: { type: 'string' }, description: 'Grammar corrections' }
+          corrections: { type: 'array', items: { type: 'string' }, description: 'Grammar corrections' },
+          correctionTypes: {
+            type: 'array',
+            items: { type: 'string', enum: ERROR_TYPES },
+            description: 'One error type per item in corrections, same order and length. ' + ERROR_TYPE_DESCRIPTION
+          }
         },
-        required: ['score', 'corrections']
+        required: ['score', 'corrections', 'correctionTypes']
       },
       vocabulary: {
         type: 'object',
@@ -384,9 +539,10 @@ const DIARY_FEEDBACK_SCHEMA = {
             original: { type: 'string', description: 'Original text' },
             corrected: { type: 'string', description: 'Corrected version' },
             explanation: { type: 'string', description: 'Brief explanation' },
-            severity: { type: 'string', description: 'minor, moderate, or major' }
+            severity: { type: 'string', description: 'minor, moderate, or major' },
+            type: { type: 'string', enum: ERROR_TYPES, description: ERROR_TYPE_DESCRIPTION }
           },
-          required: ['original', 'corrected', 'explanation', 'severity']
+          required: ['original', 'corrected', 'explanation', 'severity', 'type']
         }
       },
       betterExpressions: {
@@ -438,9 +594,10 @@ const SENTENCE_CHECK_SCHEMA = {
     isNatural: { type: 'boolean', description: 'Whether the sentence is grammatical and natural for a native speaker' },
     corrected: { type: 'string', description: 'The sentence with the minimum fixes; identical to the input if nothing needs fixing' },
     comment: { type: 'string', description: 'One or two short, friendly sentences in the learner\'s native language about the main fix or what was good' },
-    better: { type: 'string', description: 'One natural version that uses the pattern and keeps the learner\'s idea' }
+    better: { type: 'string', description: 'One natural version that uses the pattern and keeps the learner\'s idea' },
+    errorType: { type: 'string', enum: ERROR_TYPES, description: 'Kind of the main fix; "other" when the sentence needed no fix. ' + ERROR_TYPE_DESCRIPTION }
   },
-  required: ['usedPattern', 'isNatural', 'corrected', 'comment', 'better']
+  required: ['usedPattern', 'isNatural', 'corrected', 'comment', 'better', 'errorType']
 };
 
 // === CLAUDE API ===
@@ -462,25 +619,42 @@ function toClaudeSchema(schema) {
   return out;
 }
 
-// Takes Gemini-format messages ({role: 'user'|'model', parts: [{text}]}) and returns the JSON text
-function callClaude(model, geminiMessages, schema, effort) {
-  var messages = geminiMessages.map(function(m) {
-    return {
-      role: m.role === 'model' ? 'assistant' : 'user',
-      content: m.parts.map(function(part) { return part.text; }).join('\n')
-    };
+// Gemini-format turns → Claude messages. Claude wants the first turn from the user, so a chat that opens
+// with the friend's greeting gets a short user turn in front; back-to-back turns from one side are merged.
+function toClaudeMessages(geminiMessages) {
+  var messages = [];
+  geminiMessages.forEach(function(m) {
+    var role = m.role === 'model' ? 'assistant' : 'user';
+    var content = m.parts.map(function(part) { return part.text; }).join('\n');
+    var last = messages[messages.length - 1];
+    if (last && last.role === role) {
+      last.content += '\n\n' + content;
+    } else {
+      messages.push({ role: role, content: content });
+    }
   });
+  if (messages.length && messages[0].role !== 'user') {
+    messages.unshift({ role: 'user', content: '[The chat started.]' });
+  }
+  return messages;
+}
+
+// Takes Gemini-format messages ({role: 'user'|'model', parts: [{text}]}) and returns the JSON text.
+// `system` (optional) goes in Claude's system field.
+function callClaude(model, geminiMessages, schema, effort, system) {
+  var request = {
+    model: model,
+    max_tokens: 16000,
+    messages: toClaudeMessages(geminiMessages),
+    output_config: { effort: effort, format: { type: 'json_schema', schema: toClaudeSchema(schema) } }
+  };
+  if (system) request.system = system;
 
   var response = UrlFetchApp.fetch(CLAUDE_URL, {
     method: 'POST',
     contentType: 'application/json',
     headers: { 'x-api-key': ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
-    payload: JSON.stringify({
-      model: model,
-      max_tokens: 16000,
-      messages: messages,
-      output_config: { effort: effort, format: { type: 'json_schema', schema: toClaudeSchema(schema) } }
-    }),
+    payload: JSON.stringify(request),
     muteHttpExceptions: true,
   });
 
@@ -510,11 +684,8 @@ function callClaude(model, geminiMessages, schema, effort) {
 }
 
 // === GEMINI API ===
+// Chat fallback when ANTHROPIC_API_KEY is not set
 function callGemini(messages) {
-  if (ANTHROPIC_API_KEY) {
-    return callClaude(CLAUDE_CHAT_MODEL, messages, CHAT_RESPONSE_SCHEMA, 'low');
-  }
-
   console.log('Total API keys: ' + GEMINI_API_KEYS.length);
   console.log('Available keys: ' + getAvailableKeyCount() + '/' + GEMINI_API_KEYS.length);
 
@@ -611,11 +782,17 @@ function callGemini(messages) {
   throw new Error('All API keys failed: ' + errors.join('; '));
 }
 
-function buildGeminiMessages(systemPrompt, messages, isGreeting, article) {
-  const geminiMessages = [
+// Gemini has no system prompt here, so it goes in as the first turn
+function buildGeminiMessages(systemPrompt, conversation) {
+  return [
     { role: 'user', parts: [{ text: systemPrompt + '\n\n---\nStart the conversation now.' }] },
-    { role: 'model', parts: [{ text: "Got it! I'll stay in character." }] },
-  ];
+    { role: 'model', parts: [{ text: "Got it! I'll stay in character." }] }
+  ].concat(conversation);
+}
+
+// The chat so far as Gemini-format turns, or the greeting cue when the chat is just starting
+function buildConversationMessages(messages, isGreeting, article) {
+  const geminiMessages = [];
 
   if (isGreeting) {
     if (article) {
@@ -691,10 +868,11 @@ ${levelInstructions}
    - Never say things like "Great job!" or "Good question!"
    - Just talk like a normal friend would
 
-2. **Reciprocity - Share Before You Ask**:
-   - Instead of asking questions, share your own opinions or experiences FIRST
-   - Example: Instead of "What do you think about coffee?" say "Man, I've been craving coffee all day. The place near my house was closed though..."
-   - Let them respond naturally to what you shared
+2. **Keep the Focus on Them**:
+   - The conversation is about the user. Talk about yourself in at most ONE short sentence per reply, and only when it helps them answer
+   - React to what they said first, then add a small personal touch or ask about THEIR life
+   - Example: Instead of a long story about your day, say "Ugh, Mondays. What's keeping you busy this week?"
+   - Don't bring up the same personal topic (your job, pet, hobby) in back-to-back replies
 
 3. **The Mirror Rule**:
    - If the user sends a short message, respond briefly
@@ -711,7 +889,7 @@ ${levelInstructions}
    - Use filler words naturally (${fillerWords})
    - React emotionally before responding
    - Have opinions and share them
-   - Reference your daily life and experiences
+   - Mention your own life only briefly, as a hook for them to talk
 
 6. **Topic Flow**:
    - Stay on the user's topic for 2-3 exchanges minimum
@@ -735,7 +913,11 @@ ${levelInstructions}
    - Always provide 3 useful ${languageName} words/phrases the user could use to respond
    - These should be conversation hooks, not vocabulary lessons
    - Choose words that help them continue the conversation naturally
-   - Examples: "Actually...", "To be honest...", "Speaking of which..."`;
+   - Examples: "Actually...", "To be honest...", "Speaking of which..."
+
+10. **Voice**:
+   - Always speak as yourself in the first person ("I", "me", "my")
+   - Never refer to yourself by your own name or in the third person`;
 }
 
 function getCharacterPrompt(character, language) {
@@ -1225,6 +1407,8 @@ function handleFeedback(data) {
     var context = data.context || [];
     var level = data.level || 'intermediate';
     var language = data.language || 'en';
+    // Optional; anything unexpected just means no native-language rules and English explanations
+    var nativeLanguage = VALID_LANGUAGES.indexOf(data.nativeLanguage) !== -1 ? data.nativeLanguage : 'en';
     var clientId = data.clientId;
     var origin = data.origin;
     var authToken = data.authToken;
@@ -1264,8 +1448,11 @@ function handleFeedback(data) {
     if (!checkRateLimit(clientId)) {
       return createResponse({ success: false, error: 'Too many requests.', isRateLimit: true });
     }
+    if (!checkDailyLimit(clientId)) {
+      return createResponse(DAILY_LIMIT_RESPONSE);
+    }
 
-    var feedbackMessages = buildFeedbackPrompt(userMessage, context, level, language);
+    var feedbackMessages = buildFeedbackPrompt(userMessage, context, level, language, nativeLanguage);
 
     // Call Gemini with feedback schema
     var result = callGeminiFeedback(feedbackMessages);
@@ -1373,7 +1560,8 @@ function callGeminiFeedback(messages) {
   throw new Error('All API keys failed: ' + errors.join('; '));
 }
 
-function buildFeedbackPrompt(userMessage, context, level, language) {
+function buildFeedbackPrompt(userMessage, context, level, language, nativeLanguage) {
+  var nativeName = nativeLanguage === 'zh' ? 'Traditional Chinese (Taiwan)' : nativeLanguage === 'ja' ? 'Japanese' : 'English';
   var languageName = language === 'ja' ? 'Japanese' : language === 'zh' ? 'Chinese' : 'English';
   var levelName = level === 'beginner' ? 'A1-A2' : level === 'advanced' ? 'C1-C2' : 'B1-B2';
 
@@ -1387,11 +1575,12 @@ function buildFeedbackPrompt(userMessage, context, level, language) {
 
   var systemText = 'You are a ' + languageName + ' language analysis tool. Analyze the following ' + languageName + ' message written by a ' + levelName + ' level learner. Provide honest, constructive feedback.\n\n' +
     'Be encouraging but accurate. Score relative to their level (' + levelName + ').\n' +
-    '- Grammar: Check for grammatical errors. Provide specific corrections in ' + languageName + ' with brief explanations.\n' +
+    '- Grammar: Check for grammatical errors. Write each correction exactly as "<original words>" → "<corrected words>" — <brief explanation in ' + nativeName + '>. For each correction, add its error type to grammar.correctionTypes in the same order.\n' +
     '- Vocabulary: Rate the appropriateness and variety of vocabulary for their level.\n' +
     '- Naturalness: How natural does this sound to a native speaker? Provide tips for more natural expression.\n' +
     '- Alternatives: Suggest 1-3 alternative ways to express the same idea more naturally in ' + languageName + '.\n\n' +
     'If the message is perfect, give high scores and minimal corrections. Keep feedback concise.' +
+    (language === 'en' ? getNativeLanguageRules(nativeLanguage) : '') +
     contextText + '\n\nUser\'s message to analyze: "' + userMessage + '"';
 
   return [
@@ -1434,6 +1623,9 @@ function handleSentenceCheck(data) {
     if (!checkRateLimit(data.clientId)) {
       return createResponse({ success: false, error: 'Too many requests.', isRateLimit: true });
     }
+    if (!checkDailyLimit(data.clientId)) {
+      return createResponse(DAILY_LIMIT_RESPONSE);
+    }
     if (!ANTHROPIC_API_KEY) {
       return createResponse({ success: false, error: 'Sentence check is not configured' });
     }
@@ -1460,8 +1652,58 @@ function buildSentenceCheckPrompt(sentence, pattern, meaning, task, level, nativ
     'They are practicing the pattern "' + pattern + '"' + (meaning ? ' (' + meaning + ')' : '') + '.\n' +
     (task ? 'Their task was: ' + task + '\n' : '') +
     'Check the sentence they wrote. Judge it against their level: do not rewrite a correct, natural sentence just to make it fancier.\n' +
-    'Write "comment" in ' + nativeName + ', like a friend, not a teacher. If they did not use the pattern, say so gently and show how.\n\n' +
+    'Write "comment" in ' + nativeName + ', like a friend, not a teacher. If they did not use the pattern, say so gently and show how.\n' +
+    'Set errorType to the kind of the main fix ("other" if nothing needed fixing).' +
+    getNativeLanguageRules(nativeLanguage) + '\n\n' +
     'Sentence: "' + sentence + '"';
+}
+
+// === CHAT SUMMARY HANDLER ===
+// End-of-chat summary for task chats. Needs ANTHROPIC_API_KEY.
+function handleChatSummary(data) {
+  try {
+    var messages = data.messages;
+    var patterns = data.patterns || [];
+    var level = data.level || 'intermediate';
+    var nativeLanguage = data.nativeLanguage || 'zh';
+
+    var invalid = validateChatSummaryInput(messages, patterns, level, nativeLanguage);
+    if (invalid) {
+      return createResponse({ success: false, error: invalid });
+    }
+    if (!isAllowedOrigin(data.origin || '')) {
+      return createResponse({ success: false, error: 'Unauthorized origin' });
+    }
+    if (!validateToken(data.authToken)) {
+      return createResponse({ success: false, error: 'Invalid or expired token.', isTokenError: true });
+    }
+    if (!checkRateLimit(data.clientId)) {
+      return createResponse({ success: false, error: 'Too many requests.', isRateLimit: true });
+    }
+    if (!checkDailyLimit(data.clientId)) {
+      return createResponse(DAILY_LIMIT_RESPONSE);
+    }
+    if (!ANTHROPIC_API_KEY) {
+      return createResponse({ success: false, error: 'Chat summary is not configured' });
+    }
+
+    var prompt = buildChatSummaryPrompt(messages, patterns, level, nativeLanguage);
+    var result = callClaude(CLAUDE_FEEDBACK_MODEL, [{ role: 'user', parts: [{ text: prompt }] }], CHAT_SUMMARY_SCHEMA, 'low');
+    var summary = JSON.parse(result);
+    var knownIds = patterns.map(function(p) { return p.id; });
+    summary.points = (summary.points || []).slice(0, 3);
+    summary.usedPatternIds = (summary.usedPatternIds || []).filter(function(id) { return knownIds.indexOf(id) !== -1; });
+    return createResponse({ success: true, summary: summary });
+  } catch (error) {
+    console.error('Chat summary error:', error);
+    var errorMsg = (error && error.message) || '';
+    var isRateLimit = errorMsg.includes('quota') || errorMsg.includes('rate') || errorMsg.includes('429');
+    return createResponse({
+      success: false,
+      error: isRateLimit ? 'Rate limit exceeded.' : 'An internal error occurred.',
+      isRateLimit: isRateLimit
+    });
+  }
 }
 
 // === DIARY FEEDBACK HANDLER ===
@@ -1513,6 +1755,9 @@ function handleDiaryFeedback(data) {
     // Check rate limit
     if (!checkRateLimit(clientId)) {
       return createResponse({ success: false, error: 'Too many requests.', isRateLimit: true });
+    }
+    if (!checkDailyLimit(clientId)) {
+      return createResponse(DAILY_LIMIT_RESPONSE);
     }
 
     var systemPrompt = buildDiaryFeedbackPrompt(characterId, level, language, nativeLanguage, streakDays);
@@ -1681,7 +1926,8 @@ function buildDiaryFeedbackPrompt(character, level, targetLanguage, nativeLangua
       '- Accept both American and British English - never "correct" one to the other\n' +
       '- At intermediate level, suggest phrasal verbs as betterExpressions (e.g., "find out" instead of "discover")\n' +
       '- Note article (a/the) and preposition issues - common for all learners\n' +
-      '- Distinguish between formal and casual tone for diary context';
+      '- Distinguish between formal and casual tone for diary context' +
+      getNativeLanguageRules(nativeLanguage);
   }
 
   var streakEncouragement = '';
@@ -1709,7 +1955,8 @@ function buildDiaryFeedbackPrompt(character, level, targetLanguage, nativeLangua
     '3. **corrections**: Maximum ' + maxCorrections + ' corrections. Prioritize by severity (major first). ' + explanationLanguage + '\n' +
     '   - severity "major": Meaning is unclear or wrong\n' +
     '   - severity "moderate": Understandable but noticeably unnatural\n' +
-    '   - severity "minor": Small issues, still sounds okay\n\n' +
+    '   - severity "minor": Small issues, still sounds okay\n' +
+    '   - type: the error kind (article, tense, third-person-s, plural, connector, word-choice, other)\n\n' +
     '4. **betterExpressions**: Suggest 1-3 more natural alternatives for phrases that are correct but sound learner-like. Include context for when to use the upgraded version.\n\n' +
     '5. **newVocabulary**: Suggest 2-4 words/phrases related to the TOPIC of their diary that they could use next time. Make them relevant to what they wrote about.\n\n' +
     '6. **encouragement**: A warm, genuine closing. Not generic - reference something specific from their diary.' + streakEncouragement + '\n\n' +
