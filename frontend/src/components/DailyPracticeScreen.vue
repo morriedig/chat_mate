@@ -167,7 +167,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="flex h-screen w-full max-w-[100vw] overflow-hidden">
-    <div class="flex flex-1 flex-col h-full relative bg-background-light dark:bg-background-dark">
+    <div class="flex flex-1 min-w-0 flex-col h-full relative bg-background-light dark:bg-background-dark">
       <!-- Header -->
       <header class="flex items-center justify-between border-b border-[#e7eff3] dark:border-slate-800 px-3 sm:px-6 py-3 sm:py-4 bg-surface-light dark:bg-surface-dark z-10 shadow-sm overflow-hidden safe-area-top">
         <div class="flex items-center gap-2 sm:gap-3 text-text-main dark:text-white min-w-0 shrink">
@@ -181,18 +181,18 @@ onBeforeUnmount(() => {
             </span>
           </div>
         </div>
-        <div class="flex items-center gap-1 shrink-0">
-          <button
-            v-for="lv in levels"
-            :key="lv"
-            @click="setLevel(lv)"
-            class="px-2.5 py-1 rounded-full text-xs font-semibold border transition-colors"
-            :class="lv === level
-              ? 'bg-primary text-white border-primary'
-              : 'border-slate-200 dark:border-slate-700 text-text-muted dark:text-slate-400'"
-          >{{ t(`levels.${lv}.name`) }}</button>
-        </div>
       </header>
+      <div class="flex gap-1.5 px-3 sm:px-6 py-2 bg-surface-light dark:bg-surface-dark border-b border-[#e7eff3] dark:border-slate-800">
+        <button
+          v-for="lv in levels"
+          :key="lv"
+          @click="setLevel(lv)"
+          class="flex-1 min-w-0 px-2 py-1.5 rounded-full text-xs font-semibold border transition-colors truncate"
+          :class="lv === level
+            ? 'bg-primary text-white border-primary'
+            : 'border-slate-200 dark:border-slate-700 text-text-muted dark:text-slate-400'"
+        >{{ t(`levels.${lv}.name`) }}</button>
+      </div>
       <div class="h-1 bg-slate-100 dark:bg-slate-800">
         <div class="h-1 bg-primary transition-all" :style="{ width: progressPercent + '%' }"></div>
       </div>

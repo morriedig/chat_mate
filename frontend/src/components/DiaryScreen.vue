@@ -253,7 +253,7 @@ function handleBack() {
 
 <template>
   <div class="flex h-screen w-full max-w-[100vw] overflow-hidden">
-    <div class="flex flex-1 flex-col h-full relative bg-background-light dark:bg-background-dark">
+    <div class="flex flex-1 min-w-0 flex-col h-full relative bg-background-light dark:bg-background-dark">
       <!-- Header -->
       <header class="flex items-center justify-between border-b border-[#e7eff3] dark:border-slate-800 px-3 sm:px-6 py-3 sm:py-4 bg-surface-light dark:bg-surface-dark z-10 shadow-sm overflow-hidden safe-area-top">
         <div class="flex items-center gap-2 sm:gap-3 text-text-main dark:text-white min-w-0 shrink">
