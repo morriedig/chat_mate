@@ -282,7 +282,7 @@ onMounted(() => {
           class="flex items-center gap-1 sm:gap-2 shrink-0 whitespace-nowrap text-text-muted hover:text-text-main dark:text-slate-400 dark:hover:text-white transition-colors"
         >
           <span class="material-symbols-outlined">arrow_back</span>
-          <span class="text-sm font-medium">{{ selectedChapter ? t('learning.backToChapters') : t('learning.backToSetup') }}</span>
+          <span class="hidden min-[360px]:inline text-sm font-medium">{{ selectedChapter ? t('learning.backToChapters') : t('learning.backToSetup') }}</span>
         </button>
 
         <div class="flex items-center gap-2 sm:gap-4 min-w-0">
@@ -314,7 +314,7 @@ onMounted(() => {
 
           <div class="flex items-center gap-1 sm:gap-2 shrink-0">
             <span class="text-2xl">{{ props.level.icon }}</span>
-            <span class="hidden min-[360px]:inline whitespace-nowrap font-semibold text-text-main dark:text-white">{{ t(`levels.${props.level.id}.name`) }}</span>
+            <span class="hidden sm:inline whitespace-nowrap font-semibold text-text-main dark:text-white">{{ t(`levels.${props.level.id}.name`) }}</span>
           </div>
         </div>
       </div>
@@ -340,7 +340,7 @@ onMounted(() => {
               v-for="pl in preLessons"
               :key="pl.id"
               @click="selectChapter(pl)"
-              class="flex items-center gap-4 p-4 rounded-2xl border-2 cursor-pointer transition-all hover:scale-[1.01] bg-gradient-to-r from-violet-50 to-indigo-50 dark:from-violet-900/20 dark:to-indigo-900/20"
+              class="flex items-center gap-3 sm:gap-4 p-4 rounded-2xl border-2 cursor-pointer transition-all hover:scale-[1.01] bg-gradient-to-r from-violet-50 to-indigo-50 dark:from-violet-900/20 dark:to-indigo-900/20"
               :class="preLessonProgress[pl.id]?.quizCompleted
                 ? 'border-green-400 dark:border-green-600'
                 : 'border-violet-300 dark:border-violet-700 hover:border-violet-400 dark:hover:border-violet-500'"
@@ -372,7 +372,7 @@ onMounted(() => {
               </div>
 
               <!-- Character Count Badge -->
-              <div class="flex-shrink-0 px-3 py-1 bg-violet-100 dark:bg-violet-900/30 rounded-full">
+              <div class="hidden sm:block flex-shrink-0 px-3 py-1 bg-violet-100 dark:bg-violet-900/30 rounded-full">
                 <span class="text-sm font-medium text-violet-600 dark:text-violet-400">
                   {{ t('foundation.characters', { count: pl.characterCount }) }}
                 </span>
@@ -407,7 +407,7 @@ onMounted(() => {
             <h3 class="font-semibold text-text-main dark:text-white text-lg">{{ t('srs.dailyReview') }}</h3>
             <p class="text-sm text-text-muted dark:text-slate-400">{{ t('srs.dailyReviewDescription') }}</p>
           </div>
-          <div class="flex-shrink-0 px-3 py-1 bg-amber-200 dark:bg-amber-800 rounded-full">
+          <div class="flex-shrink-0 whitespace-nowrap px-3 py-1 bg-amber-200 dark:bg-amber-800 rounded-full">
             <span class="text-sm font-bold text-amber-800 dark:text-amber-200">
               {{ t('srs.wordsToReview', { count: dueReviewWords.length }) }}
             </span>
@@ -420,7 +420,7 @@ onMounted(() => {
             v-for="(chapter, index) in availableChapters"
             :key="chapter.id"
             @click="!chaptersLocked && selectChapter(chapter)"
-            class="flex items-center gap-4 p-4 rounded-2xl border-2 bg-surface-light dark:bg-surface-dark transition-all"
+            class="flex items-center gap-3 sm:gap-4 p-4 rounded-2xl border-2 bg-surface-light dark:bg-surface-dark transition-all"
             :class="[
               chaptersLocked
                 ? 'opacity-50 pointer-events-none border-slate-200 dark:border-slate-700'
@@ -491,7 +491,7 @@ onMounted(() => {
             </div>
 
             <!-- Word Count Badge -->
-            <div class="flex-shrink-0 px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-full">
+            <div class="flex-shrink-0 whitespace-nowrap px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-full">
               <span class="text-sm font-medium text-text-muted dark:text-slate-400">
                 {{ chapter.wordCount }} {{ t('learning.words') }}
               </span>
@@ -514,7 +514,7 @@ onMounted(() => {
             class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-700 hover:border-primary text-text-main dark:text-slate-200 text-sm font-semibold transition-colors"
           >
             <span class="material-symbols-outlined text-[18px]">tune</span>
-            Try a different level
+            {{ t('learning.tryDifferentLevel') }}
           </button>
         </div>
       </template>

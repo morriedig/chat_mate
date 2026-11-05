@@ -25,7 +25,7 @@ function handleRemove(i) {
 }
 
 function handleClearAll() {
-  if (window.confirm(`Forget everything ${props.character.name} remembers about you? This cannot be undone.`)) {
+  if (window.confirm(t('memory.clearConfirm', { name: props.character.name }))) {
     clearMemories(props.character.id)
     emit('close')
   }
@@ -47,11 +47,11 @@ function handleClearAll() {
                 </div>
                 <div class="min-w-0">
                   <h2 class="font-bold text-text-main dark:text-white truncate">
-                    What {{ character.name }} remembers
+                    {{ t('memory.title', { name: character.name }) }}
                   </h2>
                   <p class="text-xs text-text-muted dark:text-slate-400">
-                    <span v-if="meta.conversationCount">{{ meta.conversationCount }} conversation{{ meta.conversationCount === 1 ? '' : 's' }}</span>
-                    <span v-if="daysKnown > 0"> · {{ daysKnown }} day{{ daysKnown === 1 ? '' : 's' }} knowing you</span>
+                    <span v-if="meta.conversationCount">{{ t('memory.conversations', { count: meta.conversationCount }, meta.conversationCount) }}</span>
+                    <span v-if="daysKnown > 0"> · {{ t('memory.daysKnowing', { count: daysKnown }, daysKnown) }}</span>
                   </p>
                 </div>
               </div>
@@ -66,11 +66,10 @@ function handleClearAll() {
             <div v-if="memories.length === 0" class="text-center py-10">
               <span class="material-symbols-outlined text-5xl text-slate-300 dark:text-slate-600 mb-2">psychology</span>
               <p class="text-text-muted dark:text-slate-400 text-sm">
-                {{ character.name }} hasn't learned anything about you yet.
+                {{ t('memory.emptyTitle', { name: character.name }) }}
               </p>
               <p class="text-text-muted dark:text-slate-500 text-xs mt-2">
-                Share a bit about yourself in the chat — your name, where you live, what you do.
-                {{ character.name }} will remember.
+                {{ t('memory.emptyBody', { name: character.name }) }}
               </p>
             </div>
             <ul v-else class="space-y-2">
@@ -84,7 +83,7 @@ function handleClearAll() {
                 <button
                   @click="handleRemove(i)"
                   class="shrink-0 opacity-0 group-hover:opacity-100 transition-opacity text-slate-400 hover:text-red-500"
-                  title="Forget this"
+                  :title="t('memory.forget')"
                 >
                   <span class="material-symbols-outlined text-[18px]">delete</span>
                 </button>
@@ -98,7 +97,7 @@ function handleClearAll() {
               @click="handleClearAll"
               class="w-full text-xs text-text-muted dark:text-slate-500 hover:text-red-500 dark:hover:text-red-400 transition-colors"
             >
-              Clear all memories
+              {{ t('memory.clearAll') }}
             </button>
           </div>
         </div>

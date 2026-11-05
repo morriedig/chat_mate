@@ -52,12 +52,12 @@ function intensityClass(level) {
 }
 
 const stats = computed(() => [
-  { label: 'Total XP', value: progress.value.totalXP, icon: 'star', color: 'text-amber-500' },
-  { label: 'Messages', value: progress.value.messagesSent, icon: 'chat', color: 'text-blue-500' },
-  { label: 'Streak', value: `${progress.value.currentStreak}d`, icon: 'local_fire_department', color: 'text-orange-500' },
-  { label: 'Best Streak', value: `${progress.value.longestStreak}d`, icon: 'emoji_events', color: 'text-purple-500' },
-  { label: 'Words', value: (progress.value.wordsLearned || []).length, icon: 'menu_book', color: 'text-green-500' },
-  { label: 'Achievements', value: (progress.value.unlockedAchievements || []).length, icon: 'military_tech', color: 'text-pink-500' },
+  { label: t('analytics.totalXP'), value: progress.value.totalXP, icon: 'star', color: 'text-amber-500' },
+  { label: t('analytics.messages'), value: progress.value.messagesSent, icon: 'chat', color: 'text-blue-500' },
+  { label: t('analytics.streak'), value: t('analytics.days', { count: progress.value.currentStreak }), icon: 'local_fire_department', color: 'text-orange-500' },
+  { label: t('analytics.bestStreak'), value: t('analytics.days', { count: progress.value.longestStreak }), icon: 'emoji_events', color: 'text-purple-500' },
+  { label: t('analytics.words'), value: (progress.value.wordsLearned || []).length, icon: 'menu_book', color: 'text-green-500' },
+  { label: t('analytics.achievements'), value: (progress.value.unlockedAchievements || []).length, icon: 'military_tech', color: 'text-pink-500' },
 ])
 
 const rankProgress = computed(() => progressToNextRank.value)
@@ -73,7 +73,7 @@ const rankProgress = computed(() => progressToNextRank.value)
           <div class="flex items-center justify-between mb-6">
             <h2 class="text-xl font-bold text-text-main dark:text-white flex items-center gap-2">
               <span class="material-symbols-outlined text-primary">analytics</span>
-              Learning Analytics
+              {{ t('analytics.title') }}
             </h2>
             <button @click="emit('close')" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
               <span class="material-symbols-outlined">close</span>
@@ -83,7 +83,7 @@ const rankProgress = computed(() => progressToNextRank.value)
           <!-- Rank Progress -->
           <div class="mb-6 p-4 rounded-xl bg-gradient-to-r from-primary/10 to-blue-500/10 dark:from-primary/20 dark:to-blue-500/20 border border-primary/20">
             <div class="flex items-center justify-between mb-2">
-              <span class="font-bold text-text-main dark:text-white capitalize">{{ currentRank?.name || 'Novice' }}</span>
+              <span class="font-bold text-text-main dark:text-white capitalize">{{ t(`ranks.${currentRank.title.toLowerCase()}`, currentRank.title) }}</span>
               <span class="text-sm text-text-muted dark:text-slate-400">{{ rankProgress }}%</span>
             </div>
             <div class="h-2 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden">
@@ -92,35 +92,35 @@ const rankProgress = computed(() => progressToNextRank.value)
           </div>
 
           <!-- Stats Grid -->
-          <div class="grid grid-cols-3 gap-3 mb-6">
+          <div class="grid grid-cols-3 gap-2 sm:gap-3 mb-6">
             <div
               v-for="stat in stats"
-              :key="stat.label"
-              class="p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-center"
+              :key="stat.icon"
+              class="px-1.5 py-3 sm:p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-center"
             >
               <span class="material-symbols-outlined text-2xl" :class="stat.color">{{ stat.icon }}</span>
               <p class="text-lg font-bold text-text-main dark:text-white mt-1">{{ stat.value }}</p>
-              <p class="text-xs text-text-muted dark:text-slate-400">{{ stat.label }}</p>
+              <p class="text-[11px] sm:text-xs leading-tight text-text-muted dark:text-slate-400 [overflow-wrap:normal]">{{ stat.label }}</p>
             </div>
           </div>
 
           <!-- 30-Day Activity -->
           <div class="mb-4">
             <div class="flex items-center justify-between mb-3">
-              <h3 class="text-sm font-semibold text-text-muted dark:text-slate-400 uppercase tracking-wider">30-Day Activity</h3>
+              <h3 class="text-sm font-semibold text-text-muted dark:text-slate-400 uppercase tracking-wider">{{ t('analytics.activity30') }}</h3>
               <div v-if="hasAnyActivity" class="flex items-center gap-1 text-[10px] text-text-muted dark:text-slate-500">
-                <span>Less</span>
+                <span>{{ t('analytics.less') }}</span>
                 <span class="w-2.5 h-2.5 rounded-sm bg-slate-100 dark:bg-slate-800"></span>
                 <span class="w-2.5 h-2.5 rounded-sm bg-green-200 dark:bg-green-900"></span>
                 <span class="w-2.5 h-2.5 rounded-sm bg-green-400 dark:bg-green-600"></span>
                 <span class="w-2.5 h-2.5 rounded-sm bg-green-500 dark:bg-green-400"></span>
-                <span>More</span>
+                <span>{{ t('analytics.more') }}</span>
               </div>
             </div>
             <div v-if="!hasAnyActivity" class="p-5 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-dashed border-slate-200 dark:border-slate-700 text-center">
               <span class="material-symbols-outlined text-2xl text-slate-300 dark:text-slate-600 mb-1 block">timeline</span>
               <p class="text-xs text-text-muted dark:text-slate-400">
-                Your activity heatmap fills in as you chat, study, and write diary entries.
+                {{ t('analytics.heatmapEmpty') }}
               </p>
             </div>
             <div v-else class="grid grid-cols-10 gap-1">
@@ -129,14 +129,14 @@ const rankProgress = computed(() => progressToNextRank.value)
                 :key="day.date"
                 class="aspect-square rounded-sm transition-colors"
                 :class="intensityClass(day.level)"
-                :title="`${day.date} · ${day.total} ${day.total === 1 ? 'activity' : 'activities'}`"
+                :title="t('analytics.dayActivity', { date: day.date, count: day.total }, day.total)"
               />
             </div>
           </div>
 
           <!-- Characters Interacted -->
           <div v-if="Object.keys(progress.characterStats || {}).length > 0">
-            <h3 class="text-sm font-semibold text-text-muted dark:text-slate-400 uppercase tracking-wider mb-3">Character Interactions</h3>
+            <h3 class="text-sm font-semibold text-text-muted dark:text-slate-400 uppercase tracking-wider mb-3">{{ t('analytics.characterInteractions') }}</h3>
             <div class="space-y-2">
               <div
                 v-for="(charStats, charId) in progress.characterStats"

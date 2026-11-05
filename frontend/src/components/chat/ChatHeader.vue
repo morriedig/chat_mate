@@ -65,7 +65,7 @@ function pick(action) {
           <span v-if="conversationCount > 1" class="ml-1">· #{{ conversationCount }}</span>
         </span>
       </div>
-      <span class="hidden sm:inline px-2 py-0.5 rounded-full bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 text-xs font-semibold shrink-0">Online</span>
+      <span class="hidden sm:inline px-2 py-0.5 rounded-full bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 text-xs font-semibold shrink-0">{{ t('chat.online') }}</span>
       <span v-if="isArticleMode" class="hidden sm:inline px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 text-xs font-semibold shrink-0">{{ t('chat.articleMode') }}</span>
       <button
         v-if="memoryCount > 0"

@@ -66,7 +66,7 @@ function handleRemove(id) {
                 {{ t('vocabBank.empty') }}
               </h3>
               <p class="text-xs text-text-muted dark:text-slate-400 max-w-xs leading-relaxed">
-                Tap any word in a chat message to save it here. Your saved words come back for spaced-repetition review in Learning mode.
+                {{ t('vocabBank.emptyHint') }}
               </p>
             </div>
             <!-- Empty (with search) -->
@@ -75,7 +75,7 @@ function handleRemove(id) {
               <p class="text-sm text-text-muted dark:text-slate-400">
                 {{ t('vocabBank.noResults') }}
               </p>
-              <button @click="searchQuery = ''" class="mt-2 text-xs text-primary hover:underline">Clear search</button>
+              <button @click="searchQuery = ''" class="mt-2 text-xs text-primary hover:underline">{{ t('vocabBank.clearSearch') }}</button>
             </div>
 
             <div

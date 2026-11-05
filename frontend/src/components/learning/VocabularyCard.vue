@@ -204,7 +204,7 @@ async function playSentence() {
           : 'bg-slate-100 dark:bg-slate-700 text-text-muted dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-600'"
       >
         <span class="material-symbols-outlined text-sm">{{ isListening ? 'mic' : 'mic_none' }}</span>
-        {{ isListening ? 'Listening...' : 'Try saying it' }}
+        {{ isListening ? t('common.listening') : t('learning.trySayingIt') }}
       </button>
       <div v-if="pronScore !== null" class="flex items-center gap-1.5">
         <div class="w-16 h-1.5 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden">

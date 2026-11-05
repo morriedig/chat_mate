@@ -38,7 +38,7 @@ describe('ChatInput', () => {
 
     it('should show keyboard hints', () => {
       const wrapper = createWrapper()
-      expect(wrapper.text()).toContain('Press Enter to send')
+      expect(wrapper.text()).toContain('chat.enterHint')
     })
   })
 

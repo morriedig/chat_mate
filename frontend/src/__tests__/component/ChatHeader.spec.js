@@ -72,7 +72,7 @@ describe('ChatHeader', () => {
 
     it('should show online status', () => {
       const wrapper = createWrapper()
-      expect(wrapper.text()).toContain('Online')
+      expect(wrapper.text()).toContain('chat.online')
     })
 
     it('should render RankBadge component', () => {

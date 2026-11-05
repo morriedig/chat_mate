@@ -2,6 +2,13 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { mount } from '@vue/test-utils'
 import VocabularyWord from '../../components/chat/VocabularyWord.vue'
 
+// Mock vue-i18n
+vi.mock('vue-i18n', () => ({
+  useI18n: () => ({
+    t: (key) => key
+  })
+}))
+
 describe('VocabularyWord', () => {
   const mockVocabularyData = {
     definition: 'A greeting used in the morning',
@@ -121,7 +128,7 @@ describe('VocabularyWord', () => {
       })
       await wrapper.find('.vocabulary-word-wrapper').trigger('mouseenter')
 
-      expect(wrapper.text()).not.toContain('Explanation')
+      expect(wrapper.text()).not.toContain('vocabPopup.explanation')
     })
 
     it('should not show example section when not provided', async () => {
@@ -132,7 +139,7 @@ describe('VocabularyWord', () => {
       })
       await wrapper.find('.vocabulary-word-wrapper').trigger('mouseenter')
 
-      expect(wrapper.text()).not.toContain('Example')
+      expect(wrapper.text()).not.toContain('vocabPopup.example')
     })
   })
 

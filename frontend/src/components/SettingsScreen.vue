@@ -57,7 +57,7 @@ function importProgress() {
       const data = JSON.parse(text)
       // Validate it looks like a Chat Mate backup
       if (!data.exportedAt || typeof data !== 'object') {
-        alert('Invalid backup file')
+        alert(t('settings.invalidBackup'))
         return
       }
       const validKeys = ['userProgress', 'srs', 'vocabBank', 'dailyGoal']
@@ -71,7 +71,7 @@ function importProgress() {
       window.location.reload()
     } catch (err) {
       console.error('Import failed:', err)
-      alert('Failed to import backup file')
+      alert(t('settings.importFailed'))
     }
   }
   input.click()
@@ -97,7 +97,7 @@ function handleReset() {
       <button @click="router.push('/')" class="text-text-muted dark:text-slate-400 hover:text-text-main dark:hover:text-white">
         <span class="material-symbols-outlined">arrow_back</span>
       </button>
-      <h1 class="text-lg font-bold text-text-main dark:text-white">Settings</h1>
+      <h1 class="text-lg font-bold text-text-main dark:text-white">{{ t('settings.title') }}</h1>
     </div>
 
     <div class="max-w-lg mx-auto p-4 space-y-6">
@@ -122,12 +122,12 @@ function handleReset() {
 
       <!-- Dark Mode -->
       <section>
-        <h3 class="text-sm font-semibold text-text-muted dark:text-slate-400 uppercase tracking-wider mb-3">Appearance</h3>
+        <h3 class="text-sm font-semibold text-text-muted dark:text-slate-400 uppercase tracking-wider mb-3">{{ t('settings.appearance') }}</h3>
         <div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-slate-200 dark:border-slate-700 p-4">
           <div class="flex items-center justify-between">
             <span class="flex items-center gap-3">
               <span class="material-symbols-outlined text-text-muted dark:text-slate-400">{{ isDark ? 'dark_mode' : 'light_mode' }}</span>
-              <span class="text-text-main dark:text-white font-medium">Dark Mode</span>
+              <span class="text-text-main dark:text-white font-medium">{{ t('settings.darkMode') }}</span>
             </span>
             <button
               @click="toggleDark"
@@ -165,27 +165,27 @@ function handleReset() {
 
       <!-- Data Management -->
       <section>
-        <h3 class="text-sm font-semibold text-text-muted dark:text-slate-400 uppercase tracking-wider mb-3">Data</h3>
+        <h3 class="text-sm font-semibold text-text-muted dark:text-slate-400 uppercase tracking-wider mb-3">{{ t('settings.data') }}</h3>
         <div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
           <button @click="exportProgress" class="w-full flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors border-b border-slate-100 dark:border-slate-700">
             <span class="flex items-center gap-3">
               <span class="material-symbols-outlined text-text-muted dark:text-slate-400">download</span>
-              <span class="text-text-main dark:text-white font-medium">Export Progress</span>
+              <span class="text-text-main dark:text-white font-medium">{{ t('settings.export') }}</span>
             </span>
-            <span v-if="showExportSuccess" class="text-green-500 text-sm">Saved!</span>
+            <span v-if="showExportSuccess" class="text-green-500 text-sm">{{ t('settings.saved') }}</span>
             <span v-else class="material-symbols-outlined text-slate-400">chevron_right</span>
           </button>
           <button @click="importProgress" class="w-full flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors border-b border-slate-100 dark:border-slate-700">
             <span class="flex items-center gap-3">
               <span class="material-symbols-outlined text-text-muted dark:text-slate-400">upload</span>
-              <span class="text-text-main dark:text-white font-medium">Import Progress</span>
+              <span class="text-text-main dark:text-white font-medium">{{ t('settings.import') }}</span>
             </span>
             <span class="material-symbols-outlined text-slate-400">chevron_right</span>
           </button>
           <button @click="showResetConfirm = true" class="w-full flex items-center justify-between p-4 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
             <span class="flex items-center gap-3">
               <span class="material-symbols-outlined text-red-500">delete_forever</span>
-              <span class="text-red-600 dark:text-red-400 font-medium">Reset All Progress</span>
+              <span class="text-red-600 dark:text-red-400 font-medium">{{ t('settings.reset') }}</span>
             </span>
             <span class="material-symbols-outlined text-slate-400">chevron_right</span>
           </button>
@@ -194,10 +194,10 @@ function handleReset() {
 
       <!-- About -->
       <section class="pb-8">
-        <h3 class="text-sm font-semibold text-text-muted dark:text-slate-400 uppercase tracking-wider mb-3">About</h3>
+        <h3 class="text-sm font-semibold text-text-muted dark:text-slate-400 uppercase tracking-wider mb-3">{{ t('settings.about') }}</h3>
         <div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-slate-200 dark:border-slate-700 p-4">
           <p class="text-text-main dark:text-white font-medium">Chat Mate</p>
-          <p class="text-sm text-text-muted dark:text-slate-400">AI Language Learning Companion</p>
+          <p class="text-sm text-text-muted dark:text-slate-400">{{ t('settings.tagline') }}</p>
         </div>
       </section>
     </div>
@@ -209,14 +209,14 @@ function handleReset() {
           <div class="absolute inset-0 bg-black/50" @click="showResetConfirm = false" />
           <div class="relative bg-surface-light dark:bg-surface-dark rounded-2xl p-6 max-w-sm w-full shadow-xl">
             <span class="material-symbols-outlined text-4xl text-red-500 mb-3">warning</span>
-            <h3 class="text-lg font-bold text-text-main dark:text-white mb-2">Reset All Progress?</h3>
-            <p class="text-sm text-text-muted dark:text-slate-400 mb-4">This will permanently delete all your XP, streaks, vocabulary, and achievements. This cannot be undone.</p>
+            <h3 class="text-lg font-bold text-text-main dark:text-white mb-2">{{ t('settings.resetConfirmTitle') }}</h3>
+            <p class="text-sm text-text-muted dark:text-slate-400 mb-4">{{ t('settings.resetConfirmBody') }}</p>
             <div class="flex gap-3">
               <button @click="showResetConfirm = false" class="flex-1 py-2 rounded-xl border border-slate-300 dark:border-slate-600 text-text-main dark:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
-                Cancel
+                {{ t('common.cancel') }}
               </button>
               <button @click="handleReset" class="flex-1 py-2 rounded-xl bg-red-500 text-white font-bold hover:bg-red-600 transition-colors">
-                Reset
+                {{ t('settings.resetButton') }}
               </button>
             </div>
           </div>

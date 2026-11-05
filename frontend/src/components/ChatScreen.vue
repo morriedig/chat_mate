@@ -592,13 +592,13 @@ function handleBack() {
                     class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-red-100 dark:bg-red-900/40 hover:bg-red-200 dark:hover:bg-red-900/60 disabled:opacity-50 text-red-700 dark:text-red-300 text-xs font-semibold transition-colors"
                   >
                     <span class="material-symbols-outlined text-[16px]">refresh</span>
-                    Retry
+                    {{ t('common.retry') }}
                   </button>
                   <button
                     @click="errorMessage = ''"
                     class="inline-flex items-center px-3 py-1.5 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/40 text-red-700 dark:text-red-300 text-xs font-semibold transition-colors"
                   >
-                    Dismiss
+                    {{ t('common.dismiss') }}
                   </button>
                 </div>
               </div>
@@ -748,7 +748,7 @@ function handleBack() {
           <span class="material-symbols-outlined text-amber-500 shrink-0 mt-0.5">favorite</span>
           <div class="flex-1 min-w-0">
             <p class="text-xs font-semibold text-amber-700 dark:text-amber-300 mb-0.5">
-              {{ character?.name }} will remember this
+              {{ t('chat.willRemember', { name: character?.name }) }}
             </p>
             <p class="text-sm text-text-main dark:text-slate-200 truncate">{{ showMemoryToast.fact }}</p>
           </div>

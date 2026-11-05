@@ -61,21 +61,21 @@ async function handleDownload() {
                 </div>
                 <div class="bg-white/10 rounded-xl p-3 text-center">
                   <p class="text-2xl font-bold text-amber-400">{{ progress.currentStreak }}</p>
-                  <p class="text-xs text-slate-400">Streak</p>
+                  <p class="text-xs text-slate-400">{{ t('shareCard.streak') }}</p>
                 </div>
                 <div class="bg-white/10 rounded-xl p-3 text-center">
                   <p class="text-2xl font-bold text-green-400">{{ progress.messagesSent }}</p>
-                  <p class="text-xs text-slate-400">Messages</p>
+                  <p class="text-xs text-slate-400">{{ t('shareCard.messages') }}</p>
                 </div>
                 <div class="bg-white/10 rounded-xl p-3 text-center">
-                  <p class="text-2xl font-bold text-purple-400 capitalize">{{ currentRank?.name || 'Novice' }}</p>
-                  <p class="text-xs text-slate-400">Rank</p>
+                  <p class="text-2xl font-bold text-purple-400 capitalize">{{ t(`ranks.${currentRank.title.toLowerCase()}`, currentRank.title) }}</p>
+                  <p class="text-xs text-slate-400">{{ t('shareCard.rank') }}</p>
                 </div>
               </div>
 
               <!-- Achievements count -->
               <div class="text-center text-sm text-slate-400">
-                {{ (progress.unlockedAchievements || []).length }} achievements unlocked
+                {{ t('shareCard.achievementsUnlocked', { count: (progress.unlockedAchievements || []).length }, (progress.unlockedAchievements || []).length) }}
               </div>
             </div>
           </div>

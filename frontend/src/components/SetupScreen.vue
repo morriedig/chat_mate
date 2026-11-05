@@ -216,7 +216,7 @@ function handleStart() {
           <button
             @click="toggleDark"
             class="flex items-center justify-center size-10 rounded-lg border border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark hover:bg-slate-50 dark:hover:bg-slate-800 text-text-main dark:text-slate-200 transition-colors"
-            aria-label="Toggle dark mode"
+            :aria-label="t('setup.toggleDark')"
           >
             <span class="material-symbols-outlined text-[20px]">{{ isDark ? 'light_mode' : 'dark_mode' }}</span>
           </button>
@@ -224,7 +224,7 @@ function handleStart() {
           <button
             @click="router.push('/settings')"
             class="flex items-center justify-center size-10 rounded-lg border border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark hover:bg-slate-50 dark:hover:bg-slate-800 text-text-main dark:text-slate-200 transition-colors"
-            aria-label="Settings"
+            :aria-label="t('setup.settings')"
           >
             <span class="material-symbols-outlined text-[20px]">settings</span>
           </button>
@@ -249,11 +249,11 @@ function handleStart() {
           <span class="material-symbols-outlined text-emerald-500 shrink-0">task_alt</span>
           <div class="flex-1 min-w-0">
             <p class="text-sm font-semibold text-emerald-700 dark:text-emerald-300">
-              Placement test done — you're at
+              {{ t('setup.placementDone') }}
               <span class="capitalize">{{ t(`levels.${placementBanner.level}.name`) }}</span>
             </p>
             <p class="text-xs text-emerald-600/80 dark:text-emerald-400/80 mt-0.5">
-              We've pre-selected it below. Change it any time.
+              {{ t('setup.placementHint') }}
             </p>
           </div>
           <button @click="dismissPlacementBanner" class="shrink-0 text-emerald-500 hover:text-emerald-700 dark:hover:text-emerald-300">
@@ -532,7 +532,7 @@ function handleStart() {
             class="flex flex-col items-center p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-surface-light dark:bg-surface-dark hover:border-primary/50 transition-colors"
           >
             <span class="material-symbols-outlined text-2xl text-cyan-500 mb-1">analytics</span>
-            <span class="text-[10px] text-text-muted dark:text-slate-400 leading-tight text-center">Analytics</span>
+            <span class="text-[10px] text-text-muted dark:text-slate-400 leading-tight text-center">{{ t('setup.analytics') }}</span>
           </button>
           <button
             @click="showShareCard = true"

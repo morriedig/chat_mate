@@ -33,7 +33,7 @@ function cyclePrompt() {
     <button
       @click="emit('dismiss')"
       class="absolute top-2 right-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
-      aria-label="Dismiss prompt"
+      :aria-label="t('common.dismissPrompt')"
     >
       <span class="material-symbols-outlined text-[18px]">close</span>
     </button>

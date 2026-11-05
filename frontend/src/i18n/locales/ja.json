@@ -37,7 +37,12 @@
         "name": "記事",
         "description": "読んで話す"
       }
-    }
+    },
+    "placementDone": "レベルテスト完了：あなたのレベルは",
+    "placementHint": "下で選択済みです。いつでも変更できます。",
+    "analytics": "学習データ",
+    "toggleDark": "ダークモード切替",
+    "settings": "設定"
   },
   "chat": {
     "typeMessage": "メッセージを入力...",
@@ -53,7 +58,12 @@
     "hideArticle": "記事を隠す",
     "newChat": "新しいチャット",
     "darkMode": "ダークモード",
-    "lightMode": "ライトモード"
+    "lightMode": "ライトモード",
+    "willRemember": "{name}が覚えておくね",
+    "online": "オンライン",
+    "enterHint": "Enterで送信、Shift+Enterで改行",
+    "sendMessage": "メッセージを送信",
+    "typing": "が入力中…"
   },
   "articles": {
     "title": "記事を選ぶ",
@@ -66,7 +76,12 @@
       "work": "仕事",
       "technology": "テクノロジー",
       "environment": "環境"
-    }
+    },
+    "pickLevelTitle": "まずレベルを選んでね",
+    "pickLevelBody": "ホームに戻ってレベルを選ぶと、ぴったりの記事を表示できます。",
+    "backHome": "ホームに戻る",
+    "noArticlesHint": "このレベルの記事はまだありません。ホームで別のレベルを選んでみてね。",
+    "changeLevel": "レベルを変更"
   },
   "levels": {
     "beginner": {
@@ -274,12 +289,20 @@
     "start": "シナリオ開始",
     "goal": "あなたの目標",
     "completed": "完了",
-    "completedCount": "{count} 個完了"
+    "completedCount": "{count} 個完了",
+    "subtitle": "隠れた目標がある実践会話 · {done}/{total} 達成",
+    "howItWorks": "キャラクターが役を演じて、隠れた目標をチェックします。目標を達成するとシナリオがクリアになります。",
+    "goalLabel": "目標：",
+    "noneAtLevel": "このレベルのシナリオはまだありません。"
   },
   "shareCard": {
     "share": "進捗をシェア",
     "title": "Chat Mateの進捗",
-    "download": "画像をダウンロード"
+    "download": "画像をダウンロード",
+    "streak": "連続日数",
+    "messages": "メッセージ",
+    "rank": "ランク",
+    "achievementsUnlocked": "実績 {count} 個解除"
   },
   "placementTest": {
     "title": "レベル判定テスト",
@@ -343,7 +366,9 @@
     "save": "単語帳に保存",
     "remove": "削除",
     "alreadySaved": "保存済み",
-    "addTranslation": "翻訳を追加（任意）"
+    "addTranslation": "翻訳を追加（任意）",
+    "emptyHint": "チャットの単語をタップするとここに保存できます。保存した単語は学習モードで間隔をあけて復習できます。",
+    "clearSearch": "検索をクリア"
   },
   "feedback": {
     "you": "あなた",
@@ -446,7 +471,9 @@
     "fillBlank": "空欄に入る言葉を選ぼう",
     "whyLabel": "なぜ？",
     "useInChat": "チャットで使ってみよう",
-    "useInChatHint": "友だちと意見を話しながら、つなぎ言葉を3つ使ってみよう。"
+    "useInChatHint": "友だちと意見を話しながら、つなぎ言葉を3つ使ってみよう。",
+    "tryDifferentLevel": "別のレベルを試す",
+    "trySayingIt": "言ってみよう"
   },
   "diary": {
     "title": "毎日の日記",
@@ -598,5 +625,91 @@
     "cheerOne": "{a} を使えたね！明日はもう一つも試してみよう。",
     "cheerOther": "{a} を使えたね。今日の目標ではないけど自然だよ！",
     "cheerNone": "まだつなぎ言葉が見つからないよ。次は意見のあとに「because…」を足してみよう。"
+  },
+  "common": {
+    "startVoiceInput": "音声入力を開始",
+    "stopVoiceInput": "音声入力を停止",
+    "dismissPrompt": "お題を閉じる",
+    "retry": "もう一度",
+    "dismiss": "閉じる",
+    "cancel": "キャンセル",
+    "listening": "聞いています…"
+  },
+  "analytics": {
+    "title": "学習データ",
+    "activity30": "30日間のアクティビティ",
+    "less": "少",
+    "more": "多",
+    "heatmapEmpty": "チャット・学習・日記を続けると、ここにアクティビティが記録されていきます。",
+    "characterInteractions": "キャラクターとの会話",
+    "dayActivity": "{date} · {count} 回のアクティビティ",
+    "totalXP": "合計 XP",
+    "messages": "メッセージ",
+    "streak": "連続日数",
+    "bestStreak": "最長連続",
+    "words": "単語",
+    "achievements": "実績",
+    "days": "{count}日"
+  },
+  "home": {
+    "greetingStillUp": "まだ起きてる？",
+    "greetingMorning": "おはよう",
+    "greetingAfternoon": "こんにちは",
+    "greetingEvening": "こんばんは",
+    "greetingLateNight": "夜ふかし中？",
+    "dayStreak": "日連続 🔥",
+    "startStreak": "連続記録を始めよう",
+    "toMilestone": "{icon} {days}日達成まであと{count}日 · 合計 {xp} XP",
+    "longestEver": "過去最長の記録",
+    "bestStreak": "ベスト：{days}日",
+    "xp": "{xp} XP",
+    "streakHint": "チャット・学習・日記、どれでも連続記録になります。",
+    "minutes": "{count}分",
+    "goalToday": "/今日 {goal}分",
+    "remembersYou": "{name}はあなたのことを覚えています"
+  },
+  "settings": {
+    "title": "設定",
+    "appearance": "外観",
+    "darkMode": "ダークモード",
+    "data": "データ",
+    "export": "進捗をエクスポート",
+    "saved": "保存しました！",
+    "import": "進捗をインポート",
+    "reset": "すべての進捗をリセット",
+    "about": "このアプリについて",
+    "tagline": "AIと一緒に学ぶ語学アプリ",
+    "resetConfirmTitle": "すべての進捗をリセットしますか？",
+    "resetConfirmBody": "XP・連続記録・単語・実績がすべて完全に削除されます。元に戻せません。",
+    "resetButton": "リセット",
+    "invalidBackup": "無効なバックアップファイルです",
+    "importFailed": "バックアップの読み込みに失敗しました"
+  },
+  "welcome": {
+    "slide1Title": "友だちとメッセージするように学ぶ英語",
+    "slide1Body": "単語カードの丸暗記も退屈な授業もなし。本当の友だちみたいなキャラクターと、ただ会話するだけ。",
+    "slide2Title": "あなたのことを覚えてくれる",
+    "slide2Body": "Emmaに猫や仕事、旅行の話をすると、次回その話をしてくれます。会話を重ねるほど仲良くなれます。",
+    "slide3Title": "レベルに合わせるけど、子ども扱いはしない",
+    "slide3Body": "話し方をあなたのレベルに合わせます。初級はシンプルに、上級はユーモアやスラングたっぷりに。2分のテストで最適なスタートを。",
+    "next": "次へ",
+    "takeTest": "2分のレベルテストを受ける",
+    "skipPick": "スキップして自分で選ぶ",
+    "skipIntro": "紹介をスキップ"
+  },
+  "memory": {
+    "title": "{name}が覚えていること",
+    "conversations": "{count}回の会話",
+    "daysKnowing": "知り合って{count}日",
+    "emptyTitle": "{name}はまだあなたのことを知りません。",
+    "emptyBody": "チャットで名前や住んでいる場所、仕事のことを話してみてね。{name}が覚えておきます。",
+    "forget": "これを忘れる",
+    "clearAll": "すべての記憶を消す",
+    "clearConfirm": "{name}が覚えていることをすべて消しますか？元に戻せません。"
+  },
+  "vocabPopup": {
+    "definition": "意味",
+    "explanation": "説明",
+    "example": "例文"
   }
 }

@@ -517,7 +517,7 @@ function handleBack() {
             v-if="speechSupported"
             @click="toggleSpeech"
             :disabled="submitting"
-            :aria-label="isListening ? 'Stop voice input' : 'Start voice input'"
+            :aria-label="isListening ? t('common.stopVoiceInput') : t('common.startVoiceInput')"
             class="shrink-0 flex items-center justify-center size-12 rounded-full transition-all disabled:opacity-50"
             :class="isListening
               ? 'bg-red-500 text-white animate-pulse shadow-lg shadow-red-500/30'

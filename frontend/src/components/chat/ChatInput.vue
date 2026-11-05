@@ -138,7 +138,7 @@ defineExpose({ focus })
         v-if="speechSupported"
         @click="toggleSpeech"
         :disabled="disabled"
-        :aria-label="isListening ? 'Stop voice input' : 'Start voice input'"
+        :aria-label="isListening ? t('common.stopVoiceInput') : t('common.startVoiceInput')"
         class="shrink-0 flex items-center justify-center size-12 rounded-full transition-all disabled:opacity-50"
         :class="isListening
           ? 'bg-red-500 text-white animate-pulse shadow-lg shadow-red-500/30'
@@ -151,14 +151,14 @@ defineExpose({ focus })
       <button
         @click="emit('send')"
         :disabled="!localValue.trim() || disabled"
-        aria-label="Send message"
+        :aria-label="t('chat.sendMessage')"
         class="shrink-0 flex items-center justify-center size-12 rounded-full bg-primary text-[#0d171b] shadow-lg hover:bg-primary/90 hover:scale-105 active:scale-95 transition-all disabled:opacity-50 disabled:hover:scale-100"
       >
         <span class="material-symbols-outlined icon-filled text-[24px]">send</span>
       </button>
     </div>
     <div class="hidden sm:block text-center mt-2">
-      <p class="text-[11px] text-slate-400 dark:text-slate-500">Press Enter to send, Shift+Enter for new line</p>
+      <p class="text-[11px] text-slate-400 dark:text-slate-500">{{ t('chat.enterHint') }}</p>
     </div>
   </div>
 </template>

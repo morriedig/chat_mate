@@ -1,4 +1,7 @@
 <script setup>
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 defineProps({
   character: {
     type: Object,
@@ -15,7 +18,7 @@ defineProps({
     <div class="flex flex-col gap-1 items-start">
       <span class="text-text-muted dark:text-slate-400 text-[13px] font-medium ml-1">
         {{ character.name }}
-        <span class="text-text-muted/70 dark:text-slate-500"> is typing…</span>
+        <span class="text-text-muted/70 dark:text-slate-500"> {{ t('chat.typing') }}</span>
       </span>
       <div class="px-4 py-3 rounded-2xl rounded-bl-none bg-surface-light dark:bg-surface-dark shadow-sm border border-slate-100 dark:border-slate-700">
         <div class="flex gap-1.5 items-center">

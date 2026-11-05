@@ -37,7 +37,12 @@
         "name": "Article",
         "description": "Read & discuss"
       }
-    }
+    },
+    "placementDone": "Placement test done — you're at",
+    "placementHint": "We've pre-selected it below. Change it any time.",
+    "analytics": "Analytics",
+    "toggleDark": "Toggle dark mode",
+    "settings": "Settings"
   },
   "chat": {
     "typeMessage": "Type a message...",
@@ -53,7 +58,12 @@
     "hideArticle": "Hide article",
     "newChat": "New chat",
     "darkMode": "Dark mode",
-    "lightMode": "Light mode"
+    "lightMode": "Light mode",
+    "willRemember": "{name} will remember this",
+    "online": "Online",
+    "enterHint": "Press Enter to send, Shift+Enter for new line",
+    "sendMessage": "Send message",
+    "typing": "is typing…"
   },
   "articles": {
     "title": "Choose an Article",
@@ -66,7 +76,12 @@
       "work": "Work",
       "technology": "Technology",
       "environment": "Environment"
-    }
+    },
+    "pickLevelTitle": "Pick a level first",
+    "pickLevelBody": "Go back to the home screen and choose your level so we know which articles to show you.",
+    "backHome": "Back to home",
+    "noArticlesHint": "We don't have articles at this level yet — try a different one from the home screen.",
+    "changeLevel": "Change level"
   },
   "levels": {
     "beginner": {
@@ -274,12 +289,20 @@
     "start": "Start Scenario",
     "goal": "Your goal",
     "completed": "Completed",
-    "completedCount": "{count} completed"
+    "completedCount": "{count} completed",
+    "subtitle": "Real-world conversations with hidden objectives · {done}/{total} completed",
+    "howItWorks": "Your character plays a role and tracks hidden objectives. Hit the goal to unlock the scenario.",
+    "goalLabel": "Goal:",
+    "noneAtLevel": "No scenarios at this level yet."
   },
   "shareCard": {
     "share": "Share Progress",
     "title": "My Chat Mate Progress",
-    "download": "Download Image"
+    "download": "Download Image",
+    "streak": "Streak",
+    "messages": "Messages",
+    "rank": "Rank",
+    "achievementsUnlocked": "{count} achievement unlocked | {count} achievements unlocked"
   },
   "placementTest": {
     "title": "Placement Test",
@@ -343,7 +366,9 @@
     "save": "Save to Bank",
     "remove": "Remove",
     "alreadySaved": "Already in your bank",
-    "addTranslation": "Add translation (optional)"
+    "addTranslation": "Add translation (optional)",
+    "emptyHint": "Tap any word in a chat message to save it here. Your saved words come back for spaced-repetition review in Learning mode.",
+    "clearSearch": "Clear search"
   },
   "feedback": {
     "you": "You",
@@ -446,7 +471,9 @@
     "fillBlank": "Fill in the blank",
     "whyLabel": "Why?",
     "useInChat": "Use it in chat",
-    "useInChatHint": "Chat with a friend about something you have an opinion on, and try to slip in 3 of these connectors."
+    "useInChatHint": "Chat with a friend about something you have an opinion on, and try to slip in 3 of these connectors.",
+    "tryDifferentLevel": "Try a different level",
+    "trySayingIt": "Try saying it"
   },
   "diary": {
     "title": "Daily Diary",
@@ -652,5 +679,91 @@
     "exit": "Back to typing",
     "mic": "Microphone",
     "showText": "Show text"
+  },
+  "common": {
+    "startVoiceInput": "Start voice input",
+    "stopVoiceInput": "Stop voice input",
+    "dismissPrompt": "Dismiss prompt",
+    "retry": "Retry",
+    "dismiss": "Dismiss",
+    "cancel": "Cancel",
+    "listening": "Listening..."
+  },
+  "analytics": {
+    "title": "Learning Analytics",
+    "activity30": "30-Day Activity",
+    "less": "Less",
+    "more": "More",
+    "heatmapEmpty": "Your activity heatmap fills in as you chat, study, and write diary entries.",
+    "characterInteractions": "Character Interactions",
+    "dayActivity": "{date} · {count} activity | {date} · {count} activities",
+    "totalXP": "Total XP",
+    "messages": "Messages",
+    "streak": "Streak",
+    "bestStreak": "Best Streak",
+    "words": "Words",
+    "achievements": "Achievements",
+    "days": "{count}d"
+  },
+  "home": {
+    "greetingStillUp": "Still up?",
+    "greetingMorning": "Good morning",
+    "greetingAfternoon": "Good afternoon",
+    "greetingEvening": "Good evening",
+    "greetingLateNight": "Late night?",
+    "dayStreak": "day streak 🔥",
+    "startStreak": "Let's start a streak",
+    "toMilestone": "{count} more to {icon} {days}-day milestone · {xp} XP total",
+    "longestEver": "Your longest streak ever",
+    "bestStreak": "Best: {days} days",
+    "xp": "{xp} XP",
+    "streakHint": "Chat, learn, or write — any activity counts toward your daily streak.",
+    "minutes": "{count}m",
+    "goalToday": "/{goal}m today",
+    "remembersYou": "{name} remembers things about you"
+  },
+  "settings": {
+    "title": "Settings",
+    "appearance": "Appearance",
+    "darkMode": "Dark Mode",
+    "data": "Data",
+    "export": "Export Progress",
+    "saved": "Saved!",
+    "import": "Import Progress",
+    "reset": "Reset All Progress",
+    "about": "About",
+    "tagline": "AI Language Learning Companion",
+    "resetConfirmTitle": "Reset All Progress?",
+    "resetConfirmBody": "This will permanently delete all your XP, streaks, vocabulary, and achievements. This cannot be undone.",
+    "resetButton": "Reset",
+    "invalidBackup": "Invalid backup file",
+    "importFailed": "Failed to import backup file"
+  },
+  "welcome": {
+    "slide1Title": "Language learning that feels like texting a friend",
+    "slide1Body": "No flashcard grind. No boring lessons. Just real conversations with characters who feel like people you'd actually know.",
+    "slide2Title": "They remember you",
+    "slide2Body": "Tell Emma about your cat, your job, your trip to Kyoto — she'll bring it up next time. Your relationship grows across sessions.",
+    "slide3Title": "Level-calibrated, not dumbed-down",
+    "slide3Body": "We match their speech to your level — simple at beginner, witty and slang-heavy at advanced. Take a 2-minute test to start in the right place.",
+    "next": "Next",
+    "takeTest": "Take the 2-minute placement test",
+    "skipPick": "Skip — I'll pick my level manually",
+    "skipIntro": "Skip intro"
+  },
+  "memory": {
+    "title": "What {name} remembers",
+    "conversations": "{count} conversation | {count} conversations",
+    "daysKnowing": "{count} day knowing you | {count} days knowing you",
+    "emptyTitle": "{name} hasn't learned anything about you yet.",
+    "emptyBody": "Share a bit about yourself in the chat — your name, where you live, what you do. {name} will remember.",
+    "forget": "Forget this",
+    "clearAll": "Clear all memories",
+    "clearConfirm": "Forget everything {name} remembers about you? This cannot be undone."
+  },
+  "vocabPopup": {
+    "definition": "Definition",
+    "explanation": "Explanation",
+    "example": "Example"
   }
 }

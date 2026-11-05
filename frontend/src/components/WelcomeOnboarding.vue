@@ -1,6 +1,9 @@
 <script setup>
 import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
+
+const { t } = useI18n()
 
 const router = useRouter()
 const emit = defineEmits(['close', 'take-test'])
@@ -10,18 +13,18 @@ const step = ref(0)
 const slides = [
   {
     icon: '💬',
-    title: 'Language learning that feels like texting a friend',
-    body: 'No flashcard grind. No boring lessons. Just real conversations with characters who feel like people you\'d actually know.',
+    title: 'welcome.slide1Title',
+    body: 'welcome.slide1Body',
   },
   {
     icon: '🧠',
-    title: 'They remember you',
-    body: 'Tell Emma about your cat, your job, your trip to Kyoto — she\'ll bring it up next time. Your relationship grows across sessions.',
+    title: 'welcome.slide2Title',
+    body: 'welcome.slide2Body',
   },
   {
     icon: '🌱',
-    title: 'Level-calibrated, not dumbed-down',
-    body: 'We match their speech to your level — simple at beginner, witty and slang-heavy at advanced. Take a 2-minute test to start in the right place.',
+    title: 'welcome.slide3Title',
+    body: 'welcome.slide3Body',
   },
 ]
 
@@ -57,10 +60,10 @@ function finish() {
           <div class="p-8 pt-12 text-center bg-gradient-to-br from-primary/10 via-transparent to-rose-100/30 dark:from-primary/20 dark:via-transparent dark:to-rose-900/20">
             <div class="welcome-icon text-6xl mb-5 inline-block">{{ slides[step].icon }}</div>
             <h2 class="text-xl sm:text-2xl font-bold text-text-main dark:text-white mb-3 tracking-tight leading-tight">
-              {{ slides[step].title }}
+              {{ t(slides[step].title) }}
             </h2>
             <p class="text-sm text-text-muted dark:text-slate-300 leading-relaxed max-w-xs mx-auto">
-              {{ slides[step].body }}
+              {{ t(slides[step].body) }}
             </p>
           </div>
 
@@ -82,20 +85,20 @@ function finish() {
               @click="next"
               class="w-full py-3 rounded-xl font-semibold bg-primary text-[#0d171b] hover:bg-primary/90 active:scale-[0.98] transition-all shadow-md"
             >
-              Next
+              {{ t('welcome.next') }}
             </button>
             <template v-else>
               <button
                 @click="takeTest"
                 class="w-full py-3 rounded-xl font-semibold bg-primary text-[#0d171b] hover:bg-primary/90 active:scale-[0.98] transition-all shadow-md"
               >
-                Take the 2-minute placement test
+                {{ t('welcome.takeTest') }}
               </button>
               <button
                 @click="finish"
                 class="w-full py-2.5 rounded-xl font-medium text-sm text-text-muted dark:text-slate-400 hover:text-text-main dark:hover:text-white transition-colors"
               >
-                Skip — I'll pick my level manually
+                {{ t('welcome.skipPick') }}
               </button>
             </template>
 
@@ -105,7 +108,7 @@ function finish() {
               @click="skip"
               class="w-full text-xs text-text-muted dark:text-slate-500 hover:text-text-main dark:hover:text-slate-300 transition-colors"
             >
-              Skip intro
+              {{ t('welcome.skipIntro') }}
             </button>
           </div>
         </div>

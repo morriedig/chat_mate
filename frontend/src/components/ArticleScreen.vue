@@ -63,16 +63,16 @@ function getPreviewText(content) {
         <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/10 flex items-center justify-center mb-4">
           <span class="material-symbols-outlined text-3xl text-primary">tune</span>
         </div>
-        <h2 class="text-lg font-semibold text-text-main dark:text-white mb-2">Pick a level first</h2>
+        <h2 class="text-lg font-semibold text-text-main dark:text-white mb-2">{{ t('articles.pickLevelTitle') }}</h2>
         <p class="text-sm text-text-muted dark:text-slate-400 mb-5">
-          Go back to the home screen and choose your level so we know which articles to show you.
+          {{ t('articles.pickLevelBody') }}
         </p>
         <button
           @click="router.push('/')"
           class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-[#0d171b] font-semibold hover:bg-primary/90 transition-colors"
         >
           <span class="material-symbols-outlined text-[18px]">home</span>
-          Back to home
+          {{ t('articles.backHome') }}
         </button>
       </div>
     </div>
@@ -123,13 +123,13 @@ function getPreviewText(content) {
             <span class="material-symbols-outlined text-3xl text-primary">article</span>
           </div>
           <p class="text-sm font-medium text-text-main dark:text-slate-200 mb-1">{{ t('articles.noArticles') }}</p>
-          <p class="text-xs text-text-muted dark:text-slate-400 max-w-xs mb-5">We don't have articles at this level yet — try a different one from the home screen.</p>
+          <p class="text-xs text-text-muted dark:text-slate-400 max-w-xs mb-5">{{ t('articles.noArticlesHint') }}</p>
           <button
             @click="router.push('/')"
             class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-surface-light dark:bg-surface-dark border border-slate-200 dark:border-slate-700 hover:border-primary text-text-main dark:text-slate-200 text-sm font-semibold transition-colors"
           >
             <span class="material-symbols-outlined text-[18px]">tune</span>
-            Change level
+            {{ t('articles.changeLevel') }}
           </button>
         </div>
       </div>

@@ -35,7 +35,7 @@ const totalCount = computed(() => getAllScenarioCount())
                   {{ t('scenarios.title') }}
                 </h2>
                 <p class="text-xs text-text-muted dark:text-slate-400 mt-0.5">
-                  Real-world conversations with hidden objectives · {{ completedCount }}/{{ totalCount }} completed
+                  {{ t('scenarios.subtitle', { done: completedCount, total: totalCount }) }}
                 </p>
               </div>
               <button
@@ -46,7 +46,7 @@ const totalCount = computed(() => getAllScenarioCount())
               </button>
             </div>
             <p class="mt-3 text-[11px] text-text-muted dark:text-slate-400 leading-relaxed bg-primary/5 dark:bg-primary/10 border border-primary/10 dark:border-primary/20 rounded-lg p-2">
-              Your character plays a role and tracks hidden objectives. Hit the goal to unlock the scenario.
+              {{ t('scenarios.howItWorks') }}
             </p>
           </div>
 
@@ -75,7 +75,7 @@ const totalCount = computed(() => getAllScenarioCount())
                 <div class="flex-1 min-w-0">
                   <h3 class="font-semibold text-sm text-text-main dark:text-white">{{ scenario.title }}</h3>
                   <p class="text-xs text-text-muted dark:text-slate-400 mt-0.5 leading-relaxed">
-                    <span class="font-medium">Goal:</span> {{ scenario.goal }}
+                    <span class="font-medium">{{ t('scenarios.goalLabel') }}</span> {{ scenario.goal }}
                   </p>
                   <div v-if="scenario.vocab && scenario.vocab.length" class="flex flex-wrap gap-1 mt-2">
                     <span
@@ -94,7 +94,7 @@ const totalCount = computed(() => getAllScenarioCount())
             <div v-if="scenarios.length === 0" class="py-10 text-center">
               <span class="material-symbols-outlined text-4xl text-slate-300 dark:text-slate-600 mb-2 block">hourglass_empty</span>
               <p class="text-sm text-text-muted dark:text-slate-400">
-                No scenarios at this level yet.
+                {{ t('scenarios.noneAtLevel') }}
               </p>
             </div>
           </div>

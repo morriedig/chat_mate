@@ -54,11 +54,11 @@ onMounted(() => {
 // Greeting based on time of day
 const greeting = computed(() => {
   const hour = new Date().getHours()
-  if (hour < 5) return 'Still up?'
-  if (hour < 12) return 'Good morning'
-  if (hour < 17) return 'Good afternoon'
-  if (hour < 22) return 'Good evening'
-  return 'Late night?'
+  if (hour < 5) return t('home.greetingStillUp')
+  if (hour < 12) return t('home.greetingMorning')
+  if (hour < 17) return t('home.greetingAfternoon')
+  if (hour < 22) return t('home.greetingEvening')
+  return t('home.greetingLateNight')
 })
 </script>
 
@@ -77,24 +77,24 @@ const greeting = computed(() => {
           <!-- Streak (or welcome) -->
           <div v-if="streak > 0" class="flex items-baseline gap-2 mb-1">
             <span class="text-3xl sm:text-4xl font-bold tracking-tight text-text-main dark:text-white">{{ streak }}</span>
-            <span class="text-sm font-semibold text-text-muted dark:text-slate-300">day streak 🔥</span>
+            <span class="text-sm font-semibold text-text-muted dark:text-slate-300">{{ t('home.dayStreak') }}</span>
           </div>
           <div v-else class="mb-1">
             <h2 class="text-2xl sm:text-3xl font-bold tracking-tight text-text-main dark:text-white">
-              Let's start a streak
+              {{ t('home.startStreak') }}
             </h2>
           </div>
 
           <!-- Subtitle -->
           <p class="text-xs text-text-muted dark:text-slate-400">
             <template v-if="streak > 0 && nextMilestone">
-              {{ daysToMilestone }} more to {{ nextMilestone.icon }} {{ nextMilestone.days }}-day milestone · {{ totalXP }} XP total
+              {{ t('home.toMilestone', { count: daysToMilestone, icon: nextMilestone.icon, days: nextMilestone.days, xp: totalXP }) }}
             </template>
             <template v-else-if="streak > 0">
-              {{ longestStreak === streak ? 'Your longest streak ever' : `Best: ${longestStreak} days` }} · {{ totalXP }} XP
+              {{ longestStreak === streak ? t('home.longestEver') : t('home.bestStreak', { days: longestStreak }) }} · {{ t('home.xp', { xp: totalXP }) }}
             </template>
             <template v-else>
-              Chat, learn, or write — any activity counts toward your daily streak.
+              {{ t('home.streakHint') }}
             </template>
           </p>
         </div>
@@ -128,10 +128,10 @@ const greeting = computed(() => {
             </svg>
             <div class="absolute inset-0 flex items-center justify-center">
               <span v-if="isGoalMet" class="material-symbols-outlined text-green-500 text-[22px]">check</span>
-              <span v-else class="text-[13px] font-bold text-text-main dark:text-white">{{ Math.floor(todayMinutes) }}m</span>
+              <span v-else class="text-[13px] font-bold text-text-main dark:text-white">{{ t('home.minutes', { count: Math.floor(todayMinutes) }) }}</span>
             </div>
           </div>
-          <span class="text-[10px] text-text-muted dark:text-slate-400">/{{ goalMinutes }}m today</span>
+          <span class="text-[10px] text-text-muted dark:text-slate-400">{{ t('home.goalToday', { goal: goalMinutes }) }}</span>
         </div>
       </div>
 
@@ -139,7 +139,7 @@ const greeting = computed(() => {
       <div v-if="currentRank" class="relative mt-5">
         <div class="flex items-center justify-between text-[11px] mb-1.5">
           <span class="font-semibold text-text-muted dark:text-slate-300 capitalize">
-            <span class="mr-1">{{ currentRank.icon || '⭐' }}</span>{{ currentRank.name }}
+            <span class="mr-1">{{ currentRank.icon || '⭐' }}</span>{{ t(`ranks.${currentRank.title.toLowerCase()}`, currentRank.title) }}
           </span>
           <span class="text-text-muted dark:text-slate-500">{{ rankProgressPct }}%</span>
         </div>
@@ -151,7 +151,7 @@ const greeting = computed(() => {
       <!-- Top character affinity (hidden when compact) -->
       <div v-if="!compact && topCharacter" class="relative mt-4 flex items-center gap-2 text-xs text-text-muted dark:text-slate-400">
         <span class="text-base">{{ topCharacter.avatar }}</span>
-        <span>{{ topCharacter.name }} remembers things about you</span>
+        <span>{{ t('home.remembersYou', { name: topCharacter.name }) }}</span>
       </div>
     </div>
   </section>

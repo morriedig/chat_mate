@@ -8,15 +8,15 @@
         </div>
         <div class="popup-content">
           <div class="popup-section">
-            <span class="popup-label">Definition</span>
+            <span class="popup-label">{{ t('vocabPopup.definition') }}</span>
             <p class="popup-text">{{ vocabularyData.definition }}</p>
           </div>
           <div v-if="vocabularyData.explanation" class="popup-section">
-            <span class="popup-label">Explanation</span>
+            <span class="popup-label">{{ t('vocabPopup.explanation') }}</span>
             <p class="popup-text">{{ vocabularyData.explanation }}</p>
           </div>
           <div v-if="vocabularyData.example" class="popup-section">
-            <span class="popup-label">Example</span>
+            <span class="popup-label">{{ t('vocabPopup.example') }}</span>
             <p class="popup-text popup-example">"{{ vocabularyData.example }}"</p>
           </div>
         </div>
@@ -27,6 +27,9 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const props = defineProps({
   word: {

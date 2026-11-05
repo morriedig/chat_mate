@@ -37,7 +37,12 @@
         "name": "文章",
         "description": "閱讀討論"
       }
-    }
+    },
+    "placementDone": "等級測試完成，你的程度是",
+    "placementHint": "已經幫你在下面選好了，隨時可以改。",
+    "analytics": "學習分析",
+    "toggleDark": "切換深色模式",
+    "settings": "設定"
   },
   "chat": {
     "typeMessage": "輸入訊息...",
@@ -53,7 +58,12 @@
     "hideArticle": "收起文章",
     "newChat": "重新開始聊天",
     "darkMode": "深色模式",
-    "lightMode": "淺色模式"
+    "lightMode": "淺色模式",
+    "willRemember": "{name} 會記住這件事",
+    "online": "在線上",
+    "enterHint": "按 Enter 送出，Shift+Enter 換行",
+    "sendMessage": "送出訊息",
+    "typing": "正在輸入…"
   },
   "articles": {
     "title": "選擇文章",
@@ -66,7 +76,12 @@
       "work": "工作",
       "technology": "科技",
       "environment": "環境"
-    }
+    },
+    "pickLevelTitle": "先選一個等級",
+    "pickLevelBody": "回到首頁選好你的等級，我們才知道要給你看哪些文章。",
+    "backHome": "回到首頁",
+    "noArticlesHint": "這個等級還沒有文章，回首頁換一個等級試試看。",
+    "changeLevel": "換等級"
   },
   "levels": {
     "beginner": {
@@ -274,12 +289,20 @@
     "start": "開始情境",
     "goal": "你的目標",
     "completed": "已完成",
-    "completedCount": "已完成 {count} 個"
+    "completedCount": "已完成 {count} 個",
+    "subtitle": "真實情境對話，裡面藏著小任務 · 已完成 {done}/{total}",
+    "howItWorks": "朋友會扮演一個角色，同時留意你有沒有完成隱藏任務。達成目標就能解鎖這個情境。",
+    "goalLabel": "目標：",
+    "noneAtLevel": "這個等級還沒有情境。"
   },
   "shareCard": {
     "share": "分享進度",
     "title": "我的 Chat Mate 進度",
-    "download": "下載圖片"
+    "download": "下載圖片",
+    "streak": "連續天數",
+    "messages": "訊息",
+    "rank": "等級",
+    "achievementsUnlocked": "已解鎖 {count} 個成就"
   },
   "placementTest": {
     "title": "等級測試",
@@ -343,7 +366,9 @@
     "save": "加入單字本",
     "remove": "移除",
     "alreadySaved": "已在單字本中",
-    "addTranslation": "新增翻譯（選填）"
+    "addTranslation": "新增翻譯（選填）",
+    "emptyHint": "點聊天訊息裡的任何單字就能存到這裡。存下來的單字會在學習模式裡按間隔重複出現讓你複習。",
+    "clearSearch": "清除搜尋"
   },
   "feedback": {
     "you": "你",
@@ -446,7 +471,9 @@
     "fillBlank": "選出最適合的詞填空",
     "whyLabel": "為什麼？",
     "useInChat": "去聊天用用看",
-    "useInChatHint": "跟朋友聊聊你的看法，試著自然地用出 3 個連接詞。"
+    "useInChatHint": "跟朋友聊聊你的看法，試著自然地用出 3 個連接詞。",
+    "tryDifferentLevel": "換個等級試試",
+    "trySayingIt": "說說看"
   },
   "diary": {
     "title": "每日日記",
@@ -652,5 +679,91 @@
     "exit": "回到打字",
     "mic": "麥克風",
     "showText": "看文字"
+  },
+  "common": {
+    "startVoiceInput": "開始語音輸入",
+    "stopVoiceInput": "停止語音輸入",
+    "dismissPrompt": "關閉題目",
+    "retry": "再試一次",
+    "dismiss": "關閉",
+    "cancel": "取消",
+    "listening": "聆聽中…"
+  },
+  "analytics": {
+    "title": "學習分析",
+    "activity30": "近 30 天活動",
+    "less": "少",
+    "more": "多",
+    "heatmapEmpty": "聊天、學習、寫日記之後，這裡會慢慢填滿你的活動紀錄。",
+    "characterInteractions": "和朋友聊天的次數",
+    "dayActivity": "{date} · {count} 次活動",
+    "totalXP": "總 XP",
+    "messages": "訊息",
+    "streak": "連續天數",
+    "bestStreak": "最長連續",
+    "words": "單字",
+    "achievements": "成就",
+    "days": "{count} 天"
+  },
+  "home": {
+    "greetingStillUp": "還沒睡嗎？",
+    "greetingMorning": "早安",
+    "greetingAfternoon": "午安",
+    "greetingEvening": "晚上好",
+    "greetingLateNight": "這麼晚還在？",
+    "dayStreak": "天連續學習 🔥",
+    "startStreak": "開始累積連續天數吧",
+    "toMilestone": "再 {count} 天到 {icon} {days} 天里程碑 · 共 {xp} XP",
+    "longestEver": "這是你最長的紀錄",
+    "bestStreak": "最佳：{days} 天",
+    "xp": "{xp} XP",
+    "streakHint": "聊天、學習或寫日記都算，做任何一項就能累積連續天數。",
+    "minutes": "{count} 分",
+    "goalToday": "/今天 {goal} 分",
+    "remembersYou": "{name} 記得你的一些事"
+  },
+  "settings": {
+    "title": "設定",
+    "appearance": "外觀",
+    "darkMode": "深色模式",
+    "data": "資料",
+    "export": "匯出學習紀錄",
+    "saved": "已儲存！",
+    "import": "匯入學習紀錄",
+    "reset": "清除所有紀錄",
+    "about": "關於",
+    "tagline": "陪你練英文的 AI 朋友",
+    "resetConfirmTitle": "要清除所有紀錄嗎？",
+    "resetConfirmBody": "這會永久刪除你的 XP、連續天數、單字和成就，刪除後無法復原。",
+    "resetButton": "清除",
+    "invalidBackup": "這不是有效的備份檔",
+    "importFailed": "備份檔匯入失敗"
+  },
+  "welcome": {
+    "slide1Title": "學英文，就像跟朋友傳訊息",
+    "slide1Body": "不用死背單字卡，也沒有無聊的課。就是跟像真實朋友一樣的角色好好聊天。",
+    "slide2Title": "他們會記得你",
+    "slide2Body": "跟 Emma 聊你的貓、你的工作、你的旅行，下次她會主動提起。你們的關係會越聊越熟。",
+    "slide3Title": "配合你的程度，但不會太簡單",
+    "slide3Body": "朋友說話會配合你的程度：初級簡單好懂，高級就有幽默和俚語。花 2 分鐘做個測試，從適合的地方開始。",
+    "next": "下一步",
+    "takeTest": "做 2 分鐘的等級測試",
+    "skipPick": "略過，我自己選等級",
+    "skipIntro": "略過介紹"
+  },
+  "memory": {
+    "title": "{name} 記得的事",
+    "conversations": "{count} 次對話",
+    "daysKnowing": "認識你 {count} 天",
+    "emptyTitle": "{name} 還不太認識你。",
+    "emptyBody": "在聊天裡說說你自己吧，像是名字、住哪裡、做什麼工作，{name} 都會記住。",
+    "forget": "忘記這件事",
+    "clearAll": "清除所有記憶",
+    "clearConfirm": "要讓 {name} 忘記關於你的所有事嗎？刪除後無法復原。"
+  },
+  "vocabPopup": {
+    "definition": "意思",
+    "explanation": "說明",
+    "example": "例句"
   }
 }
