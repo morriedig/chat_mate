@@ -166,7 +166,8 @@ body {
   line-height: 1.6;
 }
 
-:lang(zh), :lang(zh-TW), :lang(zh-Hant) {
+/* Only the page default; Tailwind text-* sizes still win on elements */
+html:lang(zh) body, html:lang(zh-TW) body, html:lang(zh-Hant) body {
   font-size: 16px;
   line-height: 1.7;
 }
