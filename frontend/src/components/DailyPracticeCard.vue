@@ -8,6 +8,11 @@ const emit = defineEmits(['open'])
 const { level, todayPatterns, todayWords, doneCount, totalCount, isDoneToday, ensureTodayPlan } = useDailyPractice()
 // Mistake, saved-word and listening cards on top of the patterns and words
 const extraCount = computed(() => totalCount.value - todayPatterns.value.length - todayWords.value.length)
+const subtitle = computed(() => {
+  if (isDoneToday.value) return t('dailyPractice.cardDone')
+  const base = t('dailyPractice.cardSubtitle', { patterns: todayPatterns.value.length, words: todayWords.value.length })
+  return extraCount.value > 0 ? base + t('dailyPractice.cardExtras', { count: extraCount.value }) : base
+})
 
 // Date may have rolled over since the app was opened
 onMounted(ensureTodayPlan)
@@ -39,10 +44,7 @@ onMounted(ensureTodayPlan)
           </span>
         </div>
         <p class="text-sm text-text-muted dark:text-slate-400 mt-1">
-          {{ isDoneToday
-            ? t('dailyPractice.cardDone')
-            : t('dailyPractice.cardSubtitle', { patterns: todayPatterns.length, words: todayWords.length }) }}
-          <template v-if="!isDoneToday && extraCount > 0">{{ t('dailyPractice.cardExtras', { count: extraCount }) }}</template>
+          {{ subtitle }}
         </p>
         <div v-if="todayPatterns.length" class="flex flex-wrap gap-1.5 mt-2">
           <span

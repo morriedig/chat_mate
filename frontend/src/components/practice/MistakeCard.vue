@@ -47,7 +47,7 @@ function rate(confidence) {
     <template v-if="stage === 'fix'">
       <textarea
         v-model="attempt"
-        rows="3"
+        :rows="Math.min(6, Math.ceil(attempt.length / 30) + 1)"
         class="w-full resize-none rounded-xl border border-slate-200 dark:border-slate-700 bg-background-light dark:bg-background-dark text-text-main dark:text-white px-3 py-2.5 text-base leading-relaxed focus:border-primary focus:ring-1 focus:ring-primary"
         :aria-label="t('mistakes.yourFix')"
       ></textarea>
