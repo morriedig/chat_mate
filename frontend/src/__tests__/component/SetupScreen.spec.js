@@ -139,7 +139,7 @@ describe('SetupScreen', () => {
 
     it('should switch to chat mode when clicked', async () => {
       const wrapper = createWrapper()
-      const modeCards = wrapper.findAll('.grid.grid-cols-3 > div')
+      const modeCards = wrapper.findAll('[data-test="primary-mode"]')
 
       await modeCards[0].trigger('click') // Chat mode card
 
@@ -148,7 +148,7 @@ describe('SetupScreen', () => {
 
     it('should switch to diary mode when clicked', async () => {
       const wrapper = createWrapper()
-      const modeCards = wrapper.findAll('.grid.grid-cols-3 > div')
+      const modeCards = wrapper.findAll('[data-test="primary-mode"]')
 
       await modeCards[2].trigger('click') // Diary mode card
 
@@ -159,13 +159,22 @@ describe('SetupScreen', () => {
       const wrapper = createWrapper()
       expect(wrapper.text()).toContain('edit_note')
     })
+
+    it('should mark the selected mode with aria-checked', async () => {
+      const wrapper = createWrapper()
+      const modeCards = wrapper.findAll('[data-test="primary-mode"]')
+      await modeCards[0].trigger('click')
+
+      expect(modeCards[0].attributes('aria-checked')).toBe('true')
+      expect(modeCards[1].attributes('aria-checked')).toBe('false')
+    })
   })
 
   describe('chat mode options', () => {
     it('should show character selection when in chat mode', async () => {
       const wrapper = createWrapper()
       // Switch to chat mode first
-      const modeCards = wrapper.findAll('.grid.grid-cols-3 > div')
+      const modeCards = wrapper.findAll('[data-test="primary-mode"]')
       await modeCards[0].trigger('click')
 
       expect(wrapper.text()).toContain('setup.choosePartner')
@@ -173,7 +182,7 @@ describe('SetupScreen', () => {
 
     it('should display available characters when in chat mode', async () => {
       const wrapper = createWrapper()
-      const modeCards = wrapper.findAll('.grid.grid-cols-3 > div')
+      const modeCards = wrapper.findAll('[data-test="primary-mode"]')
       await modeCards[0].trigger('click')
 
       expect(wrapper.text()).toContain('Sakura')
@@ -182,25 +191,26 @@ describe('SetupScreen', () => {
 
     it('should show level selection when in chat mode', async () => {
       const wrapper = createWrapper()
-      const modeCards = wrapper.findAll('.grid.grid-cols-3 > div')
+      const modeCards = wrapper.findAll('[data-test="primary-mode"]')
       await modeCards[0].trigger('click')
 
       expect(wrapper.text()).toContain('setup.yourLevel')
     })
 
-    it('should display available levels when in chat mode', async () => {
+    it('should display levels as CEFR text codes, not emoji, when in chat mode', async () => {
       const wrapper = createWrapper()
-      const modeCards = wrapper.findAll('.grid.grid-cols-3 > div')
+      const modeCards = wrapper.findAll('[data-test="primary-mode"]')
       await modeCards[0].trigger('click')
 
-      expect(wrapper.text()).toContain('🌱')
-      expect(wrapper.text()).toContain('🌿')
-      expect(wrapper.text()).toContain('🌳')
+      expect(wrapper.text()).toContain('A1–A2')
+      expect(wrapper.text()).toContain('B1–B2')
+      expect(wrapper.text()).toContain('C1–C2')
+      expect(wrapper.text()).not.toContain('🌱')
     })
 
     it('should show chat mode selection when in chat mode', async () => {
       const wrapper = createWrapper()
-      const modeCards = wrapper.findAll('.grid.grid-cols-3 > div')
+      const modeCards = wrapper.findAll('[data-test="primary-mode"]')
       await modeCards[0].trigger('click')
 
       expect(wrapper.text()).toContain('setup.chooseMode')
@@ -211,10 +221,10 @@ describe('SetupScreen', () => {
     it('should select character when clicked', async () => {
       const wrapper = createWrapper()
       // Switch to chat mode first
-      const modeCards = wrapper.findAll('.grid.grid-cols-3 > div')
+      const modeCards = wrapper.findAll('[data-test="primary-mode"]')
       await modeCards[0].trigger('click')
 
-      const characterCards = wrapper.findAll('.w-72')
+      const characterCards = wrapper.findAll('[data-test="character"]')
       await characterCards[0].trigger('click')
 
       expect(wrapper.vm.selectedCharacter).toBeTruthy()
@@ -224,13 +234,11 @@ describe('SetupScreen', () => {
     it('should select level when clicked', async () => {
       const wrapper = createWrapper()
       // Switch to chat mode first
-      const modeCards = wrapper.findAll('.grid.grid-cols-3 > div')
+      const modeCards = wrapper.findAll('[data-test="primary-mode"]')
       await modeCards[0].trigger('click')
 
-      // Find the level grid (grid-cols-3 inside chat mode options, not the primary mode grid)
-      const levelCards = wrapper.findAll('.grid.grid-cols-3 > div')
-      // Skip first 3 (primary mode cards), get the level cards
-      await levelCards[3].trigger('click')
+      const levelRows = wrapper.findAll('[data-test="chat-level"]')
+      await levelRows[0].trigger('click')
 
       expect(wrapper.vm.selectedLevel).toBeTruthy()
     })
@@ -254,7 +262,7 @@ describe('SetupScreen', () => {
     it('should be disabled initially in chat mode', async () => {
       const wrapper = createWrapper()
       // Switch to chat mode
-      const modeCards = wrapper.findAll('.grid.grid-cols-3 > div')
+      const modeCards = wrapper.findAll('[data-test="primary-mode"]')
       await modeCards[0].trigger('click')
 
       const startButton = wrapper.find('button.start-button')
@@ -263,7 +271,7 @@ describe('SetupScreen', () => {
 
     it('should display correct text for chat mode', async () => {
       const wrapper = createWrapper()
-      const modeCards = wrapper.findAll('.grid.grid-cols-3 > div')
+      const modeCards = wrapper.findAll('[data-test="primary-mode"]')
       await modeCards[0].trigger('click')
 
       expect(wrapper.text()).toContain('setup.startChatting')
@@ -277,15 +285,15 @@ describe('SetupScreen', () => {
 
     it('should display diary mode text for diary mode', async () => {
       const wrapper = createWrapper()
-      const modeCards = wrapper.findAll('.grid.grid-cols-3 > div')
+      const modeCards = wrapper.findAll('[data-test="primary-mode"]')
       await modeCards[2].trigger('click')
 
-      expect(wrapper.text()).toContain('diary.mode')
+      expect(wrapper.find('button.start-button').text()).toContain('setup.startDiary')
     })
 
     it('should not be disabled for diary mode', async () => {
       const wrapper = createWrapper()
-      const modeCards = wrapper.findAll('.grid.grid-cols-3 > div')
+      const modeCards = wrapper.findAll('[data-test="primary-mode"]')
       await modeCards[2].trigger('click')
 
       const startButton = wrapper.find('button.start-button')
@@ -298,16 +306,16 @@ describe('SetupScreen', () => {
       const wrapper = createWrapper()
 
       // Switch to chat mode
-      const modeCards = wrapper.findAll('.grid.grid-cols-3 > div')
+      const modeCards = wrapper.findAll('[data-test="primary-mode"]')
       await modeCards[0].trigger('click')
 
       // Select character
-      const characterCards = wrapper.findAll('.w-72')
+      const characterCards = wrapper.findAll('[data-test="character"]')
       await characterCards[0].trigger('click')
 
-      // Select level (skip first 3 primary mode cards)
-      const levelCards = wrapper.findAll('.grid.grid-cols-3 > div')
-      await levelCards[3].trigger('click')
+      // Select level
+      const levelRows = wrapper.findAll('[data-test="chat-level"]')
+      await levelRows[0].trigger('click')
 
       // Click start
       const startButton = wrapper.find('button.start-button')
@@ -320,7 +328,7 @@ describe('SetupScreen', () => {
       const wrapper = createWrapper()
 
       // Switch to diary mode
-      const modeCards = wrapper.findAll('.grid.grid-cols-3 > div')
+      const modeCards = wrapper.findAll('[data-test="primary-mode"]')
       await modeCards[2].trigger('click')
 
       // Click start
@@ -342,6 +350,47 @@ describe('SetupScreen', () => {
       const wrapper = createWrapper()
       await wrapper.find('.opinion-chat-entry').trigger('click')
       expect(mockPush).toHaveBeenCalledWith('/chat')
+    })
+  })
+
+  describe('home route and More', () => {
+    beforeEach(() => {
+      localStorage.removeItem('chatmate_home_more_open')
+    })
+
+    it('should list practice, task chat and say-it-three-times in that order', () => {
+      const wrapper = createWrapper()
+      const steps = wrapper.findAll('ol > li')
+      expect(steps).toHaveLength(3)
+      expect(steps[0].findComponent({ name: 'DailyPracticeCard' }).exists()).toBe(true)
+      expect(steps[1].findComponent({ name: 'TaskChatCard' }).exists()).toBe(true)
+      expect(steps[2].find('.retell-card').exists()).toBe(true)
+    })
+
+    it('should mark exactly one route step as current', () => {
+      const wrapper = createWrapper()
+      const current = wrapper.findAll('ol > li[aria-current="step"]')
+      expect(current).toHaveLength(1)
+    })
+
+    it('should keep the other options collapsed under More until it is opened', async () => {
+      const wrapper = createWrapper()
+      const more = wrapper.find('button[aria-controls="home-more"]')
+      expect(more.attributes('aria-expanded')).toBe('false')
+      expect(wrapper.find('#home-more').attributes('style')).toContain('display: none')
+
+      await more.trigger('click')
+
+      expect(more.attributes('aria-expanded')).toBe('true')
+      expect(wrapper.find('#home-more').attributes('style') || '').not.toContain('display: none')
+    })
+
+    it('should open each tool from the grouped tools list', async () => {
+      const wrapper = createWrapper()
+      await wrapper.find('[data-test="tool-placement"]').trigger('click')
+      expect(mockPush).toHaveBeenCalledWith('/placement-test')
+      await wrapper.find('[data-test="tool-analytics"]').trigger('click')
+      expect(wrapper.vm.showAnalytics).toBe(true)
     })
   })
 

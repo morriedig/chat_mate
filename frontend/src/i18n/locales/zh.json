@@ -1,7 +1,8 @@
 {
   "app": {
     "title": "Chat Mate",
-    "subtitle": "和AI朋友一起練習英文"
+    "subtitle": "把看得懂的英文，練成說得出口",
+    "offline": "目前離線，部分功能暫時無法使用"
   },
   "setup": {
     "choosePartner": "選擇聊天夥伴",
@@ -9,7 +10,7 @@
     "chooseMode": "聊天類型",
     "startChatting": "開始聊天",
     "startLearning": "開始學習",
-    "motherTongue": "你的母語",
+    "motherTongue": "介面語言",
     "targetLanguage": "我想學習",
     "learningLevel": "選擇等級",
     "primaryModes": {
@@ -42,7 +43,9 @@
     "placementHint": "已經幫你在下面選好了，隨時可以改。",
     "analytics": "學習分析",
     "toggleDark": "切換深色模式",
-    "settings": "設定"
+    "settings": "設定",
+    "practiceType": "練習方式",
+    "startDiary": "寫日記"
   },
   "chat": {
     "typeMessage": "輸入訊息...",
@@ -302,23 +305,29 @@
     "streak": "連續天數",
     "messages": "訊息",
     "rank": "等級",
-    "achievementsUnlocked": "已解鎖 {count} 個成就"
+    "achievementsUnlocked": "已解鎖 {count} 個成就",
+    "description": "把進度做成圖片，分享或下載"
   },
   "placementTest": {
     "title": "等級測試",
     "description": "回答10題來判定你的程度",
     "start": "開始測試",
-    "question": "第 {current}/{total} 題",
-    "result": "你的程度",
+    "question": "第 {current} / {total} 題",
+    "result": "建議程度",
     "score": "分數：{score}%",
     "retake": "重新測試",
-    "recommended": "建議等級：{level}"
+    "recommended": "建議等級：{level}",
+    "useLevel": "使用這個程度",
+    "correct": "答對了",
+    "wrongAnswer": "答錯了，正確答案是 {answer}",
+    "correctLabel": "正確",
+    "wrongLabel": "不對"
   },
   "weeklyQuests": {
     "title": "每週任務",
     "claimReward": "領取",
     "claimed": "已領取",
-    "allDone": "所有任務已完成！",
+    "allDone": "本週任務都完成了",
     "quests": {
       "chat5": "完成 5 次對話",
       "chat10": "完成 10 次對話",
@@ -336,21 +345,23 @@
       "diaryVocabUse10": "在日記中使用 10 個單字本單字",
       "diaryWordCount150": "日記共寫 150 字",
       "diaryWordCount300": "日記共寫 300 字"
-    }
+    },
+    "description": "每週換一組新任務，完成後可以領取 XP",
+    "done": "已完成"
   },
   "dailyChallenge": {
     "title": "每日挑戰",
     "todaysTopic": "今日話題",
     "startChallenge": "開始挑戰",
     "progress": "{current}/5 則訊息",
-    "completed": "挑戰完成！",
-    "completedMessage": "獲得 +20 XP 獎勵！",
+    "completed": "今天的挑戰完成",
+    "completedMessage": "獲得 20 XP",
     "alreadyCompleted": "今天已完成"
   },
   "dailyGoal": {
     "title": "每日目標",
     "setGoal": "設定每日目標",
-    "minutes": "{count}分鐘/天",
+    "minutes": "{count} 分鐘",
     "progress": "今天 {current}/{goal} 分鐘",
     "goalMet": "目標達成！",
     "goalMetMessage": "你完成了今天的目標！繼續學習或休息一下吧。",
@@ -599,14 +610,14 @@
   },
   "dailyOpinion": {
     "title": "今日觀點",
-    "cardTitle": "今日觀點（3 分鐘）",
+    "cardTitle": "用三句話說看法",
     "subtitle": "看法 → 理由 → 收尾",
     "doneToday": "今天已完成",
     "notDoneToday": "還沒做",
     "todaysQuestion": "今日題目",
     "todaysConnectors": "今天試用的連接詞",
-    "last7Days": "最近 7 天",
-    "streakDays": "{count} 天",
+    "last7Days": "最近 7 天完成 {count} 天",
+    "streakDays": "連續 {count} 天",
     "used": "用到了",
     "placeholder": "用英文回答：先講看法，再給理由，最後收尾。",
     "structureProgress": "結構 {count}/3",
@@ -624,7 +635,8 @@
     "cheerBoth": "讚！今天 {a} 和 {b} 都用上了。",
     "cheerOne": "你用了 {a}，很好！明天也試試另一個。",
     "cheerOther": "你用了 {a}，雖然不是今天的目標，也很自然！",
-    "cheerNone": "這次還沒用到連接詞。下次在看法後面加一句「because…」試試看。"
+    "cheerNone": "這次還沒用到連接詞。下次在看法後面加一句「because…」試試看。",
+    "cardDuration": "3 分鐘"
   },
   "dailyPractice": {
     "title": "今日練習",
@@ -659,7 +671,7 @@
     "writeOpinion": "寫今日觀點",
     "backHome": "回首頁",
     "cardTitle": "今日練習",
-    "cardSubtitle": "{patterns} 個句型 + {words} 個單字，約 10 分鐘",
+    "cardSubtitle": "{patterns} 個句型、{words} 個單字 · 約 10 分鐘",
     "cardDone": "今天練完了，明天見",
     "savedWord": "單字本的字",
     "recallMeaning": "先想想看這個字是什麼意思，再翻開。",
@@ -699,7 +711,9 @@
     "dismiss": "關閉",
     "cancel": "取消",
     "listening": "聆聽中…",
-    "dailyLimit": "今天的 AI 用量用完了，明天再來聊吧！離線的練習還是可以做。"
+    "dailyLimit": "今天的 AI 用量用完了，明天再來聊吧！離線的練習還是可以做。",
+    "back": "返回",
+    "close": "關閉"
   },
   "analytics": {
     "title": "學習分析",
@@ -715,26 +729,24 @@
     "bestStreak": "最長連續",
     "words": "單字",
     "achievements": "成就",
-    "days": "{count} 天"
+    "days": "{count} 天",
+    "description": "等級、XP 與最近 30 天的練習",
+    "rankProgress": "距離下一個等級",
+    "heatmapEmptyTitle": "還沒有活動紀錄",
+    "messagesCount": "{count} 則訊息"
   },
   "home": {
-    "greetingStillUp": "還沒睡嗎？",
-    "greetingMorning": "早安",
-    "greetingAfternoon": "午安",
-    "greetingEvening": "晚上好",
-    "greetingLateNight": "這麼晚還在？",
-    "dayStreak": "天連續學習 🔥",
-    "startStreak": "開始累積連續天數吧",
-    "toMilestone": "再 {count} 天到 {icon} {days} 天里程碑 · 共 {xp} XP",
-    "longestEver": "這是你最長的紀錄",
-    "bestStreak": "最佳：{days} 天",
-    "xp": "{xp} XP",
-    "streakHint": "聊天、學習或寫日記都算，做任何一項就能累積連續天數。",
-    "minutes": "{count} 分",
-    "goalToday": "/今天 {goal} 分",
-    "remembersYou": "{name} 記得你的一些事",
+    "startStreak": "今天先開口 {goal} 分鐘",
     "todayPath": "今天的路線",
-    "more": "更多（自由聊天、學習、日記…）"
+    "more": "更多練習",
+    "railLabel": "今天的進度",
+    "railToday": "今天",
+    "railMinutes": "{count} / {goal} 分",
+    "railStreak": "連續練習",
+    "railDays": "{count} 天",
+    "goalMet": "今天的目標完成了",
+    "moreHint": "自由聊天、學習、日記、情境練習與學習紀錄都在這裡",
+    "tools": "工具"
   },
   "settings": {
     "title": "設定",
@@ -742,28 +754,29 @@
     "darkMode": "深色模式",
     "data": "資料",
     "export": "匯出學習紀錄",
-    "saved": "已儲存！",
+    "saved": "已匯出",
     "import": "匯入學習紀錄",
-    "reset": "清除所有紀錄",
+    "reset": "清除本機學習紀錄",
     "about": "關於",
-    "tagline": "陪你練英文的 AI 朋友",
-    "resetConfirmTitle": "要清除所有紀錄嗎？",
+    "tagline": "英文口說練習",
+    "resetConfirmTitle": "要清除本機學習紀錄嗎？",
     "resetConfirmBody": "這會永久刪除你的 XP、連續天數、單字和成就，刪除後無法復原。",
     "resetButton": "清除",
     "invalidBackup": "這不是有效的備份檔",
     "importFailed": "備份檔匯入失敗"
   },
   "welcome": {
-    "slide1Title": "學英文，就像跟朋友傳訊息",
-    "slide1Body": "不用死背單字卡，也沒有無聊的課。就是跟像真實朋友一樣的角色好好聊天。",
-    "slide2Title": "他們會記得你",
+    "slide1Title": "先把英文說出來",
+    "slide1Body": "每天照著一條短路線，先複習，再把句型用進對話。",
+    "slide2Title": "朋友會記得你說過的事",
     "slide2Body": "跟 Emma 聊你的貓、你的工作、你的旅行，下次她會主動提起。你們的關係會越聊越熟。",
-    "slide3Title": "配合你的程度，但不會太簡單",
+    "slide3Title": "從適合的程度開始",
     "slide3Body": "朋友說話會配合你的程度：初級簡單好懂，高級就有幽默和俚語。花 2 分鐘做個測試，從適合的地方開始。",
     "next": "下一步",
     "takeTest": "做 2 分鐘的等級測試",
-    "skipPick": "略過，我自己選等級",
-    "skipIntro": "略過介紹"
+    "skipPick": "我自己選程度",
+    "skipIntro": "略過介紹",
+    "pageOf": "{current} / {total}"
   },
   "memory": {
     "title": "{name} 記得的事",
@@ -811,7 +824,7 @@
   "taskChat": {
     "title": "今天的任務",
     "cardTitle": "用今天的句型完成任務",
-    "cardHint": "跟朋友聊天時試著用上今天的 {count} 個句型，聊完會有小結。",
+    "cardHint": "聊天時用上今天的 {count} 個句型，聊完看小結",
     "complete": "今天的句型都用到了！",
     "seeSummary": "看小結",
     "endChat": "聊完了，看小結",
@@ -827,7 +840,8 @@
     "showAnswer": "看答案",
     "savedForReview": "這些句子已加入今日練習的複習卡。",
     "keepChatting": "繼續聊",
-    "backHome": "回首頁"
+    "backHome": "回首頁",
+    "cardCount": "{count} 個句型"
   },
   "voiceSettings": {
     "title": "語音",
@@ -840,7 +854,7 @@
     "subtitle": "越講越順的流暢度練習",
     "back": "返回",
     "cardTitle": "同一題講三次",
-    "cardSubtitle": "準備 30 秒，同一件事講三遍，一次比一次短。",
+    "cardSubtitle": "準備 30 秒，再用 90、60、45 秒說三遍",
     "cardDone": "今天練過了，想再挑戰一次也可以",
     "topicLabel": "今天的題目",
     "howTitle": "怎麼練",

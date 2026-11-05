@@ -1,24 +1,25 @@
 {
   "app": {
     "title": "Chat Mate",
-    "subtitle": "Practice English with AI friends"
+    "subtitle": "Turn the English you know into English you can say",
+    "offline": "You're offline. Some features are unavailable."
   },
   "setup": {
     "choosePartner": "Choose your chat partner",
     "yourLevel": "Your English level",
     "chooseMode": "Chat type",
-    "startChatting": "Start Chatting",
-    "startLearning": "Start Learning",
-    "motherTongue": "Your native language",
+    "startChatting": "Start chatting",
+    "startLearning": "Start learning",
+    "motherTongue": "Interface language",
     "targetLanguage": "I want to learn",
     "learningLevel": "Choose your level",
     "primaryModes": {
       "chat": {
-        "name": "Chat Mode",
+        "name": "Chat",
         "description": "Practice conversation with AI friends"
       },
       "learning": {
-        "name": "Learning Mode",
+        "name": "Learning",
         "description": "Study vocabulary with flashcards & quizzes"
       }
     },
@@ -30,7 +31,7 @@
     },
     "modes": {
       "free": {
-        "name": "Free Chat",
+        "name": "Free chat",
         "description": "Casual conversation"
       },
       "article": {
@@ -42,7 +43,9 @@
     "placementHint": "We've pre-selected it below. Change it any time.",
     "analytics": "Analytics",
     "toggleDark": "Toggle dark mode",
-    "settings": "Settings"
+    "settings": "Settings",
+    "practiceType": "Practice type",
+    "startDiary": "Write a diary entry"
   },
   "chat": {
     "typeMessage": "Type a message...",
@@ -284,7 +287,7 @@
     "later": "Later"
   },
   "scenarios": {
-    "title": "Role-play Scenarios",
+    "title": "Role-play scenarios",
     "description": "Practice real-life situations",
     "start": "Start Scenario",
     "goal": "Your goal",
@@ -296,29 +299,35 @@
     "noneAtLevel": "No scenarios at this level yet."
   },
   "shareCard": {
-    "share": "Share Progress",
+    "share": "Share progress",
     "title": "My Chat Mate Progress",
-    "download": "Download Image",
+    "download": "Download image",
     "streak": "Streak",
     "messages": "Messages",
     "rank": "Rank",
-    "achievementsUnlocked": "{count} achievement unlocked | {count} achievements unlocked"
+    "achievementsUnlocked": "{count} achievement unlocked | {count} achievements unlocked",
+    "description": "Turn your progress into an image to share or download"
   },
   "placementTest": {
-    "title": "Placement Test",
+    "title": "Placement test",
     "description": "Answer 10 questions to find your level",
     "start": "Start Test",
-    "question": "Question {current}/{total}",
-    "result": "Your Level",
+    "question": "Question {current} / {total}",
+    "result": "Recommended level",
     "score": "Score: {score}%",
-    "retake": "Retake Test",
-    "recommended": "Recommended: {level}"
+    "retake": "Retake test",
+    "recommended": "Recommended: {level}",
+    "useLevel": "Use this level",
+    "correct": "Correct",
+    "wrongAnswer": "Not quite. The answer is {answer}",
+    "correctLabel": "Correct",
+    "wrongLabel": "Wrong"
   },
   "weeklyQuests": {
-    "title": "Weekly Quests",
+    "title": "Weekly quests",
     "claimReward": "Claim",
     "claimed": "Claimed",
-    "allDone": "All quests completed!",
+    "allDone": "All quests done this week",
     "quests": {
       "chat5": "Complete 5 conversations",
       "chat10": "Complete 10 conversations",
@@ -336,21 +345,23 @@
       "diaryVocabUse10": "Use 10 vocab words in diary entries",
       "diaryWordCount150": "Write 150 words in diary entries",
       "diaryWordCount300": "Write 300 words in diary entries"
-    }
+    },
+    "description": "A new set each week. Claim XP when you finish one.",
+    "done": "Done"
   },
   "dailyChallenge": {
-    "title": "Daily Challenge",
-    "todaysTopic": "Today's Topic",
+    "title": "Daily challenge",
+    "todaysTopic": "Today's topic",
     "startChallenge": "Start Challenge",
     "progress": "{current}/5 messages",
-    "completed": "Challenge Complete!",
-    "completedMessage": "You earned +20 XP bonus!",
+    "completed": "Challenge complete",
+    "completedMessage": "You earned 20 XP",
     "alreadyCompleted": "Completed today"
   },
   "dailyGoal": {
-    "title": "Daily Goal",
+    "title": "Daily goal",
     "setGoal": "Set your daily goal",
-    "minutes": "{count} min/day",
+    "minutes": "{count} min",
     "progress": "{current}/{goal} min today",
     "goalMet": "Goal reached!",
     "goalMetMessage": "You hit your daily goal! Keep going or take a break.",
@@ -599,14 +610,14 @@
   },
   "dailyOpinion": {
     "title": "Daily Opinion",
-    "cardTitle": "Daily Opinion (3 min)",
+    "cardTitle": "Give your view in three sentences",
     "subtitle": "Opinion → Reason → Wrap-up",
     "doneToday": "Done today",
     "notDoneToday": "Not yet",
     "todaysQuestion": "Today's question",
     "todaysConnectors": "Today's connectors",
-    "last7Days": "Last 7 days",
-    "streakDays": "{count} days",
+    "last7Days": "Done on {count} of the last 7 days",
+    "streakDays": "{count}-day streak",
     "used": "used",
     "placeholder": "Answer in English: say what you think, give a reason, then wrap up.",
     "structureProgress": "Structure {count}/3",
@@ -624,7 +635,8 @@
     "cheerBoth": "Nice! You used both {a} and {b} today.",
     "cheerOne": "You used {a} — nice! Try the other one tomorrow too.",
     "cheerOther": "You used {a} — good connector, even if it wasn't today's target.",
-    "cheerNone": "No connectors spotted yet. Next time try adding a \"because…\" after your opinion."
+    "cheerNone": "No connectors spotted yet. Next time try adding a \"because…\" after your opinion.",
+    "cardDuration": "3 min"
   },
   "dailyPractice": {
     "title": "Today's practice",
@@ -659,7 +671,7 @@
     "writeOpinion": "Write today's opinion",
     "backHome": "Back home",
     "cardTitle": "Today's practice",
-    "cardSubtitle": "{patterns} patterns + {words} words, about 10 minutes",
+    "cardSubtitle": "{patterns} patterns, {words} words · about 10 min",
     "cardDone": "Done today — see you tomorrow",
     "savedWord": "Saved word",
     "recallMeaning": "Try to recall what it means before you reveal it.",
@@ -699,71 +711,72 @@
     "dismiss": "Dismiss",
     "cancel": "Cancel",
     "listening": "Listening...",
-    "dailyLimit": "You've used today's AI chats. Come back tomorrow! Offline practice still works."
+    "dailyLimit": "You've used today's AI chats. Come back tomorrow! Offline practice still works.",
+    "back": "Back",
+    "close": "Close"
   },
   "analytics": {
-    "title": "Learning Analytics",
-    "activity30": "30-Day Activity",
+    "title": "Learning analytics",
+    "activity30": "30-day activity",
     "less": "Less",
     "more": "More",
     "heatmapEmpty": "Your activity heatmap fills in as you chat, study, and write diary entries.",
-    "characterInteractions": "Character Interactions",
+    "characterInteractions": "Chats with friends",
     "dayActivity": "{date} · {count} activity | {date} · {count} activities",
     "totalXP": "Total XP",
     "messages": "Messages",
     "streak": "Streak",
-    "bestStreak": "Best Streak",
+    "bestStreak": "Best streak",
     "words": "Words",
     "achievements": "Achievements",
-    "days": "{count}d"
+    "days": "{count}d",
+    "description": "Rank, XP and your last 30 days",
+    "rankProgress": "Progress to next rank",
+    "heatmapEmptyTitle": "No activity yet",
+    "messagesCount": "{count} message | {count} messages"
   },
   "home": {
-    "greetingStillUp": "Still up?",
-    "greetingMorning": "Good morning",
-    "greetingAfternoon": "Good afternoon",
-    "greetingEvening": "Good evening",
-    "greetingLateNight": "Late night?",
-    "dayStreak": "day streak 🔥",
-    "startStreak": "Let's start a streak",
-    "toMilestone": "{count} more to {icon} {days}-day milestone · {xp} XP total",
-    "longestEver": "Your longest streak ever",
-    "bestStreak": "Best: {days} days",
-    "xp": "{xp} XP",
-    "streakHint": "Chat, learn, or write — any activity counts toward your daily streak.",
-    "minutes": "{count}m",
-    "goalToday": "/{goal}m today",
-    "remembersYou": "{name} remembers things about you",
-    "todayPath": "Today's path",
-    "more": "More (free chat, learning, diary…)"
+    "startStreak": "Speak for {goal} minutes today",
+    "todayPath": "Today's route",
+    "more": "More practice",
+    "railLabel": "Today's progress",
+    "railToday": "Today",
+    "railMinutes": "{count} / {goal} min",
+    "railStreak": "Streak",
+    "railDays": "{count} day | {count} days",
+    "goalMet": "Today's goal reached",
+    "moreHint": "Free chat, learning, diary, role-play and your learning record are here",
+    "tools": "Tools"
   },
   "settings": {
     "title": "Settings",
     "appearance": "Appearance",
-    "darkMode": "Dark Mode",
+    "darkMode": "Dark mode",
     "data": "Data",
-    "export": "Export Progress",
-    "saved": "Saved!",
-    "import": "Import Progress",
-    "reset": "Reset All Progress",
+    "export": "Export progress",
+    "saved": "Exported",
+    "import": "Import progress",
+    "reset": "Clear learning data on this device",
     "about": "About",
-    "tagline": "AI Language Learning Companion",
-    "resetConfirmTitle": "Reset All Progress?",
+    "tagline": "English speaking practice",
+    "resetConfirmTitle": "Clear learning data on this device?",
     "resetConfirmBody": "This will permanently delete all your XP, streaks, vocabulary, and achievements. This cannot be undone.",
-    "resetButton": "Reset",
+    "resetButton": "Clear",
     "invalidBackup": "Invalid backup file",
     "importFailed": "Failed to import backup file"
   },
   "welcome": {
-    "slide1Title": "Language learning that feels like texting a friend",
-    "slide1Body": "No flashcard grind. No boring lessons. Just real conversations with characters who feel like people you'd actually know.",
-    "slide2Title": "They remember you",
+    "slide1Title": "Start by saying it",
+    "slide1Body": "Follow one short daily route: review, then use the patterns in a conversation.",
+    "slide2Title": "Your friend remembers what you share",
     "slide2Body": "Tell Emma about your cat, your job, your trip to Kyoto — she'll bring it up next time. Your relationship grows across sessions.",
-    "slide3Title": "Level-calibrated, not dumbed-down",
-    "slide3Body": "We match their speech to your level — simple at beginner, witty and slang-heavy at advanced. Take a 2-minute test to start in the right place.",
+    "slide3Title": "Start at the right level",
+    "slide3Body": "Your friend matches your level: simple at beginner, witty and slangy at advanced. A 2-minute test finds the right place to start.",
     "next": "Next",
     "takeTest": "Take the 2-minute placement test",
-    "skipPick": "Skip — I'll pick my level manually",
-    "skipIntro": "Skip intro"
+    "skipPick": "I'll choose my level",
+    "skipIntro": "Skip intro",
+    "pageOf": "{current} / {total}"
   },
   "memory": {
     "title": "What {name} remembers",
@@ -811,7 +824,7 @@
   "taskChat": {
     "title": "Today's task",
     "cardTitle": "Use today's patterns in a task",
-    "cardHint": "Try to use today's {count} patterns while you chat. You'll get a summary at the end.",
+    "cardHint": "Use today's {count} patterns while you chat, then read the summary",
     "complete": "You used all of today's patterns!",
     "seeSummary": "See summary",
     "endChat": "Done — see summary",
@@ -827,7 +840,8 @@
     "showAnswer": "Show answer",
     "savedForReview": "These sentences were added to your daily practice reviews.",
     "keepChatting": "Keep chatting",
-    "backHome": "Home"
+    "backHome": "Home",
+    "cardCount": "{count} patterns"
   },
   "voiceSettings": {
     "title": "Voice",
@@ -840,7 +854,7 @@
     "subtitle": "A fluency drill that gets smoother each round",
     "back": "Back",
     "cardTitle": "Say it three times",
-    "cardSubtitle": "Plan for 30 seconds, then tell the same thing three times with less time each round.",
+    "cardSubtitle": "Plan for 30 seconds, then say it in 90, 60 and 45 seconds",
     "cardDone": "Done for today. Feel free to go again.",
     "topicLabel": "Today's topic",
     "howTitle": "How it works",

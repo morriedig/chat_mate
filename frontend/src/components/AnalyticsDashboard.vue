@@ -2,6 +2,11 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useUserProgress } from '../composables/useUserProgress'
+import { characters } from '../data/characters'
+import CmAvatar from './ui/CmAvatar.vue'
+import CmBottomSheet from './ui/CmBottomSheet.vue'
+import CmProgress from './ui/CmProgress.vue'
+import CmStateBlock from './ui/CmStateBlock.vue'
 
 const { t } = useI18n()
 const emit = defineEmits(['close'])
@@ -44,124 +49,98 @@ const heatmapData = computed(() => {
 
 const hasAnyActivity = computed(() => heatmapData.value.some(d => d.level > 0))
 
+// One accent at four strengths; no extra hues
 function intensityClass(level) {
-  if (level === 0) return 'bg-slate-100 dark:bg-slate-800'
-  if (level === 1) return 'bg-green-200 dark:bg-green-900'
-  if (level === 2) return 'bg-green-400 dark:bg-green-600'
-  return 'bg-green-500 dark:bg-green-400'
+  if (level === 0) return 'bg-surface-raised'
+  if (level === 1) return 'bg-accent/30'
+  if (level === 2) return 'bg-accent/60'
+  return 'bg-accent'
 }
 
 const stats = computed(() => [
-  { label: t('analytics.totalXP'), value: progress.value.totalXP, icon: 'star', color: 'text-amber-500' },
-  { label: t('analytics.messages'), value: progress.value.messagesSent, icon: 'chat', color: 'text-blue-500' },
-  { label: t('analytics.streak'), value: t('analytics.days', { count: progress.value.currentStreak }), icon: 'local_fire_department', color: 'text-orange-500' },
-  { label: t('analytics.bestStreak'), value: t('analytics.days', { count: progress.value.longestStreak }), icon: 'emoji_events', color: 'text-purple-500' },
-  { label: t('analytics.words'), value: (progress.value.wordsLearned || []).length, icon: 'menu_book', color: 'text-green-500' },
-  { label: t('analytics.achievements'), value: (progress.value.unlockedAchievements || []).length, icon: 'military_tech', color: 'text-pink-500' },
+  { id: 'xp', label: t('analytics.totalXP'), value: progress.value.totalXP },
+  { id: 'messages', label: t('analytics.messages'), value: progress.value.messagesSent },
+  { id: 'streak', label: t('analytics.streak'), value: t('analytics.days', { count: progress.value.currentStreak }) },
+  { id: 'best', label: t('analytics.bestStreak'), value: t('analytics.days', { count: progress.value.longestStreak }) },
+  { id: 'words', label: t('analytics.words'), value: (progress.value.wordsLearned || []).length },
+  { id: 'achievements', label: t('analytics.achievements'), value: (progress.value.unlockedAchievements || []).length },
 ])
+
+const characterName = (id) => characters.find(c => c.id === id)?.name || id
 
 const rankProgress = computed(() => progressToNextRank.value)
 </script>
 
 <template>
-  <Teleport to="body">
-    <Transition name="slide-up">
-      <div class="fixed inset-0 z-[90] flex items-end justify-center">
-        <div class="absolute inset-0 bg-black/40" @click="emit('close')" />
-        <div class="relative w-full max-w-lg bg-surface-light dark:bg-surface-dark rounded-t-2xl p-6 pb-8 max-h-[80vh] overflow-y-auto">
-          <!-- Header -->
-          <div class="flex items-center justify-between mb-6">
-            <h2 class="text-xl font-bold text-text-main dark:text-white flex items-center gap-2">
-              <span class="material-symbols-outlined text-primary">analytics</span>
-              {{ t('analytics.title') }}
-            </h2>
-            <button @click="emit('close')" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
-              <span class="material-symbols-outlined">close</span>
-            </button>
-          </div>
+  <CmBottomSheet
+    :title="t('analytics.title')"
+    :description="t('analytics.description')"
+    :close-label="t('common.close')"
+    @close="emit('close')"
+  >
+    <!-- Rank and XP -->
+    <section class="mb-6 rounded-[14px] border border-hairline bg-surface p-4">
+      <div class="mb-2 flex items-baseline justify-between gap-3">
+        <span class="text-body font-medium text-ink">{{ t(`ranks.${currentRank.title.toLowerCase()}`, currentRank.title) }}</span>
+        <span class="text-meta text-ink-muted tabular-nums">{{ rankProgress }}%</span>
+      </div>
+      <CmProgress :value="rankProgress" :max="100" :label="t('analytics.rankProgress')" />
+    </section>
 
-          <!-- Rank Progress -->
-          <div class="mb-6 p-4 rounded-xl bg-gradient-to-r from-primary/10 to-blue-500/10 dark:from-primary/20 dark:to-blue-500/20 border border-primary/20">
-            <div class="flex items-center justify-between mb-2">
-              <span class="font-bold text-text-main dark:text-white capitalize">{{ t(`ranks.${currentRank.title.toLowerCase()}`, currentRank.title) }}</span>
-              <span class="text-sm text-text-muted dark:text-slate-400">{{ rankProgress }}%</span>
-            </div>
-            <div class="h-2 rounded-full bg-slate-200 dark:bg-slate-700 overflow-hidden">
-              <div class="h-full rounded-full bg-primary transition-all" :style="{ width: `${rankProgress}%` }" />
-            </div>
-          </div>
+    <!-- Stats -->
+    <dl class="mb-8 grid grid-cols-3 overflow-hidden rounded-[14px] border border-hairline bg-surface">
+      <div
+        v-for="(stat, i) in stats"
+        :key="stat.id"
+        class="flex min-w-0 flex-col px-2 py-3 text-center"
+        :class="[i % 3 !== 0 ? 'border-l border-hairline' : '', i >= 3 ? 'border-t border-hairline' : '']"
+      >
+        <dt class="order-2 text-meta text-ink-muted">{{ stat.label }}</dt>
+        <dd class="order-1 text-title font-medium text-ink tabular-nums">{{ stat.value }}</dd>
+      </div>
+    </dl>
 
-          <!-- Stats Grid -->
-          <div class="grid grid-cols-3 gap-2 sm:gap-3 mb-6">
-            <div
-              v-for="stat in stats"
-              :key="stat.icon"
-              class="px-1.5 py-3 sm:p-3 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-center"
-            >
-              <span class="material-symbols-outlined text-2xl" :class="stat.color">{{ stat.icon }}</span>
-              <p class="text-lg font-bold text-text-main dark:text-white mt-1">{{ stat.value }}</p>
-              <p class="text-[11px] sm:text-xs leading-tight text-text-muted dark:text-slate-400 [overflow-wrap:normal]">{{ stat.label }}</p>
-            </div>
-          </div>
-
-          <!-- 30-Day Activity -->
-          <div class="mb-4">
-            <div class="flex items-center justify-between mb-3">
-              <h3 class="text-sm font-semibold text-text-muted dark:text-slate-400 uppercase tracking-wider">{{ t('analytics.activity30') }}</h3>
-              <div v-if="hasAnyActivity" class="flex items-center gap-1 text-[10px] text-text-muted dark:text-slate-500">
-                <span>{{ t('analytics.less') }}</span>
-                <span class="w-2.5 h-2.5 rounded-sm bg-slate-100 dark:bg-slate-800"></span>
-                <span class="w-2.5 h-2.5 rounded-sm bg-green-200 dark:bg-green-900"></span>
-                <span class="w-2.5 h-2.5 rounded-sm bg-green-400 dark:bg-green-600"></span>
-                <span class="w-2.5 h-2.5 rounded-sm bg-green-500 dark:bg-green-400"></span>
-                <span>{{ t('analytics.more') }}</span>
-              </div>
-            </div>
-            <div v-if="!hasAnyActivity" class="p-5 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-dashed border-slate-200 dark:border-slate-700 text-center">
-              <span class="material-symbols-outlined text-2xl text-slate-300 dark:text-slate-600 mb-1 block">timeline</span>
-              <p class="text-xs text-text-muted dark:text-slate-400">
-                {{ t('analytics.heatmapEmpty') }}
-              </p>
-            </div>
-            <div v-else class="grid grid-cols-10 gap-1">
-              <div
-                v-for="day in heatmapData"
-                :key="day.date"
-                class="aspect-square rounded-sm transition-colors"
-                :class="intensityClass(day.level)"
-                :title="t('analytics.dayActivity', { date: day.date, count: day.total }, day.total)"
-              />
-            </div>
-          </div>
-
-          <!-- Characters Interacted -->
-          <div v-if="Object.keys(progress.characterStats || {}).length > 0">
-            <h3 class="text-sm font-semibold text-text-muted dark:text-slate-400 uppercase tracking-wider mb-3">{{ t('analytics.characterInteractions') }}</h3>
-            <div class="space-y-2">
-              <div
-                v-for="(charStats, charId) in progress.characterStats"
-                :key="charId"
-                class="flex items-center justify-between p-3 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700"
-              >
-                <span class="font-medium text-text-main dark:text-white capitalize">{{ charId }}</span>
-                <span class="text-sm text-text-muted dark:text-slate-400">{{ charStats.messages }} messages</span>
-              </div>
-            </div>
-          </div>
+    <!-- 30-Day Activity -->
+    <section class="mb-8">
+      <div class="mb-3 flex items-center justify-between gap-3">
+        <h3 class="text-caption font-medium text-ink-secondary">{{ t('analytics.activity30') }}</h3>
+        <div v-if="hasAnyActivity" class="flex items-center gap-1 text-meta text-ink-muted" aria-hidden="true">
+          <span>{{ t('analytics.less') }}</span>
+          <span class="size-2.5 rounded-[2px] bg-surface-raised"></span>
+          <span class="size-2.5 rounded-[2px] bg-accent/30"></span>
+          <span class="size-2.5 rounded-[2px] bg-accent/60"></span>
+          <span class="size-2.5 rounded-[2px] bg-accent"></span>
+          <span>{{ t('analytics.more') }}</span>
         </div>
       </div>
-    </Transition>
-  </Teleport>
-</template>
+      <CmStateBlock v-if="!hasAnyActivity" icon="timeline" :title="t('analytics.heatmapEmptyTitle')" :body="t('analytics.heatmapEmpty')" />
+      <div v-else class="grid grid-cols-10 gap-1">
+        <div
+          v-for="day in heatmapData"
+          :key="day.date"
+          class="aspect-square rounded-[2px]"
+          :class="intensityClass(day.level)"
+          :title="t('analytics.dayActivity', { date: day.date, count: day.total }, day.total)"
+          :aria-label="t('analytics.dayActivity', { date: day.date, count: day.total }, day.total)"
+          role="img"
+        />
+      </div>
+    </section>
 
-<style scoped>
-.slide-up-enter-active,
-.slide-up-leave-active {
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
-.slide-up-enter-from,
-.slide-up-leave-to {
-  transform: translateY(100%);
-  opacity: 0;
-}
-</style>
+    <!-- Characters Interacted -->
+    <section v-if="Object.keys(progress.characterStats || {}).length > 0">
+      <h3 class="mb-2 text-caption font-medium text-ink-secondary">{{ t('analytics.characterInteractions') }}</h3>
+      <ul class="divide-y divide-hairline overflow-hidden rounded-[14px] border border-hairline bg-surface">
+        <li
+          v-for="(charStats, charId) in progress.characterStats"
+          :key="charId"
+          class="flex min-h-14 items-center gap-3 px-4 py-2"
+        >
+          <CmAvatar :name="characterName(charId)" :size="32" />
+          <span class="min-w-0 flex-1 text-body text-ink">{{ characterName(charId) }}</span>
+          <span class="shrink-0 text-meta text-ink-muted tabular-nums">{{ t('analytics.messagesCount', { count: charStats.messages }, charStats.messages) }}</span>
+        </li>
+      </ul>
+    </section>
+  </CmBottomSheet>
+</template>

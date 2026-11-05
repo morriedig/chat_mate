@@ -1,10 +1,10 @@
 <script setup>
-import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import PwaUpdatePrompt from './components/PwaUpdatePrompt.vue'
 import { useOnlineStatus } from './composables/useOnlineStatus'
 
+const { t } = useI18n()
 const { isOnline } = useOnlineStatus()
-const router = useRouter()
 </script>
 
 <template>
@@ -13,12 +13,30 @@ const router = useRouter()
   </router-view>
 
   <!-- Offline Banner -->
-  <Transition name="slide-down">
-    <div v-if="!isOnline" class="fixed top-0 left-0 right-0 z-[200] bg-amber-500 text-white text-center text-sm py-2 px-4 shadow-md safe-area-top">
-      <span class="material-symbols-outlined text-sm align-middle mr-1">wifi_off</span>
-      You're offline. Some features may be limited.
+  <Transition name="offline-banner">
+    <div
+      v-if="!isOnline"
+      role="status"
+      class="safe-area-top fixed left-0 right-0 top-0 z-[200] border-b border-warning/25 bg-warning-soft"
+    >
+      <p class="flex min-h-11 items-center justify-center gap-2 px-4 py-2 text-center text-caption text-ink">
+        <span class="material-symbols-outlined !text-[18px] shrink-0 text-warning" aria-hidden="true">wifi_off</span>
+        {{ t('app.offline') }}
+      </p>
     </div>
   </Transition>
 
   <PwaUpdatePrompt />
 </template>
+
+<style scoped>
+.offline-banner-enter-active,
+.offline-banner-leave-active {
+  transition: opacity var(--motion-sheet) var(--ease-cm), transform var(--motion-sheet) var(--ease-cm);
+}
+.offline-banner-enter-from,
+.offline-banner-leave-to {
+  opacity: 0;
+  transform: translateY(-12px);
+}
+</style>

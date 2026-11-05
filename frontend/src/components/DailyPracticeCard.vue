@@ -2,10 +2,11 @@
 import { computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useDailyPractice } from '../composables/useDailyPractice'
+import CmChip from './ui/CmChip.vue'
 
 const { t } = useI18n()
 const emit = defineEmits(['open'])
-const { level, todayPatterns, todayWords, doneCount, totalCount, isDoneToday, ensureTodayPlan } = useDailyPractice()
+const { todayPatterns, todayWords, doneCount, totalCount, isDoneToday, ensureTodayPlan } = useDailyPractice()
 // Mistake, saved-word and listening cards on top of the patterns and words
 const extraCount = computed(() => totalCount.value - todayPatterns.value.length - todayWords.value.length)
 const subtitle = computed(() => {
@@ -19,39 +20,32 @@ onMounted(ensureTodayPlan)
 </script>
 
 <template>
-  <!-- div[role=button] (not <button>) so the card can hold block content -->
+  <!-- div[role=button] (not <button>) so the card can hold block content.
+       Step 1 is the current step until done: accent-soft fill + margin rule. -->
   <div
     role="button"
     tabindex="0"
     @click="emit('open')"
     @keydown.enter.prevent="emit('open')"
     @keydown.space.prevent="emit('open')"
-    class="cursor-pointer text-left p-4 rounded-2xl border-2 transition-all hover:scale-[1.01] active:scale-[0.99]"
-    :class="isDoneToday
-      ? 'border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/20'
-      : 'border-primary bg-gradient-to-br from-primary/15 to-amber-50 dark:from-primary/25 dark:to-amber-900/10'"
+    class="relative min-h-16 cursor-pointer rounded-[14px] border p-4 text-left shadow-[var(--cm-shadow-small)]"
+    :class="isDoneToday ? 'border-hairline bg-surface' : 'border-accent/30 bg-accent-soft pl-[18px]'"
   >
-    <div class="flex items-start gap-3">
+    <span v-if="!isDoneToday" class="absolute left-0 top-3.5 h-9 w-[3px] rounded-r-[3px] bg-accent" aria-hidden="true"></span>
+    <div class="flex items-start gap-2.5">
       <span
-        class="material-symbols-outlined text-2xl shrink-0"
-        :class="isDoneToday ? 'text-green-500' : 'text-primary'"
-      >{{ isDoneToday ? 'check_circle' : 'school' }}</span>
-      <div class="flex-1 min-w-0">
-        <div class="flex items-center justify-between gap-2">
-          <h3 class="font-bold text-text-main dark:text-white">{{ t('dailyPractice.cardTitle') }}</h3>
-          <span class="shrink-0 text-xs font-semibold px-2 py-0.5 rounded-full bg-primary/15 text-sky-700 dark:text-primary">
-            {{ t(`levels.${level}.name`) }} · {{ doneCount }}/{{ totalCount }}
-          </span>
+        class="material-symbols-outlined shrink-0"
+        :class="isDoneToday ? 'text-success' : 'text-accent'"
+        aria-hidden="true"
+      >{{ isDoneToday ? 'task_alt' : 'school' }}</span>
+      <div class="min-w-0 flex-1">
+        <div class="flex items-start justify-between gap-2">
+          <h3 class="text-body font-medium text-ink">{{ t('dailyPractice.cardTitle') }}</h3>
+          <span class="shrink-0 pt-0.5 text-meta text-ink-muted tabular-nums">{{ doneCount }} / {{ totalCount }}</span>
         </div>
-        <p class="text-sm text-text-muted dark:text-slate-400 mt-1">
-          {{ subtitle }}
-        </p>
-        <div v-if="todayPatterns.length" class="flex flex-wrap gap-1.5 mt-2">
-          <span
-            v-for="p in todayPatterns"
-            :key="p.id"
-            class="text-xs font-semibold px-2 py-0.5 rounded-md bg-white/70 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-text-main dark:text-slate-200 break-words max-w-full"
-          >{{ p.pattern }}</span>
+        <p class="mt-0.5 text-caption" :class="isDoneToday ? 'text-success' : 'text-ink-secondary'">{{ subtitle }}</p>
+        <div v-if="todayPatterns.length" class="mt-2 flex flex-wrap gap-1.5">
+          <CmChip v-for="p in todayPatterns" :key="p.id" class="!bg-surface">{{ p.pattern }}</CmChip>
         </div>
       </div>
     </div>
