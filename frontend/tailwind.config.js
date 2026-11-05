@@ -17,7 +17,7 @@ export default {
         "text-muted": "#4c809a",
       },
       fontFamily: {
-        "display": ["Inter", "sans-serif"]
+        "display": ["Figtree", "PingFang TC", "sans-serif"]
       },
       borderRadius: {
         "DEFAULT": "0.25rem",

@@ -1,3 +1,4 @@
+import { watch } from 'vue'
 import { createI18n } from 'vue-i18n'
 import en from './locales/en.json'
 import ja from './locales/ja.json'
@@ -14,5 +15,13 @@ const i18n = createI18n({
   fallbackLocale: 'en',
   messages: { en, ja, zh }
 })
+
+// <html lang> drives the CJK type rules in style.css
+const HTML_LANG = { zh: 'zh-TW', ja: 'ja', en: 'en' }
+if (typeof document !== 'undefined') {
+  watch(i18n.global.locale, (loc) => {
+    document.documentElement.lang = HTML_LANG[loc] || 'en'
+  }, { immediate: true })
+}
 
 export default i18n
