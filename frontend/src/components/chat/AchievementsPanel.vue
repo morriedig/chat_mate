@@ -3,6 +3,11 @@ import { computed } from 'vue'
 import { useUserProgress } from '../../composables/useUserProgress'
 import AchievementBadge from './AchievementBadge.vue'
 
+const props = defineProps({
+  // Achievement ids unlocked since the user last looked; shown with a quiet label
+  newIds: { type: Array, default: () => [] },
+})
+
 const { unlockedAchievements, ACHIEVEMENTS, progress } = useUserProgress()
 
 const categories = ['first_steps', 'consistency', 'learning', 'mastery']
@@ -63,6 +68,7 @@ function isUnlocked(achievementId) {
           :key="achievement.id"
           :achievement="achievement"
           :is-unlocked="isUnlocked(achievement.id)"
+          :is-new="props.newIds.includes(achievement.id)"
         />
       </div>
     </section>

@@ -954,5 +954,12 @@
     "home": "Home",
     "sequence": "Plan {plan}s → {a}s → {b}s → {c}s",
     "timeLeft": "Time left"
+  },
+  "progressPanel": {
+    "title": "Progress and achievements",
+    "description": "Check in when you like. Everything keeps counting.",
+    "new": "New",
+    "toNext": "{xp} XP to the next rank",
+    "newAria": "Something new"
   }
 }

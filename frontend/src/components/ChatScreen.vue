@@ -16,9 +16,6 @@ import ArticlePanel from './chat/ArticlePanel.vue'
 import TypingIndicator from './chat/TypingIndicator.vue'
 import WordSavePopup from './chat/WordSavePopup.vue'
 import VocabularyBankPanel from './chat/VocabularyBankPanel.vue'
-import LevelUpModal from './chat/LevelUpModal.vue'
-import StreakMilestoneModal from './chat/StreakMilestoneModal.vue'
-import AchievementUnlockModal from './chat/AchievementUnlockModal.vue'
 import DailyPromptCard from './chat/DailyPromptCard.vue'
 import CharacterMemoryPanel from './chat/CharacterMemoryPanel.vue'
 import ConnectorHintStrip from './chat/ConnectorHintStrip.vue'
@@ -27,7 +24,7 @@ import { useOpinionChat, getHintBatch, buildOpinionSummary } from '../composable
 import { useMotherTongue } from '../composables/useMotherTongue'
 import { detectConnectors } from '../utils/connectorDetect'
 import ConnectorMissionBar from './chat/ConnectorMissionBar.vue'
-import AchievementsPanel from './chat/AchievementsPanel.vue'
+import ProgressPanel from './ProgressPanel.vue'
 import CmAvatar from './ui/CmAvatar.vue'
 import CmBottomSheet from './ui/CmBottomSheet.vue'
 import { MISSION_TYPE, getUsedTargetIds } from '../composables/useConnectorMission'
@@ -778,14 +775,8 @@ function handleBack() {
       </div>
     </Teleport>
 
-    <!-- Level Up Modal -->
-    <LevelUpModal />
-
-    <!-- Streak Milestone Modal -->
-    <StreakMilestoneModal />
-
-    <!-- Achievement Unlock Modal -->
-    <AchievementUnlockModal />
+    <!-- Level-up, streak-milestone and achievement modals no longer open on their own:
+         progress keeps counting and shows up quietly in 進度與成就 -->
 
     <!-- Word save: bottom sheet -->
     <WordSavePopup
@@ -802,16 +793,8 @@ function handleBack() {
       @close="showVocabBank = false"
     />
 
-    <!-- Achievements (moved out of the chat header into the overflow menu) -->
-    <CmBottomSheet
-      v-if="showAchievements"
-      :title="t('chat.achievements')"
-      :description="t('chat.achievementsDescription')"
-      :close-label="t('chat.close')"
-      @close="showAchievements = false"
-    >
-      <AchievementsPanel class="-mx-5 -mt-4" />
-    </CmBottomSheet>
+    <!-- Progress and achievements, opened from the overflow menu only -->
+    <ProgressPanel v-if="showAchievements" @close="showAchievements = false" />
 
     <!-- Opinion Chat Summary -->
     <OpinionSummaryPanel
