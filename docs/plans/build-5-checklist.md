@@ -4,7 +4,7 @@
 
 - [x] 1. 完整備份／還原（白名單＋版本號、iOS 分享到檔案、還原前預覽、失敗 rollback；清除紀錄也要清 SRS）
 - [ ] 2. 核心 3 分鐘＋明日重說（daily practice v2、speaking queue、chat-summary 加 repeatTomorrow、markPracticeDay）
-- [ ] 3. 「我卡住了」救援鍵（ChatInput＋語音列、`speech-rescue` 後端、rescue stats）
+- [x] 3. 「我卡住了」救援鍵（ChatInput＋語音列、`speech-rescue` 後端、rescue stats）
 - [x] 6. 弱化遊戲化（XP／等級／成就／每週任務／分享卡收進「更多 → 進度與成就」，不跳全螢幕慶祝）
 - [ ] 合併四個分支、翻譯檔衝突
 - [ ] 全部測試、build
