@@ -284,6 +284,11 @@ POST /chat-summary   (GAS: action 'chat-summary'; needs ANTHROPIC_API_KEY)
   Body: { messages: [{ role: 'user'|'assistant', content }], patterns: [{ id, pattern, match }], level, nativeLanguage }
   Returns: { summary: { points: [{ original, hint, corrected, explanation, type }], usedPatternIds, encouragement } }
 
+POST /speech-rescue   (GAS: action 'speech-rescue'; needs ANTHROPIC_API_KEY; Haiku, English chats only)
+  Body: { mode: 'starter'|'intent'|'frame', intent, messages (last 8, ≤4000 chars), taskContext: { title, goal }, targetPatterns (≤3), level, language, nativeLanguage }
+  Returns: { rescue: { mode, pieces, frame } }: starter = 1 piece, intent = 2-3 pieces (≤5 words each, no ending punctuation), frame = text with a [slot]
+  Output breaking those rules is never returned ({ success: false, isInvalidOutput: true }); the app falls back locally
+
 Error types: article, tense, third-person-s, plural, connector, word-choice, other
   (diary corrections[].type, feedback correctionTypes[], sentence-check errorType, chat-summary points[].type)
 nativeLanguage 'zh' adds Mandarin-speaker checks (articles, tense, -s, plurals, connectors) to every feedback prompt.
@@ -337,6 +342,7 @@ All user progress stored in localStorage:
 - `chatmate_mistakes` - Mistakes from chat feedback, sentence checks, diaries and chat summaries; reviewed in daily practice as `mistake:<id>` (vocab-bank words as `bank:<id>`)
 - `chatmate_retell` - Say-it-three-times results (topic, per-round words and WPM)
 - `chatmate_voice_pause_ms` - Silence before a spoken answer is sent (1500/2500/4000, default 2500)
+- `chatmate_rescue_stats` - "I'm stuck" usage only: counts per mode and the last 30 events ({ at, mode, sessionType }); no intent text or hint content
 
 ### Composable Patterns
 - **Singleton state**: `useNavState` uses module-level refs shared across components

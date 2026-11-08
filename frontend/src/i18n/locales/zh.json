@@ -906,6 +906,45 @@
     "hint": "提示",
     "suggested": "建議寫法"
   },
+  "rescue": {
+    "button": "我卡住了",
+    "sheetTitle": "卡住了嗎",
+    "sheetDescription": "選一種提示，句子還是由你自己說完。",
+    "modes": {
+      "starter": "給我一個開頭",
+      "intent": "我用中文說意思",
+      "frame": "給我句型骨架"
+    },
+    "modeHints": {
+      "starter": "兩三個字幫你起頭",
+      "intent": "給你幾個關鍵片段，自己組成句子",
+      "frame": "留空格讓你填自己的內容"
+    },
+    "intentDescription": "用中文打或說出你想表達的意思。",
+    "intentLabel": "你想說什麼？",
+    "intentPlaceholder": "例如：我明天不能開會，因為要看醫生",
+    "intentSubmit": "給我片段",
+    "loading": "想一下…",
+    "result": {
+      "starter": "開頭",
+      "intent": "關鍵片段",
+      "frame": "句型骨架"
+    },
+    "finish": {
+      "starter": "接著用你自己的話說完。",
+      "intent": "把這些片段組成你自己的句子。",
+      "frame": "把括號換成你自己的內容。"
+    },
+    "fallback": {
+      "offline": "現在離線，先用這個常用的。",
+      "limit": "今天的 AI 用量用完了，先用這個常用的。",
+      "busy": "提示暫時拿不到，先用這個常用的。"
+    },
+    "intentFailed": "這次想不出片段，換個說法再試一次。",
+    "intentOffline": "現在離線，連上網路再試一次。",
+    "tryAgain": "換個說法",
+    "closeHint": "關閉提示"
+  },
   "voiceSettings": {
     "title": "語音",
     "pauseLabel": "說完停頓多久才送出",

@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n'
 import { playTTS, stopTTS, isTTSAvailable } from '../../utils/tts'
 import { listenOnce, stopListening, extendListening, isSTTAvailable } from '../../utils/stt'
 import { useVoiceSettings } from '../../composables/useVoiceSettings'
+import SpeechRescue from './SpeechRescue.vue'
 
 const { t } = useI18n()
 const { pauseMs, setPauseMs, PAUSE_CHOICES } = useVoiceSettings()
@@ -30,6 +31,11 @@ const props = defineProps({
   friendName: {
     type: String,
     default: ''
+  },
+  // { messages, task, patterns, level, language, nativeLanguage, sessionType }; null hides "I'm stuck"
+  rescueContext: {
+    type: Object,
+    default: null
   }
 })
 
@@ -44,6 +50,9 @@ const canListen = isSTTAvailable()
 const canSpeak = isTTSAvailable()
 let stopped = false
 const extended = ref(false)
+const rescueRef = ref(null)
+// While the rescue sheet is open, nothing heard is sent; the user answers with the mic afterwards
+let pausedForRescue = false
 
 // "I'm still thinking": hold the turn open a little longer
 function stillThinking() {
@@ -80,6 +89,11 @@ async function listen() {
   try {
     const text = await listenOnce({ language: props.language, onInterim: s => { heard.value = s } })
     if (stopped) return
+    if (pausedForRescue) {
+      heard.value = ''
+      status.value = 'idle'
+      return
+    }
     if (text) {
       heard.value = text
       status.value = 'thinking'
@@ -97,7 +111,7 @@ async function listen() {
 // One turn: the friend speaks, then it's the user's turn to answer
 async function friendTurn() {
   await speak(props.lastReply)
-  if (!stopped) await listen()
+  if (!stopped && !pausedForRescue) await listen()
 }
 
 // First tap also unlocks audio playback on iOS
@@ -114,6 +128,20 @@ function handleMic() {
   } else if (status.value !== 'thinking') {
     listen()
   }
+}
+
+// "I'm stuck": stop talking and listening, then open the hint sheet
+function openRescue() {
+  pausedForRescue = true
+  stopTTS()
+  stopListening()
+  if (status.value !== 'thinking') status.value = 'idle'
+  notice.value = ''
+  rescueRef.value?.open()
+}
+
+function onRescueClose() {
+  pausedForRescue = false
 }
 
 function replay() {
@@ -146,6 +174,13 @@ onBeforeUnmount(() => {
 <template>
   <div class="voice-bar z-10 shrink-0 border-t border-hairline bg-surface px-4 pt-4 pb-[max(12px,env(safe-area-inset-bottom))] sm:px-6">
     <div class="mx-auto flex max-w-md flex-col items-center gap-3">
+      <SpeechRescue
+        v-if="rescueContext"
+        ref="rescueRef"
+        class="w-full"
+        :context="rescueContext"
+        @close="onRescueClose"
+      />
       <!-- Status sentence is the hero; the live transcript replaces it while you talk -->
       <p
         class="voice-status flex min-h-7 max-w-full items-center justify-center gap-2 break-words text-center"
@@ -205,13 +240,28 @@ onBeforeUnmount(() => {
         </button>
       </div>
 
-      <button
-        v-if="status === 'listening'"
-        type="button"
-        @click="stillThinking"
-        class="still-thinking min-h-11 rounded-[10px] border px-4 text-body font-medium"
-        :class="extended ? 'border-accent/30 bg-accent-soft text-accent' : 'border-hairline bg-surface-raised text-ink'"
-      >{{ extended ? t('voiceChat.takeYourTime') : t('voiceChat.stillThinking') }}</button>
+      <div
+        v-if="status === 'listening' || (rescueContext && status !== 'ready' && status !== 'thinking')"
+        class="flex w-full flex-wrap items-center justify-center gap-2"
+      >
+        <button
+          v-if="status === 'listening'"
+          type="button"
+          @click="stillThinking"
+          class="still-thinking min-h-11 rounded-[10px] border px-4 text-body font-medium"
+          :class="extended ? 'border-accent/30 bg-accent-soft text-accent' : 'border-hairline bg-surface-raised text-ink'"
+        >{{ extended ? t('voiceChat.takeYourTime') : t('voiceChat.stillThinking') }}</button>
+        <button
+          v-if="rescueContext && status !== 'ready' && status !== 'thinking'"
+          type="button"
+          @click="openRescue"
+          :disabled="isLoading"
+          class="rescue-trigger inline-flex min-h-11 items-center gap-1.5 rounded-[10px] border border-hairline bg-surface-raised px-4 text-body font-medium text-ink disabled:opacity-55"
+        >
+          <span class="material-symbols-outlined !text-[18px] text-ink-secondary" aria-hidden="true">support</span>
+          {{ t('rescue.button') }}
+        </button>
+      </div>
 
       <!-- One metadata row: pause length · slower · back to typing -->
       <div class="flex w-full flex-wrap items-center justify-center text-meta text-ink-muted">

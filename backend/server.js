@@ -1482,6 +1482,222 @@ function buildSentenceCheckPrompt(sentence, pattern, meaning, task, level, nativ
     `Sentence: "${sentence}"`;
 }
 
+// === SPEECH RESCUE ("I'm stuck") ===
+// Gives the learner a nudge, never the answer: a 2-5 word opener, 2-3 short pieces for what they mean,
+// or a frame with blanks. The output is checked in code as well as by the schema, and anything that
+// breaks the rules is dropped (the app then shows its own fallback).
+var SPEECH_RESCUE_MODES = ['starter', 'intent', 'frame'];
+var SPEECH_RESCUE_MAX_MESSAGES = 8;
+var SPEECH_RESCUE_MAX_CHARS = 4000;
+var SPEECH_RESCUE_MAX_INTENT = 300;
+var SPEECH_RESCUE_MAX_PIECE_WORDS = 5;
+var SPEECH_RESCUE_MAX_PIECE_CHARS = 60;
+var SPEECH_RESCUE_MAX_FRAME_CHARS = 100;
+var SPEECH_RESCUE_MAX_FRAME_WORDS = 14;
+
+var SPEECH_RESCUE_SCHEMA = {
+  type: 'object',
+  properties: {
+    pieces: {
+      type: 'array',
+      items: { type: 'string' },
+      description: 'starter: exactly one unfinished opener (2-5 words). intent: 2-3 separate fragments (max 5 words each). frame: empty.'
+    },
+    frame: {
+      type: 'string',
+      description: 'frame only: a sentence skeleton with at least one blank in square brackets, e.g. "I\'d say [your choice], because [your reason]". Empty for the other modes.'
+    }
+  },
+  required: ['pieces', 'frame']
+};
+
+// Returns an error message, or '' when the speech-rescue request body is valid
+function validateSpeechRescueInput(data) {
+  if (!data || SPEECH_RESCUE_MODES.indexOf(data.mode) === -1) return 'Invalid mode';
+  var intent = data.intent === undefined ? '' : data.intent;
+  if (typeof intent !== 'string' || intent.length > SPEECH_RESCUE_MAX_INTENT) return 'Invalid intent';
+  if (data.mode === 'intent' && !intent.trim()) return 'Intent is required';
+  var messages = data.messages === undefined ? [] : data.messages;
+  if (!Array.isArray(messages) || messages.length > SPEECH_RESCUE_MAX_MESSAGES) return 'Invalid messages';
+  var total = 0;
+  for (var i = 0; i < messages.length; i++) {
+    var msg = messages[i];
+    if (!msg || (msg.role !== 'user' && msg.role !== 'assistant') || typeof msg.content !== 'string') return 'Invalid message';
+    total += msg.content.length;
+  }
+  if (total > SPEECH_RESCUE_MAX_CHARS) return 'Conversation is too long';
+  var task = data.taskContext;
+  if (task !== undefined && task !== null) {
+    if (typeof task !== 'object') return 'Invalid task';
+    if ((task.title !== undefined && (typeof task.title !== 'string' || task.title.length > 300)) ||
+        (task.goal !== undefined && (typeof task.goal !== 'string' || task.goal.length > 300))) return 'Invalid task';
+  }
+  var patterns = data.targetPatterns === undefined ? [] : data.targetPatterns;
+  if (!Array.isArray(patterns) || patterns.length > 3) return 'Invalid patterns';
+  for (var j = 0; j < patterns.length; j++) {
+    var p = patterns[j];
+    if (!p || typeof p.pattern !== 'string' || p.pattern.length > 200) return 'Invalid pattern';
+    if (p.id !== undefined && (typeof p.id !== 'string' || p.id.length > 100)) return 'Invalid pattern';
+    if (p.meaning !== undefined && (typeof p.meaning !== 'string' || p.meaning.length > 200)) return 'Invalid pattern';
+  }
+  if (VALID_LEVELS.indexOf(data.level || 'intermediate') === -1) return 'Invalid level';
+  // The rules (word counts, punctuation) are written for English
+  if ((data.language || 'en') !== 'en') return 'Invalid language';
+  if (VALID_LANGUAGES.indexOf(data.nativeLanguage || 'zh') === -1) return 'Invalid native language';
+  return '';
+}
+
+function buildSpeechRescuePrompt(data) {
+  var level = data.level || 'intermediate';
+  var levelName = level === 'beginner' ? 'A1-A2' : level === 'advanced' ? 'C1' : 'B1-B2';
+  var messages = data.messages || [];
+  var transcript = messages.length === 0 ? '(the chat has just started)' : messages.map(function(m) {
+    return (m.role === 'user' ? 'Learner: ' : 'Friend: ') + m.content;
+  }).join('\n');
+  var task = data.taskContext || {};
+  var taskText = task.title || task.goal
+    ? 'Their task in this chat: ' + [task.title, task.goal].filter(Boolean).join(' - ') + '\n'
+    : '';
+  var patterns = data.targetPatterns || [];
+  var patternText = patterns.length === 0 ? '' : 'Target patterns they are practicing:\n' + patterns.map(function(p) {
+    return '- "' + p.pattern + '"' + (p.meaning ? ' (' + p.meaning + ')' : '');
+  }).join('\n') + '\n';
+
+  var rules;
+  if (data.mode === 'starter') {
+    rules = 'Mode: starter. Give exactly ONE opener in "pieces": 2-5 English words that start the learner\'s next reply and fit the chat, ' +
+      'e.g. "I think we should", "The main reason is", "What I mean is". It must stay unfinished: no full claim, no answer, no ending punctuation. "frame" is "".';
+  } else if (data.mode === 'intent') {
+    rules = 'Mode: intent. The learner told you, in their own language, what they want to say: "' + data.intent + '"\n' +
+      'Give 2-3 SEPARATE English fragments in "pieces", max 5 words each: an action or stance fragment, a key noun or adjective phrase, and optionally a connector. ' +
+      'Example: for "I can\'t make the meeting tomorrow because I have to see the doctor" give "can\'t make the meeting", "doctor\'s appointment", "because". ' +
+      'Never translate the whole thing, never order the fragments so they read as a full sentence, no ending punctuation. "frame" is "".';
+  } else {
+    rules = 'Mode: frame. Give one sentence skeleton in "frame" with at least one blank in square brackets, ' +
+      'e.g. "I\'d say [your choice], because [your reason]" or "One downside of [thing] is that [problem]". ' +
+      (patterns.length ? 'Build it from one of the target patterns. ' : '') +
+      'Do not fill the blanks with the learner\'s actual content, no example sentence, no ending punctuation, at most 14 words. "pieces" is [].';
+  }
+
+  return 'You help a ' + levelName + ' English learner who is stuck on what to say next in a casual chat with a friend.\n' +
+    'Your job is a small nudge, never the answer: the learner must still say the whole sentence themselves. ' +
+    'No explanations, no grammar notes, no second sentence.\n' +
+    taskText + patternText + '\n' +
+    rules + '\n\n' +
+    'Chat so far:\n' + transcript;
+}
+
+// Words count by whitespace, so "can't" and "doctor's" are one word each
+function countRescueWords(text) {
+  return text.trim().split(/\s+/).filter(Boolean).length;
+}
+
+// English only, nothing that ends or splits a sentence, no blanks
+function isValidRescuePiece(piece) {
+  if (typeof piece !== 'string') return false;
+  var text = piece.trim();
+  if (!text || text.length > SPEECH_RESCUE_MAX_PIECE_CHARS) return false;
+  if (!/[A-Za-z]/.test(text) || /[^\x20-\x7E’]/.test(text)) return false;
+  if (/[.?!;:\[\]"]/.test(text)) return false;
+  return countRescueWords(text) <= SPEECH_RESCUE_MAX_PIECE_WORDS;
+}
+
+function isValidRescueFrame(frame) {
+  if (typeof frame !== 'string') return false;
+  var text = frame.trim();
+  if (!text || text.length > SPEECH_RESCUE_MAX_FRAME_CHARS) return false;
+  if (/[^\x20-\x7E’]/.test(text)) return false;
+  if (!/\[[^\[\]]{1,30}\]/.test(text)) return false;
+  if ((text.match(/\[/g) || []).length > 3) return false;
+  if (/[.?!]$/.test(text)) return false;
+  return countRescueWords(text) <= SPEECH_RESCUE_MAX_FRAME_WORDS;
+}
+
+// Trailing "..." or a stray full stop is tidied away; anything else that breaks the rules returns null
+function cleanSpeechRescueOutput(mode, output) {
+  if (!output || typeof output !== 'object') return null;
+  var tidy = function(text) {
+    return typeof text === 'string' ? text.replace(/\s+/g, ' ').replace(/(\s*(\.\.\.|…))+$/, '').replace(/^["']|["']$/g, '').trim() : text;
+  };
+  var pieces = Array.isArray(output.pieces) ? output.pieces.map(tidy).filter(function(p) { return p !== ''; }) : [];
+  var frame = tidy(output.frame || '');
+
+  if (mode === 'starter') {
+    if (pieces.length !== 1 || !isValidRescuePiece(pieces[0]) || countRescueWords(pieces[0]) < 2) return null;
+    return { mode: mode, pieces: pieces, frame: '' };
+  }
+  if (mode === 'intent') {
+    if (pieces.length < 2 || pieces.length > 3) return null;
+    for (var i = 0; i < pieces.length; i++) {
+      if (!isValidRescuePiece(pieces[i])) return null;
+    }
+    return { mode: mode, pieces: pieces, frame: '' };
+  }
+  if (mode === 'frame') {
+    if (!isValidRescueFrame(frame)) return null;
+    return { mode: mode, pieces: [], frame: frame };
+  }
+  return null;
+}
+
+var MOCK_SPEECH_RESCUE = {
+  starter: { pieces: ['The main reason is'], frame: '' },
+  intent: { pieces: ['can\'t make the meeting', 'doctor\'s appointment', 'because'], frame: '' },
+  frame: { pieces: [], frame: 'I\'d say [your choice], because [your reason]' }
+};
+
+// "I'm stuck" hints. Needs ANTHROPIC_API_KEY. Uses the chat model (Haiku); counts toward the daily cap.
+// It never writes messages, never extracts memories and never produces a friend reply.
+app.post('/speech-rescue', async (req, res) => {
+  try {
+    const data = req.body || {};
+    const { mode, clientId, origin, authToken } = data;
+
+    const invalid = validateSpeechRescueInput(data);
+    if (invalid) {
+      return res.status(400).json({ success: false, error: invalid });
+    }
+    if (!isAllowedOrigin(origin || '')) {
+      return res.status(403).json({ success: false, error: 'Unauthorized origin' });
+    }
+    if (!SKIP_AUTH && !validateToken(authToken)) {
+      return res.status(401).json({ success: false, error: 'Invalid or expired token.', isTokenError: true });
+    }
+    if (!checkRateLimit(clientId)) {
+      return res.status(429).json({ success: false, error: 'Too many requests.', isRateLimit: true });
+    }
+    if (!checkDailyLimit(clientId)) {
+      return res.status(429).json(DAILY_LIMIT_RESPONSE);
+    }
+    if (MOCK_API) {
+      await new Promise(r => setTimeout(r, 300));
+      return res.json({ success: true, rescue: cleanSpeechRescueOutput(mode, MOCK_SPEECH_RESCUE[mode]) });
+    }
+    if (!anthropic) {
+      return res.status(503).json({ success: false, error: 'Speech rescue is not configured' });
+    }
+
+    const rawText = await generateJson({
+      contents: [{ role: 'user', parts: [{ text: buildSpeechRescuePrompt(data) }] }],
+      generationConfig: { responseSchema: SPEECH_RESCUE_SCHEMA },
+    }, { model: CLAUDE_CHAT_MODEL, effort: 'low' });
+
+    const rescue = cleanSpeechRescueOutput(mode, JSON.parse(rawText));
+    if (!rescue) {
+      return res.status(502).json({ success: false, error: 'The hint did not follow the rules.', isInvalidOutput: true });
+    }
+    res.json({ success: true, rescue });
+  } catch (error) {
+    console.error('Speech rescue error:', error);
+    const isRateLimit = error.message?.includes('quota') || error.message?.includes('rate') || error.message?.includes('429');
+    res.status(isRateLimit ? 429 : 500).json({
+      success: false,
+      error: isRateLimit ? 'Rate limit exceeded.' : 'An internal error occurred.',
+      isRateLimit,
+    });
+  }
+});
+
 // === ERROR TYPES & NATIVE-LANGUAGE RULES ===
 // Every correction is tagged so the app can bring a learner's most common error kinds back for review more often
 var ERROR_TYPES = ['article', 'tense', 'third-person-s', 'plural', 'connector', 'word-choice', 'other'];
