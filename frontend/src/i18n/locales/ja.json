@@ -799,6 +799,45 @@
     "listening": "あなたの番",
     "listenFirst": "まず聞いてから文字を見る"
   },
+  "rescue": {
+    "button": "I'm stuck",
+    "sheetTitle": "Stuck?",
+    "sheetDescription": "Pick a hint. You still say the sentence yourself.",
+    "modes": {
+      "starter": "Give me a start",
+      "intent": "I'll say what I mean",
+      "frame": "Give me a sentence frame"
+    },
+    "modeHints": {
+      "starter": "Two or three words to get going",
+      "intent": "A few key pieces to build your own sentence",
+      "frame": "Blanks for you to fill in"
+    },
+    "intentDescription": "Type or say what you want to express, in your own language.",
+    "intentLabel": "What do you want to say?",
+    "intentPlaceholder": "e.g. I can't make the meeting tomorrow, I have a doctor's appointment",
+    "intentSubmit": "Get pieces",
+    "loading": "Thinking…",
+    "result": {
+      "starter": "A start",
+      "intent": "Key pieces",
+      "frame": "Sentence frame"
+    },
+    "finish": {
+      "starter": "Now finish it in your own words.",
+      "intent": "Put these pieces into your own sentence.",
+      "frame": "Replace the brackets with your own ideas."
+    },
+    "fallback": {
+      "offline": "You're offline, so here's a common one.",
+      "limit": "Today's AI limit is used up, so here's a common one.",
+      "busy": "Couldn't get a hint right now, so here's a common one."
+    },
+    "intentFailed": "Couldn't find pieces this time. Try saying it another way.",
+    "intentOffline": "You're offline. Try again when you're connected.",
+    "tryAgain": "Say it another way",
+    "closeHint": "Close hint"
+  },
   "voiceSettings": {
     "title": "音声",
     "pauseLabel": "話し終えてから送信するまでの間",

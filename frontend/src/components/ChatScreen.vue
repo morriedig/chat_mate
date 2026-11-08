@@ -494,6 +494,29 @@ function handleRetry() {
   getAIResponse(!isAfterUser && messages.value.length === 0)
 }
 
+// "I'm stuck" hints (English chats only): what the input needs to ask for one
+const rescueContext = computed(() => {
+  if (language.value !== 'en' || !level.value) return null
+  let task = null
+  if (isTaskMode.value) task = { title: taskText(mission.value.task, 'en'), goal: '' }
+  else if (isOpinionMode.value) task = { title: 'Share your opinion', goal: opinionTopic.value?.en || '' }
+  else if (isArticleMode.value) task = { title: 'Talk about the article', goal: article.value?.title || '' }
+  else if (scenario.value) task = { title: scenario.value.title || '', goal: scenario.value.goal || '' }
+  return {
+    messages: messages.value,
+    task,
+    patterns: (mission.value?.targets || []).map(tg => ({ id: tg.id, pattern: tg.phrase })),
+    level: level.value.id,
+    language: language.value,
+    nativeLanguage: motherTongue.value,
+    sessionType: isTaskMode.value ? 'pattern-task'
+      : isOpinionMode.value ? 'opinion'
+        : mission.value ? 'mission'
+          : isArticleMode.value ? 'article'
+            : scenario.value ? 'scenario' : 'free',
+  }
+})
+
 // When the vocabulary-hint row is visible, the voice-mode entry sits at its end
 const hintsRowShown = computed(() => !isArticleMode.value && currentHints.value.length > 0)
 
@@ -723,6 +746,7 @@ function handleBack() {
             :is-loading="isLoading"
             :language="language"
             :friend-name="character?.name || ''"
+            :rescue-context="rescueContext"
             @send="handleVoiceSend"
             @exit="voiceMode = false"
           />
@@ -732,6 +756,7 @@ function handleBack() {
             v-model="inputText"
             :disabled="isLoading"
             :language="language"
+            :rescue-context="rescueContext"
             @send="handleSendMessage"
           >
             <template v-if="!hintsRowShown" #top>

@@ -1,6 +1,7 @@
 <script setup>
 import { ref, watch, computed, nextTick, onBeforeUnmount } from 'vue'
 import { useI18n } from 'vue-i18n'
+import SpeechRescue from './SpeechRescue.vue'
 
 const { t } = useI18n()
 
@@ -16,12 +17,18 @@ const props = defineProps({
   language: {
     type: String,
     default: 'en'
+  },
+  // { messages, task, patterns, level, language, nativeLanguage, sessionType }; null hides "I'm stuck"
+  rescueContext: {
+    type: Object,
+    default: null
   }
 })
 
 const emit = defineEmits(['update:modelValue', 'send'])
 
 const inputRef = ref(null)
+const rescueRef = ref(null)
 const localValue = ref(props.modelValue)
 
 watch(() => props.modelValue, (val) => {
@@ -130,7 +137,23 @@ defineExpose({ focus })
 <template>
   <div class="chat-composer z-10 shrink-0 border-t border-hairline bg-surface px-3 pt-3 pb-[max(12px,env(safe-area-inset-bottom))] sm:px-6">
     <div class="mx-auto max-w-4xl">
-      <slot name="top" />
+      <template v-if="rescueContext">
+        <SpeechRescue ref="rescueRef" :context="rescueContext" />
+        <!-- "I'm stuck" on the left; the parent's top row (voice entry) keeps the right -->
+        <div class="-mt-2 mb-1 flex min-w-0 items-center justify-between gap-2 *:my-0">
+          <button
+            type="button"
+            @click="rescueRef?.open()"
+            :disabled="disabled"
+            class="rescue-trigger -ml-2 inline-flex min-h-11 min-w-0 items-center gap-1.5 rounded-[10px] px-2 text-caption font-medium text-ink-secondary active:bg-surface-raised disabled:opacity-55"
+          >
+            <span class="material-symbols-outlined !text-[18px]" aria-hidden="true">support</span>
+            <span class="truncate">{{ t('rescue.button') }}</span>
+          </button>
+          <slot name="top" />
+        </div>
+      </template>
+      <slot v-else name="top" />
       <div class="flex items-end gap-2">
         <textarea
           ref="inputRef"
