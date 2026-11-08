@@ -47,6 +47,10 @@ vi.mock('../../composables/useUserProgress', () => ({
   })
 }))
 
+vi.mock('../../composables/useProgressSeen', () => ({
+  useProgressSeen: () => ({ hasNew: ref(false) })
+}))
+
 // Mock useDailyChallenge
 vi.mock('../../composables/useDailyChallenge', () => ({
   useDailyChallenge: () => ({
@@ -96,10 +100,8 @@ describe('SetupScreen', () => {
         stubs: {
           Teleport: true,
           DailyChallengeCard: true,
-          WeeklyQuestsPanel: true,
           ScenarioSelector: true,
-          ShareCardPanel: true,
-          AnalyticsDashboard: true,
+          ProgressPanel: true,
           HomeHero: true,
           WelcomeOnboarding: true
         }
@@ -389,8 +391,15 @@ describe('SetupScreen', () => {
       const wrapper = createWrapper()
       await wrapper.find('[data-test="tool-placement"]').trigger('click')
       expect(mockPush).toHaveBeenCalledWith('/placement-test')
-      await wrapper.find('[data-test="tool-analytics"]').trigger('click')
-      expect(wrapper.vm.showAnalytics).toBe(true)
+      await wrapper.find('[data-test="tool-progress"]').trigger('click')
+      expect(wrapper.vm.showProgress).toBe(true)
+    })
+
+    it('keeps XP, quests, analytics and share out of the home tools', () => {
+      const wrapper = createWrapper()
+      for (const id of ['quests', 'analytics', 'share']) {
+        expect(wrapper.find(`[data-test="tool-${id}"]`).exists()).toBe(false)
+      }
     })
   })
 

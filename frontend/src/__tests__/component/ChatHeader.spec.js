@@ -145,9 +145,9 @@ describe('ChatHeader', () => {
       expect(wrapper.emitted('show-memories')).toBeTruthy()
     })
 
-    it('opens achievements (moved out of the header)', async () => {
+    it('opens progress and achievements (moved out of the header)', async () => {
       const wrapper = await openMenu()
-      await menuItem(wrapper, 'chat.achievements').trigger('click')
+      await menuItem(wrapper, 'progressPanel.title').trigger('click')
       expect(wrapper.emitted('show-achievements')).toBeTruthy()
     })
 

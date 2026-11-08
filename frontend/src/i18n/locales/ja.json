@@ -847,5 +847,12 @@
     "home": "ホームへ",
     "sequence": "準備 {plan}秒 → {a}秒 → {b}秒 → {c}秒",
     "timeLeft": "残り時間"
+  },
+  "progressPanel": {
+    "title": "Progress and achievements",
+    "description": "Check in when you like. Everything keeps counting.",
+    "new": "New",
+    "toNext": "{xp} XP to the next rank",
+    "newAria": "Something new"
   }
 }

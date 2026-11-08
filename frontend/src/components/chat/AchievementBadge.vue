@@ -6,6 +6,8 @@ import { achievementIcon } from './achievementIcon'
 const props = defineProps({
   achievement: { type: Object, required: true },
   isUnlocked: { type: Boolean, default: false },
+  // Unlocked since the user last opened achievements (quiet label, no modal)
+  isNew: { type: Boolean, default: false },
 })
 
 const { progress } = useUserProgress()
@@ -68,11 +70,14 @@ const progressInfo = computed(() => {
     </div>
 
     <div class="badge-info flex min-w-0 flex-1 flex-col gap-0.5">
-      <span
-        class="badge-title truncate text-caption font-medium"
-        :class="isUnlocked ? 'text-ink' : 'text-ink-secondary'"
-      >
-        {{ $t(`achievements.${achievement.id}.title`) }}
+      <span class="flex min-w-0 items-center gap-2">
+        <span
+          class="badge-title min-w-0 truncate text-caption font-medium"
+          :class="isUnlocked ? 'text-ink' : 'text-ink-secondary'"
+        >
+          {{ $t(`achievements.${achievement.id}.title`) }}
+        </span>
+        <span v-if="isNew && isUnlocked" class="badge-new shrink-0 rounded-[6px] bg-accent-soft px-1.5 text-meta font-medium text-accent">{{ $t('progressPanel.new') }}</span>
       </span>
       <span class="badge-desc line-clamp-2 text-meta text-ink-muted">
         {{ $t(`achievements.${achievement.id}.description`) }}

@@ -157,13 +157,10 @@ describe('ChatScreen', () => {
           TypingIndicator: TypingIndicatorStub,
           VocabularyHints: VocabularyHintsStub,
           ArticlePanel: ArticlePanelStub,
-          LevelUpModal: true,
-          StreakMilestoneModal: true,
-          AchievementUnlockModal: true,
           WordSavePopup: true,
           VocabularyBankPanel: true,
           DailyPromptCard: true,
-          AchievementsPanel: { name: 'AchievementsPanel', template: '<div class="achievements-panel-stub"></div>' },
+          ProgressPanel: { name: 'ProgressPanel', template: '<div class="progress-panel-stub"></div>' },
           Teleport: true
         }
       }
@@ -307,14 +304,14 @@ describe('ChatScreen', () => {
   })
 
   describe('header actions', () => {
-    it('opens achievements from the overflow menu', async () => {
+    it('opens progress and achievements from the overflow menu', async () => {
       const wrapper = createWrapper()
-      expect(wrapper.findComponent({ name: 'AchievementsPanel' }).exists()).toBe(false)
+      expect(wrapper.findComponent({ name: 'ProgressPanel' }).exists()).toBe(false)
 
       wrapper.findComponent(ChatHeaderStub).vm.$emit('show-achievements')
       await wrapper.vm.$nextTick()
 
-      expect(wrapper.findComponent({ name: 'AchievementsPanel' }).exists()).toBe(true)
+      expect(wrapper.findComponent({ name: 'ProgressPanel' }).exists()).toBe(true)
     })
   })
 
@@ -331,20 +328,12 @@ describe('ChatScreen', () => {
     })
   })
 
-  describe('modals', () => {
-    it('should include level up modal', () => {
+  describe('celebration modals', () => {
+    it('does not mount level-up, streak-milestone or achievement modals', () => {
       const wrapper = createWrapper()
-      expect(wrapper.findComponent({ name: 'LevelUpModal' }).exists()).toBe(true)
-    })
-
-    it('should include streak milestone modal', () => {
-      const wrapper = createWrapper()
-      expect(wrapper.findComponent({ name: 'StreakMilestoneModal' }).exists()).toBe(true)
-    })
-
-    it('should include achievement unlock modal', () => {
-      const wrapper = createWrapper()
-      expect(wrapper.findComponent({ name: 'AchievementUnlockModal' }).exists()).toBe(true)
+      expect(wrapper.findComponent({ name: 'LevelUpModal' }).exists()).toBe(false)
+      expect(wrapper.findComponent({ name: 'StreakMilestoneModal' }).exists()).toBe(false)
+      expect(wrapper.findComponent({ name: 'AchievementUnlockModal' }).exists()).toBe(false)
     })
   })
 })

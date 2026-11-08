@@ -11,10 +11,9 @@ import { useNavState } from '../composables/useNavState'
 import { useLastSession } from '../composables/useLastSession'
 import { useOpinionChat } from '../composables/useOpinionChat'
 import DailyChallengeCard from './DailyChallengeCard.vue'
-import WeeklyQuestsPanel from './WeeklyQuestsPanel.vue'
 import ScenarioSelector from './ScenarioSelector.vue'
-import ShareCardPanel from './ShareCardPanel.vue'
-import AnalyticsDashboard from './AnalyticsDashboard.vue'
+import ProgressPanel from './ProgressPanel.vue'
+import { useProgressSeen } from '../composables/useProgressSeen'
 import HomeHero from './HomeHero.vue'
 import DailyOpinionCard from './DailyOpinionCard.vue'
 import DailyPracticeCard from './DailyPracticeCard.vue'
@@ -37,10 +36,10 @@ const { startChallenge } = useDailyChallenge()
 const { setChatState, setLearningState, selectedLevel: navSelectedLevel } = useNavState()
 const { load: loadLastSession, saveChatSession, saveLearningSession } = useLastSession()
 
-const showWeeklyQuests = ref(false)
 const showScenarios = ref(false)
-const showShareCard = ref(false)
-const showAnalytics = ref(false)
+// XP, rank, achievements, quests, daily goal, analytics and share card live in one panel
+const showProgress = ref(false)
+const { hasNew: progressHasNew } = useProgressSeen()
 const showWelcome = ref(false)
 const placementBanner = ref(null)
 
@@ -164,11 +163,9 @@ const chatModeOptions = computed(() => [
   { id: 'article', icon: 'article', name: t('setup.modes.article.name'), desc: t('setup.modes.article.description') },
 ])
 const tools = computed(() => [
-  { id: 'quests', icon: 'assignment', label: t('weeklyQuests.title'), open: () => { showWeeklyQuests.value = true } },
+  { id: 'progress', icon: 'insights', label: t('progressPanel.title'), isNew: progressHasNew.value, open: () => { showProgress.value = true } },
   { id: 'scenarios', icon: 'theater_comedy', label: t('scenarios.title'), open: () => { showScenarios.value = true } },
   { id: 'placement', icon: 'quiz', label: t('placementTest.title'), open: () => router.push('/placement-test') },
-  { id: 'analytics', icon: 'analytics', label: t('setup.analytics'), open: () => { showAnalytics.value = true } },
-  { id: 'share', icon: 'share', label: t('shareCard.share'), open: () => { showShareCard.value = true } },
 ])
 
 const canStart = computed(() =>
@@ -538,10 +535,10 @@ function handleStart() {
                 type="button"
                 :data-test="`tool-${tool.id}`"
                 @click="tool.open"
-                class="flex min-h-[52px] w-full items-center gap-3 px-4 text-left active:bg-surface-raised"
+                class="flex min-h-[52px] w-full items-center gap-3 px-4 py-2 text-left active:bg-surface-raised"
               >
                 <span class="material-symbols-outlined shrink-0 text-ink-muted" aria-hidden="true">{{ tool.icon }}</span>
-                <span class="min-w-0 flex-1 text-body text-ink">{{ tool.label }}</span>
+                <span class="min-w-0 flex-1 break-words text-body text-ink">{{ tool.label }} <span v-if="tool.isNew" class="inline-block rounded-[6px] bg-accent-soft px-1.5 align-middle text-meta font-medium text-accent">{{ t('progressPanel.new') }}</span></span>
                 <span class="material-symbols-outlined shrink-0 text-ink-muted" aria-hidden="true">chevron_right</span>
               </button>
             </li>
@@ -561,9 +558,6 @@ function handleStart() {
       </div>
     </div>
 
-    <!-- Weekly Quests Panel -->
-    <WeeklyQuestsPanel v-if="showWeeklyQuests" @close="showWeeklyQuests = false" />
-
     <!-- Scenario Selector -->
     <ScenarioSelector
       v-if="showScenarios"
@@ -572,11 +566,8 @@ function handleStart() {
       @close="showScenarios = false"
     />
 
-    <!-- Share Card Panel -->
-    <ShareCardPanel v-if="showShareCard" @close="showShareCard = false" />
-
-    <!-- Analytics Dashboard -->
-    <AnalyticsDashboard v-if="showAnalytics" @close="showAnalytics = false" />
+    <!-- Progress and achievements (opened on purpose; nothing pops up by itself) -->
+    <ProgressPanel v-if="showProgress" @close="showProgress = false" />
 
     <!-- First-run Welcome -->
     <WelcomeOnboarding

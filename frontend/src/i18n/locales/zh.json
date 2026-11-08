@@ -926,5 +926,12 @@
     "home": "回首頁",
     "sequence": "準備 {plan} 秒 → {a} 秒 → {b} 秒 → {c} 秒",
     "timeLeft": "剩餘時間"
+  },
+  "progressPanel": {
+    "title": "進度與成就",
+    "description": "想看的時候再來看，數字會一直累積。",
+    "new": "新",
+    "toNext": "再 {xp} XP 到下一等級",
+    "newAria": "有新進度"
   }
 }

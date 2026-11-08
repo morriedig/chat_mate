@@ -135,7 +135,7 @@ const rowClass = 'flex min-h-11 w-full items-center gap-3 px-4 text-left active:
           <span class="material-symbols-outlined text-ink-muted" aria-hidden="true">article</span>{{ showArticle ? t('chat.hideArticle') : t('chat.showArticle') }}
         </button>
         <button role="menuitem" type="button" @click="pick(() => emit('show-achievements'))" :class="rowClass">
-          <span class="material-symbols-outlined text-ink-muted" aria-hidden="true">military_tech</span>{{ t('chat.achievements') }}
+          <span class="material-symbols-outlined text-ink-muted" aria-hidden="true">insights</span>{{ t('progressPanel.title') }}
         </button>
         <button role="menuitem" type="button" @click="pick(toggleDark)" :class="rowClass">
           <span class="material-symbols-outlined text-ink-muted" aria-hidden="true">{{ isDark ? 'light_mode' : 'dark_mode' }}</span>{{ isDark ? t('chat.lightMode') : t('chat.darkMode') }}

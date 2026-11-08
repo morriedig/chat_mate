@@ -345,7 +345,7 @@ Token rules:
 
 - **Hero:** Step 1, “今日練習 / Today’s practice.” Product title is quiet in the header; do not center a large logo above the route.
 - Order stays: header controls → compact progress rail → 今天的路線 / Today’s route (1 practice, 2 task chat, 3 say-it-three-times) → 今日觀點 / Daily opinion → 更多 / More → expanded free chat, mode, language/level, tools, start action.
-- Progress rail is one 56 px row: `今天 0 / 10 分`, `連續 4 天`, `中級`; use dividers, not a gradient hero card. Keep rank/XP accessible under Learning analytics in More.
+- Progress rail is one 56 px row: `連續 4 天`, `中級`; use dividers, not a gradient hero card. Daily goal minutes, rank/XP, achievements, weekly quests, analytics and share card live in More → 進度與成就 (one bottom sheet). Level-up, achievement and streak-milestone modals never open on their own; new items get a quiet `新 / New` label there instead.
 - Path uses a faint vertical hairline through the three square step markers. Step 1 has the margin rule and accent-soft fill. Steps 2–3 are neutral. Pattern chips remain visible on Step 1.
 - More is a single disclosure row. Expanded content uses grouped list sections, not a five-card icon grid. Free chat friend selection uses monogram list rows.
 - Remove: gradient/glow hero and emoji rank/character (`HomeHero.vue:67-70`, `HomeHero.vue:142-153`); gradient path cards and hover scaling (`DailyPracticeCard.vue:29-32`, `TaskChatCard.vue:28-31`); gradient mode cards, emoji avatars/flags, multicolor tool icons, and `transition-all` (`SetupScreen.vue:321-327`, `SetupScreen.vue:345-370`, `SetupScreen.vue:397-399`, `SetupScreen.vue:486-487`, `SetupScreen.vue:556-590`).
