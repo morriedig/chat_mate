@@ -1803,9 +1803,9 @@ function buildChatSummaryPrompt(messages, patterns, level, nativeLanguage) {
     'Judge against their level: skip tiny slips and style preferences, and do not rewrite correct, natural sentences. Prefer mistakes that would confuse a listener or that they repeated.\n' +
     'Write "hint", "explanation" and "encouragement" in ' + nativeName + ', like a friend, not a teacher. The hint must not contain the corrected words.\n' +
     'Set usedPatternIds to the ids of the target patterns the learner really used in their own messages (natural variations count).\n' +
-    'Pick ONE sentence for repeatTomorrow, which the learner will say again tomorrow from a cue. Prefer a sentence whose mistake would confuse a listener, a mistake they repeated, or a sentence that is a useful reusable chunk. ' +
+    'Pick ONE sentence for repeatTomorrow, which the learner will say again tomorrow from a cue. If any learner sentence has a real mistake, you MUST pick one of those: the one whose mistake would most confuse a listener, or a mistake they repeated. Only when every sentence is correct, pick a useful reusable chunk. ' +
     '"original" is the learner\'s exact words. "target" is that same sentence with only the necessary fixes: never write a new or unrelated example. If the learner made no mistakes, pick a natural sentence of theirs worth getting fluent with and set target equal to original. ' +
-    'Write "cue" (what to say, as a situation or meaning) and "hint" in ' + nativeName + '; neither may contain the target sentence or give it away. Set patternId to the target pattern it uses, or "". Set enabled to false only if the learner wrote nothing usable.' +
+    'Write "cue" (what to say, as a situation or meaning) and "hint" in ' + nativeName + '; neither may contain the target sentence or give it away, and the cue must not translate the target pattern phrase word for word (describe the situation and the idea instead). Set patternId to the target pattern it uses, or "". Set enabled to false only if the learner wrote nothing usable.' +
     getNativeLanguageRules(nativeLanguage) + '\n\n' +
     'Target patterns:\n' + patternText + '\n\n' +
     'Chat:\n' + transcript;
