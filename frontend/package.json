@@ -18,7 +18,9 @@
   "dependencies": {
     "@capacitor-community/text-to-speech": "^8.0.2",
     "@capacitor/core": "^8.6.0",
+    "@capacitor/filesystem": "^8.1.5",
     "@capacitor/ios": "^8.6.0",
+    "@capacitor/share": "^8.0.3",
     "@capgo/capacitor-speech-recognition": "^8.4.6",
     "html2canvas": "^1.4.1",
     "js-yaml": "^4.1.1",
