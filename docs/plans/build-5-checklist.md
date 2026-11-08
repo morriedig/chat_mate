@@ -11,6 +11,6 @@
 - [x] 巡檢 320／390 × 淺／深 × 中／英
 - [x] 後端部署（GAS 更新現有部署，@24；真 AI 測過 speech-rescue 三種模式、chat-summary 的 repeatTomorrow）
 - [x] 網站上線（3c3e29b，線上 bundle 確認含新功能）
-- [x] 加 `@capacitor/filesystem`、`@capacitor/share`，cap sync，Build 5 上傳（等 Apple 處理）
+- [x] 加 `@capacitor/filesystem`、`@capacitor/share`，cap sync，Build 5 上 TestFlight（VALID，內部群組自動可下載）
 - [ ] 實機測：備份分享到 iCloud Drive 再還原、核心第 3 步用麥克風、語音模式的「我卡住了」
 - [ ] 多建的後端部署 @20、@22 沒在用（clasp 讀錯 id 時產生），可刪
