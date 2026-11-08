@@ -20,6 +20,7 @@ export const FIXED_KEYS = {
   chatmate_dailyChallenge: { category: 'progress', kind: 'json' },
   chatmate_weeklyQuests: { category: 'progress', kind: 'json' },
   chatmate_placementResult: { category: 'progress', kind: 'json' },
+  chatmate_progress_seen: { category: 'progress', kind: 'json' },
   // practice
   chatmate_srsProgress: { category: 'practice', kind: 'json' },
   chatmate_mistakes: { category: 'practice', kind: 'json' },
