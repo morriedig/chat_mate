@@ -706,7 +706,56 @@
     "levelLabel": "Level",
     "levelChangeTitle": "Change level?",
     "levelChangeBody": "Changing level switches to a different set for today. Your answer to this item won't be saved.",
-    "levelChangeConfirm": "Change level"
+    "levelChangeConfirm": "Change level",
+    "cardCore": "Fix an old mistake, recall a pattern, say one sentence. About 3 minutes",
+    "cardResume": "Pick up at “{step}”",
+    "cardMore": "Practice more: {count} left",
+    "cardAllDone": "Everything for today is done",
+    "core": {
+      "title": "Today’s 3 steps",
+      "progress": "Today’s 3 steps: {done} / 3 done",
+      "stepOf": "Step {n}",
+      "stepDone": "done",
+      "steps": {
+        "error": "Fix an old mistake",
+        "pattern": "Recall a pattern",
+        "speaking": "Say one sentence"
+      },
+      "doneTitle": "Done today",
+      "doneBody": "All three steps are done and today counts toward your streak.",
+      "doneVoice": "You did it by speaking today.",
+      "doneText": "You typed today, so it doesn’t count as speaking.",
+      "more": "Practice more ({count} left)",
+      "stepsShort": {
+        "error": "Fix",
+        "pattern": "Recall",
+        "speaking": "Say"
+      }
+    },
+    "speak": {
+      "labelRepeat": "Say this one again",
+      "labelAgain": "The one that was still hard",
+      "labelPattern": "Say a sentence with today’s pattern",
+      "hintLabel": "Hint",
+      "patternLabel": "Pattern",
+      "speak": "Tap and speak",
+      "listening": "Listening. Pause when you’re done",
+      "stop": "I’m done",
+      "typeInstead": "Type instead",
+      "speakInstead": "Speak instead",
+      "typePlaceholder": "Write one sentence in English",
+      "typeNote": "At least 2 English words. Typing finishes today too, but it doesn’t count as speaking.",
+      "send": "Send",
+      "noSpeech": "Didn’t hear anything. Try again or type instead.",
+      "micFailed": "The microphone isn’t available right now. You can type instead.",
+      "youSaid": "You said",
+      "youWrote": "You wrote",
+      "sayItLike": "You could say",
+      "rateLabel": "How did that feel?",
+      "again": "Still stuck",
+      "gotIt": "I can say it",
+      "againNote": "Pick “Still stuck” and it comes back tomorrow."
+    }
   },
   "voiceChat": {
     "enter": "Voice conversation",
@@ -854,7 +903,8 @@
       "chat": "From a chat",
       "practice": "From a practice sentence",
       "diary": "From your diary",
-      "summary": "From a chat summary"
+      "summary": "From a chat summary",
+      "builtin": "Common mistake"
     },
     "prompt": "Your friend corrected this sentence before. Can you fix it yourself?",
     "yourFix": "Your fix",
@@ -866,7 +916,8 @@
     "remove": "This sentence was fine — don't show it again",
     "youWrote": "You wrote",
     "suggested": "Suggested",
-    "hintLabel": "Hint"
+    "hintLabel": "Hint",
+    "builtinPrompt": "Lots of people say it this way. Can you fix it?"
   },
   "listening": {
     "label": "Listening",
@@ -904,7 +955,13 @@
     "patternsUsedLabel": "patterns used",
     "todayPatterns": "Today’s patterns",
     "hint": "Hint",
-    "suggested": "Suggested sentence"
+    "suggested": "Suggested sentence",
+    "repeatTomorrow": {
+      "title": "Say this again tomorrow",
+      "queued": "Added to tomorrow’s practice",
+      "taken": "Tomorrow already has a sentence: {cue}",
+      "replace": "Use this one instead"
+    }
   },
   "rescue": {
     "button": "I'm stuck",

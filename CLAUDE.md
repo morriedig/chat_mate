@@ -282,7 +282,9 @@ POST /sentence-check   (GAS: action 'sentence-check'; needs ANTHROPIC_API_KEY)
 
 POST /chat-summary   (GAS: action 'chat-summary'; needs ANTHROPIC_API_KEY)
   Body: { messages: [{ role: 'user'|'assistant', content }], patterns: [{ id, pattern, match }], level, nativeLanguage }
-  Returns: { summary: { points: [{ original, hint, corrected, explanation, type }], usedPatternIds, encouragement } }
+  Returns: { summary: { points: [{ original, hint, corrected, explanation, type }], usedPatternIds, encouragement,
+    repeatTomorrow: { enabled, original, target, cue, hint, patternId } } }
+  repeatTomorrow is one of the learner's own sentences (target = minimal fix); the server drops it if it isn't from the learner or the cue/hint gives the target away
 
 POST /speech-rescue   (GAS: action 'speech-rescue'; needs ANTHROPIC_API_KEY; Haiku, English chats only)
   Body: { mode: 'starter'|'intent'|'frame', intent, messages (last 8, ≤4000 chars), taskContext: { title, goal }, targetPatterns (≤3), level, language, nativeLanguage }
@@ -338,7 +340,8 @@ All user progress stored in localStorage:
 - `chatmate_diary_draft` - Auto-saved diary draft
 - `chatmate_diary_pending_feedback` - Offline feedback queue
 - `chatmate_daily_opinion` - Daily opinion drill: per-day answer, connectors used, feedback
-- `chatmate_daily_practice` - Daily practice level and per-day plans (pattern/word ids, done flags); reviews go to `chatmate_srsProgress` as `pattern:<level>:<id>` / `word:<level>:<id>`
+- `chatmate_daily_practice` - Version 2: daily practice level and per-day plans (pattern/word ids, done flags, `core` = today's 3 steps: old mistake, pattern, one sentence to say); reviews go to `chatmate_srsProgress` as `pattern:<level>:<id>` / `word:<level>:<id>`. Finishing the core marks the day (`markPracticeDay('core-practice')`, `activityLog[date].corePractice`)
+- `chatmate_speaking_queue` - Sentences to say again on a later local date (chat-summary `repeatTomorrow`, or a prompt rated 「還會卡」); one pending item per `scheduledFor`
 - `chatmate_mistakes` - Mistakes from chat feedback, sentence checks, diaries and chat summaries; reviewed in daily practice as `mistake:<id>` (vocab-bank words as `bank:<id>`)
 - `chatmate_retell` - Say-it-three-times results (topic, per-round words and WPM)
 - `chatmate_voice_pause_ms` - Silence before a spoken answer is sent (1500/2500/4000, default 2500)

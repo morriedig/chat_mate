@@ -19,6 +19,11 @@ vi.mock('../../composables/useMistakes', () => ({
   useMistakes: () => ({ addMistake })
 }))
 
+const queueRepeatTomorrow = vi.fn(() => ({ status: 'none' }))
+vi.mock('../../composables/useSpeakingQueue', () => ({
+  useSpeakingQueue: () => ({ queueRepeatTomorrow })
+}))
+
 const mission = {
   targets: [
     { id: 'a', phrase: 'If you ask me, …' },
@@ -39,6 +44,8 @@ describe('ChatSummaryPanel', () => {
     failure.value = null
     summarize.mockReset()
     addMistake.mockReset()
+    queueRepeatTomorrow.mockReset()
+    queueRepeatTomorrow.mockReturnValue({ status: 'none' })
   })
 
   it('leads with the used / total metric, counting patterns the AI spotted too', async () => {
@@ -125,5 +132,45 @@ describe('ChatSummaryPanel', () => {
     await wrapper.find('.summary-home').trigger('click')
     expect(wrapper.emitted('close')).toHaveLength(1)
     expect(wrapper.emitted('home')).toHaveLength(1)
+  })
+
+  describe('明天再說這句', () => {
+    const repeat = { enabled: true, original: 'Yesterday I go', target: 'Yesterday I went', cue: '說昨天去了哪', hint: '過去式', patternId: '' }
+
+    it('books the chosen sentence for tomorrow and shows it without the answer', async () => {
+      queueRepeatTomorrow.mockReturnValue({ status: 'queued', item: { cue: repeat.cue } })
+      summarize.mockResolvedValue({ points: [], usedPatternIds: [], repeatTomorrow: repeat })
+      const wrapper = mountPanel({ mission: { ...mission, id: 'task_1' } })
+      await flushPromises()
+
+      expect(queueRepeatTomorrow).toHaveBeenCalledWith(repeat, { sourceId: 'task_1' })
+      const card = wrapper.find('.summary-repeat')
+      expect(card.text()).toContain('Yesterday I go')
+      expect(card.text()).toContain(repeat.cue)
+      expect(card.text()).toContain('taskChat.repeatTomorrow.queued')
+      expect(card.text()).not.toContain('Yesterday I went')
+    })
+
+    it('replaces tomorrow’s sentence only when the learner taps replace', async () => {
+      queueRepeatTomorrow.mockReturnValueOnce({ status: 'taken', item: { cue: '別的句子' } })
+      queueRepeatTomorrow.mockReturnValueOnce({ status: 'queued', item: { cue: repeat.cue } })
+      summarize.mockResolvedValue({ points: [], usedPatternIds: [], repeatTomorrow: repeat })
+      const wrapper = mountPanel({ mission: { ...mission, id: 'task_2' } })
+      await flushPromises()
+
+      expect(queueRepeatTomorrow).toHaveBeenCalledTimes(1)
+      expect(wrapper.find('.summary-repeat').text()).toContain('別的句子')
+      await wrapper.find('.summary-repeat-replace').trigger('click')
+      expect(queueRepeatTomorrow).toHaveBeenLastCalledWith(repeat, { sourceId: 'task_2', replace: true })
+      expect(wrapper.find('.summary-repeat').text()).toContain('taskChat.repeatTomorrow.queued')
+    })
+
+    it('shows nothing when the summary has no sentence to repeat', async () => {
+      queueRepeatTomorrow.mockReturnValue({ status: 'none' })
+      summarize.mockResolvedValue({ points: [], usedPatternIds: [], repeatTomorrow: { ...repeat, enabled: false } })
+      const wrapper = mountPanel()
+      await flushPromises()
+      expect(wrapper.find('.summary-repeat').exists()).toBe(false)
+    })
   })
 })

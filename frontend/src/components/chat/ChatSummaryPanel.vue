@@ -3,6 +3,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useChatSummary } from '../../composables/useChatSummary'
 import { useMistakes } from '../../composables/useMistakes'
+import { useSpeakingQueue } from '../../composables/useSpeakingQueue'
 import CmBottomSheet from '../ui/CmBottomSheet.vue'
 import CmAvatar from '../ui/CmAvatar.vue'
 import CmButton from '../ui/CmButton.vue'
@@ -22,6 +23,7 @@ const emit = defineEmits(['close', 'home'])
 
 const { isLoading, failure, summarize } = useChatSummary()
 const { addMistake } = useMistakes()
+const { queueRepeatTomorrow } = useSpeakingQueue()
 
 const summary = ref(null)
 // Each point shows its hint first; the answer stays hidden until asked for
@@ -45,6 +47,15 @@ async function load() {
   for (const point of result.points || []) {
     addMistake({ ...point, source: 'summary' })
   }
+  repeat.value = queueRepeatTomorrow(result.repeatTomorrow, { sourceId: props.mission.id || '' })
+}
+
+// "明天再說這句": booked for tomorrow, or waiting for the learner to replace tomorrow's sentence
+const repeat = ref({ status: 'none' })
+const repeatSentence = computed(() => (summary.value?.repeatTomorrow?.enabled ? summary.value.repeatTomorrow : null))
+
+function replaceRepeat() {
+  repeat.value = queueRepeatTomorrow(summary.value?.repeatTomorrow, { sourceId: props.mission.id || '', replace: true })
 }
 
 onMounted(load)
@@ -151,6 +162,28 @@ onMounted(load)
             </li>
           </ol>
           <p v-if="summary.points?.length" class="mt-2 text-meta text-ink-muted">{{ t('taskChat.savedForReview') }}</p>
+
+          <!-- 4. One sentence to say again tomorrow (the answer stays hidden until then) -->
+          <div v-if="repeatSentence && repeat.status !== 'none'" class="summary-repeat mt-5 rounded-[14px] border border-hairline bg-surface p-3.5">
+            <h3 class="flex items-center gap-1.5 text-caption font-medium text-ink-secondary">
+              <span class="material-symbols-outlined !text-[18px] text-accent" aria-hidden="true">event_repeat</span>
+              {{ t('taskChat.repeatTomorrow.title') }}
+            </h3>
+            <p class="mt-2 break-words text-body text-ink">“{{ repeatSentence.original }}”</p>
+            <p class="mt-1 break-words text-caption text-ink-secondary">{{ repeatSentence.cue }}</p>
+            <p v-if="repeat.status === 'queued'" class="mt-2 flex items-center gap-1 text-meta text-success" role="status">
+              <span class="material-symbols-outlined !text-[16px]" aria-hidden="true">check</span>{{ t('taskChat.repeatTomorrow.queued') }}
+            </p>
+            <template v-else>
+              <p class="mt-2 break-words text-meta text-ink-muted">{{ t('taskChat.repeatTomorrow.taken', { cue: repeat.item?.cue || '' }) }}</p>
+              <button
+                type="button"
+                @click="replaceRepeat"
+                class="summary-repeat-replace -mx-1 mt-1 inline-flex min-h-11 items-center rounded-[10px] px-1 text-caption font-medium text-accent"
+              >{{ t('taskChat.repeatTomorrow.replace') }}</button>
+            </template>
+          </div>
+
           <p v-if="summary.encouragement" class="mt-4 text-body text-ink-secondary">{{ summary.encouragement }}</p>
         </template>
       </section>
