@@ -56,13 +56,14 @@ describe('useDailyPractice', () => {
 
   it('keeps the same plan for the day and tracks completion', async () => {
     const practice = await load()
-    const first = practice.todayPatterns.value[0].id
+    // The first pattern is the core's; the others count as extra items
+    const extra = practice.todayPatterns.value[2].id
 
-    practice.completeItem(first, { correct: true, confidence: 4 })
+    practice.completeItem(extra, { correct: true, confidence: 4 })
 
     const again = await load()
-    expect(again.todayPatterns.value[0].id).toBe(first)
-    expect(again.isDone(first)).toBe(true)
+    expect(again.todayPatterns.value[2].id).toBe(extra)
+    expect(again.isDone(extra)).toBe(true)
     expect(again.doneCount.value).toBe(1)
   })
 

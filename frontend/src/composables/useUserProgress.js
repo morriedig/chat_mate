@@ -27,7 +27,7 @@ function getDefaultProgress() {
     diaryVocabUsed: 0,
     hasWrittenLongEntry: false,
     lastDiaryDate: null,
-    // activityLog: { "YYYY-MM-DD": { messages: N, xp: N } } — last 90 days trimmed
+    // activityLog: { "YYYY-MM-DD": { messages: N, xp: N, diary: N, corePractice?: 1, coreMode?: 'voice'|'text' } } — last 90 days trimmed
     activityLog: {},
   }
 }
@@ -123,8 +123,29 @@ export function useUserProgress() {
     checkAchievements()
   })
 
-  function onMessageSent() {
+  /**
+   * Count today as a practice day: updates the streak once per local day
+   * (later calls the same day only add to the log). 'core-practice' also
+   * marks activityLog[date].corePractice = 1 and keeps how it was done
+   * (coreMode 'voice' | 'text'; typing is not shown as speaking).
+   */
+  function markPracticeDay(kind = 'core-practice', { mode } = {}) {
     updateStreak()
+    if (kind === 'core-practice') {
+      const key = localDateKey()
+      if (!progress.value.activityLog) progress.value.activityLog = {}
+      const entry = progress.value.activityLog[key] || { messages: 0, xp: 0, diary: 0 }
+      entry.corePractice = 1
+      // A spoken attempt wins over a typed one on the same day
+      if (mode === 'voice' || !entry.coreMode) entry.coreMode = mode === 'voice' ? 'voice' : 'text'
+      progress.value.activityLog[key] = entry
+      trimActivityLog(progress.value.activityLog)
+    }
+    saveProgress()
+  }
+
+  function onMessageSent() {
+    markPracticeDay('message')
     progress.value.messagesSent += 1
     addXP(XP_REWARDS.userMessage, 'userMessage')
     recordActivity(progress.value, 'message', XP_REWARDS.userMessage)
@@ -235,6 +256,7 @@ export function useUserProgress() {
 
     // Actions
     addXP,
+    markPracticeDay,
     onMessageSent,
     onMessageReceived,
     onArticleStarted,

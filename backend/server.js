@@ -1524,9 +1524,22 @@ var CHAT_SUMMARY_SCHEMA = {
       items: { type: 'string' },
       description: 'Ids of the target patterns the learner actually used naturally in their own messages'
     },
-    encouragement: { type: 'string', description: 'One warm sentence in the learner\'s native language about something specific they did well' }
+    encouragement: { type: 'string', description: 'One warm sentence in the learner\'s native language about something specific they did well' },
+    repeatTomorrow: {
+      type: 'object',
+      description: 'One of the learner\'s own sentences for them to say again tomorrow from a cue',
+      properties: {
+        enabled: { type: 'boolean', description: 'false only when no learner sentence is worth repeating' },
+        original: { type: 'string', description: 'The learner\'s exact sentence (or a short excerpt of it)' },
+        target: { type: 'string', description: 'original with only the necessary fixes; identical to original when it had no mistake' },
+        cue: { type: 'string', description: 'In the learner\'s native language: what to say, as a situation or meaning. Must not contain the target words' },
+        hint: { type: 'string', description: 'In the learner\'s native language: one short nudge (e.g. the tense or structure to watch). Must not give away the target' },
+        patternId: { type: 'string', description: 'Id of the target pattern this sentence uses, or empty' }
+      },
+      required: ['enabled', 'original', 'target', 'cue', 'hint', 'patternId']
+    }
   },
-  required: ['points', 'usedPatternIds', 'encouragement']
+  required: ['points', 'usedPatternIds', 'encouragement', 'repeatTomorrow']
 };
 
 var CHAT_SUMMARY_MAX_MESSAGES = 40;
@@ -1573,7 +1586,10 @@ function buildChatSummaryPrompt(messages, patterns, level, nativeLanguage) {
     'They just finished a practice chat. Pick the 1-3 most useful fixes from the LEARNER\'s lines only (never the friend\'s).\n' +
     'Judge against their level: skip tiny slips and style preferences, and do not rewrite correct, natural sentences. Prefer mistakes that would confuse a listener or that they repeated.\n' +
     'Write "hint", "explanation" and "encouragement" in ' + nativeName + ', like a friend, not a teacher. The hint must not contain the corrected words.\n' +
-    'Set usedPatternIds to the ids of the target patterns the learner really used in their own messages (natural variations count).' +
+    'Set usedPatternIds to the ids of the target patterns the learner really used in their own messages (natural variations count).\n' +
+    'Pick ONE sentence for repeatTomorrow, which the learner will say again tomorrow from a cue. Prefer a sentence whose mistake would confuse a listener, a mistake they repeated, or a sentence that is a useful reusable chunk. ' +
+    '"original" is the learner\'s exact words. "target" is that same sentence with only the necessary fixes: never write a new or unrelated example. If the learner made no mistakes, pick a natural sentence of theirs worth getting fluent with and set target equal to original. ' +
+    'Write "cue" (what to say, as a situation or meaning) and "hint" in ' + nativeName + '; neither may contain the target sentence or give it away. Set patternId to the target pattern it uses, or "". Set enabled to false only if the learner wrote nothing usable.' +
     getNativeLanguageRules(nativeLanguage) + '\n\n' +
     'Target patterns:\n' + patternText + '\n\n' +
     'Chat:\n' + transcript;
@@ -1584,8 +1600,36 @@ var MOCK_CHAT_SUMMARY = {
     { original: 'Yesterday I go to the office', hint: '這件事是昨天發生的，動詞要怎麼變？', corrected: 'Yesterday I went to the office', explanation: '說過去的事要用過去式，go 的過去式是 went。', type: 'tense' }
   ],
   usedPatternIds: [],
-  encouragement: '你一直有在延伸自己的想法，聊起來很自然！'
+  encouragement: '你一直有在延伸自己的想法，聊起來很自然！',
+  repeatTomorrow: { enabled: true, original: 'Yesterday I go to the office', target: 'Yesterday I went to the office', cue: '說說你昨天去了辦公室', hint: '注意昨天發生的事', patternId: '' }
 };
+
+var REPEAT_TOMORROW_MAX_CHARS = 300;
+
+function normalizeForCompare(text) {
+  return String(text || '').toLowerCase().replace(/[^a-z0-9' ]+/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+// Keep repeatTomorrow only when it is the learner's own sentence and the cue doesn't give the answer away
+function sanitizeRepeatTomorrow(item, messages, knownIds) {
+  var off = { enabled: false, original: '', target: '', cue: '', hint: '', patternId: '' };
+  if (!item || typeof item !== 'object' || item.enabled !== true) return off;
+  var fields = ['original', 'target', 'cue', 'hint'];
+  for (var i = 0; i < fields.length; i++) {
+    var value = item[fields[i]];
+    if (typeof value !== 'string' || value.length > REPEAT_TOMORROW_MAX_CHARS) return off;
+  }
+  var original = item.original.trim();
+  var target = item.target.trim();
+  var cue = item.cue.trim();
+  if (!original || !target || !cue) return off;
+  var learnerText = normalizeForCompare(messages.filter(function(m) { return m.role === 'user'; }).map(function(m) { return m.content; }).join(' \n '));
+  if (learnerText.indexOf(normalizeForCompare(original)) === -1) return off;
+  var normalTarget = normalizeForCompare(target);
+  if (normalTarget && (normalizeForCompare(cue).indexOf(normalTarget) !== -1 || normalizeForCompare(item.hint).indexOf(normalTarget) !== -1)) return off;
+  var patternId = typeof item.patternId === 'string' && knownIds.indexOf(item.patternId) !== -1 ? item.patternId : '';
+  return { enabled: true, original: original, target: target, cue: cue, hint: item.hint.trim(), patternId: patternId };
+}
 
 // Daily practice sentence check. Needs ANTHROPIC_API_KEY; the frontend falls back to a local pattern check.
 app.post('/sentence-check', async (req, res) => {
@@ -1678,6 +1722,7 @@ app.post('/chat-summary', async (req, res) => {
     const knownIds = patterns.map(p => p.id);
     summary.points = (summary.points || []).slice(0, 3);
     summary.usedPatternIds = (summary.usedPatternIds || []).filter(id => knownIds.includes(id));
+    summary.repeatTomorrow = sanitizeRepeatTomorrow(summary.repeatTomorrow, messages, knownIds);
     res.json({ success: true, summary });
   } catch (error) {
     console.error('Chat summary error:', error);

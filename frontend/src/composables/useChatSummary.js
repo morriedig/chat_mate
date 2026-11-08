@@ -25,7 +25,8 @@ export function useChatSummary() {
 
   /**
    * Ask for 1-3 things worth fixing from the user's lines in a chat.
-   * Returns { points: [{ original, hint, corrected, explanation, type }], usedPatternIds, encouragement }
+   * Returns { points: [{ original, hint, corrected, explanation, type }], usedPatternIds, encouragement,
+   *   repeatTomorrow: { enabled, original, target, cue, hint, patternId } }
    * or null when the summary isn't available.
    */
   async function summarize({ messages, level, nativeLanguage, patterns = [] }) {

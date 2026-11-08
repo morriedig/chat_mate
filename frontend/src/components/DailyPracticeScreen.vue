@@ -11,6 +11,7 @@ import { bankSrsId } from '../composables/useDailyPractice'
 import MistakeCard from './practice/MistakeCard.vue'
 import BankWordCard from './practice/BankWordCard.vue'
 import ListeningCard from './practice/ListeningCard.vue'
+import CoreSpeakingCard from './practice/CoreSpeakingCard.vue'
 import PracticeCard from './practice/PracticeCard.vue'
 import PracticeRating from './practice/PracticeRating.vue'
 import CmAppBar from './ui/CmAppBar.vue'
@@ -43,7 +44,18 @@ const {
   todayListening,
   totalCount,
   doneCount,
-  isDoneToday,
+  remainingCount,
+  core,
+  coreKeys,
+  coreStep,
+  coreDoneCount,
+  coreError,
+  corePattern,
+  coreSpeaking,
+  completeCoreError,
+  completeCorePattern,
+  submitCoreSpeaking,
+  rateCoreSpeaking,
   isDone,
   isNew,
   completeItem,
@@ -51,15 +63,35 @@ const {
   ensureTodayPlan,
 } = useDailyPractice()
 
-// One queue: yesterday's mistakes, today's patterns and words, saved words, then listening
+// ---------- Core 3 steps first ----------
+const CORE_STEPS = ['error', 'pattern', 'speaking']
+const inCore = computed(() => coreStep.value !== 'done')
+const coreEntry = computed(() => {
+  if (coreStep.value === 'error') return { kind: 'mistake', key: core.value.errorKey, item: coreError.value, core: true }
+  if (coreStep.value === 'pattern') return { kind: 'pattern', key: core.value.patternId, item: corePattern.value, core: true }
+  if (coreStep.value === 'speaking') return { kind: 'speak', key: 'core:speak', item: coreSpeaking.value, core: true }
+  return null
+})
+function coreStepState(step) {
+  const index = CORE_STEPS.indexOf(step)
+  if (!inCore.value || index < CORE_STEPS.indexOf(coreStep.value)) return 'done'
+  return step === coreStep.value ? 'current' : 'todo'
+}
+
+// ---------- Then the extras ("再練一些"): mistakes, patterns, words, saved words, listening ----------
+const showExtras = ref(false)
 const queue = computed(() => [
   ...todayMistakes.value.map(item => ({ kind: 'mistake', key: mistakeSrsId(item.id), item })),
   ...todayPatterns.value.map(item => ({ kind: 'pattern', key: item.id, item })),
   ...todayWords.value.map(item => ({ kind: 'word', key: item.id, item })),
   ...todayBankWords.value.map(item => ({ kind: 'bank', key: bankSrsId(item.id), item })),
   ...todayListening.value.map(item => ({ kind: 'listen', key: item.id, item })),
-])
-const current = computed(() => queue.value.find(entry => !isDone(entry.key)) || null)
+].filter(entry => !coreKeys.value.includes(entry.key)))
+const extraCurrent = computed(() => queue.value.find(entry => !isDone(entry.key)) || null)
+const current = computed(() => {
+  if (inCore.value) return coreEntry.value
+  return showExtras.value ? extraCurrent.value : null
+})
 
 // ---------- Per-item state ----------
 // stage: 'learn' (study card) → 'quiz' (pick an answer) → 'write' (patterns only) → 'rate'
@@ -72,7 +104,7 @@ const checkFailed = ref(false)
 function resetItem() {
   const entry = current.value
   // New items are studied first; reviews start with the quiz (recall before seeing it)
-  stage.value = entry && isNew(entry.item.id) ? 'learn' : 'quiz'
+  stage.value = entry?.item?.id && isNew(entry.item.id) ? 'learn' : 'quiz'
   picked.value = null
   sentence.value = ''
   check.value = null
@@ -114,6 +146,11 @@ function pick(optionId) {
 
 function afterQuiz() {
   const entry = current.value
+  // Core step 2 is recall only: the answer itself sets the SM-2 quality (step 3 is the output)
+  if (entry.core) {
+    completeCorePattern(isCorrect.value)
+    return
+  }
   if (entry.kind === 'pattern') {
     stage.value = 'write'
   } else {
@@ -171,11 +208,13 @@ function rate(confidence) {
 
 // Mistake, saved-word and listening cards report their own result
 function finishCard(entry, result) {
-  completeItem(entry.key, { ...result, track: entry.kind !== 'listen' })
+  if (entry.core) completeCoreError(result)
+  else completeItem(entry.key, { ...result, track: entry.kind !== 'listen' })
 }
 
 function dropMistake(entry) {
-  completeItem(entry.key, { correct: true, confidence: 5, track: false })
+  if (entry.core) completeCoreError({ correct: true, confidence: 5 }, { removed: true })
+  else completeItem(entry.key, { correct: true, confidence: 5, track: false })
   removeMistake(entry.item.id)
 }
 
@@ -194,7 +233,9 @@ const levelOptions = computed(() => levels.map(lv => ({ value: lv, label: t(`lev
 const pendingLevel = ref(null)
 const midAnswer = computed(() => {
   const entry = current.value
-  if (!entry || isDoneToday.value || (entry.kind !== 'pattern' && entry.kind !== 'word')) return false
+  // The core's pattern step (and a pattern prompt in step 3) belong to the level
+  if (inCore.value && coreDoneCount.value > 0) return true
+  if (!entry || (entry.kind !== 'pattern' && entry.kind !== 'word')) return false
   return picked.value !== null || sentence.value.trim().length > 0 || stage.value === 'write' || stage.value === 'rate'
 })
 
@@ -214,6 +255,7 @@ function confirmLevel() {
 const sectionLabel = computed(() => {
   const entry = current.value
   if (!entry) return ''
+  if (entry.core) return t('dailyPractice.core.stepOf', { n: CORE_STEPS.indexOf(coreStep.value) + 1 }) + ' · ' + t(`dailyPractice.core.steps.${coreStep.value}`)
   if (entry.kind === 'mistake') return t('dailyPractice.mistakeReview')
   if (entry.kind === 'bank') return t('dailyPractice.savedWord')
   if (entry.kind === 'listen') return t('listening.label')
@@ -236,6 +278,15 @@ function optionState(id) {
   if (id === correctOptionId.value) return 'right'
   return id === picked.value ? 'wrong' : 'other'
 }
+// Header: the core counts 3 steps; the extras count their own items
+const headerProgress = computed(() => {
+  if (inCore.value || !showExtras.value) {
+    const label = inCore.value ? t('dailyPractice.core.progress', { done: coreDoneCount.value }) : t('dailyPractice.core.doneTitle')
+    return { done: coreDoneCount.value, total: 3, label }
+  }
+  return { done: doneCount.value, total: totalCount.value, label: t('dailyPractice.progress', { done: doneCount.value, total: totalCount.value }) }
+})
+
 const patternsDone = computed(() => todayPatterns.value.filter(p => isDone(p.id)).length)
 const wordsDone = computed(() => todayWords.value.filter(w => isDone(w.id)).length)
 const extrasDone = computed(() =>
@@ -260,7 +311,7 @@ onBeforeUnmount(() => {
       <!-- Header, level control and progress stay fixed; content scrolls -->
       <CmAppBar
         :title="t('dailyPractice.title')"
-        :subtitle="t('dailyPractice.progress', { done: doneCount, total: totalCount })"
+        :subtitle="headerProgress.label"
         :back-label="t('dailyPractice.back')"
         @back="handleBack"
       >
@@ -273,14 +324,57 @@ onBeforeUnmount(() => {
               @update:model-value="requestLevel"
             />
           </div>
-          <CmProgress :value="doneCount" :max="totalCount || 1" :label="t('dailyPractice.progress', { done: doneCount, total: totalCount })" />
+          <CmProgress :value="headerProgress.done" :max="headerProgress.total || 1" :label="headerProgress.label" />
         </template>
       </CmAppBar>
 
       <div class="flex-1 overflow-y-auto">
         <div class="mx-auto max-w-2xl space-y-3 px-4 py-5 min-[375px]:px-5">
-          <!-- ========== DONE ========== -->
-          <template v-if="isDoneToday || !current">
+          <!-- ========== CORE STEPS ========== -->
+          <ol v-if="inCore" class="core-steps grid grid-cols-3 gap-1.5" :aria-label="t('dailyPractice.core.title')">
+            <li
+              v-for="(step, i) in CORE_STEPS"
+              :key="step"
+              class="flex min-w-0 items-start gap-1.5 rounded-[10px] border px-2 py-2"
+              :class="coreStepState(step) === 'current' ? 'border-accent/30 bg-accent-soft' : 'border-hairline bg-surface'"
+              :aria-current="coreStepState(step) === 'current' ? 'step' : undefined"
+            >
+              <span
+                class="material-symbols-outlined shrink-0 !text-[18px]"
+                :class="coreStepState(step) === 'done' ? 'text-success' : coreStepState(step) === 'current' ? 'text-accent' : 'text-ink-muted'"
+                aria-hidden="true"
+              >{{ coreStepState(step) === 'done' ? 'check_circle' : 'radio_button_unchecked' }}</span>
+              <span class="min-w-0 text-meta break-words" :class="coreStepState(step) === 'todo' ? 'text-ink-muted' : 'text-ink'">
+                <span class="sr-only">{{ i + 1 }}. {{ t(`dailyPractice.core.steps.${step}`) }}</span>
+                <span aria-hidden="true">{{ t(`dailyPractice.core.stepsShort.${step}`) }}</span>
+                <span v-if="coreStepState(step) === 'done'" class="sr-only">, {{ t('dailyPractice.core.stepDone') }}</span>
+              </span>
+            </li>
+          </ol>
+
+          <!-- ========== CORE DONE: today counts, extras are optional ========== -->
+          <template v-if="!current && !showExtras">
+            <section class="core-done flex flex-col items-center gap-3 rounded-[14px] border border-hairline bg-surface p-6 text-center shadow-[var(--cm-shadow-small)]" role="status">
+              <span class="flex size-16 items-center justify-center rounded-[14px] bg-success-soft text-success">
+                <span class="material-symbols-outlined !text-[32px]" aria-hidden="true">task_alt</span>
+              </span>
+              <h2 class="text-section font-medium text-ink">{{ t('dailyPractice.core.doneTitle') }}</h2>
+              <p class="text-caption text-ink-secondary">{{ t('dailyPractice.core.doneBody') }}</p>
+              <p v-if="core?.speakingMode" class="text-caption text-ink-secondary">
+                {{ core.speakingMode === 'voice' ? t('dailyPractice.core.doneVoice') : t('dailyPractice.core.doneText') }}
+              </p>
+            </section>
+            <div class="grid grid-cols-1 gap-2 pt-5">
+              <CmButton @click="startTaskChat">{{ t('taskChat.startFromPractice') }}</CmButton>
+              <CmButton v-if="remainingCount > 0" variant="secondary" class="core-more" @click="showExtras = true">
+                {{ t('dailyPractice.core.more', { count: remainingCount }) }}
+              </CmButton>
+              <CmButton variant="secondary" @click="router.push('/')">{{ t('dailyPractice.backHome') }}</CmButton>
+            </div>
+          </template>
+
+          <!-- ========== EVERYTHING DONE ========== -->
+          <template v-else-if="!current">
             <section class="flex flex-col items-center gap-3 rounded-[14px] border border-hairline bg-surface p-6 text-center shadow-[var(--cm-shadow-small)]">
               <span class="flex size-16 items-center justify-center rounded-[14px] bg-accent-soft text-accent">
                 <span class="material-symbols-outlined !text-[32px]" aria-hidden="true">task_alt</span>
@@ -310,7 +404,20 @@ onBeforeUnmount(() => {
             <p class="text-caption font-medium text-ink-secondary">{{ sectionLabel }}</p>
 
             <!-- ========== MISTAKE / SAVED WORD / LISTENING ========== -->
-            <MistakeCard v-if="current.kind === 'mistake'" :mistake="current.item" @done="finishCard(current, $event)" @remove="dropMistake(current)" />
+            <MistakeCard
+              v-if="current.kind === 'mistake'"
+              :mistake="current.item"
+              :removable="current.item.source !== 'builtin'"
+              @done="finishCard(current, $event)"
+              @remove="dropMistake(current)"
+            />
+            <CoreSpeakingCard
+              v-else-if="current.kind === 'speak'"
+              :prompt="current.item"
+              :attempt="core?.speakingAttempt || null"
+              @submit="submitCoreSpeaking"
+              @rate="rateCoreSpeaking"
+            />
             <BankWordCard v-else-if="current.kind === 'bank'" :word="current.item" @done="finishCard(current, $event)" />
             <ListeningCard v-else-if="current.kind === 'listen'" :item="current.item" @done="finishCard(current, $event)" />
 

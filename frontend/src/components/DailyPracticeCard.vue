@@ -2,17 +2,18 @@
 import { computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useDailyPractice } from '../composables/useDailyPractice'
-import CmChip from './ui/CmChip.vue'
 
 const { t } = useI18n()
 const emit = defineEmits(['open'])
-const { todayPatterns, todayWords, doneCount, totalCount, isDoneToday, ensureTodayPlan } = useDailyPractice()
-// Mistake, saved-word and listening cards on top of the patterns and words
-const extraCount = computed(() => totalCount.value - todayPatterns.value.length - todayWords.value.length)
+const { coreStep, coreDoneCount, remainingCount, isDoneToday, ensureTodayPlan } = useDailyPractice()
+
+const CORE_STEPS = ['error', 'pattern', 'speaking']
 const subtitle = computed(() => {
-  if (isDoneToday.value) return t('dailyPractice.cardDone')
-  const base = t('dailyPractice.cardSubtitle', { patterns: todayPatterns.value.length, words: todayWords.value.length })
-  return extraCount.value > 0 ? base + t('dailyPractice.cardExtras', { count: extraCount.value }) : base
+  if (isDoneToday.value) {
+    return remainingCount.value > 0 ? t('dailyPractice.cardMore', { count: remainingCount.value }) : t('dailyPractice.cardAllDone')
+  }
+  if (coreDoneCount.value === 0) return t('dailyPractice.cardCore')
+  return t('dailyPractice.cardResume', { step: t(`dailyPractice.core.steps.${coreStep.value}`) })
 })
 
 // Date may have rolled over since the app was opened
@@ -41,12 +42,20 @@ onMounted(ensureTodayPlan)
       <div class="min-w-0 flex-1">
         <div class="flex items-start justify-between gap-2">
           <h3 class="text-body font-medium text-ink">{{ t('dailyPractice.cardTitle') }}</h3>
-          <span class="shrink-0 pt-0.5 text-meta text-ink-muted tabular-nums">{{ doneCount }} / {{ totalCount }}</span>
+          <span
+            class="shrink-0 pt-0.5 text-meta tabular-nums"
+            :class="isDoneToday ? 'font-medium text-success' : 'text-ink-muted'"
+          >{{ isDoneToday ? t('dailyPractice.core.doneTitle') : `${coreDoneCount} / 3` }}</span>
         </div>
-        <p class="mt-0.5 text-caption" :class="isDoneToday ? 'text-success' : 'text-ink-secondary'">{{ subtitle }}</p>
-        <div v-if="todayPatterns.length" class="mt-2 flex flex-wrap gap-1.5">
-          <CmChip v-for="p in todayPatterns" :key="p.id" class="!bg-surface">{{ p.pattern }}</CmChip>
-        </div>
+        <p class="mt-0.5 text-caption text-ink-secondary break-words">{{ subtitle }}</p>
+        <!-- The three core steps, each marked when finished -->
+        <ul v-if="!isDoneToday" class="mt-2 flex flex-wrap gap-x-3 gap-y-1">
+          <li v-for="(step, i) in CORE_STEPS" :key="step" class="flex min-w-0 items-center gap-1 text-meta" :class="i < coreDoneCount ? 'text-success' : 'text-ink-secondary'">
+            <span class="material-symbols-outlined shrink-0 !text-[16px]" aria-hidden="true">{{ i < coreDoneCount ? 'check_circle' : 'radio_button_unchecked' }}</span>
+            <span class="min-w-0">{{ t(`dailyPractice.core.steps.${step}`) }}</span>
+            <span v-if="i < coreDoneCount" class="sr-only">, {{ t('dailyPractice.core.stepDone') }}</span>
+          </li>
+        </ul>
       </div>
     </div>
   </div>

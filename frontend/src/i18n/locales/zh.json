@@ -706,7 +706,56 @@
     "levelLabel": "程度",
     "levelChangeTitle": "要換程度嗎？",
     "levelChangeBody": "換程度會換成另一組今日練習，這一題目前的作答不會保存。",
-    "levelChangeConfirm": "換程度"
+    "levelChangeConfirm": "換程度",
+    "cardCore": "改一個舊錯、回想一個句型、說一句話，大約 3 分鐘",
+    "cardResume": "從「{step}」繼續",
+    "cardMore": "再練一些：還有 {count} 項",
+    "cardAllDone": "今天的練習全部做完了",
+    "core": {
+      "title": "今天 3 步",
+      "progress": "今天 3 步：完成 {done} / 3",
+      "stepOf": "第 {n} 步",
+      "stepDone": "已完成",
+      "steps": {
+        "error": "改一個舊錯",
+        "pattern": "回想一個句型",
+        "speaking": "說出一句話"
+      },
+      "doneTitle": "今天完成",
+      "doneBody": "三步都做完了，已算進連續練習。",
+      "doneVoice": "今天是用說的完成。",
+      "doneText": "今天是用打字完成，不算進口說次數。",
+      "more": "再練一些（剩餘 {count} 項）",
+      "stepsShort": {
+        "error": "改舊錯",
+        "pattern": "想句型",
+        "speaking": "說一句"
+      }
+    },
+    "speak": {
+      "labelRepeat": "再說一次這句",
+      "labelAgain": "昨天還會卡的這題",
+      "labelPattern": "用今天的句型說一句",
+      "hintLabel": "提示",
+      "patternLabel": "句型",
+      "speak": "按下開始說",
+      "listening": "正在聽，說完停一下就好",
+      "stop": "說完了",
+      "typeInstead": "改用打字",
+      "speakInstead": "改用說的",
+      "typePlaceholder": "用英文寫一句",
+      "typeNote": "至少 2 個英文字。打字也能完成今天，但不算口說。",
+      "send": "送出",
+      "noSpeech": "沒聽到聲音，再說一次或改用打字。",
+      "micFailed": "麥克風現在用不了，可以改用打字。",
+      "youSaid": "你說的",
+      "youWrote": "你寫的",
+      "sayItLike": "可以這樣說",
+      "rateLabel": "這句說起來怎麼樣？",
+      "again": "還會卡",
+      "gotIt": "說得出來",
+      "againNote": "選「還會卡」，明天會再練這句。"
+    }
   },
   "voiceChat": {
     "enter": "語音對話",
@@ -826,7 +875,8 @@
       "chat": "聊天時寫的",
       "practice": "造句時寫的",
       "diary": "日記裡寫的",
-      "summary": "聊天小結抓到的"
+      "summary": "聊天小結抓到的",
+      "builtin": "常見錯誤"
     },
     "prompt": "這句之前被朋友改過，你能自己改對嗎？",
     "yourFix": "你的改法",
@@ -838,7 +888,8 @@
     "remove": "這句其實沒問題，以後不用再出現",
     "youWrote": "你寫的",
     "suggested": "建議寫法",
-    "hintLabel": "提示"
+    "hintLabel": "提示",
+    "builtinPrompt": "很多人會這樣說，你能改對嗎？"
   },
   "listening": {
     "label": "聽力",
@@ -876,7 +927,13 @@
     "patternsUsedLabel": "個句型用到了",
     "todayPatterns": "今天的句型",
     "hint": "提示",
-    "suggested": "建議寫法"
+    "suggested": "建議寫法",
+    "repeatTomorrow": {
+      "title": "明天再說這句",
+      "queued": "已排進明天的練習",
+      "taken": "明天已經排了一句：{cue}",
+      "replace": "換成這句"
+    }
   },
   "voiceSettings": {
     "title": "語音",

@@ -13,6 +13,8 @@ const { t } = useI18n()
 const props = defineProps({
   // { id, original, corrected, explanation, hint, type, source }
   mistake: { type: Object, required: true },
+  // Built-in "common mistake" cards can't be removed
+  removable: { type: Boolean, default: true },
 })
 const emit = defineEmits(['done', 'remove'])
 
@@ -45,7 +47,7 @@ function rate(confidence) {
   <PracticeCard>
     <div>
       <p class="text-meta font-medium text-warning">{{ t(`mistakes.source.${mistake.source}`, t('mistakes.source.chat')) }}</p>
-      <p class="mt-1 text-caption text-ink-secondary">{{ t('mistakes.prompt') }}</p>
+      <p class="mt-1 text-caption text-ink-secondary">{{ mistake.source === 'builtin' ? t('mistakes.builtinPrompt') : t('mistakes.prompt') }}</p>
       <p class="mt-2 text-title font-medium text-ink break-words">“{{ mistake.original }}”</p>
     </div>
 
@@ -109,7 +111,7 @@ function rate(confidence) {
       <p v-if="mistake.explanation" class="text-caption text-ink-secondary break-words">{{ mistake.explanation }}</p>
 
       <PracticeRating @rate="rate" />
-      <CmButton variant="quiet" block class="!text-ink-muted !text-caption !font-normal" @click="emit('remove')">{{ t('mistakes.remove') }}</CmButton>
+      <CmButton v-if="removable" variant="quiet" block class="!text-ink-muted !text-caption !font-normal" @click="emit('remove')">{{ t('mistakes.remove') }}</CmButton>
     </template>
   </PracticeCard>
 </template>
