@@ -104,6 +104,8 @@ const speechSupported = isSTTAvailable()
 const isListening = ref(false)
 let listenId = 0
 let unmounted = false
+// The last value dictation put in the field; anything else means the user changed it
+let lastWritten = null
 
 function toggleSpeech() {
   if (isListening.value) stopSpeech()
@@ -115,22 +117,44 @@ async function startSpeech() {
   const id = ++listenId
   const isCurrent = () => id === listenId && !unmounted
   const base = body.value && !/\s$/.test(body.value) ? body.value + ' ' : body.value
-  // Without anything heard the field stays as it was (no dangling separator)
-  const original = body.value
+  // Nothing heard leaves the field as it was (no dangling separator)
+  lastWritten = body.value
+  const write = (text) => {
+    if (!text) return
+    if (body.value !== lastWritten) {
+      abandonSpeech()
+      return
+    }
+    lastWritten = base + text
+    body.value = lastWritten
+  }
 
   isListening.value = true
   try {
     const heard = await listenOnce({
       language: 'en', // answers are always in English
-      onInterim: (text) => { if (isCurrent()) body.value = base + text },
+      onInterim: (text) => { if (isCurrent()) write(text) },
     })
-    if (isCurrent()) body.value = heard ? base + heard : original
+    if (isCurrent()) write(heard)
   } catch (error) {
     if (isCurrent()) console.error('Speech recognition error:', error?.message)
   } finally {
     if (isCurrent()) isListening.value = false
   }
 }
+
+// Stop listening and drop whatever this listen still hears
+function abandonSpeech() {
+  if (!isListening.value) return
+  listenId++
+  isListening.value = false
+  stopListening()
+}
+
+// Typing or a starter chip ends dictation
+watch(body, (val) => {
+  if (isListening.value && val !== lastWritten) abandonSpeech()
+})
 
 function stopSpeech() {
   if (isListening.value) stopListening()
@@ -139,11 +163,7 @@ function stopSpeech() {
 async function handleSubmit() {
   if (!canSubmit.value) return
   // Submitting what's on screen: drop any transcript that arrives after this
-  if (isListening.value) {
-    listenId++
-    isListening.value = false
-    stopListening()
-  }
+  abandonSpeech()
   clearTimeout(draftTimer)
   submitting.value = true
   try {

@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { ref, getCurrentInstance, onBeforeUnmount } from 'vue'
 import { isSTTAvailable, listenOnce, stopListening as stopSTT } from '../utils/stt'
 
 // One word or phrase: end the turn sooner than a full answer
@@ -37,8 +37,8 @@ export function usePronunciationCheck() {
       throw new Error('Speech recognition not supported')
     }
 
-    // A new check replaces any running one; the old result is ignored
-    if (isListening.value) stopSTT()
+    // A new check replaces any running listen (this one's or another mic's); the old result is ignored
+    stopSTT()
     const id = ++checkId
     const isCurrent = () => id === checkId
 
@@ -56,7 +56,9 @@ export function usePronunciationCheck() {
     } finally {
       if (isCurrent()) isListening.value = false
     }
-    if (!isCurrent() || !result) return { transcript: '', score: 0 }
+    if (!isCurrent()) return { transcript: '', score: 0 }
+    // Nothing heard: report it as an error, like the browser's no-speech
+    if (!result) throw new Error('no-speech')
 
     transcript.value = result
     const target = normalizeText(targetText)
@@ -74,6 +76,9 @@ export function usePronunciationCheck() {
     checkId++
     isListening.value = false
   }
+
+  // Leaving the screen stops the mic
+  if (getCurrentInstance()) onBeforeUnmount(stopListening)
 
   return {
     isSupported,

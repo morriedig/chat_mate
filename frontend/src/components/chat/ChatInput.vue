@@ -76,14 +76,24 @@ function toggleSpeech() {
   }
 }
 
+// The last value dictation put in the field; anything else means it was typed, sent or inserted
+let lastWritten = null
+
 async function startSpeech() {
   if (!speechSupported || isListening.value) return
 
   const id = ++listenId
   const isCurrent = () => id === listenId && !unmounted
   const base = localValue.value
+  lastWritten = base
   const write = (text) => {
+    if (!text) return
+    if (localValue.value !== lastWritten) {
+      abandonSpeech()
+      return
+    }
     const combined = base + text
+    lastWritten = combined
     localValue.value = combined
     emit('update:modelValue', combined)
   }
@@ -102,8 +112,26 @@ async function startSpeech() {
   }
 }
 
+// Stop listening and drop whatever this listen still hears
+function abandonSpeech() {
+  if (!isListening.value) return
+  listenId++
+  isListening.value = false
+  stopListening()
+}
+
+// Typing, sending (the parent clears the field) or an inserted connector ends dictation
+watch(localValue, (val) => {
+  if (isListening.value && val !== lastWritten) abandonSpeech()
+})
+
 function stopSpeech() {
   if (isListening.value) stopListening()
+}
+
+function openRescue() {
+  stopSpeech()
+  rescueRef.value?.open()
 }
 
 onBeforeUnmount(() => {
@@ -123,7 +151,7 @@ defineExpose({ focus })
         <div class="-mt-2 mb-1 flex min-w-0 items-center justify-between gap-2 *:my-0">
           <button
             type="button"
-            @click="rescueRef?.open()"
+            @click="openRescue"
             :disabled="disabled"
             class="rescue-trigger -ml-2 inline-flex min-h-11 min-w-0 items-center gap-1.5 rounded-[10px] px-2 text-caption font-medium text-ink-secondary active:bg-surface-raised disabled:opacity-55"
           >

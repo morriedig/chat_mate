@@ -1,7 +1,8 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 
-vi.mock('@capacitor/core', () => ({ Capacitor: { isNativePlatform: () => false } }))
-vi.mock('@capgo/capacitor-speech-recognition', () => ({ SpeechRecognition: {} }))
+const mocks = vi.hoisted(() => ({ native: false, plugin: {} }))
+vi.mock('@capacitor/core', () => ({ Capacitor: { isNativePlatform: () => mocks.native } }))
+vi.mock('@capgo/capacitor-speech-recognition', () => ({ SpeechRecognition: mocks.plugin }))
 
 // Minimal Web Speech API stand-in: tests drive results and the end event by hand
 class FakeRecognition {
@@ -87,5 +88,132 @@ describe('stt (web)', () => {
     vi.advanceTimersByTime(1100)
     expect(FakeRecognition.last.stopped).toBe(true)
     await result
+  })
+})
+
+// Stand-in for the native plugin: refuses a second start like the real one, and (like the
+// iOS plugin) resolves stop() before it sends that session's "stopped" event
+function createNativePlugin() {
+  const listeners = {}
+  const emit = (name, event) => (listeners[name] || []).forEach(cb => cb(event))
+  const plugin = {
+    running: false,
+    session: 0,
+    permissionGate: null,
+    checkPermissions: vi.fn(async () => {
+      if (plugin.permissionGate) await plugin.permissionGate
+      return { speechRecognition: 'granted' }
+    }),
+    requestPermissions: vi.fn(async () => ({ speechRecognition: 'granted' })),
+    addListener: vi.fn(async (name, callback) => {
+      (listeners[name] ||= []).push(callback)
+      return { remove: () => { listeners[name] = listeners[name].filter(cb => cb !== callback) } }
+    }),
+    start: vi.fn(async () => {
+      if (plugin.running) throw new Error('already running')
+      plugin.running = true
+      plugin.session++
+      emit('listeningState', { state: 'started', sessionId: plugin.session, status: 'started' })
+    }),
+    stop: vi.fn(async () => {
+      if (!plugin.running) return
+      plugin.running = false
+      const sessionId = plugin.session
+      setTimeout(() => emit('listeningState', { state: 'stopped', sessionId, status: 'stopped' }), 0)
+    }),
+    say: (text) => emit('partialResults', { matches: [text] }),
+    emit,
+  }
+  return plugin
+}
+
+const settle = () => new Promise(resolve => setTimeout(resolve, 0))
+
+describe('stt (native)', () => {
+  let plugin
+  beforeEach(() => {
+    mocks.native = true
+    plugin = createNativePlugin()
+    for (const key of Object.keys(mocks.plugin)) delete mocks.plugin[key]
+    Object.assign(mocks.plugin, plugin)
+  })
+  afterEach(() => {
+    mocks.native = false
+  })
+
+  async function loadNativeStt() {
+    vi.resetModules()
+    return import('../../utils/stt')
+  }
+
+  it('finishes the running listen before starting a new one', async () => {
+    const { listenOnce, stopListening } = await loadNativeStt()
+    const first = listenOnce()
+    await settle()
+    plugin.say('first words')
+
+    const second = listenOnce()
+    expect(await first).toBe('first words')
+    await settle()
+    expect(plugin.start).toHaveBeenCalledTimes(2)
+    expect(plugin.running).toBe(true)
+
+    // The new listen still has its stop control
+    plugin.say('second words')
+    stopListening()
+    expect(await second).toBe('second words')
+    expect(plugin.running).toBe(false)
+  })
+
+  it('does not start when stopped during the permission check', async () => {
+    const { listenOnce, stopListening } = await loadNativeStt()
+    let grant
+    plugin.permissionGate = new Promise(resolve => { grant = resolve })
+    const result = listenOnce()
+    stopListening()
+    grant()
+    expect(await result).toBe('')
+    expect(plugin.start).not.toHaveBeenCalled()
+  })
+
+  it("an older listen's cleanup keeps the newer listen's stop control", async () => {
+    const { listenOnce, stopListening } = await loadNativeStt()
+    const first = listenOnce()
+    await settle()
+
+    // The newer listen waits on permissions while the older one is cleaned up
+    let grant
+    plugin.permissionGate = new Promise(resolve => { grant = resolve })
+    const second = listenOnce()
+    expect(await first).toBe('')
+    stopListening()
+    grant()
+    expect(await second).toBe('')
+    expect(plugin.start).toHaveBeenCalledTimes(1)
+  })
+
+  it("ignores a previous session's late \"stopped\" and ends on its own", async () => {
+    const { listenOnce, stopListening } = await loadNativeStt()
+    const first = listenOnce()
+    await settle()
+    stopListening()
+    expect(await first).toBe('')
+
+    // Session 1's "stopped" is still on its way when the next listen starts
+    const second = listenOnce()
+    await settle()
+    await settle()
+    expect(plugin.start).toHaveBeenCalledTimes(2)
+    plugin.say('still here')
+
+    let settled = false
+    second.then(() => { settled = true })
+    plugin.emit('listeningState', { state: 'stopped', sessionId: 1, status: 'stopped' })
+    await settle()
+    expect(settled).toBe(false)
+
+    // The recognizer ending session 2 by itself does end this listen
+    plugin.emit('listeningState', { state: 'stopped', sessionId: 2, status: 'stopped' })
+    expect(await second).toBe('still here')
   })
 })

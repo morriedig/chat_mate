@@ -155,26 +155,51 @@ function toggleSpeech() {
   }
 }
 
+// The last value dictation put in the field; anything else means the user typed or used a prompt
+let lastWritten = null
+
 async function startSpeech() {
   if (!speechSupported || isListening.value) return
 
   const id = ++listenId
   const isCurrent = () => id === listenId && !unmounted
   const base = body.value
+  lastWritten = base
+  const write = (text) => {
+    if (!text) return
+    if (body.value !== lastWritten) {
+      abandonSpeech()
+      return
+    }
+    lastWritten = base + text
+    body.value = lastWritten
+  }
 
   isListening.value = true
   try {
     const heard = await listenOnce({
       language: props.language,
-      onInterim: (text) => { if (isCurrent()) body.value = base + text },
+      onInterim: (text) => { if (isCurrent()) write(text) },
     })
-    if (isCurrent()) body.value = base + heard
+    if (isCurrent()) write(heard)
   } catch (error) {
     if (isCurrent()) console.error('Speech recognition error:', error?.message)
   } finally {
     if (isCurrent()) isListening.value = false
   }
 }
+
+// Stop listening and drop whatever this listen still hears
+function abandonSpeech() {
+  if (!isListening.value) return
+  listenId++
+  isListening.value = false
+  stopListening()
+}
+
+watch(body, (val) => {
+  if (isListening.value && val !== lastWritten) abandonSpeech()
+})
 
 function stopSpeech() {
   if (isListening.value) stopListening()
@@ -196,6 +221,8 @@ function handleUsePrompt(text) {
 
 function handleSubmit() {
   if (!canSubmit.value) return
+  // Submitting what's on screen: drop any transcript that arrives after this
+  abandonSpeech()
   emit('submit', body.value)
 }
 </script>

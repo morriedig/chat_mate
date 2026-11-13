@@ -1,4 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { mount } from '@vue/test-utils'
+import { defineComponent, h } from 'vue'
 
 let available = true
 let pending = null
@@ -47,12 +49,35 @@ describe('usePronunciationCheck', () => {
     expect(isListening.value).toBe(false)
   })
 
-  it('resolves an empty result with score 0 when nothing was heard', async () => {
-    const { checkPronunciation, score } = usePronunciationCheck()
+  it('rejects with no-speech when nothing was heard', async () => {
+    const { checkPronunciation, score, isListening } = usePronunciationCheck()
     const result = checkPronunciation('apple', 'en')
     pending.resolve('')
-    expect(await result).toEqual({ transcript: '', score: 0 })
+    await expect(result).rejects.toThrow('no-speech')
     expect(score.value).toBeNull()
+    expect(isListening.value).toBe(false)
+  })
+
+  it('stops any running listen before starting, even one it did not start', () => {
+    const { checkPronunciation } = usePronunciationCheck()
+    checkPronunciation('apple', 'en')
+    expect(stopListening).toHaveBeenCalledTimes(1)
+    expect(stopListening.mock.invocationCallOrder[0]).toBeLessThan(listenOnce.mock.invocationCallOrder[0])
+  })
+
+  it('stops listening when the component using it unmounts', async () => {
+    let check
+    const wrapper = mount(defineComponent({
+      setup() { check = usePronunciationCheck(); return () => h('div') },
+    }))
+    const result = check.checkPronunciation('apple', 'en')
+    stopListening.mockClear()
+    wrapper.unmount()
+    expect(stopListening).toHaveBeenCalledTimes(1)
+    expect(check.isListening.value).toBe(false)
+
+    pending.resolve('apple')
+    expect(await result).toEqual({ transcript: '', score: 0 })
   })
 
   it('propagates recognition errors and resets listening', async () => {
@@ -66,6 +91,7 @@ describe('usePronunciationCheck', () => {
   it('stopListening stops recognition and ignores the late result', async () => {
     const { checkPronunciation, stopListening: stop, isListening, score } = usePronunciationCheck()
     const result = checkPronunciation('apple', 'en')
+    stopListening.mockClear()
     stop()
     expect(stopListening).toHaveBeenCalledTimes(1)
     expect(isListening.value).toBe(false)

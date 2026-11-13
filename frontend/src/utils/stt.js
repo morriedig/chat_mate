@@ -51,21 +51,46 @@ function createTimers({ pauseMs, maxMs, onDone }) {
 }
 
 async function listenNative({ language, onInterim, pauseMs, maxMs }) {
-  let permission = await NativeRecognition.checkPermissions()
-  if (permission.speechRecognition !== 'granted') {
-    permission = await NativeRecognition.requestPermissions()
+  // Claim the mic right away so a stop during the permission check (or a newer listen) reaches this one
+  let cancelled = false
+  const pending = { finish: () => { cancelled = true }, extend: () => {} }
+  const previous = current
+  current = pending
+  const release = () => { if (current === pending) current = null }
+
+  // The plugin refuses a second start: let the running listen finish first
+  if (previous) await previous.finish()
+
+  let permission
+  try {
+    permission = await NativeRecognition.checkPermissions()
+    if (permission.speechRecognition !== 'granted') {
+      permission = await NativeRecognition.requestPermissions()
+    }
+  } catch (error) {
+    release()
+    throw error
   }
-  if (permission.speechRecognition !== 'granted') throw new Error('not-allowed')
+  if (cancelled) {
+    release()
+    return ''
+  }
+  if (permission.speechRecognition !== 'granted') {
+    release()
+    throw new Error('not-allowed')
+  }
 
   return new Promise((resolve, reject) => {
     let text = ''
     let done = false
+    let startCalled = false
+    let sessionId = null
     const handles = []
 
     const cleanup = () => {
       done = true
       timers.clear()
-      current = null
+      if (current === entry) current = null
       handles.forEach(handle => handle.remove())
     }
     const finish = async () => {
@@ -75,7 +100,8 @@ async function listenNative({ language, onInterim, pauseMs, maxMs }) {
       resolve(text.trim())
     }
     const timers = createTimers({ pauseMs, maxMs, onDone: finish })
-    current = { finish, extend: () => { if (!done) timers.extend() } }
+    const entry = { finish, extend: () => { if (!done) timers.extend() } }
+    current = entry
 
     Promise.all([
       NativeRecognition.addListener('partialResults', event => {
@@ -85,13 +111,22 @@ async function listenNative({ language, onInterim, pauseMs, maxMs }) {
         onInterim?.(heard.trim())
         timers.heard()
       }),
+      // The plugin resolves stop() before it sends that session's "stopped", so a previous
+      // listen's "stopped" can reach this one: only our own session (from our "started") ends it
       NativeRecognition.addListener('listeningState', event => {
-        if ((event.state || event.status) === 'stopped') finish()
+        const state = event.state || event.status
+        if (state === 'started' && startCalled && sessionId === null) sessionId = event.sessionId ?? null
+        else if (state === 'stopped' && sessionId !== null && event.sessionId === sessionId) finish()
       }),
     ]).then(listeners => {
       handles.push(...listeners)
-      if (done) listeners.forEach(handle => handle.remove())
+      // Finished while the listeners were being added: never start the recognizer
+      if (done) {
+        listeners.forEach(handle => handle.remove())
+        return
+      }
       timers.start()
+      startCalled = true
       return NativeRecognition.start({
         language: LANG_MAP[language] || 'en-US',
         partialResults: true,
