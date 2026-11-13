@@ -34,10 +34,14 @@ let current = null
 // and rejects start() meanwhile: every in-flight stop, chained, so a new listen can wait for it
 let nativeStopping = null
 
+// The plugin resolves stop() within ~2s (final result or its own fallback); never wait longer than this
+export const NATIVE_STOP_TIMEOUT_MS = 3000
+
 function stopNative() {
-  const own = (async () => {
+  const stopped = (async () => {
     try { await NativeRecognition.stop() } catch { /* already stopped */ }
   })()
+  const own = Promise.race([stopped, new Promise(resolve => setTimeout(resolve, NATIVE_STOP_TIMEOUT_MS))])
   const all = Promise.all([nativeStopping, own])
   nativeStopping = all
   all.then(() => { if (nativeStopping === all) nativeStopping = null })

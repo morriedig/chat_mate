@@ -241,4 +241,20 @@ describe('stt (native)', () => {
     expect(await second).toBe('second words')
     expect(plugin.running).toBe(false)
   })
+
+  it('does not wait forever when the plugin never resolves stop()', async () => {
+    const { listenOnce, stopListening, NATIVE_STOP_TIMEOUT_MS } = await loadNativeStt()
+    mocks.plugin.stop = vi.fn(() => {
+      plugin.running = false // the session ends, but the call never answers
+      return new Promise(() => {})
+    })
+    const first = listenOnce()
+    await vi.waitFor(() => expect(plugin.start).toHaveBeenCalledTimes(1))
+    plugin.say('first words')
+
+    stopListening()
+    const second = listenOnce()
+    expect(await first).toBe('first words')
+    await vi.waitFor(() => expect(plugin.start).toHaveBeenCalledTimes(2), { timeout: NATIVE_STOP_TIMEOUT_MS + 1000 })
+  }, 10000)
 })
