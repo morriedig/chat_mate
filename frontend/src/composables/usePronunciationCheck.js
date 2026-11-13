@@ -1,14 +1,8 @@
 import { ref } from 'vue'
+import { isSTTAvailable, listenOnce, stopListening as stopSTT } from '../utils/stt'
 
-const SpeechRecognition = typeof window !== 'undefined'
-  ? window.SpeechRecognition || window.webkitSpeechRecognition
-  : null
-
-const LANGUAGE_MAP = {
-  en: 'en-US',
-  ja: 'ja-JP',
-  zh: 'zh-TW',
-}
+// One word or phrase: end the turn sooner than a full answer
+const PAUSE_MS = 1500
 
 function levenshtein(a, b) {
   const m = a.length
@@ -34,75 +28,50 @@ export function usePronunciationCheck() {
   const isListening = ref(false)
   const transcript = ref('')
   const score = ref(null)
-  const isSupported = !!SpeechRecognition
+  const isSupported = isSTTAvailable()
 
-  let recognition = null
+  let checkId = 0
 
-  function checkPronunciation(targetText, language) {
-    return new Promise((resolve, reject) => {
-      if (!SpeechRecognition) {
-        reject(new Error('Speech recognition not supported'))
-        return
-      }
+  async function checkPronunciation(targetText, language) {
+    if (!isSupported) {
+      throw new Error('Speech recognition not supported')
+    }
 
-      // Abort any existing recognition first
-      if (recognition) {
-        recognition.abort()
-      }
+    // A new check replaces any running one; the old result is ignored
+    if (isListening.value) stopSTT()
+    const id = ++checkId
+    const isCurrent = () => id === checkId
 
-      recognition = new SpeechRecognition()
-      recognition.lang = LANGUAGE_MAP[language] || 'en-US'
-      recognition.interimResults = false
-      recognition.maxAlternatives = 1
-      recognition.continuous = false
+    isListening.value = true
+    transcript.value = ''
+    score.value = null
 
-      isListening.value = true
-      transcript.value = ''
-      score.value = null
+    let result
+    try {
+      result = await listenOnce({ language, pauseMs: PAUSE_MS })
+    } catch (error) {
+      // A stopped or replaced check ends quietly, like an aborted recognition
+      if (!isCurrent()) return { transcript: '', score: 0 }
+      throw error
+    } finally {
+      if (isCurrent()) isListening.value = false
+    }
+    if (!isCurrent() || !result) return { transcript: '', score: 0 }
 
-      let resolved = false
+    transcript.value = result
+    const target = normalizeText(targetText)
+    const spoken = normalizeText(result)
+    const distance = levenshtein(target, spoken)
+    const maxLen = Math.max(target.length, spoken.length, 1)
+    const similarity = Math.round(((maxLen - distance) / maxLen) * 100)
 
-      recognition.onresult = (event) => {
-        const result = event.results[0][0].transcript
-        transcript.value = result
-
-        const target = normalizeText(targetText)
-        const spoken = normalizeText(result)
-        const distance = levenshtein(target, spoken)
-        const maxLen = Math.max(target.length, spoken.length, 1)
-        const similarity = Math.round(((maxLen - distance) / maxLen) * 100)
-
-        score.value = Math.max(0, Math.min(100, similarity))
-        isListening.value = false
-        resolved = true
-        resolve({ transcript: result, score: score.value })
-      }
-
-      recognition.onerror = (event) => {
-        isListening.value = false
-        if (!resolved && event.error !== 'aborted') {
-          resolved = true
-          reject(new Error(event.error))
-        }
-      }
-
-      recognition.onend = () => {
-        isListening.value = false
-        if (!resolved) {
-          resolved = true
-          resolve({ transcript: '', score: 0 })
-        }
-      }
-
-      recognition.start()
-    })
+    score.value = Math.max(0, Math.min(100, similarity))
+    return { transcript: result, score: score.value }
   }
 
   function stopListening() {
-    if (recognition) {
-      recognition.abort()
-      recognition = null
-    }
+    if (isListening.value) stopSTT()
+    checkId++
     isListening.value = false
   }
 

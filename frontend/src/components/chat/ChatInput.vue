@@ -1,7 +1,8 @@
 <script setup>
-import { ref, watch, computed, nextTick, onBeforeUnmount } from 'vue'
+import { ref, watch, nextTick, onBeforeUnmount } from 'vue'
 import { useI18n } from 'vue-i18n'
 import SpeechRescue from './SpeechRescue.vue'
+import { isSTTAvailable, listenOnce, stopListening } from '../../utils/stt'
 
 const { t } = useI18n()
 
@@ -61,17 +62,11 @@ function focus() {
   inputRef.value?.focus()
 }
 
-// Speech-to-Text
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
-const speechSupported = computed(() => !!SpeechRecognition)
+// Speech-to-Text (native recognition in the iOS app, Web Speech API in browsers)
+const speechSupported = isSTTAvailable()
 const isListening = ref(false)
-let recognition = null
-
-const LANG_MAP = {
-  en: 'en-US',
-  ja: 'ja-JP',
-  zh: 'zh-TW',
-}
+let listenId = 0
+let unmounted = false
 
 function toggleSpeech() {
   if (isListening.value) {
@@ -81,54 +76,39 @@ function toggleSpeech() {
   }
 }
 
-function startSpeech() {
-  if (!SpeechRecognition || isListening.value) return
+async function startSpeech() {
+  if (!speechSupported || isListening.value) return
 
-  recognition = new SpeechRecognition()
-  recognition.lang = LANG_MAP[props.language] || 'en-US'
-  recognition.interimResults = true
-  recognition.continuous = false
-
-  let finalTranscript = localValue.value
-
-  recognition.onresult = (event) => {
-    let interim = ''
-    for (let i = event.resultIndex; i < event.results.length; i++) {
-      if (event.results[i].isFinal) {
-        finalTranscript += event.results[i][0].transcript
-      } else {
-        interim += event.results[i][0].transcript
-      }
-    }
-    const combined = finalTranscript + interim
+  const id = ++listenId
+  const isCurrent = () => id === listenId && !unmounted
+  const base = localValue.value
+  const write = (text) => {
+    const combined = base + text
     localValue.value = combined
     emit('update:modelValue', combined)
   }
 
-  recognition.onend = () => {
-    isListening.value = false
-    recognition = null
-  }
-
-  recognition.onerror = (event) => {
-    console.error('Speech recognition error:', event.error)
-    isListening.value = false
-    recognition = null
-  }
-
-  recognition.start()
   isListening.value = true
+  try {
+    const heard = await listenOnce({
+      language: props.language,
+      onInterim: (text) => { if (isCurrent()) write(text) },
+    })
+    if (isCurrent()) write(heard)
+  } catch (error) {
+    if (isCurrent()) console.error('Speech recognition error:', error?.message)
+  } finally {
+    if (isCurrent()) isListening.value = false
+  }
 }
 
 function stopSpeech() {
-  if (recognition) {
-    recognition.stop()
-  }
-  isListening.value = false
+  if (isListening.value) stopListening()
 }
 
 onBeforeUnmount(() => {
   stopSpeech()
+  unmounted = true
 })
 
 defineExpose({ focus })

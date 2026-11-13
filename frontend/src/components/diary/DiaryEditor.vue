@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n'
 import DiaryPromptBanner from './DiaryPromptBanner.vue'
 import CmButton from '../ui/CmButton.vue'
 import CmProgress from '../ui/CmProgress.vue'
+import { isSTTAvailable, listenOnce, stopListening } from '../../utils/stt'
 
 const { t } = useI18n()
 
@@ -40,18 +41,12 @@ const body = ref('')
 const promptDismissed = ref(false)
 const textareaRef = ref(null)
 
-// Speech-to-text
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
-const speechSupported = computed(() => !!SpeechRecognition)
+// Speech-to-text (native recognition in the iOS app, Web Speech API in browsers)
+const speechSupported = isSTTAvailable()
 const isListening = ref(false)
 const isFocused = ref(false)
-let recognition = null
-
-const LANG_MAP = {
-  en: 'en-US',
-  ja: 'ja-JP',
-  zh: 'zh-TW',
-}
+let listenId = 0
+let unmounted = false
 
 // Word/character count
 const isCJK = computed(() => ['ja', 'zh'].includes(props.language))
@@ -148,6 +143,7 @@ onMounted(() => {
 onBeforeUnmount(() => {
   clearTimeout(saveTimeout)
   stopSpeech()
+  unmounted = true
 })
 
 // Speech-to-text methods
@@ -159,48 +155,29 @@ function toggleSpeech() {
   }
 }
 
-function startSpeech() {
-  if (!SpeechRecognition || isListening.value) return
+async function startSpeech() {
+  if (!speechSupported || isListening.value) return
 
-  recognition = new SpeechRecognition()
-  recognition.lang = LANG_MAP[props.language] || 'en-US'
-  recognition.interimResults = true
-  recognition.continuous = false
+  const id = ++listenId
+  const isCurrent = () => id === listenId && !unmounted
+  const base = body.value
 
-  let finalTranscript = body.value
-
-  recognition.onresult = (event) => {
-    let interim = ''
-    for (let i = event.resultIndex; i < event.results.length; i++) {
-      if (event.results[i].isFinal) {
-        finalTranscript += event.results[i][0].transcript
-      } else {
-        interim += event.results[i][0].transcript
-      }
-    }
-    body.value = finalTranscript + interim
-  }
-
-  recognition.onend = () => {
-    isListening.value = false
-    recognition = null
-  }
-
-  recognition.onerror = (event) => {
-    console.error('Speech recognition error:', event.error)
-    isListening.value = false
-    recognition = null
-  }
-
-  recognition.start()
   isListening.value = true
+  try {
+    const heard = await listenOnce({
+      language: props.language,
+      onInterim: (text) => { if (isCurrent()) body.value = base + text },
+    })
+    if (isCurrent()) body.value = base + heard
+  } catch (error) {
+    if (isCurrent()) console.error('Speech recognition error:', error?.message)
+  } finally {
+    if (isCurrent()) isListening.value = false
+  }
 }
 
 function stopSpeech() {
-  if (recognition) {
-    recognition.stop()
-  }
-  isListening.value = false
+  if (isListening.value) stopListening()
 }
 
 // Handle prompt usage

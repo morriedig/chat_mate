@@ -19,6 +19,7 @@ import CmButton from './ui/CmButton.vue'
 import CmChip from './ui/CmChip.vue'
 import CmIconButton from './ui/CmIconButton.vue'
 import PracticeCard from './practice/PracticeCard.vue'
+import { isSTTAvailable, listenOnce, stopListening } from '../utils/stt'
 
 const { t } = useI18n()
 const router = useRouter()
@@ -99,54 +100,50 @@ function insertStarter(text) {
 }
 
 // ---------- Speech-to-text (same approach as DiaryEditor / ChatInput) ----------
-const SpeechRecognition = typeof window !== 'undefined' && (window.SpeechRecognition || window.webkitSpeechRecognition)
-const speechSupported = !!SpeechRecognition
+const speechSupported = isSTTAvailable()
 const isListening = ref(false)
-let recognition = null
+let listenId = 0
+let unmounted = false
 
 function toggleSpeech() {
   if (isListening.value) stopSpeech()
   else startSpeech()
 }
 
-function startSpeech() {
-  if (!SpeechRecognition || isListening.value) return
-  recognition = new SpeechRecognition()
-  recognition.lang = 'en-US' // answers are always in English
-  recognition.interimResults = true
-  recognition.continuous = false
+async function startSpeech() {
+  if (!speechSupported || isListening.value) return
+  const id = ++listenId
+  const isCurrent = () => id === listenId && !unmounted
+  const base = body.value && !/\s$/.test(body.value) ? body.value + ' ' : body.value
+  // Without anything heard the field stays as it was (no dangling separator)
+  const original = body.value
 
-  let finalTranscript = body.value && !/\s$/.test(body.value) ? body.value + ' ' : body.value
-
-  recognition.onresult = (event) => {
-    let interim = ''
-    for (let i = event.resultIndex; i < event.results.length; i++) {
-      if (event.results[i].isFinal) finalTranscript += event.results[i][0].transcript
-      else interim += event.results[i][0].transcript
-    }
-    body.value = finalTranscript + interim
-  }
-  recognition.onend = () => {
-    isListening.value = false
-    recognition = null
-  }
-  recognition.onerror = (event) => {
-    console.error('Speech recognition error:', event.error)
-    isListening.value = false
-    recognition = null
-  }
-  recognition.start()
   isListening.value = true
+  try {
+    const heard = await listenOnce({
+      language: 'en', // answers are always in English
+      onInterim: (text) => { if (isCurrent()) body.value = base + text },
+    })
+    if (isCurrent()) body.value = heard ? base + heard : original
+  } catch (error) {
+    if (isCurrent()) console.error('Speech recognition error:', error?.message)
+  } finally {
+    if (isCurrent()) isListening.value = false
+  }
 }
 
 function stopSpeech() {
-  if (recognition) recognition.stop()
-  isListening.value = false
+  if (isListening.value) stopListening()
 }
 
 async function handleSubmit() {
   if (!canSubmit.value) return
-  stopSpeech()
+  // Submitting what's on screen: drop any transcript that arrives after this
+  if (isListening.value) {
+    listenId++
+    isListening.value = false
+    stopListening()
+  }
   clearTimeout(draftTimer)
   submitting.value = true
   try {
@@ -239,6 +236,7 @@ onMounted(() => {
 onBeforeUnmount(() => {
   stopTimer()
   stopSpeech()
+  unmounted = true
   clearTimeout(draftTimer)
   if (isWriting.value) saveDraft(body.value)
 })
