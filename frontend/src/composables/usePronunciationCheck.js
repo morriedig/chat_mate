@@ -4,6 +4,10 @@ import { isSTTAvailable, listenOnce, stopListening as stopSTT } from '../utils/s
 // One word or phrase: end the turn sooner than a full answer
 const PAUSE_MS = 1500
 
+// Only the latest check (from any instance) may take a result: a newer check stops the mic
+// for everyone, so an older one's result is the cut-off speech of a different attempt
+let owner = 0
+
 function levenshtein(a, b) {
   const m = a.length
   const n = b.length
@@ -30,7 +34,7 @@ export function usePronunciationCheck() {
   const score = ref(null)
   const isSupported = isSTTAvailable()
 
-  let checkId = 0
+  let myCheck = 0
 
   async function checkPronunciation(targetText, language) {
     if (!isSupported) {
@@ -39,8 +43,9 @@ export function usePronunciationCheck() {
 
     // A new check replaces any running listen (this one's or another mic's); the old result is ignored
     stopSTT()
-    const id = ++checkId
-    const isCurrent = () => id === checkId
+    const id = ++owner
+    myCheck = id
+    const isCurrent = () => id === owner
 
     isListening.value = true
     transcript.value = ''
@@ -54,7 +59,7 @@ export function usePronunciationCheck() {
       if (!isCurrent()) return { transcript: '', score: 0 }
       throw error
     } finally {
-      if (isCurrent()) isListening.value = false
+      if (myCheck === id) isListening.value = false
     }
     if (!isCurrent()) return { transcript: '', score: 0 }
     // Nothing heard: report it as an error, like the browser's no-speech
@@ -72,8 +77,12 @@ export function usePronunciationCheck() {
   }
 
   function stopListening() {
-    if (isListening.value) stopSTT()
-    checkId++
+    // Only touch the mic (and the shared owner) while this instance's check is the running one
+    if (isListening.value && myCheck === owner) {
+      stopSTT()
+      owner++
+    }
+    myCheck = 0
     isListening.value = false
   }
 

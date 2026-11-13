@@ -100,4 +100,30 @@ describe('usePronunciationCheck', () => {
     expect(await result).toEqual({ transcript: '', score: 0 })
     expect(score.value).toBeNull()
   })
+
+  it("a check started by another instance makes the older one ignore its result", async () => {
+    const a = usePronunciationCheck()
+    const b = usePronunciationCheck()
+    const resultA = a.checkPronunciation('apple', 'en')
+    const pendingA = pending
+    const resultB = b.checkPronunciation('banana', 'en')
+    const pendingB = pending
+
+    // B's start stopped the mic; A's listen ends with the speech it cut off
+    pendingA.resolve('apple')
+    expect(await resultA).toEqual({ transcript: '', score: 0 })
+    expect(a.transcript.value).toBe('')
+    expect(a.score.value).toBeNull()
+    expect(a.isListening.value).toBe(false)
+    expect(b.isListening.value).toBe(true)
+
+    // A stopping now must not cut off B
+    stopListening.mockClear()
+    a.stopListening()
+    expect(stopListening).not.toHaveBeenCalled()
+
+    pendingB.resolve('banana')
+    expect(await resultB).toEqual({ transcript: 'banana', score: 100 })
+    expect(b.score.value).toBe(100)
+  })
 })

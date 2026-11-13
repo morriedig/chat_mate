@@ -30,6 +30,24 @@ export function isSTTAvailable() {
 // The listen in progress: { finish, extend } for whichever path is running
 let current = null
 
+// The native plugin keeps a session active until stop() resolves (final result or its fallback)
+// and rejects start() meanwhile: every in-flight stop, chained, so a new listen can wait for it
+let nativeStopping = null
+
+function stopNative() {
+  const own = (async () => {
+    try { await NativeRecognition.stop() } catch { /* already stopped */ }
+  })()
+  const all = Promise.all([nativeStopping, own])
+  nativeStopping = all
+  all.then(() => { if (nativeStopping === all) nativeStopping = null })
+  return own
+}
+
+async function waitForNativeStop() {
+  while (nativeStopping) await nativeStopping
+}
+
 /**
  * Silence/max timers shared by both paths.
  * waitForSilence(ms) restarts the quiet countdown; extend() gives one longer countdown.
@@ -60,6 +78,8 @@ async function listenNative({ language, onInterim, pauseMs, maxMs }) {
 
   // The plugin refuses a second start: let the running listen finish first
   if (previous) await previous.finish()
+  // A listen stopped just before this one may still be closing its session
+  await waitForNativeStop()
 
   let permission
   try {
@@ -96,7 +116,7 @@ async function listenNative({ language, onInterim, pauseMs, maxMs }) {
     const finish = async () => {
       if (done) return
       cleanup()
-      try { await NativeRecognition.stop() } catch { /* already stopped */ }
+      await stopNative()
       resolve(text.trim())
     }
     const timers = createTimers({ pauseMs, maxMs, onDone: finish })

@@ -91,13 +91,17 @@ describe('stt (web)', () => {
   })
 })
 
-// Stand-in for the native plugin: refuses a second start like the real one, and (like the
-// iOS plugin) resolves stop() before it sends that session's "stopped" event
+// Stand-in for the native plugin, like the iOS one: start() is refused while a session is
+// active, and stop() keeps the session active until it resolves (after a delay, waiting for the
+// final result); that session's "stopped" event comes after stop() resolves
+const STOP_DELAY_MS = 20
+
 function createNativePlugin() {
   const listeners = {}
   const emit = (name, event) => (listeners[name] || []).forEach(cb => cb(event))
   const plugin = {
     running: false,
+    stopping: null,
     session: 0,
     permissionGate: null,
     checkPermissions: vi.fn(async () => {
@@ -110,16 +114,22 @@ function createNativePlugin() {
       return { remove: () => { listeners[name] = listeners[name].filter(cb => cb !== callback) } }
     }),
     start: vi.fn(async () => {
-      if (plugin.running) throw new Error('already running')
+      if (plugin.running) throw new Error('Speech recognition is already running.')
       plugin.running = true
       plugin.session++
       emit('listeningState', { state: 'started', sessionId: plugin.session, status: 'started' })
     }),
-    stop: vi.fn(async () => {
-      if (!plugin.running) return
-      plugin.running = false
+    stop: vi.fn(() => {
+      if (!plugin.running) return Promise.resolve()
+      if (plugin.stopping) return plugin.stopping
       const sessionId = plugin.session
-      setTimeout(() => emit('listeningState', { state: 'stopped', sessionId, status: 'stopped' }), 0)
+      plugin.stopping = new Promise(resolve => setTimeout(() => {
+        plugin.running = false
+        plugin.stopping = null
+        resolve()
+        setTimeout(() => emit('listeningState', { state: 'stopped', sessionId, status: 'stopped' }), 0)
+      }, STOP_DELAY_MS))
+      return plugin.stopping
     }),
     say: (text) => emit('partialResults', { matches: [text] }),
     emit,
@@ -154,8 +164,7 @@ describe('stt (native)', () => {
 
     const second = listenOnce()
     expect(await first).toBe('first words')
-    await settle()
-    expect(plugin.start).toHaveBeenCalledTimes(2)
+    await vi.waitFor(() => expect(plugin.start).toHaveBeenCalledTimes(2))
     expect(plugin.running).toBe(true)
 
     // The new listen still has its stop control
@@ -201,9 +210,7 @@ describe('stt (native)', () => {
 
     // Session 1's "stopped" is still on its way when the next listen starts
     const second = listenOnce()
-    await settle()
-    await settle()
-    expect(plugin.start).toHaveBeenCalledTimes(2)
+    await vi.waitFor(() => expect(plugin.start).toHaveBeenCalledTimes(2))
     plugin.say('still here')
 
     let settled = false
@@ -215,5 +222,23 @@ describe('stt (native)', () => {
     // The recognizer ending session 2 by itself does end this listen
     plugin.emit('listeningState', { state: 'stopped', sessionId: 2, status: 'stopped' })
     expect(await second).toBe('still here')
+  })
+
+  it('a listen started right after stopListening waits for the stop to finish', async () => {
+    const { listenOnce, stopListening } = await loadNativeStt()
+    const first = listenOnce()
+    await vi.waitFor(() => expect(plugin.start).toHaveBeenCalledTimes(1))
+    plugin.say('first words')
+
+    stopListening()
+    const second = listenOnce()
+    expect(await first).toBe('first words')
+    await vi.waitFor(() => expect(plugin.start).toHaveBeenCalledTimes(2))
+    expect(plugin.running).toBe(true)
+
+    plugin.say('second words')
+    stopListening()
+    expect(await second).toBe('second words')
+    expect(plugin.running).toBe(false)
   })
 })

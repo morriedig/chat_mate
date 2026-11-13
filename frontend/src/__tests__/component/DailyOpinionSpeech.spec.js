@@ -112,4 +112,34 @@ describe('DailyOpinionScreen speech-to-text', () => {
     await flushPromises()
     expect(textarea(wrapper).element.value).toBe('I agree. Because')
   })
+
+  it('stop button calls stopListening', async () => {
+    const wrapper = await mountWithText('I agree.')
+    await micButton(wrapper).trigger('click')
+    await micButton(wrapper).trigger('click')
+    expect(stopListening).toHaveBeenCalledTimes(1)
+  })
+
+  it('logs a recognition error and resets the mic', async () => {
+    const error = vi.spyOn(console, 'error').mockImplementation(() => {})
+    const wrapper = await mountWithText('I agree.')
+    await micButton(wrapper).trigger('click')
+    listens[0].reject(new Error('not-allowed'))
+    await flushPromises()
+    expect(error).toHaveBeenCalledWith('Speech recognition error:', 'not-allowed')
+    expect(micButton(wrapper).attributes('aria-pressed')).toBe('false')
+    error.mockRestore()
+  })
+
+  it('stops on unmount and ignores a result that arrives afterwards', async () => {
+    const wrapper = await mountWithText('I agree.')
+    await micButton(wrapper).trigger('click')
+    wrapper.unmount()
+    expect(stopListening).toHaveBeenCalledTimes(1)
+
+    listens[0].options.onInterim('too')
+    listens[0].resolve('too late')
+    await flushPromises()
+    expect(wrapper.vm.body).toBe('I agree.')
+  })
 })
