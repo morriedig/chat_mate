@@ -398,7 +398,7 @@ chat:
           text:
             en: "You have a point there, but I beg to differ on the conclusion. The reason is that the data shows something different."
             ja: "一理ありますが、結論については失礼ながら異論があります。その理由は、データが別のことを示しているからです。"
-            zh: "你有道理，但對於結論我恕我不同意。原因是數據顯示的是不同的結果。"
+            zh: "你說得有道理，但結論我不太同意，因為數據顯示的結果不一樣。"
 
 quiz:
   questionsPerRound: 5

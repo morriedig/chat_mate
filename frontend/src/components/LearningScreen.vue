@@ -12,6 +12,7 @@ import { usePreLessonProgress } from '../composables/usePreLessonProgress'
 import { useMotherTongue } from '../composables/useMotherTongue'
 import { pickMissionTargets, createMission } from '../composables/useConnectorMission'
 import { characters, levels } from '../data/characters.js'
+import { chapterSymbol } from '../utils/chapterSymbol'
 import VocabularyCard from './learning/VocabularyCard.vue'
 import FlashcardMode from './learning/FlashcardMode.vue'
 import QuizMode from './learning/QuizMode.vue'
@@ -71,38 +72,6 @@ const isPreLessonSelected = ref(false)
 const currentCharacters = ref([])
 const menuOpen = ref(false) // header overflow menu (phones)
 
-// Chapter YAML icons are emoji; map them to Material Symbols by topic (unknown → menu_book)
-const CHAPTER_SYMBOLS = {
-  '🍽️': 'restaurant',
-  '👨‍👩‍👧‍👦': 'group',
-  '🏠': 'home',
-  '🌤️': 'partly_cloudy_day',
-  '⏰': 'schedule',
-  '☀️': 'wb_sunny',
-  '🚌': 'directions_bus',
-  '👕': 'apparel',
-  '🏥': 'local_hospital',
-  '🎮': 'sports_esports',
-  '📖': 'auto_stories',
-  '💬': 'forum',
-  '🎭': 'theater_comedy',
-  '🧳': 'luggage',
-  '🎬': 'movie',
-  '🔮': 'event_upcoming',
-  '🏆': 'workspace_premium',
-  '🪪': 'badge',
-  '💡': 'lightbulb',
-  '⚡': 'speed',
-  '🙅': 'block',
-  '🤝': 'handshake',
-  '❓': 'help',
-  '🗣️': 'record_voice_over',
-  '☝️': 'info',
-  '🤔': 'psychology_alt',
-}
-function chapterSymbol(icon) {
-  return CHAPTER_SYMBOLS[icon] || 'menu_book'
-}
 // Foundation icons are script glyphs (あ, b, 声); show them as type, never emoji
 function glyphFor(icon) {
   return icon && /^[\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Han}A-Za-z]{1,2}$/u.test(icon) ? icon : '文'

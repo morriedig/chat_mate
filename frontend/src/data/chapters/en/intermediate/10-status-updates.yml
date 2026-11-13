@@ -1,0 +1,473 @@
+# Chapter: Week 10 - Status Updates & Blockers
+# Phrases for telling your team where your work stands: what's done,
+# what's next, and what's stopping you.
+# Structure: Done -> Next -> Blocker (then ask for help if you need it).
+meta:
+  id: status-updates
+  title:
+    en: "Status Updates & Blockers"
+    ja: "進捗報告と困りごと"
+    zh: "回報進度與卡關"
+  description:
+    en: "Tell your team where your work stands: what you've finished, what's next, and what's blocking you. Useful for stand-ups, 1-on-1s and quick chat updates."
+    ja: "終わったこと、次にやること、止まっていることを短く伝えましょう。朝会や 1on1、チャットでの進捗報告に使えます。"
+    zh: "簡短講清楚：做完了什麼、接下來做什麼、卡在哪裡。站會、一對一和群組回報進度都用得到。"
+  icon: "update"
+  order: 10
+  level: intermediate
+
+words:
+  # Structure
+  - id: done-next-blocker
+    word:
+      en: "Done → Next → Blocker"
+      ja: "完了 → 次 → 困りごと"
+      zh: "做完 → 接下來 → 卡關"
+    reading: "DUN, NEKST, BLOK-er"
+    phonetic: "/dʌn nekst ˈblɑːkər/"
+    description:
+      en: "A three-part status update: what you finished, what you'll do next, and what's stopping you. Keep each part to one sentence."
+      ja: "進捗報告の3つの型：終わったこと → 次にやること → 止まっていること。それぞれ一文で十分。"
+      zh: "回報進度的三段式：做完什麼 → 接下來做什麼 → 卡在哪裡。每段一句就夠。"
+    sentence:
+      en: "I've finished the login page. Next, I'll fix the search bug. I'm blocked by the missing API key."
+      ja: "ログイン画面は終わりました。次は検索のバグを直します。API キーがまだ届いていないので止まっています。"
+      zh: "登入頁做完了。接下來要修搜尋的 bug。目前卡在還沒拿到 API key。"
+
+  # Opening
+  - id: quick-update
+    word:
+      en: "Quick update"
+      ja: 簡単に報告です
+      zh: 跟大家更新一下
+    reading: "KWIK UP-dayt"
+    phonetic: "/kwɪk ˈʌpdeɪt/"
+    description:
+      en: "A short, friendly way to start a status message in a meeting or in chat. Often followed by a colon."
+      ja: "会議やチャットで進捗を伝え始める、短くて感じのいい言い方。後ろにコロンを付けることが多い。"
+      zh: "開會或在群組裡開始回報進度的簡短說法，後面常接冒號。"
+    sentence:
+      en: "Quick update: the client signed the contract this morning."
+      ja: "簡単に報告です。今朝、クライアントが契約にサインしました。"
+      zh: "跟大家更新一下：客戶今天早上簽約了。"
+
+  # Done
+  - id: ive-finished
+    word:
+      en: "I've finished"
+      ja: 〜が終わりました
+      zh: 我已經做完了
+    reading: "ayv FIN-isht"
+    phonetic: "/aɪv ˈfɪnɪʃt/"
+    description:
+      en: "Present perfect: the work is done and the result matters now. With a past time word, use the past tense: ✗ I've finished it yesterday → ✓ I finished it yesterday."
+      ja: "現在完了：作業が終わり、その結果が今につながっている。過去の時間を言うときは過去形。✗ I've finished it yesterday → ✓ I finished it yesterday"
+      zh: "現在完成式：事情做完了，結果跟現在有關。如果講到過去的時間，要用過去式。✗ I've finished it yesterday → ✓ I finished it yesterday"
+    sentence:
+      en: "I've finished the first draft of the proposal, so you can review it anytime."
+      ja: "企画書の初稿が終わったので、いつでも確認してください。"
+      zh: "提案的初稿我已經寫好了，你隨時可以看。"
+
+  - id: so-far
+    word:
+      en: so far
+      ja: 今のところ
+      zh: 到目前為止
+    reading: "soh FAR"
+    phonetic: "/soʊ ˈfɑːr/"
+    description:
+      en: "Shows progress up to now, with more still to come. Usually used with the present perfect."
+      ja: "今までの進み具合を表し、まだ続きがあることを示す。現在完了と一緒に使うことが多い。"
+      zh: "表示到現在為止的進度，後面還沒做完。通常搭配現在完成式。"
+    sentence:
+      en: "So far, we've tested about 80% of the pages."
+      ja: "今のところ、ページの約8割をテストしました。"
+      zh: "到目前為止，我們大概測了八成的頁面。"
+
+  # In progress
+  - id: im-working-on
+    word:
+      en: "I'm working on"
+      ja: 〜に取り組んでいます
+      zh: 我正在處理
+    reading: "aym WER-king on"
+    phonetic: "/aɪm ˈwɜːrkɪŋ ɑːn/"
+    description:
+      en: "Says what you're doing right now. Follow it with a noun or a verb + -ing. ✗ I'm working on fix the bug → ✓ I'm working on fixing the bug."
+      ja: "今やっていることを言う。後ろは名詞か動詞の -ing 形。✗ I'm working on fix the bug → ✓ I'm working on fixing the bug"
+      zh: "講你現在手上在做的事，後面接名詞或動詞 -ing。✗ I'm working on fix the bug → ✓ I'm working on fixing the bug"
+    sentence:
+      en: "I'm working on the budget slides for Thursday's meeting."
+      ja: "木曜の会議用の予算スライドに取り組んでいます。"
+      zh: "我正在做週四開會要用的預算簡報。"
+
+  - id: almost-done
+    word:
+      en: almost done
+      ja: もうすぐ終わる
+      zh: 快好了
+    reading: "AWL-mohst DUN"
+    phonetic: "/ˈɔːlmoʊst dʌn/"
+    description:
+      en: "Most of the work is finished. Add 'with' + the task: I'm almost done with the report."
+      ja: "ほとんど終わっている。作業名を言うときは with を付ける：I'm almost done with the report."
+      zh: "大部分做完了。要講是哪件事就加 with：I'm almost done with the report."
+    sentence:
+      en: "I'm almost done with the translation. I just need to check the numbers."
+      ja: "翻訳はもうすぐ終わります。あとは数字を確認するだけです。"
+      zh: "翻譯快好了，只剩數字要再核對一下。"
+
+  - id: on-track
+    word:
+      en: on track
+      ja: 予定どおり
+      zh: 進度正常
+    reading: "on TRAK"
+    phonetic: "/ɑːn ˈtræk/"
+    description:
+      en: "Everything is going as planned and you'll meet the deadline. 'We're on track for Friday.'"
+      ja: "計画どおりに進んでいて、締め切りに間に合う。We're on track for Friday."
+      zh: "一切照計畫走，期限趕得上。We're on track for Friday."
+    sentence:
+      en: "We're still on track to launch the new website on June 3."
+      ja: "新しいウェブサイトは、予定どおり6月3日に公開できそうです。"
+      zh: "新網站還是照進度，六月三號上線。"
+
+  - id: behind-schedule
+    word:
+      en: behind schedule
+      ja: 予定より遅れている
+      zh: 進度落後
+    reading: "bih-HYND SKEJ-ool"
+    phonetic: "/bɪˈhaɪnd ˈskedʒuːl/"
+    description:
+      en: "Slower than planned. Say how much and why, then give a new plan: 'We're two days behind schedule because…'"
+      ja: "予定より遅れている。どれくらい遅れているか、理由、次の対応までセットで伝えるとよい。"
+      zh: "比原本計畫慢。最好一起講落後多少、原因，還有接下來怎麼補。"
+    sentence:
+      en: "We're about two days behind schedule because the vendor sent the files late."
+      ja: "業者からのファイルが遅れたので、予定より2日ほど遅れています。"
+      zh: "因為廠商檔案晚給，我們進度大概落後兩天。"
+
+  # Blockers
+  - id: blocked-by
+    word:
+      en: blocked by
+      ja: 〜のせいで止まっている
+      zh: 卡在
+    reading: "BLOKT by"
+    phonetic: "/blɑːkt baɪ/"
+    description:
+      en: "Something outside your control is stopping your work. Name the thing: 'I'm blocked by the missing login details.'"
+      ja: "自分ではどうにもできない理由で作業が止まっている。原因をはっきり言う。"
+      zh: "因為你控制不了的事情，工作停住了。要講清楚是被什麼卡住。"
+    sentence:
+      en: "I can't test the payment page yet. I'm blocked by the missing test account."
+      ja: "決済画面のテストはまだできません。テスト用アカウントがないので止まっています。"
+      zh: "付款頁還沒辦法測，因為卡在還沒有測試帳號。"
+
+  - id: waiting-on
+    word:
+      en: waiting on
+      ja: 〜待ち
+      zh: 在等
+    reading: "WAY-ting on"
+    phonetic: "/ˈweɪtɪŋ ɑːn/"
+    description:
+      en: "Common at work for 'waiting for' something you need from another person or team."
+      ja: "仕事でよく使う「〜待ち」。ほかの人やチームからもらうものを待っているとき。"
+      zh: "職場常用，意思跟 waiting for 一樣，指在等別人或其他部門給你東西。"
+    sentence:
+      en: "I'm still waiting on the final numbers from finance."
+      ja: "経理からの最終的な数字をまだ待っています。"
+      zh: "我還在等財務那邊的最終數字。"
+
+  - id: depends-on
+    word:
+      en: depends on
+      ja: 〜次第
+      zh: 要看・取決於
+    reading: "dih-PENDZ on"
+    phonetic: "/dɪˈpendz ɑːn/"
+    description:
+      en: "Shows that your timeline is tied to something else. Note the -s: 'It depends on…', not 'It depend on…'."
+      ja: "スケジュールが別のことに左右される。-s を忘れずに：It depends on…（✗ It depend on…）"
+      zh: "表示你的時程要看別的事情。注意要加 -s：It depends on…（✗ It depend on…）"
+    sentence:
+      en: "The launch date depends on when legal approves the new terms."
+      ja: "リリース日は、法務が新しい規約を承認するタイミング次第です。"
+      zh: "上線日期要看法務什麼時候核准新的條款。"
+
+  - id: could-use-help
+    word:
+      en: "I could use some help with"
+      ja: 〜を手伝ってもらえると助かります
+      zh: 想請你幫忙看一下
+    reading: "ay kood YOOZ suhm HELP with"
+    phonetic: "/aɪ kʊd juːz sʌm help wɪð/"
+    description:
+      en: "A soft, natural way to ask for help without sounding weak or demanding. Follow it with a noun or verb + -ing."
+      ja: "弱気にも強引にも聞こえない、自然な助けの求め方。後ろは名詞か動詞の -ing 形。"
+      zh: "自然又不卑不亢的求助說法，後面接名詞或動詞 -ing。"
+    sentence:
+      en: "I could use some help with the Excel formulas. Do you have ten minutes?"
+      ja: "Excel の関数を少し手伝ってもらえると助かります。10分ほどありますか？"
+      zh: "Excel 公式想請你幫忙看一下，你有十分鐘嗎？"
+
+  # Timing
+  - id: eta
+    word:
+      en: ETA
+      ja: 完了予定
+      zh: 預計完成時間
+    reading: "ee-tee-AY"
+    phonetic: "/ˌiː tiː ˈeɪ/"
+    description:
+      en: "Estimated time of arrival — at work, it means when something will be done. Say the letters: E-T-A."
+      ja: "estimated time of arrival の略。仕事では「いつ終わるか」の意味。E-T-A と一文字ずつ読む。"
+      zh: "estimated time of arrival 的縮寫，在職場是指「預計什麼時候好」。要一個字母一個字母唸：E-T-A。"
+    sentence:
+      en: "What's the ETA on the new logo? The printer needs it by Monday."
+      ja: "新しいロゴはいつごろできますか？印刷会社が月曜までに必要なんです。"
+      zh: "新 logo 預計什麼時候好？印刷廠週一前要拿到。"
+
+  - id: by-end-of-day
+    word:
+      en: by end of day
+      ja: 今日中に
+      zh: 今天下班前
+    reading: "by END uhv DAY"
+    phonetic: "/baɪ ˈend əv ˈdeɪ/"
+    description:
+      en: "Before the workday ends today. In writing it's often shortened to 'EOD'."
+      ja: "今日の業務時間が終わるまでに。文章では EOD と略すことが多い。"
+      zh: "今天下班之前。寫訊息時常縮寫成 EOD。"
+    sentence:
+      en: "I'll send you the updated price list by end of day."
+      ja: "更新した価格表を今日中にお送りします。"
+      zh: "更新後的價目表我今天下班前寄給你。"
+
+  # Next steps
+  - id: next-step
+    word:
+      en: "the next step is"
+      ja: 次のステップは
+      zh: 下一步是
+    reading: "thuh NEKST STEP iz"
+    phonetic: "/ðə nekst step ɪz/"
+    description:
+      en: "Tells people what happens next. Follow it with 'to' + verb: 'The next step is to…'"
+      ja: "次に何をするかを伝える。後ろは to＋動詞：The next step is to…"
+      zh: "告訴大家接下來要做什麼，後面接 to＋動詞：The next step is to…"
+    sentence:
+      en: "The design is approved, so the next step is to build a test version."
+      ja: "デザインが承認されたので、次のステップはテスト版を作ることです。"
+      zh: "設計已經通過了，所以下一步是做一個測試版。"
+
+  - id: follow-up
+    word:
+      en: follow up
+      ja: フォローする・確認の連絡をする
+      zh: 跟進・再追一下
+    reading: "FOL-oh UP"
+    phonetic: "/ˈfɑːloʊ ʌp/"
+    description:
+      en: "Contact someone again to check on something. As a verb it's two words (follow up with someone); as a noun it's 'a follow-up'."
+      ja: "もう一度連絡して状況を確認する。動詞は2語（follow up with 人）、名詞は a follow-up。"
+      zh: "再聯絡一次確認進度。當動詞時是兩個字（follow up with 某人），當名詞是 a follow-up。"
+    sentence:
+      en: "The design team hasn't replied yet, so I'll follow up with them after lunch."
+      ja: "デザインチームからまだ返事がないので、昼休みのあとに確認の連絡をします。"
+      zh: "設計組還沒回，我午餐後再去追一下。"
+
+  - id: heads-up
+    word:
+      en: heads-up
+      ja: 事前のお知らせ
+      zh: 先跟你說一聲
+    reading: "HEDZ-up"
+    phonetic: "/ˈhedz ʌp/"
+    description:
+      en: "An early warning so people aren't surprised later. 'Just a heads-up:' or 'Thanks for the heads-up.'"
+      ja: "あとで驚かせないための事前の知らせ。Just a heads-up: や Thanks for the heads-up. の形でよく使う。"
+      zh: "提早預告，免得對方之後措手不及。常說 Just a heads-up: 或 Thanks for the heads-up."
+    sentence:
+      en: "Just a heads-up: the server will be down for maintenance on Saturday night."
+      ja: "前もってお知らせです。土曜の夜、メンテナンスでサーバーが止まります。"
+      zh: "先跟大家說一聲：週六晚上伺服器會停機維護。"
+
+chat:
+  conversations:
+    - id: status-1-daily-standup
+      title:
+        en: "Daily Stand-up"
+        ja: "朝会での進捗報告"
+        zh: "早上的站立會議"
+      messages:
+        - role: partner
+          text:
+            en: "Morning, everyone. Let's go around quickly. How's it going on your side?"
+            ja: "みなさん、おはようございます。手短に一人ずつ回しましょう。そちらはどうですか？"
+            zh: "大家早。我們快速輪一圈，你那邊狀況怎麼樣？"
+        - role: user
+          text:
+            en: "Quick update: I've finished the sign-up form, and I'm working on the email reminders now."
+            ja: "簡単に報告です。登録フォームは終わって、今はリマインドメールに取り組んでいます。"
+            zh: "跟大家更新一下：註冊表單做完了，現在在處理提醒信。"
+        - role: partner
+          text:
+            en: "Nice. Anything stopping you?"
+            ja: "いいですね。何か止まっていることはありますか？"
+            zh: "不錯。有沒有卡住的地方？"
+        - role: user
+          text:
+            en: "Yes, I'm blocked by the email templates. I'm still waiting on the final wording from marketing."
+            ja: "はい、メールのテンプレートで止まっています。マーケティングからの最終的な文面をまだ待っているんです。"
+            zh: "有，我卡在信件範本。還在等行銷給最後的文案。"
+        - role: partner
+          text:
+            en: "Got it. I'll ping them after this. Are we still on track for Friday?"
+            ja: "了解です。このあと私から声をかけておきます。金曜日には間に合いそうですか？"
+            zh: "了解，等一下我去敲他們。我們週五還趕得上嗎？"
+        - role: user
+          text:
+            en: "It depends on when I get the text. If it comes today, I can finish by end of day tomorrow."
+            ja: "文面がいつ届くか次第です。今日届けば、明日中に終わらせられます。"
+            zh: "要看文案什麼時候給我。如果今天拿到，我明天下班前就能做完。"
+
+    - id: status-2-manager-check-in
+      title:
+        en: "Manager Check-in"
+        ja: "上司に進捗を聞かれる"
+        zh: "主管來問進度"
+      messages:
+        - role: partner
+          text:
+            en: "Hey, how's the quarterly report coming along? The directors want it next Tuesday."
+            ja: "四半期レポートの進み具合はどう？役員が来週の火曜日に見たいそうなんだ。"
+            zh: "欸，季報做得怎麼樣了？董事們下週二要看。"
+        - role: user
+          text:
+            en: "So far, I've finished the sales and cost sections. I'm almost done with the charts."
+            ja: "今のところ、売上とコストの部分は終わりました。グラフももうすぐ終わります。"
+            zh: "到目前為止，銷售跟成本的部分做完了，圖表也快好了。"
+        - role: partner
+          text:
+            en: "Great. So what's the ETA on the full report?"
+            ja: "いいね。じゃあ全体はいつごろ完成しそう？"
+            zh: "很好。那整份報告預計什麼時候好？"
+        - role: user
+          text:
+            en: "Just a heads-up: we're about a day behind schedule, because the Japan office sent their numbers late."
+            ja: "先にお伝えしておくと、日本オフィスからの数字が遅れたので、予定より1日ほど遅れています。"
+            zh: "先跟你說一聲：因為日本分公司數字晚給，我們進度大概落後一天。"
+        - role: partner
+          text:
+            en: "Thanks for the heads-up. Will it still be ready by Tuesday?"
+            ja: "教えてくれてありがとう。それでも火曜日には間に合う？"
+            zh: "謝謝你先講。那週二還來得及嗎？"
+        - role: user
+          text:
+            en: "Yes. The next step is to check the numbers with finance on Friday, so you'll have it on Monday afternoon."
+            ja: "はい。次のステップは金曜日に経理と数字を確認することなので、月曜の午後にはお渡しできます。"
+            zh: "可以。下一步是週五跟財務核對數字，所以週一下午就能給你。"
+
+    - id: status-3-asking-for-help
+      title:
+        en: "Asking for Help"
+        ja: "同僚に助けを求める"
+        zh: "卡關時找同事幫忙"
+      messages:
+        - role: partner
+          text:
+            en: "You look a bit stressed. Everything OK?"
+            ja: "ちょっと疲れてるみたいだね。大丈夫？"
+            zh: "你看起來有點煩，還好嗎？"
+        - role: user
+          text:
+            en: "Kind of. I'm working on the customer survey, but I'm blocked by the data export. It keeps failing."
+            ja: "まあね。顧客アンケートに取り組んでるんだけど、データの書き出しで止まってるの。何度やっても失敗するんだ。"
+            zh: "有一點。我在弄顧客問卷，但卡在資料匯出，一直失敗。"
+        - role: partner
+          text:
+            en: "Oh, I had the same problem last month. Want me to take a look?"
+            ja: "ああ、先月同じ問題があったよ。見てみようか？"
+            zh: "喔，我上個月也遇過一樣的問題。要我幫你看看嗎？"
+        - role: user
+          text:
+            en: "That would be great. I could use some help with the export settings. Do you have ten minutes after lunch?"
+            ja: "すごく助かる。書き出しの設定を手伝ってもらえるとありがたいな。昼休みのあと10分ある？"
+            zh: "太好了。匯出設定想請你幫忙看一下，你午餐後有十分鐘嗎？"
+        - role: partner
+          text:
+            en: "Sure. Is anyone else waiting on this?"
+            ja: "いいよ。これを待ってる人はほかにいる？"
+            zh: "可以啊。還有其他人在等這個嗎？"
+        - role: user
+          text:
+            en: "Yes, my manager. Once it works, I'll follow up with her and give her a new ETA."
+            ja: "うん、上司が。うまくいったら、上司に連絡して新しい完了予定を伝えるよ。"
+            zh: "有，我主管。等弄好了，我再跟她回報，給她一個新的預計完成時間。"
+
+quiz:
+  questionsPerRound: 5
+  xpReward: 25
+  # Fill-in-the-blank questions. Each answer must match a word above
+  # (case-insensitive) so the result feeds that word's SRS card.
+  cloze:
+    - sentence: "___ the monthly report. I sent it to Lisa this morning."
+      options: ["I've finished", "I'm working on", "I could use some help with", "Quick update"]
+      answer: "I've finished"
+      explain:
+        en: "The report is done (you already sent it), and that matters now — use the present perfect: 'I've finished'."
+        ja: "レポートはもう送っていて、その結果が今につながっているので現在完了の I've finished。"
+        zh: "報告已經寄出去了，是做完的事，所以用現在完成式 I've finished。"
+    - sentence: "I can't test the payment page yet. I'm ___ the missing test account."
+      options: ["blocked by", "on track", "almost done", "depends on"]
+      answer: "blocked by"
+      explain:
+        en: "Something outside your control is stopping you — 'blocked by' + the thing that's missing."
+        ja: "自分ではどうにもできない理由で止まっているので blocked by＋原因。"
+        zh: "被你控制不了的事卡住了，用 blocked by＋卡住你的東西。"
+    - sentence: "Good news — we're ___ to launch on June 3."
+      options: ["on track", "behind schedule", "blocked by", "waiting on"]
+      answer: "on track"
+      explain:
+        en: "'Good news' and a fixed date mean things are going as planned — 'on track'."
+        ja: "Good news で予定どおりの日付なので、計画どおりの on track。"
+        zh: "開頭說好消息，日期也沒變，代表照計畫走，用 on track。"
+    - sentence: "The vendor sent the files late, so we're two days ___."
+      options: ["behind schedule", "on track", "by end of day", "so far"]
+      answer: "behind schedule"
+      explain:
+        en: "The files came late, so the work is slower than planned — 'behind schedule'."
+        ja: "ファイルが遅れたので予定より遅れている。behind schedule。"
+        zh: "檔案晚到，進度比計畫慢，用 behind schedule。"
+    - sentence: "Just a ___: I'll be out of the office on Friday."
+      options: ["heads-up", "follow up", "ETA", "next step"]
+      answer: "heads-up"
+      explain:
+        en: "You're warning people early so they aren't surprised — 'Just a heads-up'."
+        ja: "あとで驚かせないための事前のお知らせなので Just a heads-up。"
+        zh: "提早預告，免得大家到時候嚇一跳，用 Just a heads-up。"
+    - sentence: "___, we've interviewed six people, and two look strong."
+      options: ["So far", "By end of day", "Quick update", "Almost done"]
+      answer: "So far"
+      explain:
+        en: "Progress up to now with more interviews to come, plus the present perfect (we've interviewed) — 'So far'."
+        ja: "まだ面接が続く中での今までの進み具合で、現在完了（we've interviewed）と合うので So far。"
+        zh: "講到目前為止的進度，後面還會繼續面試，又搭配現在完成式，所以用 So far。"
+    - sentence: "Our timeline ___ the client's approval. If they say yes this week, we can start."
+      options: ["depends on", "depend on", "waiting on", "blocked by"]
+      answer: "depends on"
+      explain:
+        en: "The timeline is tied to the approval. The subject 'our timeline' is singular, so add -s: 'depends on'."
+        ja: "スケジュールが承認次第。主語 our timeline は単数なので -s が付いて depends on。"
+        zh: "時程要看客戶核准。主詞 our timeline 是單數，動詞要加 -s：depends on。"
+    - sentence: "The design team hasn't replied yet. I'll ___ with them this afternoon."
+      options: ["follow up", "heads-up", "on track", "so far"]
+      answer: "follow up"
+      explain:
+        en: "You'll contact them again to check — the verb is two words: 'follow up with' someone."
+        ja: "もう一度連絡して確認するので、動詞の follow up with 人。"
+        zh: "要再聯絡對方確認，用動詞 follow up with 某人（兩個字）。"
