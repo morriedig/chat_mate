@@ -1,0 +1,454 @@
+# Chapter: Week 11 - Asking for Clarification
+# Phrases for when you didn't hear or didn't understand: ask the other person
+# to repeat, explain, or give an example, then say it back to check.
+# Structure: Ask -> Repeat back -> Confirm.
+meta:
+  id: asking-for-clarification
+  title:
+    en: "Asking for Clarification"
+    ja: "聞き返しと確認"
+    zh: "聽不懂時請對方說清楚"
+  description:
+    en: "Ask people to repeat, explain or give an example, then say it back to check. Useful in meetings, on calls and when instructions are unclear."
+    ja: "聞き取れなかったときや分からないときに、聞き返したり、例を頼んだり、言い直して確認する表現です。会議や電話で使えます。"
+    zh: "沒聽清楚或沒聽懂時，請對方再說一次、解釋或舉例，再複述確認。開會、講電話、收到不清楚的指示都用得到。"
+  icon: "help"
+  order: 11
+  level: intermediate
+
+words:
+  # Structure
+  - id: ask-repeat-confirm
+    word:
+      en: "Ask → Repeat back → Confirm"
+      ja: "質問 → 言い直す → 確認"
+      zh: "問 → 複述 → 確認"
+    reading: "ASK, rih-PEET BAK, kun-FERM"
+    phonetic: "/æsk rɪˈpiːt bæk kənˈfɜːrm/"
+    description:
+      en: "A three-step way to clear up confusion: ask a question, say it back in your own words, then confirm you've got it right."
+      ja: "分からないときの3ステップ：質問する → 自分の言葉で言い直す → 合っているか確認する。"
+      zh: "解決搞不清楚的三步驟：先問、再用自己的話複述、最後確認有沒有理解對。"
+    sentence:
+      en: "I asked what the deadline was, repeated it back, and confirmed it was Friday at noon."
+      ja: "締め切りを聞いて、言い直して、金曜の正午で合っているか確認しました。"
+      zh: "我先問了截止日，複述一次，再確認是週五中午。"
+
+  # Didn't hear
+  - id: say-that-again
+    word:
+      en: "could you say that again"
+      ja: もう一度言っていただけますか
+      zh: 可以再說一次嗎
+    reading: "kood yoo SAY that uh-GEN"
+    phonetic: "/kʊd juː seɪ ðæt əˈɡen/"
+    description:
+      en: "A polite way to ask someone to repeat. Start with 'Sorry,' so it sounds friendly: 'Sorry, could you say that again?'"
+      ja: "相手に繰り返してもらうときの丁寧な言い方。Sorry, を付けると感じがよい。"
+      zh: "禮貌地請對方重講一次，前面加 Sorry, 聽起來比較友善。"
+    sentence:
+      en: "Sorry, could you say that again? The connection cut out for a second."
+      ja: "すみません、もう一度言っていただけますか？一瞬、接続が切れてしまって。"
+      zh: "不好意思，可以再說一次嗎？剛剛連線斷了一下。"
+
+  - id: didnt-catch-that
+    word:
+      en: "I didn't catch that"
+      ja: 聞き取れませんでした
+      zh: 我沒聽清楚
+    reading: "ay DID-unt KACH that"
+    phonetic: "/aɪ ˈdɪdnt kætʃ ðæt/"
+    description:
+      en: "You couldn't hear it clearly. You can add the part you missed: 'I didn't catch the last part.' ✗ I didn't hear clear → ✓ I didn't catch that."
+      ja: "うまく聞き取れなかったときに。聞き逃した部分も言える：I didn't catch the last part."
+      zh: "表示沒聽清楚，也可以講是哪一段：I didn't catch the last part. ✗ I didn't hear clear → ✓ I didn't catch that."
+    sentence:
+      en: "I didn't catch the name of the client. Could you spell it for me?"
+      ja: "クライアントの名前が聞き取れませんでした。つづりを教えてもらえますか？"
+      zh: "客戶的名字我沒聽清楚，可以拼給我聽嗎？"
+
+  - id: speak-slower
+    word:
+      en: "could you speak a little slower"
+      ja: もう少しゆっくり話していただけますか
+      zh: 可以講慢一點嗎
+    reading: "kood yoo SPEEK uh LIT-ul SLOH-er"
+    phonetic: "/kʊd juː spiːk ə ˈlɪtl ˈsloʊər/"
+    description:
+      en: "Asks someone to slow down. Adding 'a little' keeps it gentle. ✗ Speak slowly please → ✓ Could you speak a little slower?"
+      ja: "ゆっくり話してもらうとき。a little を付けるとやわらかい。"
+      zh: "請對方放慢速度，加上 a little 語氣比較溫和。✗ Speak slowly please → ✓ Could you speak a little slower?"
+    sentence:
+      en: "Could you speak a little slower? I'm still taking notes."
+      ja: "もう少しゆっくり話していただけますか？まだメモを取っているところで。"
+      zh: "可以講慢一點嗎？我還在做筆記。"
+
+  - id: spell-that
+    word:
+      en: "could you spell that"
+      ja: つづりを教えていただけますか
+      zh: 可以拼一下嗎
+    reading: "kood yoo SPEL that"
+    phonetic: "/kʊd juː spel ðæt/"
+    description:
+      en: "Use it for names, emails and codes you can't hear clearly. You can also say 'How do you spell that?'"
+      ja: "名前、メールアドレス、コードなどが聞き取れないときに。How do you spell that? も同じ意味。"
+      zh: "名字、email、代碼聽不清楚時用，也可以說 How do you spell that?"
+    sentence:
+      en: "Could you spell that? Is it Wang with a W or a V?"
+      ja: "つづりを教えていただけますか？ W ですか、それとも V ですか？"
+      zh: "可以拼一下嗎？是 W 開頭還是 V 開頭？"
+
+  # Didn't understand
+  - id: not-sure-i-follow
+    word:
+      en: "I'm not sure I follow"
+      ja: ちょっと話についていけていないかもしれません
+      zh: 我不太確定有跟上
+    reading: "aym NOT SHOOR ay FOL-oh"
+    phonetic: "/aɪm nɑːt ʃʊr aɪ ˈfɑːloʊ/"
+    description:
+      en: "A soft way to say you're lost, without blaming the speaker. 'Follow' here means 'understand the explanation'."
+      ja: "話し手を責めずに、分からなくなったと伝えるやわらかい言い方。follow は「説明についていく」の意味。"
+      zh: "委婉地說你有點跟不上，不會讓對方覺得被責怪。這裡的 follow 是「跟上對方的說明」。"
+    sentence:
+      en: "I'm not sure I follow. How does the new process change my part of the work?"
+      ja: "ちょっと話についていけていないかもしれません。新しい流れだと、私の担当部分はどう変わりますか？"
+      zh: "我不太確定有跟上。新流程會怎麼影響我負責的部分？"
+
+  - id: what-do-you-mean-by
+    word:
+      en: "What do you mean by"
+      ja: 〜とはどういう意味ですか
+      zh: 你說的……是什麼意思
+    reading: "WUT doo yoo MEEN by"
+    phonetic: "/wʌt duː juː miːn baɪ/"
+    description:
+      en: "Asks what a word or phrase means. Follow it with the word: 'What do you mean by \"soft launch\"?' Tone matters: smile, or it can sound sharp."
+      ja: "言葉や表現の意味を聞くとき。後ろにその言葉を置く。口調がきつく聞こえやすいので、やわらかく言う。"
+      zh: "問某個字或說法的意思，後面直接接那個詞。語氣要放軟，不然聽起來會像在質疑。"
+    sentence:
+      en: "What do you mean by \"soft launch\"? Do we invite only a few customers?"
+      ja: "「ソフトローンチ」とはどういう意味ですか？ごく一部のお客様だけに案内するということですか？"
+      zh: "你說的 soft launch 是什麼意思？是只邀請少數客戶嗎？"
+
+  - id: do-you-mean
+    word:
+      en: "Do you mean"
+      ja: 〜ということですか
+      zh: 你的意思是
+    reading: "DOO yoo MEEN"
+    phonetic: "/duː juː miːn/"
+    description:
+      en: "Guess what the other person means and check. It's shorter and friendlier than 'What do you mean?'"
+      ja: "相手の意味を推測して確かめる。What do you mean? より短くて角が立たない。"
+      zh: "先猜對方的意思再確認，比單問 What do you mean? 更簡短、更友善。"
+    sentence:
+      en: "Do you mean we should send the invoice before the meeting, or after?"
+      ja: "請求書は会議の前に送るべきということですか、それとも後ですか？"
+      zh: "你的意思是請款單要在會議前寄，還是會議後寄？"
+
+  - id: give-me-an-example
+    word:
+      en: "could you give me an example"
+      ja: 例を挙げていただけますか
+      zh: 可以舉個例子嗎
+    reading: "kood yoo GIV mee an ig-ZAM-pul"
+    phonetic: "/kʊd juː ɡɪv miː æn ɪɡˈzæmpəl/"
+    description:
+      en: "A very useful request when an explanation is too abstract. Notice 'an example', not 'a example'."
+      ja: "説明が抽象的で分かりにくいときに便利。an example の an を忘れずに。"
+      zh: "對方講得太抽象時很好用。注意是 an example，不是 a example。"
+    sentence:
+      en: "Could you give me an example of a good project update?"
+      ja: "良いプロジェクト報告の例を挙げていただけますか？"
+      zh: "可以舉個例子，說明什麼樣的專案進度報告算好嗎？"
+
+  - id: walk-me-through
+    word:
+      en: "could you walk me through"
+      ja: 順を追って説明していただけますか
+      zh: 可以帶我走一遍嗎
+    reading: "kood yoo WAWK mee THROO"
+    phonetic: "/kʊd juː wɔːk miː θruː/"
+    description:
+      en: "Ask someone to explain something step by step. Follow it with a noun: 'walk me through the process.'"
+      ja: "手順を一つずつ説明してもらうとき。後ろは名詞：walk me through the process."
+      zh: "請對方一步一步說明，後面接名詞：walk me through the process."
+    sentence:
+      en: "Could you walk me through the expense report once? I've never filled one out."
+      ja: "経費精算書の書き方を一度、順を追って説明していただけますか？書いたことがなくて。"
+      zh: "可以帶我走一遍報帳單怎麼填嗎？我從來沒填過。"
+
+  # Checking
+  - id: just-to-clarify
+    word:
+      en: "Just to clarify"
+      ja: 念のため確認ですが
+      zh: 跟你確認一下
+    reading: "JUST too KLAIR-uh-fy"
+    phonetic: "/dʒʌst tuː ˈklerəfaɪ/"
+    description:
+      en: "Introduces a question that checks a detail you're unsure about. Stress the 'clar' sound. Often followed by a full question."
+      ja: "はっきりしない点を確かめる質問の前置き。clarify は clar の部分を強く読む。"
+      zh: "用來開頭確認一個你不確定的細節，clarify 的 clar 要重讀，後面常接完整的問句。"
+    sentence:
+      en: "Just to clarify, is the deadline this Friday or next Friday?"
+      ja: "念のため確認ですが、締め切りは今週の金曜ですか、それとも来週の金曜ですか？"
+      zh: "跟你確認一下，截止日是這週五還是下週五？"
+
+  - id: so-youre-saying
+    word:
+      en: "So you're saying"
+      ja: つまり〜ということですね
+      zh: 所以你的意思是
+    reading: "soh yoor SAY-ing"
+    phonetic: "/soʊ jʊr ˈseɪɪŋ/"
+    description:
+      en: "Say what you heard in your own words so the other person can correct you. Usually followed by 'that' or a full sentence."
+      ja: "聞いたことを自分の言葉で言い直し、相手に訂正してもらう。後ろは that か文。"
+      zh: "用自己的話複述剛聽到的內容，讓對方有機會修正，後面接 that 或完整句子。"
+    sentence:
+      en: "So you're saying we can't start until legal signs off?"
+      ja: "つまり、法務の承認が出るまで始められないということですね？"
+      zh: "所以你的意思是，法務簽核之前我們都不能開始？"
+
+  - id: if-i-understand-correctly
+    word:
+      en: "If I understand correctly"
+      ja: 私の理解が合っていれば
+      zh: 如果我沒理解錯的話
+    reading: "if ay un-der-STAND kuh-REKT-lee"
+    phonetic: "/ɪf aɪ ˌʌndərˈstænd kəˈrektli/"
+    description:
+      en: "A polite opener before you repeat what you think was said. It shows you may be wrong, so the other person feels free to correct you."
+      ja: "自分の理解を言い直す前の丁寧な前置き。間違っているかもしれないと示すので、相手も訂正しやすい。"
+      zh: "複述自己的理解之前的禮貌開場，表示你可能理解錯，對方比較好開口糾正。"
+    sentence:
+      en: "If I understand correctly, I should send the file to you first, not to the client."
+      ja: "私の理解が合っていれば、ファイルはお客様ではなく、まずあなたに送るということですね。"
+      zh: "如果我沒理解錯的話，檔案要先寄給你，而不是直接寄給客戶。"
+
+  - id: let-me-make-sure
+    word:
+      en: "Let me make sure I understand"
+      ja: 理解が合っているか確認させてください
+      zh: 讓我確認一下我有沒有理解對
+    reading: "LET mee MAYK SHOOR ay un-der-STAND"
+    phonetic: "/let miː meɪk ʃʊr aɪ ˌʌndərˈstænd/"
+    description:
+      en: "Use it before you summarize the steps or decisions, especially after a long explanation."
+      ja: "手順や決定事項をまとめる前に使う。長い説明のあとに特に便利。"
+      zh: "要整理步驟或決定之前先講這句，特別適合在一長串說明之後。"
+    sentence:
+      en: "Let me make sure I understand: I update the sheet today, and you review it tomorrow."
+      ja: "理解が合っているか確認させてください。私が今日シートを更新して、あなたが明日確認するんですね。"
+      zh: "讓我確認一下我有沒有理解對：我今天更新表格，你明天審核。"
+
+  - id: in-other-words
+    word:
+      en: "in other words"
+      ja: 言い換えると
+      zh: 換句話說
+    reading: "in UTH-er WERDZ"
+    phonetic: "/ɪn ˈʌðər wɜːrdz/"
+    description:
+      en: "Introduces a simpler version of what was just said. You can use it to restate your own idea, too."
+      ja: "今言ったことを分かりやすく言い換えるときに。自分の話を言い直すときにも使える。"
+      zh: "把剛說的內容換成更簡單的講法，也可以用來重講自己剛才的想法。"
+    sentence:
+      en: "In other words, we need approval from two managers before we order anything?"
+      ja: "言い換えると、何か発注する前に2人の上司の承認が必要ということですか？"
+      zh: "換句話說，訂任何東西之前都要兩位主管同意？"
+
+  - id: what-i-meant-was
+    word:
+      en: "What I meant was"
+      ja: 私が言いたかったのは
+      zh: 我的意思是
+    reading: "WUT ay MENT wuz"
+    phonetic: "/wʌt aɪ ment wʌz/"
+    description:
+      en: "Fix a misunderstanding when others got your point wrong. Past tense: 'meant', not 'mean'. ✗ What I mean was → ✓ What I meant was."
+      ja: "相手に誤解されたとき、言い直して訂正する。過去形 meant を使う。"
+      zh: "對方誤會你時，用這句重講一次。要用過去式 meant。✗ What I mean was → ✓ What I meant was."
+    sentence:
+      en: "What I meant was that we should move the call, not cancel it."
+      ja: "私が言いたかったのは、電話会議をなくすのではなく、日程を変えようということです。"
+      zh: "我的意思是電話會議改時間就好，不是要取消。"
+
+chat:
+  conversations:
+    - id: clarify-1-new-task
+      title:
+        en: "A Vague Request"
+        ja: "あいまいな依頼"
+        zh: "主管交代得不清楚"
+      messages:
+        - role: partner
+          text:
+            en: "Can you put together a quick summary of last quarter's complaints? I need it soon."
+            ja: "先四半期のクレームについて、簡単なまとめを作ってもらえる？なるべく早く欲しいんだ。"
+            zh: "你可以整理一份上一季客訴的簡單摘要嗎？我很快就要用。"
+        - role: user
+          text:
+            en: "Sure. Just to clarify, when do you need it? Today, or by the end of the week?"
+            ja: "もちろんです。念のため確認ですが、いつまで必要ですか？今日中でしょうか、それとも週末までですか？"
+            zh: "好的。跟你確認一下，你什麼時候要？今天，還是這週結束前？"
+        - role: partner
+          text:
+            en: "Tomorrow morning is fine. I'm presenting to the sales team at ten."
+            ja: "明日の朝で大丈夫。10時に営業チームに説明するんだ。"
+            zh: "明天早上就可以，我十點要跟業務團隊報告。"
+        - role: user
+          text:
+            en: "Got it. What do you mean by \"summary\"? Do you want a list of the main issues, or the numbers too?"
+            ja: "了解です。「まとめ」とは具体的に何でしょうか？主な問題の一覧ですか、それとも数字も含めますか？"
+            zh: "了解。你說的摘要是指什麼？只要列出主要問題，還是連數字也要？"
+        - role: partner
+          text:
+            en: "Both, but keep it to one page. Maybe the top five issues with the count for each."
+            ja: "両方お願い。ただし1ページにおさめて。上位5つの問題と、それぞれの件数くらいでいいよ。"
+            zh: "兩個都要，但控制在一頁。大概列前五大問題，各自的件數就好。"
+        - role: user
+          text:
+            en: "So you're saying one page, top five issues with counts, by tomorrow morning. Did I get that right?"
+            ja: "つまり、1ページで、上位5つの問題と件数を、明日の朝までということですね。合っていますか？"
+            zh: "所以你的意思是一頁、前五大問題加件數、明天早上要。我這樣理解對嗎？"
+
+    - id: clarify-2-vendor-call
+      title:
+        en: "A Phone Call"
+        ja: "海外業者との電話"
+        zh: "跟海外廠商講電話"
+      messages:
+        - role: partner
+          text:
+            en: "Hello, this is Jack from Northway Supplies. I'm calling about your order for the 200 boxes."
+            ja: "もしもし、Northway Supplies の Jack です。200箱のご注文の件でお電話しました。"
+            zh: "你好，我是 Northway Supplies 的 Jack，來電是關於你們訂的兩百個箱子。"
+        - role: user
+          text:
+            en: "Hi Jack. Sorry, could you say that again? The line is a bit noisy."
+            ja: "こんにちは、Jack さん。すみません、もう一度言っていただけますか？回線が少し悪くて。"
+            zh: "你好 Jack。不好意思，可以再說一次嗎？電話有點雜音。"
+        - role: partner
+          text:
+            en: "Of course. The order will ship from our Vietnam warehouse, so the delivery will take longer."
+            ja: "もちろんです。ご注文はベトナムの倉庫から出荷されるので、納期が少し長くなります。"
+            zh: "沒問題。這筆訂單會從我們越南的倉庫出貨，所以交貨時間會比較久。"
+        - role: user
+          text:
+            en: "I'm not sure I follow. Could you speak a little slower? How much longer will it take?"
+            ja: "ちょっと話についていけていないかもしれません。もう少しゆっくり話していただけますか？どのくらい長くなりますか？"
+            zh: "我不太確定有跟上。可以講慢一點嗎？會多久？"
+        - role: partner
+          text:
+            en: "About ten working days, not five. The tracking number is H-K-7-4-9-2."
+            ja: "営業日で約10日です、5日ではなく。追跡番号は H-K-7-4-9-2 です。"
+            zh: "大約十個工作天，不是五天。追蹤編號是 H-K-7-4-9-2。"
+        - role: user
+          text:
+            en: "I didn't catch the last part. Could you spell that, please?"
+            ja: "最後の部分が聞き取れませんでした。つづりを教えてもらえますか？"
+            zh: "最後一段我沒聽清楚，可以請你拼一下嗎？"
+
+    - id: clarify-3-new-process
+      title:
+        en: "A New Process"
+        ja: "新しい手順の確認"
+        zh: "搞懂新的流程"
+      messages:
+        - role: partner
+          text:
+            en: "From next month, every expense over NT$5,000 needs two approvals before we pay."
+            ja: "来月から、5,000台湾ドルを超える経費は、支払い前に2回の承認が必要になります。"
+            zh: "從下個月開始，超過五千元的費用，付款前要經過兩次核准。"
+        - role: user
+          text:
+            en: "Could you walk me through it? I only know the old way."
+            ja: "順を追って説明していただけますか？古いやり方しか知らなくて。"
+            zh: "可以帶我走一遍嗎？我只知道舊的做法。"
+        - role: partner
+          text:
+            en: "Sure. You fill in the form, your manager signs it, then finance does the final check."
+            ja: "いいよ。フォームに記入して、上司が署名して、最後に経理が確認する。"
+            zh: "好。你先填表單，主管簽名，最後財務做最終確認。"
+        - role: user
+          text:
+            en: "Could you give me an example? Say I'm buying a laptop for NT$30,000."
+            ja: "例を挙げていただけますか？たとえば3万元のノートパソコンを買う場合です。"
+            zh: "可以舉個例子嗎？比如我要買一台三萬元的筆電。"
+        - role: partner
+          text:
+            en: "Then you need your manager and finance to both approve it before you order."
+            ja: "その場合は、発注の前に上司と経理の両方の承認が必要です。"
+            zh: "那你下單之前，要先拿到主管和財務兩邊的核准。"
+        - role: user
+          text:
+            en: "Let me make sure I understand: I get my manager's signature first, then send the form to finance. Is that right?"
+            ja: "理解が合っているか確認させてください。まず上司の署名をもらって、そのあと経理にフォームを送る。これで合っていますか？"
+            zh: "讓我確認一下我有沒有理解對：我先拿主管簽名，再把表單送去財務。這樣對嗎？"
+
+quiz:
+  questionsPerRound: 5
+  xpReward: 25
+  # Fill-in-the-blank questions. Each answer must match a word above
+  # (case-insensitive) so the result feeds that word's SRS card.
+  cloze:
+    - sentence: "Sorry, ___? The connection cut out for a second."
+      options: ["could you say that again", "could you spell that", "do you mean", "in other words"]
+      answer: "could you say that again"
+      explain:
+        en: "You missed what was said because of the connection, so ask the person to repeat: 'could you say that again'."
+        ja: "接続が切れて聞き逃したので、繰り返してもらう could you say that again。"
+        zh: "連線斷了一下沒聽到，所以請對方重講一次，用 could you say that again。"
+    - sentence: "The line was noisy and I missed the client's email address. ___. Could you spell it?"
+      options: ["I didn't catch that", "What I meant was", "Just to clarify", "So you're saying"]
+      answer: "I didn't catch that"
+      explain:
+        en: "You couldn't hear it clearly — 'I didn't catch that'."
+        ja: "はっきり聞き取れなかったので I didn't catch that。"
+        zh: "沒聽清楚，用 I didn't catch that。"
+    - sentence: "___. Could you explain the first step again?"
+      options: ["I'm not sure I follow", "Do you mean", "Just to clarify", "I didn't catch that"]
+      answer: "I'm not sure I follow"
+      explain:
+        en: "'I'm not sure I follow' is the fixed phrase for 'I'm a little lost'."
+        ja: "I'm not sure I follow が「ちょっとついていけていない」の決まった言い方。"
+        zh: "I'm not sure I follow 是「我有點跟不上」的固定說法。"
+    - sentence: "___ \"back order\"? I've never heard that term."
+      options: ["What do you mean by", "Let me make sure I understand", "In other words", "What I meant was"]
+      answer: "What do you mean by"
+      explain:
+        en: "You want to know what a term means — 'What do you mean by' + the term."
+        ja: "言葉の意味を聞きたいので What do you mean by＋その言葉。"
+        zh: "想知道某個詞的意思，用 What do you mean by＋那個詞。"
+    - sentence: "___, is the meeting on Monday or Tuesday?"
+      options: ["Just to clarify", "In other words", "What I meant was", "I didn't catch that"]
+      answer: "Just to clarify"
+      explain:
+        en: "You're checking one detail you're unsure of — 'Just to clarify' opens that question."
+        ja: "不確かな点を一つ確かめる質問なので Just to clarify で始める。"
+        zh: "確認一個不確定的細節，用 Just to clarify 開頭。"
+    - sentence: "___ we can't ship before Friday?"
+      options: ["So you're saying", "Could you spell that", "I'm not sure I follow", "Do you mean"]
+      answer: "So you're saying"
+      explain:
+        en: "You're repeating the other person's point in your own words to check it — 'So you're saying' + clause."
+        ja: "相手の話を自分の言葉で言い直して確かめるので So you're saying＋文。"
+        zh: "用自己的話複述對方的重點來確認，用 So you're saying＋子句。"
+    - sentence: "I don't think we need a new tool. ___ we should use what we already have."
+      options: ["What I meant was", "What do you mean by", "If I understand correctly", "Could you walk me through"]
+      answer: "What I meant was"
+      explain:
+        en: "You're fixing your own earlier point, so use the past tense: 'What I meant was'."
+        ja: "自分の言ったことを言い直しているので、過去形の What I meant was。"
+        zh: "是在修正自己剛說的話，要用過去式 What I meant was。"
+    - sentence: "I've never filled one out. ___ the process once?"
+      options: ["could you walk me through", "could you speak a little slower", "do you mean", "in other words"]
+      answer: "could you walk me through"
+      explain:
+        en: "You want the steps explained one by one — 'could you walk me through' + the process."
+        ja: "手順を一つずつ説明してほしいので could you walk me through＋手順。"
+        zh: "想請對方一步一步說明，用 could you walk me through＋流程。"
