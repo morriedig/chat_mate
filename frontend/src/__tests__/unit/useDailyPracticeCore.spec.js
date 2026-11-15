@@ -2,6 +2,9 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { getDailyPatterns, getDailyVocab } from '../../data/dailyLoader'
 import { countEnglishWords, isValidCoreAnswer, migrateState } from '../../composables/useDailyPractice'
 
+// English edition, also when the suite runs with VITE_EDITION=zh
+vi.mock('../../edition', () => import('../helpers/englishEdition'))
+
 const TODAY = '2026-11-06'
 const TOMORROW = '2026-11-07'
 

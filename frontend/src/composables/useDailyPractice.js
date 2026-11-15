@@ -5,10 +5,10 @@ import { useMistakes, pickMistakeIds, srsId as mistakeSrsId, L1_TYPES } from './
 import { useVocabularyBank } from './useVocabularyBank'
 import { useSpeakingQueue, addDays } from './useSpeakingQueue'
 import { useUserProgress } from './useUserProgress'
+import { IS_ZH, TARGET_LANG, TRANSLATION_LANG, LEVELS, DEFAULT_LEVEL } from '../edition'
 
 const STORAGE_KEY = 'chatmate_daily_practice'
 const STATE_VERSION = 2
-const LEVELS = ['beginner', 'intermediate', 'advanced']
 const PLAN_DAYS_KEPT = 14
 
 // Each day: a few due reviews plus a small number of new items
@@ -24,6 +24,13 @@ export const LISTENING_PER_DAY = 2
 export const bankSrsId = id => `bank:${id}`
 export const builtinErrorKey = patternId => `builtin:${patternId}`
 
+/**
+ * Example sentence fields, decided by the edition (not the learner's native language):
+ * English edition `en` (sentence) / `zh` (translation); Chinese edition `zh` / `en`, plus `pinyin`.
+ */
+export const targetField = () => TARGET_LANG
+export const translationField = () => TRANSLATION_LANG
+
 function todayKey(date = new Date()) {
   const y = date.getFullYear()
   const m = String(date.getMonth() + 1).padStart(2, '0')
@@ -38,7 +45,7 @@ function defaultLevel() {
   } catch {
     // Ignore malformed placement data
   }
-  return 'intermediate'
+  return DEFAULT_LEVEL
 }
 
 /**
@@ -96,24 +103,28 @@ export function pickItems(items, total, newCount, srs) {
  * did you hear" and one dictation (the shortest sentence, so it's fair to type).
  */
 export function buildListening(patterns, words, allPatterns) {
+  const tf = targetField()
+  const xf = translationField()
   const pool = [
     ...patterns.flatMap(p => p.examples || []),
     ...words.map(w => w.example).filter(Boolean),
-  ].filter(ex => ex && ex.en)
+  ].filter(ex => ex && ex[tf])
   if (pool.length === 0) return []
 
+  // Saved in the plan under the same field names as the examples (English: en / zh)
+  const fields = ex => ({ [tf]: ex[tf], [xf]: ex[xf] || '', ...(IS_ZH ? { pinyin: ex.pinyin || '' } : {}) })
   const items = []
   const choose = pool[0]
   const distractors = allPatterns
     .flatMap(p => p.examples || [])
-    .filter(ex => ex.en && ex.en !== choose.en)
-    .sort((a, b) => Math.abs(a.en.length - choose.en.length) - Math.abs(b.en.length - choose.en.length))
+    .filter(ex => ex[tf] && ex[tf] !== choose[tf])
+    .sort((a, b) => Math.abs(a[tf].length - choose[tf].length) - Math.abs(b[tf].length - choose[tf].length))
     .slice(0, 2)
   if (distractors.length === 2) {
-    items.push({ id: 'listen:choose', mode: 'choose', en: choose.en, zh: choose.zh || '', options: [choose.en, ...distractors.map(d => d.en)] })
+    items.push({ id: 'listen:choose', mode: 'choose', ...fields(choose), options: [choose[tf], ...distractors.map(d => d[tf])] })
   }
-  const shortest = [...pool].filter(ex => ex.en !== choose.en).sort((a, b) => a.en.length - b.en.length)[0] || choose
-  items.push({ id: 'listen:dictation', mode: 'dictation', en: shortest.en, zh: shortest.zh || '' })
+  const shortest = [...pool].filter(ex => ex[tf] !== choose[tf]).sort((a, b) => a[tf].length - b[tf].length)[0] || choose
+  items.push({ id: 'listen:dictation', mode: 'dictation', ...fields(shortest) })
   return items.slice(0, LISTENING_PER_DAY)
 }
 
@@ -122,9 +133,18 @@ export function countEnglishWords(text) {
   return (String(text || '').match(/[A-Za-z]+(?:['’][A-Za-z]+)?/g) || []).length
 }
 
+export function countHanChars(text) {
+  return (String(text || '').match(/\p{Script=Han}/gu) || []).length
+}
+
+// What the typed answer's length is counted in: English words, or Chinese characters in the Chinese edition
+export function countAnswerUnits(text) {
+  return IS_ZH ? countHanChars(text) : countEnglishWords(text)
+}
+
 export function isValidCoreAnswer(mode, text) {
   if (mode === 'voice') return String(text || '').trim().length > 0
-  return countEnglishWords(text) >= 2
+  return countAnswerUnits(text) >= 2
 }
 
 export function useDailyPractice() {
@@ -134,8 +154,8 @@ export function useDailyPractice() {
   const speakingQueue = useSpeakingQueue()
 
   const level = computed(() => state.value.level)
-  const patterns = computed(() => getDailyPatterns(level.value))
-  const words = computed(() => getDailyVocab(level.value))
+  const patterns = computed(() => getDailyPatterns(level.value, TARGET_LANG))
+  const words = computed(() => getDailyVocab(level.value, TARGET_LANG))
   const findPattern = id => patterns.value.find(p => p.id === id) || null
 
   function pickBankIds() {

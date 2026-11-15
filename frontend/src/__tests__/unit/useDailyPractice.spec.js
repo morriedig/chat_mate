@@ -2,6 +2,9 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { pickItems } from '../../composables/useDailyPractice'
 import { usesPattern } from '../../composables/useSentenceCheck'
 
+// English edition, also when the suite runs with VITE_EDITION=zh
+vi.mock('../../edition', () => import('../helpers/englishEdition'))
+
 function fakeSrs({ reviewed = {}, due = [] } = {}) {
   return {
     getWordSRS: id => reviewed[id] || null,

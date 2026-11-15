@@ -30,6 +30,7 @@ import CmBottomSheet from './ui/CmBottomSheet.vue'
 import { MISSION_TYPE, getUsedTargetIds } from '../composables/useConnectorMission'
 import { PATTERN_TASK_TYPE, getUsedPatternIds, taskText } from '../composables/usePatternTask'
 import ChatSummaryPanel from './chat/ChatSummaryPanel.vue'
+import { IS_ZH } from '../edition'
 
 const { t } = useI18n()
 const router = useRouter()
@@ -58,6 +59,9 @@ const mission = computed(() => !isOpinionMode.value && [MISSION_TYPE, PATTERN_TA
 // Task chat: today's patterns, a goal, and an AI summary at the end
 const isTaskMode = computed(() => mission.value?.type === PATTERN_TASK_TYPE)
 const showTaskSummary = ref(false)
+// Chinese edition: pinyin under the friend's replies, off until turned on
+const canShowPinyin = computed(() => IS_ZH && language.value === 'zh')
+const showPinyin = ref(false)
 
 // Storage config
 const storageConfig = computed(() => ({
@@ -617,6 +621,18 @@ function handleBack() {
           <div ref="messagesContainer" class="flex-1 space-y-5 overflow-y-auto overflow-x-hidden px-4 py-4 min-[375px]:px-5 sm:px-6">
             <!-- Date -->
             <p class="chat-date text-center text-meta text-ink-muted tabular-nums">{{ dateLabel }}</p>
+            <div v-if="canShowPinyin" class="-mt-3 flex justify-center">
+              <button
+                type="button"
+                class="pinyin-toggle inline-flex min-h-11 items-center gap-1 rounded-[10px] px-2 text-meta"
+                :class="showPinyin ? 'text-accent' : 'text-ink-muted'"
+                :aria-pressed="showPinyin"
+                @click="showPinyin = !showPinyin"
+              >
+                <span class="material-symbols-outlined !text-[16px]" aria-hidden="true">{{ showPinyin ? 'toggle_on' : 'toggle_off' }}</span>
+                Pinyin
+              </button>
+            </div>
 
             <!-- Messages -->
             <ChatMessage
@@ -626,6 +642,8 @@ function handleBack() {
               :character="character"
               :highlight-targets="isOpinionMode ? connectorTargets : null"
               :hide-text="isReplyHidden(msg, i)"
+              :language="language"
+              :show-pinyin="showPinyin"
               @explain="handleExplain"
               @word-tap="handleWordTap"
               @reveal="revealedReplies.push(i)"

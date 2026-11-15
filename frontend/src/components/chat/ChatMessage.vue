@@ -1,9 +1,12 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import FeedbackPanel from './FeedbackPanel.vue'
 import CmAvatar from '../ui/CmAvatar.vue'
 import { splitByConnectors } from '../../utils/connectorDetect'
+import { chineseWordAt } from '../../utils/chineseWord'
+import { loadPinyin } from '../../utils/pinyin'
+import { IS_ZH } from '../../edition'
 
 const { t } = useI18n()
 
@@ -25,12 +28,40 @@ const props = defineProps({
   hideText: {
     type: Boolean,
     default: false
+  },
+  // Chat language; in Chinese a tap picks the whole word
+  language: {
+    type: String,
+    default: ''
+  },
+  // Chinese edition: show pinyin under the friend's reply
+  showPinyin: {
+    type: Boolean,
+    default: false
   }
 })
 
 const emit = defineEmits(['explain', 'word-tap', 'reveal'])
 
 const showFeedback = ref(false)
+
+const isChinese = computed(() => props.language === 'zh')
+// Traditional glyphs need the lang tag; only the Chinese edition sets it
+const contentLang = computed(() => (IS_ZH && isChinese.value ? 'zh-Hant-TW' : undefined))
+
+const pinyinText = ref('')
+watch(
+  () => [IS_ZH && props.showPinyin && isChinese.value && props.message.role === 'assistant', props.message.content],
+  async ([wanted, content]) => {
+    if (!wanted) {
+      pinyinText.value = ''
+      return
+    }
+    const toPinyin = await loadPinyin()
+    if (toPinyin && props.showPinyin && props.message.content === content) pinyinText.value = toPinyin(content || '')
+  },
+  { immediate: true }
+)
 
 const userSegments = computed(() => {
   if (props.message.role !== 'user' || !props.highlightTargets) return null
@@ -59,8 +90,11 @@ function handleWordClick(event) {
   const isCJK = /[\u3000-\u9fff\u4e00-\u9fff\u3040-\u309f\u30a0-\u30ff]/.test(text[offset])
 
   let word
-  if (isCJK) {
-    // For CJK: capture the single character (CJK languages don't use spaces)
+  if (isCJK && isChinese.value && /\p{Script=Han}/u.test(text[offset])) {
+    // Chinese: the whole word (no spaces between words)
+    word = chineseWordAt(text, offset)
+  } else if (isCJK) {
+    // Other CJK: capture the single character (CJK languages don't use spaces)
     word = text[offset]
   } else {
     // For Latin/etc: expand to word boundaries
@@ -118,7 +152,10 @@ function toggleFeedback() {
             <span class="material-symbols-outlined !text-[18px]" aria-hidden="true">visibility</span>{{ t('voiceChat.listenFirst') }}
           </span>
         </button>
-        <p v-else class="clickable-words whitespace-pre-wrap break-words overflow-wrap-anywhere text-body" @click="handleWordClick">{{ message.content }}</p>
+        <template v-else>
+          <p class="clickable-words whitespace-pre-wrap break-words overflow-wrap-anywhere text-body" :lang="contentLang" @click="handleWordClick">{{ message.content }}</p>
+          <p v-if="pinyinText" class="message-pinyin mt-1 break-words text-caption text-ink-muted">{{ pinyinText }}</p>
+        </template>
       </div>
     </div>
   </div>
@@ -127,12 +164,12 @@ function toggleFeedback() {
   <div v-else class="chat-turn flex justify-end">
     <div class="flex min-w-0 max-w-[82%] min-[390px]:max-w-[78%] flex-col items-end gap-1 sm:max-w-xl">
       <div class="user-bubble min-w-0 max-w-full rounded-[14px] rounded-br-[6px] bg-accent-soft px-3.5 py-2.5 text-ink">
-        <p v-if="userSegments" class="whitespace-pre-wrap break-words text-body"><template v-for="(seg, i) in userSegments" :key="i"><span
+        <p v-if="userSegments" class="whitespace-pre-wrap break-words text-body" :lang="contentLang"><template v-for="(seg, i) in userSegments" :key="i"><span
           v-if="seg.id"
           class="connector-mark border-b-2 border-accent font-medium"
           :data-connector="seg.id"
         >{{ seg.text }}</span><template v-else>{{ seg.text }}</template></template></p>
-        <p v-else class="whitespace-pre-wrap break-words text-body">{{ message.content }}</p>
+        <p v-else class="whitespace-pre-wrap break-words text-body" :lang="contentLang">{{ message.content }}</p>
       </div>
 
       <!-- Feedback toggle -->

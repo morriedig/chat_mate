@@ -15,7 +15,7 @@ const NATIVE_RATES = { normal: 1.0, relaxed: 0.8, slow: 0.5, word: 0.7 }
 const LANGUAGE_CODES = {
   en: 'en-US',
   ja: 'ja-JP',
-  zh: 'zh-CN',
+  zh: 'zh-TW',
   ko: 'ko-KR',
   es: 'es-ES',
   fr: 'fr-FR',

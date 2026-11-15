@@ -1,6 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { mount, flushPromises } from '@vue/test-utils'
 
+// English edition, also when the suite runs with VITE_EDITION=zh
+vi.mock('../../edition', () => import('../helpers/englishEdition'))
+
 vi.mock('vue-i18n', () => ({ useI18n: () => ({ t: (key, params) => (params && typeof params === 'object' ? `${key} ${JSON.stringify(params)}` : key) }) }))
 vi.mock('vue-router', () => ({ useRouter: () => ({ push: vi.fn() }) }))
 vi.mock('../../composables/useDailyGoal', () => ({ useDailyGoal: () => ({ startTimer: vi.fn(), stopTimer: vi.fn() }) }))
@@ -113,6 +116,31 @@ describe('DailyPracticeScreen', () => {
     wrapper = await mountScreen()
     expect(wrapper.find('.core-steps [aria-current=step]').text()).toContain('dailyPractice.core.steps.speaking')
     expect(wrapper.find('#core-typed').exists()).toBe(true)
+    wrapper.unmount()
+  })
+
+  it('reads an English dictation in English and still offers "Write opinion" when everything is done', async () => {
+    const d = new Date()
+    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+    localStorage.setItem('chatmate_daily_practice', JSON.stringify({
+      version: 2,
+      level: 'intermediate',
+      plans: { [key]: {
+        level: 'intermediate', patternIds: [], wordIds: [], mistakeIds: [], bankIds: [], done: {},
+        listening: [{ id: 'listen:dictation', mode: 'dictation', en: 'I went home.', zh: '我回家了。' }],
+        core: { completedAt: '2026-11-15T00:00:00Z' },
+      } },
+    }))
+    const wrapper = await mountScreen()
+    const { playTTS } = await import('../../utils/tts')
+
+    await wrapper.find('.core-more').trigger('click')
+    expect(playTTS).toHaveBeenLastCalledWith('I went home.', 'en', 'normal')
+    await wrapper.find('textarea').setValue('i went home')
+    await button(wrapper, 'listening.check').trigger('click')
+    expect(wrapper.text()).toContain('我回家了。')
+    await button(wrapper, 'dailyPractice.next').trigger('click')
+    expect(button(wrapper, 'dailyPractice.writeOpinion')).toBeDefined()
     wrapper.unmount()
   })
 })

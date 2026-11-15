@@ -121,8 +121,9 @@ async function playSentence() {
           <h3 class="break-words text-section font-medium text-ink" data-heading>{{ word.word }}</h3>
           <span v-if="bilingual && word.nativeWord" class="text-body text-ink-secondary">({{ word.nativeWord }})</span>
         </div>
-        <div v-if="word.phonetic || word.reading" class="mt-0.5 flex flex-wrap gap-x-2 text-caption">
+        <div v-if="word.phonetic || word.reading || word.pinyin" class="mt-0.5 flex flex-wrap gap-x-2 text-caption">
           <span v-if="word.phonetic" class="text-ink-muted">{{ word.phonetic }}</span>
+          <span v-if="word.pinyin" class="text-accent">{{ word.pinyin }}</span>
           <span v-if="word.reading" class="text-accent">{{ word.reading }}</span>
         </div>
       </div>
@@ -188,6 +189,7 @@ async function playSentence() {
         <p v-else class="break-words text-body text-ink">
           "{{ word.example }}"
         </p>
+        <p v-if="word.sentencePinyin" class="mt-0.5 break-words text-caption text-ink-muted">{{ word.sentencePinyin }}</p>
         <p v-if="bilingual && word.nativeExample" class="mt-1 text-caption text-ink-muted">
           "{{ word.nativeExample }}"
         </p>

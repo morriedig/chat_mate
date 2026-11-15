@@ -34,7 +34,7 @@ function getTargetLanguageFromPath(path) {
  * @param {string} targetLanguage - Target learning language (e.g., 'ja', 'en', 'zh')
  * @param {string} motherTongue - User's mother tongue (e.g., 'en', 'ja', 'zh')
  */
-function transformWords(chapter, targetLanguage, motherTongue = 'en') {
+export function transformWords(chapter, targetLanguage, motherTongue = 'en') {
   if (!chapter?.words) return []
 
   return chapter.words.map((wordData, index) => {
@@ -52,7 +52,9 @@ function transformWords(chapter, targetLanguage, motherTongue = 'en') {
       example: wordData.sentence[targetLanguage] || wordData.sentence.en,
       nativeExample: wordData.sentence[motherTongue] || wordData.sentence.en,
       phonetic: targetLanguage === 'en' ? wordData.phonetic : undefined,
-      reading: targetLanguage === 'ja' ? wordData.reading : undefined
+      reading: targetLanguage === 'ja' ? wordData.reading : undefined,
+      // Chinese: pinyin of the word and of the example sentence, written in the YAML
+      ...(targetLanguage === 'zh' ? { pinyin: wordData.pinyin, sentencePinyin: wordData.sentencePinyin } : {})
     }
   })
 }
@@ -177,7 +179,14 @@ export function getChapterWords(chapterId, targetLanguage = 'ja', motherTongue =
  * @param {string} motherTongue - User's native language for bilingual display
  */
 export function getChapterConversations(chapterId, targetLanguage = 'ja', motherTongue = 'en') {
-  const chapter = getChapter(chapterId, targetLanguage)
+  return transformConversations(getChapter(chapterId, targetLanguage), targetLanguage, motherTongue)
+}
+
+/**
+ * Chapter conversations in the format ConversationPractice expects
+ * (Chinese lines also carry the pinyin written in the YAML)
+ */
+export function transformConversations(chapter, targetLanguage, motherTongue = 'en') {
   if (!chapter?.chat?.conversations) return []
 
   return chapter.chat.conversations.map(conv => ({
@@ -186,7 +195,8 @@ export function getChapterConversations(chapterId, targetLanguage = 'ja', mother
     messages: conv.messages.map(msg => ({
       role: msg.role,
       text: msg.text[targetLanguage] || msg.text.en,
-      nativeText: msg.text[motherTongue] || msg.text.en
+      nativeText: msg.text[motherTongue] || msg.text.en,
+      ...(targetLanguage === 'zh' ? { pinyin: msg.pinyin } : {})
     }))
   }))
 }

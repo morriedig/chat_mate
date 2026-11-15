@@ -3,6 +3,9 @@ import { mount } from '@vue/test-utils'
 import { ref } from 'vue'
 import ChatScreen from '../../components/ChatScreen.vue'
 
+// English edition, also when the suite runs with VITE_EDITION=zh
+vi.mock('../../edition', () => import('../helpers/englishEdition'))
+
 // Mock vue-router
 const mockPush = vi.fn()
 const mockReplace = vi.fn()
@@ -139,7 +142,7 @@ const ArticlePanelStub = {
 }
 
 describe('ChatScreen', () => {
-  const createWrapper = (overrides = {}) => {
+  const createWrapper = (overrides = {}, component = ChatScreen) => {
     // Set nav state for each test
     navCharacter.value = overrides.character || { id: 'sakura', name: 'Sakura', avatar: '\u{1F338}' }
     navLevel.value = overrides.level || { id: 'beginner', name: 'Beginner' }
@@ -148,7 +151,7 @@ describe('ChatScreen', () => {
     navArticle.value = overrides.article || null
     navScenario.value = overrides.scenario || null
 
-    return mount(ChatScreen, {
+    return mount(component, {
       global: {
         stubs: {
           ChatHeader: ChatHeaderStub,
@@ -334,6 +337,32 @@ describe('ChatScreen', () => {
       expect(wrapper.findComponent({ name: 'LevelUpModal' }).exists()).toBe(false)
       expect(wrapper.findComponent({ name: 'StreakMilestoneModal' }).exists()).toBe(false)
       expect(wrapper.findComponent({ name: 'AchievementUnlockModal' }).exists()).toBe(false)
+    })
+  })
+
+  // Runs last: it reloads modules with the Chinese edition
+  describe('pinyin toggle', () => {
+    it('is not shown in the English edition, even in a Chinese chat', () => {
+      const wrapper = createWrapper({ language: 'zh' })
+      expect(wrapper.find('.pinyin-toggle').exists()).toBe(false)
+    })
+
+    it('shows in the Chinese edition for a Chinese chat and switches pinyin on', async () => {
+      vi.resetModules()
+      vi.doMock('../../edition', async (importOriginal) => ({ ...(await importOriginal()), IS_ZH: true }))
+      const { default: ZhChatScreen } = await import('../../components/ChatScreen.vue')
+      try {
+        const english = createWrapper({ language: 'en' }, ZhChatScreen)
+        expect(english.find('.pinyin-toggle').exists()).toBe(false)
+
+        const wrapper = createWrapper({ language: 'zh' }, ZhChatScreen)
+        const toggle = wrapper.find('.pinyin-toggle')
+        expect(toggle.attributes('aria-pressed')).toBe('false')
+        await toggle.trigger('click')
+        expect(toggle.attributes('aria-pressed')).toBe('true')
+      } finally {
+        vi.doUnmock('../../edition')
+      }
     })
   })
 })

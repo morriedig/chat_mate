@@ -1,7 +1,11 @@
 import { ref } from 'vue'
 import { getAuthToken, requestAuthToken, clearAuthToken } from './useChatApi'
+import { IS_ZH, TARGET_LANG } from '../edition'
 
 const API_URL = import.meta.env.VITE_API_URL || ''
+
+// The Chinese edition asks for Chinese feedback; the English request stays as it was (no field, server default 'en')
+const DEFAULT_LANGUAGE = IS_ZH ? TARGET_LANG : undefined
 
 function getClientId() {
   let clientId = localStorage.getItem('chatmate_clientId')
@@ -50,7 +54,7 @@ export function useSentenceCheck() {
    * Ask the AI friend to check one practice sentence.
    * Returns { usedPattern, isNatural, corrected, comment, better } or null when unavailable.
    */
-  async function checkSentence({ sentence, pattern, meaning, task, level, nativeLanguage }) {
+  async function checkSentence({ sentence, pattern, meaning, task, level, nativeLanguage, language = DEFAULT_LANGUAGE }) {
     if (!API_URL) return null
     isChecking.value = true
     try {
@@ -62,6 +66,7 @@ export function useSentenceCheck() {
         task,
         level,
         nativeLanguage,
+        language,
         clientId: getClientId(),
         origin: window.location.origin,
         authToken: await getAuthToken(),

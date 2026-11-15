@@ -2,6 +2,7 @@
 import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { playTTS } from '../../utils/tts'
+import { TARGET_LANG } from '../../edition'
 import PracticeRating from './PracticeRating.vue'
 import PracticeCard from './PracticeCard.vue'
 import CmButton from '../ui/CmButton.vue'
@@ -28,7 +29,7 @@ function rate(confidence) {
   <PracticeCard>
     <div class="flex items-start justify-between gap-2">
       <p class="min-w-0 pt-1 text-section font-medium text-ink break-words">{{ word.word }}</p>
-      <CmIconButton icon="volume_up" :label="t('dailyPractice.listen')" class="-mr-2 -mt-1" @click="playTTS(word.word, 'en', 'normal')" />
+      <CmIconButton icon="volume_up" :label="t('dailyPractice.listen')" class="-mr-2 -mt-1" @click="playTTS(word.word, TARGET_LANG, 'normal')" />
     </div>
 
     <template v-if="!revealed">

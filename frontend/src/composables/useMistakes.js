@@ -12,7 +12,9 @@ const MAX_MISTAKES = 300
 
 // Errors Mandarin speakers make most; these come up first and are scheduled tighter
 export const L1_TYPES = ['article', 'tense', 'third-person-s', 'plural', 'connector']
-export const MISTAKE_TYPES = [...L1_TYPES, 'word-choice', 'other']
+// Error types for learners of Chinese: 量詞, 了／過／著, word order, 的／得／地
+export const ZH_TYPES = ['measure-word', 'aspect', 'word-order', 'de-particle']
+export const MISTAKE_TYPES = [...L1_TYPES, 'word-choice', 'other', ...ZH_TYPES]
 
 function load() {
   try {
@@ -33,13 +35,15 @@ function persist() {
   }
 }
 
+// Keeps Chinese characters; Chinese punctuation and spaces between characters are dropped
 export function normalizeSentence(text) {
   return String(text || '')
     .toLowerCase()
     .replace(/[‘’]/g, "'")
     .replace(/[“”]/g, '"')
-    .replace(/[^a-z0-9' ]+/g, ' ')
+    .replace(/[^a-z0-9' \p{Script=Han}]+/gu, ' ')
     .replace(/\s+/g, ' ')
+    .replace(/(\p{Script=Han}) (?=\p{Script=Han})/gu, '$1')
     .trim()
 }
 

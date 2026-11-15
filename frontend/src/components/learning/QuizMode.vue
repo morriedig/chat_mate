@@ -160,6 +160,7 @@ watch([() => props.words, () => props.cloze], () => initQuiz(props.words, props.
         </h2>
         <p v-if="currentQuestion?.reading" class="mt-1 text-body text-accent">{{ currentQuestion.reading }}</p>
         <p v-if="currentQuestion?.phonetic" class="mt-1 text-caption text-ink-muted">{{ currentQuestion.phonetic }}</p>
+        <p v-if="currentQuestion?.pinyin" class="mt-1 text-body text-accent">{{ currentQuestion.pinyin }}</p>
       </div>
 
       <!-- Answer rows -->

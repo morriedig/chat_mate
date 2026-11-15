@@ -3,6 +3,7 @@ import { ref, computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { diffWords } from '../../utils/wordDiff'
 import { playTTS } from '../../utils/tts'
+import { TARGET_LANG } from '../../edition'
 import PracticeRating from './PracticeRating.vue'
 import PracticeCard from './PracticeCard.vue'
 import CmButton from '../ui/CmButton.vue'
@@ -82,7 +83,7 @@ function rate(confidence) {
         </p>
         <div class="flex items-start gap-1">
           <p class="flex-1 min-w-0 py-2.5 text-body text-ink break-words">{{ mistake.corrected }}</p>
-          <CmIconButton icon="volume_up" :label="t('dailyPractice.listen')" @click="playTTS(mistake.corrected, 'en', 'normal')" />
+          <CmIconButton icon="volume_up" :label="t('dailyPractice.listen')" @click="playTTS(mistake.corrected, TARGET_LANG, 'normal')" />
         </div>
       </div>
 
@@ -93,7 +94,7 @@ function rate(confidence) {
         <div class="rounded-[10px] border border-hairline bg-surface-sunken px-3 py-2.5">
           <p class="text-meta text-ink-muted">{{ t('mistakes.youWrote') }}</p>
           <p class="mt-1 text-body text-ink-secondary break-words">
-            <template v-for="(part, i) in attemptParts" :key="i"><span :class="part.same ? '' : 'rounded-[4px] bg-error-soft px-0.5 text-error line-through'">{{ part.text }}</span>{{ ' ' }}</template>
+            <template v-for="(part, i) in attemptParts" :key="i"><span :class="part.same ? '' : 'rounded-[4px] bg-error-soft px-0.5 text-error line-through'">{{ part.text }}</span>{{ part.space ? ' ' : '' }}</template>
           </p>
         </div>
         <div class="rounded-[10px] border border-hairline bg-surface px-3 py-2.5">
@@ -101,10 +102,10 @@ function rate(confidence) {
             <div class="min-w-0 flex-1">
               <p class="text-meta text-ink-muted">{{ t('mistakes.suggested') }}</p>
               <p class="mt-1 text-body text-ink break-words">
-                <template v-for="(part, i) in diff.parts" :key="i"><span :class="part.same ? '' : 'rounded-[4px] bg-success-soft px-0.5 font-medium text-success underline decoration-1 underline-offset-4'">{{ part.text }}</span>{{ ' ' }}</template>
+                <template v-for="(part, i) in diff.parts" :key="i"><span :class="part.same ? '' : 'rounded-[4px] bg-success-soft px-0.5 font-medium text-success underline decoration-1 underline-offset-4'">{{ part.text }}</span>{{ part.space ? ' ' : '' }}</template>
               </p>
             </div>
-            <CmIconButton icon="volume_up" :label="t('dailyPractice.listen')" class="-mr-2" @click="playTTS(mistake.corrected, 'en', 'normal')" />
+            <CmIconButton icon="volume_up" :label="t('dailyPractice.listen')" class="-mr-2" @click="playTTS(mistake.corrected, TARGET_LANG, 'normal')" />
           </div>
         </div>
       </div>

@@ -1,8 +1,12 @@
 import { ref } from 'vue'
 import { getAuthToken, requestAuthToken, clearAuthToken } from './useChatApi'
+import { IS_ZH, TARGET_LANG } from '../edition'
 
 const API_URL = import.meta.env.VITE_API_URL || ''
 const MAX_MESSAGES = 40
+
+// The Chinese edition asks for Chinese feedback; the English request stays as it was (no field, server default 'en')
+const DEFAULT_LANGUAGE = IS_ZH ? TARGET_LANG : undefined
 
 function getClientId() {
   let clientId = localStorage.getItem('chatmate_clientId')
@@ -29,7 +33,7 @@ export function useChatSummary() {
    *   repeatTomorrow: { enabled, original, target, cue, hint, patternId } }
    * or null when the summary isn't available.
    */
-  async function summarize({ messages, level, nativeLanguage, patterns = [] }) {
+  async function summarize({ messages, level, nativeLanguage, patterns = [], language = DEFAULT_LANGUAGE }) {
     failure.value = null
     if (!API_URL) {
       failure.value = 'unavailable'
@@ -45,6 +49,7 @@ export function useChatSummary() {
           .map(m => ({ role: m.role, content: m.content })),
         level,
         nativeLanguage,
+        language,
         patterns: patterns.map(p => ({ id: p.id, pattern: p.phrase || p.pattern, match: p.match || [] })),
         clientId: getClientId(),
         origin: window.location.origin,
