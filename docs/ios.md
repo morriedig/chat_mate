@@ -9,6 +9,7 @@ Loading the live site keeps the request origin at `https://morriedig.github.io`,
 
 ```bash
 cd frontend
+npm install   # capacitor.config.ts needs the typescript devDependency
 npm run build && npx cap sync ios
 xcodebuild -project ios/App/App.xcodeproj -scheme App -configuration Release \
   -destination 'generic/platform=iOS' -archivePath build/ChatMate.xcarchive archive \

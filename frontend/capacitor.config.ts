@@ -39,7 +39,10 @@ const chinese: CapacitorConfig = {
 }
 
 export function capacitorConfig(edition: string | undefined): CapacitorConfig {
-  return edition === 'zh' ? chinese : english
+  if (edition === undefined || edition === '' || edition === 'en') return english
+  if (edition === 'zh') return chinese
+  // A typo must not silently sync the English project
+  throw new Error(`Unknown CHATMATE_EDITION "${edition}" (use "zh", or leave it unset for English)`)
 }
 
 export default capacitorConfig(process.env.CHATMATE_EDITION)

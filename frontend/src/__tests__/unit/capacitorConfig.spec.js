@@ -31,6 +31,12 @@ describe('capacitor.config.ts', () => {
     expect(await loadConfig(undefined)).toStrictEqual(OLD_ENGLISH_JSON)
   })
 
+  it('rejects an unknown CHATMATE_EDITION instead of syncing the English project', async () => {
+    const { capacitorConfig } = await import('../../../capacitor.config.ts')
+    expect(() => capacitorConfig('ZH')).toThrow(/Unknown CHATMATE_EDITION/)
+    expect(capacitorConfig('en')).toStrictEqual(OLD_ENGLISH_JSON)
+  })
+
   it('gives Chat Mate 華語 its own app id, name, web dir, URL and ios-zh project', async () => {
     expect(await loadConfig('zh')).toStrictEqual({
       appId: 'com.morrie.chatmate.zh',
