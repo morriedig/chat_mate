@@ -35,12 +35,13 @@ const ALL_ACHIEVEMENTS = [
   { id: 'level_legend', category: 'mastery', icon: '👑', condition: (p) => p.totalXP >= 5500 },
 ]
 
-// The Chinese edition drops achievements for hidden features (diary, articles) and polyglot,
-// which needs 3 friends while that edition has 2
+// The Chinese edition drops achievements for hidden features (diary, articles), polyglot,
+// which needs 3 friends while that edition has 2, and hiragana_master, which needs 46
+// script characters while the zh foundation lessons have 21
 function isHidden(a) {
   return (a.category === 'writing' && !isFeatureEnabled('diary')) ||
     (a.id === 'bookworm' && !isFeatureEnabled('articles')) ||
-    (a.id === 'polyglot' && IS_ZH)
+    ((a.id === 'polyglot' || a.id === 'hiragana_master') && IS_ZH)
 }
 export const ACHIEVEMENTS = ALL_ACHIEVEMENTS.filter(a => !isHidden(a))
 

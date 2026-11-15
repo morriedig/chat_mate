@@ -71,15 +71,18 @@ function readPlacementResult() {
 }
 const placement = readPlacementResult()
 
-// Initial level: placement > nav state > last session > null
+// An edition with a single level has nothing to choose, so that level is preselected
+const onlyLevel = LEVELS.length === 1 ? findLevel(LEVELS[0]) : null
+
+// Initial level: placement > nav state > last session > the only level > null
 const initialLevel = (() => {
   if (placement?.level) {
     const match = findLevel(placement.level)
     if (match) return match
   }
-  if (navSelectedLevel.value) return LEVELS.includes(navSelectedLevel.value.id) ? navSelectedLevel.value : null
-  if (last?.type === 'chat') return findLevel(last.levelId)
-  return null
+  if (navSelectedLevel.value) return LEVELS.includes(navSelectedLevel.value.id) ? navSelectedLevel.value : onlyLevel
+  if (last?.type === 'chat') return findLevel(last.levelId) || onlyLevel
+  return onlyLevel
 })()
 
 const selectedCharacter = ref(
@@ -91,9 +94,9 @@ const selectedChatMode = ref(lastChatMode === 'article' && !isFeatureEnabled('ar
 
 // Learning mode options
 const selectedLearningLevel = ref(
-  placement?.level ? findLevel(placement.level)
+  (placement?.level ? findLevel(placement.level)
     : last?.type === 'learning' ? findLevel(last.levelId)
-    : null
+    : null) || onlyLevel
 )
 const lastTargetLanguage = last?.type === 'learning' ? last.targetLanguage : null
 const selectedTargetLanguage = ref(supportedLanguages.some(l => l.id === lastTargetLanguage) ? lastTargetLanguage : null)
@@ -459,8 +462,8 @@ function handleStart() {
 
         <!-- ========== LEARNING MODE OPTIONS ========== -->
         <template v-if="primaryMode === 'learning'">
-          <!-- Target Language -->
-          <section aria-labelledby="home-target-title">
+          <!-- Target Language (hidden when there is only one to learn; it is preselected) -->
+          <section v-if="availableTargetLanguages.length > 1" aria-labelledby="home-target-title">
             <h2 id="home-target-title" class="mb-2 px-1 text-caption font-medium text-ink-secondary">{{ t('setup.targetLanguage') }}</h2>
             <div role="radiogroup" aria-labelledby="home-target-title" class="divide-y divide-hairline overflow-hidden rounded-[14px] border border-hairline bg-surface">
               <button

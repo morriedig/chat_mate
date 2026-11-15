@@ -17,6 +17,7 @@ const PATTERN = {
   id: 'pattern:beginner:yao',
   level: 'beginner',
   pattern: '我要……',
+  pinyin: 'wǒ yào ……',
   meaning: 'I want …',
   when: '',
   examples: [{ zh: '我要一杯珍奶。', en: 'I want a bubble tea.', pinyin: 'wǒ yào yì bēi zhēn nǎi.' }],
@@ -69,7 +70,7 @@ describe('DailyPracticeScreen (Chinese edition)', () => {
     seedPlan({ core: { ...baseCore, errorCompletedAt: '2026-11-15T00:00:00Z' } })
     const { wrapper, playTTS } = await mountScreen()
 
-    const sentence = wrapper.find('[lang="zh-Hant-TW"]')
+    const sentence = wrapper.find('li [lang="zh-Hant-TW"]')
     expect(sentence.text()).toBe('我要一杯珍奶。')
     const lines = sentence.element.parentElement.textContent
     expect(lines).toContain('wǒ yào yì bēi zhēn nǎi.')
@@ -78,6 +79,16 @@ describe('DailyPracticeScreen (Chinese edition)', () => {
 
     await sentence.element.closest('button').click()
     expect(playTTS).toHaveBeenLastCalledWith('我要一杯珍奶。', 'zh', 'normal')
+    wrapper.unmount()
+  })
+
+  it('marks the pattern title as Chinese and shows its pinyin under it', async () => {
+    seedPlan({ core: { ...baseCore, errorCompletedAt: '2026-11-15T00:00:00Z' } })
+    const { wrapper } = await mountScreen()
+
+    const title = wrapper.findAll('[lang="zh-Hant-TW"]').find(el => el.text() === '我要……')
+    expect(title).toBeTruthy()
+    expect(wrapper.find('.pattern-pinyin').text()).toBe('wǒ yào ……')
     wrapper.unmount()
   })
 

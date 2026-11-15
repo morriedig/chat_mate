@@ -5,7 +5,7 @@ import { listenOnce, stopListening, isSTTAvailable } from '../../utils/stt'
 import { playTTS } from '../../utils/tts'
 import { usesPattern } from '../../composables/useSentenceCheck'
 import { countAnswerUnits } from '../../composables/useDailyPractice'
-import { TARGET_LANG } from '../../edition'
+import { TARGET_LANG, TARGET_LANG_TAG } from '../../edition'
 import PracticeCard from './PracticeCard.vue'
 import CmButton from '../ui/CmButton.vue'
 import CmIconButton from '../ui/CmIconButton.vue'
@@ -135,7 +135,7 @@ onBeforeUnmount(() => {
           <div class="flex items-start gap-1">
             <div class="min-w-0 flex-1">
               <p class="text-meta font-medium text-success">{{ t('dailyPractice.speak.sayItLike') }}</p>
-              <p class="mt-1 text-body text-ink break-words">{{ prompt.target }}</p>
+              <p class="mt-1 text-body text-ink break-words" :lang="TARGET_LANG_TAG">{{ prompt.target }}</p>
             </div>
             <CmIconButton icon="volume_up" :label="t('dailyPractice.listen')" class="-mr-2" @click="playTTS(prompt.target, TARGET_LANG, 'normal')" />
           </div>

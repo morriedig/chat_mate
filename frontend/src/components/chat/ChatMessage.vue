@@ -6,7 +6,7 @@ import CmAvatar from '../ui/CmAvatar.vue'
 import { splitByConnectors } from '../../utils/connectorDetect'
 import { chineseWordAt } from '../../utils/chineseWord'
 import { loadPinyin } from '../../utils/pinyin'
-import { IS_ZH } from '../../edition'
+import { IS_ZH, TARGET_LANG_TAG } from '../../edition'
 
 const { t } = useI18n()
 
@@ -47,7 +47,7 @@ const showFeedback = ref(false)
 
 const isChinese = computed(() => props.language === 'zh')
 // Traditional glyphs need the lang tag; only the Chinese edition sets it
-const contentLang = computed(() => (IS_ZH && isChinese.value ? 'zh-Hant-TW' : undefined))
+const contentLang = computed(() => (isChinese.value ? TARGET_LANG_TAG : null))
 
 const pinyinText = ref('')
 watch(

@@ -349,7 +349,7 @@ describe('ChatScreen', () => {
 
     it('shows in the Chinese edition for a Chinese chat and switches pinyin on', async () => {
       vi.resetModules()
-      vi.doMock('../../edition', async (importOriginal) => ({ ...(await importOriginal()), IS_ZH: true }))
+      vi.doMock('../../edition', async () => (await import('../helpers/editions')).zhEdition)
       const { default: ZhChatScreen } = await import('../../components/ChatScreen.vue')
       try {
         const english = createWrapper({ language: 'en' }, ZhChatScreen)

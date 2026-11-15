@@ -62,7 +62,7 @@ describe('edition test helpers', () => {
     const { isFeatureEnabled, ...constants } = await import('../../edition')
     const { isFeatureEnabled: helperEnabled, ...helperConstants } = helper
     expect(helperConstants).toEqual(constants)
-    const features = ['weeklyChapters', 'dailyOpinion', 'opinionChat', 'retell', 'articles', 'placementTest',
+    const features = ['dailyOpinion', 'opinionChat', 'retell', 'articles', 'placementTest',
       'diary', 'dailyChallenge', 'roleplay', 'languageSwitch', 'dailyPractice', 'taskChat']
     expect(features.map(helperEnabled)).toEqual(features.map(isFeatureEnabled))
   })

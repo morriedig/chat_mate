@@ -8,7 +8,7 @@ import { useDailyPractice } from '../composables/useDailyPractice'
 import { useSentenceCheck, usesPattern } from '../composables/useSentenceCheck'
 import { useMistakes, srsId as mistakeSrsId } from '../composables/useMistakes'
 import { bankSrsId, targetField, translationField } from '../composables/useDailyPractice'
-import { IS_ZH, TARGET_LANG, isFeatureEnabled } from '../edition'
+import { IS_ZH, TARGET_LANG, TARGET_LANG_TAG, isFeatureEnabled } from '../edition'
 import MistakeCard from './practice/MistakeCard.vue'
 import BankWordCard from './practice/BankWordCard.vue'
 import ListeningCard from './practice/ListeningCard.vue'
@@ -31,7 +31,6 @@ const { t } = useI18n()
 // Example sentence fields by edition; Chinese content is marked so Traditional glyphs render
 const tf = targetField()
 const xf = translationField()
-const targetLangAttr = IS_ZH ? 'zh-Hant-TW' : undefined
 const showOpinion = isFeatureEnabled('dailyOpinion')
 const router = useRouter()
 const { motherTongue } = useMotherTongue()
@@ -432,7 +431,10 @@ onBeforeUnmount(() => {
               <!-- Study: shown first for new patterns, after the quiz for reviews -->
               <template v-if="stage !== 'quiz' || picked !== null">
                 <div class="flex items-start justify-between gap-2">
-                  <p class="min-w-0 text-section font-medium text-ink break-words">{{ current.item.pattern }}</p>
+                  <div class="min-w-0">
+                    <p class="text-section font-medium text-ink break-words" :lang="TARGET_LANG_TAG">{{ current.item.pattern }}</p>
+                    <p v-if="IS_ZH && current.item.pinyin" class="pattern-pinyin text-caption text-ink-muted break-words">{{ current.item.pinyin }}</p>
+                  </div>
                   <CmIconButton icon="volume_up" :label="t('dailyPractice.listen')" class="-mr-2 -mt-2" @click="speak(current.item.examples[0][tf])" />
                 </div>
                 <div class="space-y-1">
@@ -444,7 +446,7 @@ onBeforeUnmount(() => {
                     <button type="button" @click="speak(ex[tf])" class="flex min-h-11 w-full items-start gap-2 rounded-[10px] py-1 text-left active:bg-surface-raised">
                       <span class="material-symbols-outlined mt-0.5 shrink-0 !text-[18px] text-ink-muted" aria-hidden="true">volume_up</span>
                       <span class="min-w-0">
-                        <span class="block text-body text-ink break-words" :lang="targetLangAttr">{{ ex[tf] }}</span>
+                        <span class="block text-body text-ink break-words" :lang="TARGET_LANG_TAG">{{ ex[tf] }}</span>
                         <span v-if="IS_ZH && ex.pinyin" class="block text-caption text-ink-muted break-words">{{ ex.pinyin }}</span>
                         <span class="block text-caption text-ink-secondary break-words">{{ ex[xf] }}</span>
                       </span>
@@ -564,7 +566,7 @@ onBeforeUnmount(() => {
               <div v-if="stage !== 'quiz' || picked !== null" class="space-y-3" :class="stage === 'quiz' ? 'border-t border-hairline pt-4' : ''">
                 <div class="flex items-start justify-between gap-2">
                   <div class="min-w-0">
-                    <p class="text-section font-medium text-ink break-words" :lang="targetLangAttr">{{ current.item.word }}</p>
+                    <p class="text-section font-medium text-ink break-words" :lang="TARGET_LANG_TAG">{{ current.item.word }}</p>
                     <p class="text-meta text-ink-muted">{{ current.item.pos }} {{ IS_ZH ? current.item.pinyin : current.item.phonetic }}</p>
                   </div>
                   <CmIconButton icon="volume_up" :label="t('dailyPractice.listen')" class="-mr-2 -mt-1" @click="speak(current.item.word)" />
@@ -573,7 +575,7 @@ onBeforeUnmount(() => {
                 <button type="button" @click="speak(current.item.example[tf])" class="flex min-h-11 w-full items-start gap-2 rounded-[10px] py-1 text-left active:bg-surface-raised">
                   <span class="material-symbols-outlined mt-0.5 shrink-0 !text-[18px] text-ink-muted" aria-hidden="true">volume_up</span>
                   <span class="min-w-0">
-                    <span class="block text-body text-ink break-words" :lang="targetLangAttr">{{ current.item.example[tf] }}</span>
+                    <span class="block text-body text-ink break-words" :lang="TARGET_LANG_TAG">{{ current.item.example[tf] }}</span>
                     <span v-if="IS_ZH && current.item.example.pinyin" class="block text-caption text-ink-muted break-words">{{ current.item.example.pinyin }}</span>
                     <span class="block text-caption text-ink-secondary break-words">{{ current.item.example[xf] }}</span>
                   </span>

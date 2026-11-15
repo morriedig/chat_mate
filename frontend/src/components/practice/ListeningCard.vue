@@ -6,7 +6,7 @@ import { shuffleArray } from '../../utils/shuffle'
 import { diffWords } from '../../utils/wordDiff'
 import PracticeCard from './PracticeCard.vue'
 import CmButton from '../ui/CmButton.vue'
-import { IS_ZH, TARGET_LANG } from '../../edition'
+import { IS_ZH, TARGET_LANG, TARGET_LANG_TAG } from '../../edition'
 import { targetField, translationField } from '../../composables/useDailyPractice'
 
 const { t } = useI18n()
@@ -19,7 +19,6 @@ const emit = defineEmits(['done'])
 
 const tf = targetField()
 const xf = translationField()
-const targetLangAttr = IS_ZH ? 'zh-Hant-TW' : undefined
 const sentence = computed(() => props.item[tf])
 
 const picked = ref(null)
@@ -94,7 +93,7 @@ onBeforeUnmount(stopTTS)
           :class="{ idle: 'text-ink-muted', right: 'text-success', wrong: 'text-error', other: 'text-ink-muted' }[optionState(option)]"
           aria-hidden="true"
         >{{ { right: 'check_circle', wrong: 'cancel' }[optionState(option)] || 'radio_button_unchecked' }}</span>
-        <span class="min-w-0 flex-1" :lang="targetLangAttr">{{ option }}</span>
+        <span class="min-w-0 flex-1" :lang="TARGET_LANG_TAG">{{ option }}</span>
       </button>
     </div>
 
@@ -117,7 +116,7 @@ onBeforeUnmount(stopTTS)
         <span class="material-symbols-outlined !text-[18px]" :class="correct ? '' : 'text-error'" aria-hidden="true">{{ correct ? 'check_circle' : 'cancel' }}</span>
         {{ correct ? t('listening.correct') : t('listening.answerWas') }}
       </p>
-      <p class="text-body text-ink break-words" :lang="targetLangAttr">
+      <p class="text-body text-ink break-words" :lang="TARGET_LANG_TAG">
         <template v-if="item.mode === 'dictation'"><template v-for="(part, i) in diff.parts" :key="i"><span :class="part.same ? '' : 'rounded-[4px] bg-error-soft px-0.5 font-medium text-error underline decoration-1 underline-offset-4'">{{ part.text }}</span>{{ part.space ? ' ' : '' }}</template></template>
         <template v-else>{{ sentence }}</template>
       </p>

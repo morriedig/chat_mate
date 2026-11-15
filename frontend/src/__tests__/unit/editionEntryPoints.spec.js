@@ -46,6 +46,14 @@ describe('i18n per edition', () => {
     expect(t('setup.startChatting')).toBe(en.setup.startChatting)
   })
 
+  it('does not point to the diary or role-play, which the Chinese edition hides', async () => {
+    const { default: i18n } = await load('../../i18n/index.js', 'zh')
+    const hint = i18n.global.t('home.moreHint')
+
+    expect(hint).not.toMatch(/diary|role-play/i)
+    expect(hint).toContain('learning record')
+  })
+
   it('only overrides strings that exist in en.json, besides the new friends', () => {
     const missing = []
     function walk(over, base, path) {
@@ -116,6 +124,7 @@ describe('achievements per edition', () => {
     expect(ACHIEVEMENTS.some(a => a.category === 'writing')).toBe(false)
     expect(ids).not.toContain('bookworm')
     expect(ids).not.toContain('polyglot')
+    expect(ids).not.toContain('hiragana_master')
     expect(ids).toContain('first_chat')
   })
 

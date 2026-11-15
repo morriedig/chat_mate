@@ -53,9 +53,16 @@ chat_mate/
 │   └── deploy.yml                # Auto-deploy to GitHub Pages on push to master
 ├── frontend/
 │   ├── vite.config.js            # Vite + VitePWA config, base path for GH Pages
+│   ├── editionBuild.js           # Per-edition build settings (base, publicDir, outDir, app name)
+│   ├── landing-zh/               # Chinese edition landing page (landing/ is the English one)
+│   ├── public-zh/                # Chinese edition icons (public/ is the English one)
+│   ├── scripts/
+│   │   ├── check-chapter.mjs     # YAML chapter checks
+│   │   └── check-zh.mjs          # zh content checks (Traditional only, pinyin per character)
 │   ├── index.html                # viewport-fit=cover, apple-mobile-web-app-capable
 │   ├── src/
 │   │   ├── main.js               # App init: Vue 3, i18n, router
+│   │   ├── edition.js            # Edition constants (IS_ZH, TARGET_LANG, LEVELS, isFeatureEnabled...)
 │   │   ├── App.vue               # Router outlet, offline banner, PWA update prompt
 │   │   ├── router.js             # Hash mode routes (GH Pages compatible)
 │   │   ├── style.css             # Tailwind + custom utilities (safe-area, scrollbar)
@@ -146,20 +153,28 @@ chat_mate/
 │   │   │   └── useShareCard.js         # Social media card generation (html2canvas)
 │   │   │
 │   │   ├── data/
-│   │   │   ├── characters.js           # 5 AI characters (Emma, Marcus, Sophia, James, Yuki)
+│   │   │   ├── characters.js           # 7 AI characters (Emma, Marcus, Sophia, James, Yuki; Taiwan: Meiling, Zhiwei)
 │   │   │   ├── articles.js             # Reading articles by level with [[word]] markers
 │   │   │   ├── vocabulary.js           # Legacy vocabulary data
 │   │   │   ├── chapterLoader.js        # YAML loader via import.meta.glob + js-yaml
+│   │   │   ├── daily/                 # Daily practice patterns + vocab YAML
+│   │   │   │   ├── en/                 # beginner / intermediate / advanced
+│   │   │   │   └── zh/beginner/        # Taiwan Mandarin patterns + vocab (with pinyin)
 │   │   │   └── chapters/              # YAML vocabulary chapters
 │   │   │       ├── en/
 │   │   │       │   ├── beginner/       # 10 chapters (food, family, home, weather...)
 │   │   │       │   └── intermediate/   # 9 chapters (identity, stories, travel...)
-│   │   │       └── ja/
-│   │   │           ├── beginner/       # 8 chapters (me-and-you, stating-facts...)
-│   │   │           └── intermediate/   # 1 chapter (discussing-movies)
+│   │   │       ├── ja/
+│   │   │       │   ├── beginner/       # 8 chapters (me-and-you, stating-facts...)
+│   │   │       │   └── intermediate/   # 1 chapter (discussing-movies)
+│   │   │       └── zh/
+│   │   │           ├── foundation/     # 3 pinyin lessons (tones, initials, finals)
+│   │   │           └── beginner/       # 8 Taiwan-life chapters (self-intro, ordering, MRT...)
 │   │   │
 │   │   ├── utils/
 │   │   │   ├── tts.js                  # Web Speech API: speed modes, word-by-word
+│   │   │   ├── pinyin.js               # zh edition: pinyin for AI replies (lazy-loaded)
+│   │   │   ├── chineseWord.js          # Whole Chinese word at a tap offset (Intl.Segmenter)
 │   │   │   └── shuffle.js             # Fisher-Yates shuffle for quiz
 │   │   │
 │   │   └── i18n/
@@ -174,6 +189,8 @@ chat_mate/
 ├── backend/
 │   ├── server.js                       # Node.js Express server
 │   ├── Code.gs                         # Google Apps Script version (same logic)
+│   ├── lib/rules.js                    # Shared rules (languages, error types, repeatTomorrow checks)
+│   ├── test/                           # node --test (rules, Code.gs copy in sync)
 │   ├── .env                            # ANTHROPIC_API_KEY, GEMINI_API_KEYS, MOCK_API, SKIP_AUTH
 │   └── SETUP.md
 │
@@ -249,11 +266,21 @@ Router uses **hash mode** (`/#/chat`) for GitHub Pages compatibility.
 - Auto-update check every hour with user notification
 - Caching strategies: StaleWhileRevalidate (fonts), CacheFirst (audio), NetworkFirst (API)
 
+## Editions
+
+One codebase builds two apps, chosen at build time with `VITE_EDITION`:
+- unset / `en`: Chat Mate, English for Mandarin speakers
+- `zh`: Chat Mate 華語, Taiwan Mandarin (Traditional) for English speakers: one level (beginner), Mei-ling and Zhiwei only, diary / articles / role-play / opinion / retell / placement test hidden
+
+Read the edition only through `frontend/src/edition.js` (`IS_ZH`, `TARGET_LANG`, `TARGET_LANG_TAG`, `LEVELS`, `isFeatureEnabled`...); never `import.meta.env.VITE_EDITION` elsewhere. `frontend/editionBuild.js` holds the build-side settings (base path, `public-zh/`, `dist-zh/`, app name). zh UI strings override English in `src/i18n/locales/zh-edition.en.json`. Tests mock the edition with `src/__tests__/helpers/editions.js`. Plan: `docs/plans/zh-edition.md`.
+
 ## Development Commands
 
 ```bash
 # Frontend (port 5173)
 cd frontend && npm run dev
+# Chinese edition
+cd frontend && VITE_EDITION=zh npm run dev
 
 # Backend (port 3000)
 cd backend && npm start
@@ -361,7 +388,8 @@ All user progress stored in localStorage:
 ### GitHub Pages (Automatic)
 Push to `master` triggers `.github/workflows/deploy.yml`:
 1. Build frontend with `GITHUB_PAGES=true` (sets base path to `/chat_mate/app/`)
-2. Publish `frontend/landing/` at `/chat_mate/` and `frontend/dist/` at `/chat_mate/app/` to the `gh-pages` branch
+2. Build again with `VITE_EDITION=zh` into `frontend/dist-zh/` (base `/chat_mate/zh/app/`, assets from `public-zh/`)
+3. Publish `frontend/landing/` at `/chat_mate/`, `frontend/dist/` at `/chat_mate/app/`, `frontend/landing-zh/` at `/chat_mate/zh/` and `frontend/dist-zh/` at `/chat_mate/zh/app/` to the `gh-pages` branch
 
 The iOS app is the primary client (see `docs/ios.md`): it loads `/chat_mate/app/`, so web pushes reach the app without a new build. In a normal browser `/chat_mate/app/` redirects to the landing page; add `?web=1` once to use the app in a browser for testing.
 
@@ -376,3 +404,4 @@ When modifying backend logic, remember to sync changes between:
 - `backend/Code.gs` (Google Apps Script)
 
 Both files contain the same prompt logic and should stay in sync.
+Shared rules live in `backend/lib/rules.js`; Code.gs carries a word-for-word copy between the `// === SHARED RULES ...` markers. Edit rules.js first, copy it over, then run `cd backend && npm test`.

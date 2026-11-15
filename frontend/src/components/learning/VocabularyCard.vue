@@ -3,6 +3,7 @@ import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { playTTS, isTTSAvailable, splitTextForHighlight } from '../../utils/tts'
 import { usePronunciationCheck } from '../../composables/usePronunciationCheck'
+import { TARGET_LANG_TAG } from '../../edition'
 
 const { t } = useI18n()
 const { isSupported: pronSupported, isListening, score: pronScore, checkPronunciation, stopListening } = usePronunciationCheck()
@@ -118,7 +119,7 @@ async function playSentence() {
     <div class="flex items-start gap-2">
       <div class="min-w-0 flex-1">
         <div class="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-          <h3 class="break-words text-section font-medium text-ink" data-heading>{{ word.word }}</h3>
+          <h3 class="break-words text-section font-medium text-ink" :lang="TARGET_LANG_TAG" data-heading>{{ word.word }}</h3>
           <span v-if="bilingual && word.nativeWord" class="text-body text-ink-secondary">({{ word.nativeWord }})</span>
         </div>
         <div v-if="word.phonetic || word.reading || word.pinyin" class="mt-0.5 flex flex-wrap gap-x-2 text-caption">
@@ -179,14 +180,14 @@ async function playSentence() {
       </button>
       <div class="min-w-0">
         <!-- Word-by-word highlight mode for sentence -->
-        <p v-if="voiceSpeed === 'word' && highlightSentenceIndex >= 0" class="break-words text-body text-ink">
+        <p v-if="voiceSpeed === 'word' && highlightSentenceIndex >= 0" class="break-words text-body text-ink" :lang="TARGET_LANG_TAG">
           "<span
             v-for="(w, i) in sentenceWords"
             :key="i"
             :class="i === highlightSentenceIndex ? 'rounded-[4px] bg-accent-soft px-0.5 text-accent' : ''"
           >{{ w }}{{ i < sentenceWords.length - 1 ? ' ' : '' }}</span>"
         </p>
-        <p v-else class="break-words text-body text-ink">
+        <p v-else class="break-words text-body text-ink" :lang="TARGET_LANG_TAG">
           "{{ word.example }}"
         </p>
         <p v-if="word.sentencePinyin" class="mt-0.5 break-words text-caption text-ink-muted">{{ word.sentencePinyin }}</p>

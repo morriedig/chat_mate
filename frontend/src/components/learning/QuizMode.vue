@@ -6,6 +6,7 @@ import { useLearningProgress } from '../../composables/useLearningProgress'
 import { useSRS } from '../../composables/useSRS'
 import CmButton from '../ui/CmButton.vue'
 import CmProgress from '../ui/CmProgress.vue'
+import { TARGET_LANG_TAG } from '../../edition'
 
 const { t } = useI18n()
 const { markQuizCompleted } = useLearningProgress()
@@ -155,7 +156,7 @@ watch([() => props.words, () => props.cloze], () => initQuiz(props.words, props.
       <div v-else class="relative mb-4 rounded-[14px] border border-hairline bg-surface p-5 text-center shadow-[var(--cm-shadow-small)]" data-testid="quiz-prompt">
         <span class="absolute left-0 top-5 h-9 w-[3px] rounded-r-[3px] bg-accent" aria-hidden="true"></span>
         <p class="mb-2 text-caption text-ink-secondary">{{ t('learning.whatMeans') }}</p>
-        <h2 class="break-words text-display font-medium text-ink" data-heading>
+        <h2 class="break-words text-display font-medium text-ink" :lang="TARGET_LANG_TAG" data-heading>
           {{ currentQuestion?.word }}
         </h2>
         <p v-if="currentQuestion?.reading" class="mt-1 text-body text-accent">{{ currentQuestion.reading }}</p>
