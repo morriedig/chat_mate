@@ -2,13 +2,8 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { mount, flushPromises } from '@vue/test-utils'
 
 // Chinese edition screens: Chinese sentences, pinyin, zh-TW speech, hidden English-only buttons
-vi.mock('../../edition', () => ({
-  EDITION: 'zh',
-  IS_ZH: true,
-  TARGET_LANG: 'zh',
-  TRANSLATION_LANG: 'en',
-  LEVELS: ['beginner'],
-  DEFAULT_LEVEL: 'beginner',
+vi.mock('../../edition', async () => ({
+  ...(await import('../helpers/editions.js')).zhEdition,
   isFeatureEnabled: feature => feature !== 'dailyOpinion',
 }))
 vi.mock('vue-i18n', () => ({ useI18n: () => ({ t: key => key }) }))

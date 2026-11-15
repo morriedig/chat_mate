@@ -1,15 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 
 // Chinese edition: Taiwan Mandarin for English speakers
-vi.mock('../../edition', () => ({
-  EDITION: 'zh',
-  IS_ZH: true,
-  TARGET_LANG: 'zh',
-  TRANSLATION_LANG: 'en',
-  LEVELS: ['beginner'],
-  DEFAULT_LEVEL: 'beginner',
-  isFeatureEnabled: feature => feature !== 'dailyOpinion',
-}))
+vi.mock('../../edition', async () => (await import('../helpers/editions.js')).zhEdition)
 
 const ZH_PATTERNS = [
   {
