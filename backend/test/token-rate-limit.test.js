@@ -89,3 +89,10 @@ test('server.js uses the same token limits and passes clientId from the query', 
   assert.deepEqual(limits(server), limits(read('Code.gs')));
   assert.match(server, /checkTokenRateLimit\(origin, req\.query\.clientId\)/);
 });
+
+test('a clientId outside [A-Za-z0-9_-] falls back to the origin limit', () => {
+  const { requestToken } = loadCodeGs();
+  assert.equal(requestToken('客戶端甲').success, true); // first token for the origin key
+  assert.equal(requestToken('客戶端乙').success, false); // same origin key, within the minute
+  assert.equal(requestToken('client_ok-1').success, true)
+});

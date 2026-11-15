@@ -106,7 +106,8 @@ function getHost(value) {
 }
 
 function isValidClientId(clientId) {
-  return typeof clientId === 'string' && clientId.length > 0 && clientId.length <= 256;
+  // The app's ids look like client_<base36>; ASCII only keeps cache keys within their length limit
+  return typeof clientId === 'string' && /^[A-Za-z0-9_-]{1,256}$/.test(clientId);
 }
 
 function checkTokenRateLimit(origin, clientId) {

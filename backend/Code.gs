@@ -165,12 +165,13 @@ const TOKEN_GLOBAL_LIMIT = 300; // tokens across all clients...
 const TOKEN_GLOBAL_WINDOW_MS = 600000; // ...per 10 minutes
 
 function isValidClientId(clientId) {
-  return typeof clientId === 'string' && clientId.length > 0 && clientId.length <= 256;
+  // The app's ids look like client_<base36>; ASCII only keeps cache keys within their length limit
+  return typeof clientId === 'string' && /^[A-Za-z0-9_-]{1,256}$/.test(clientId);
 }
 
 // CacheService keys are capped at 250 characters, so long origins / clientIds are cut
 function getTokenRateLimitKey(origin, clientId) {
-  if (!isValidClientId(clientId)) return 'token_ratelimit_' + (origin || 'unknown');
+  if (!isValidClientId(clientId)) return 'token_ratelimit_' + (origin || 'unknown').slice(0, 200);
   return 'token_client_' + String(origin || 'unknown').slice(0, 100) + '|' + clientId.slice(0, 128);
 }
 
