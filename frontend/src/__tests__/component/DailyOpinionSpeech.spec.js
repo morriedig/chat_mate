@@ -143,3 +143,26 @@ describe('DailyOpinionScreen speech-to-text', () => {
     expect(wrapper.vm.body).toBe('I agree.')
   })
 })
+
+describe('DailyOpinionScreen friend', () => {
+  beforeEach(() => {
+    localStorage.clear()
+    submitAnswer.mockClear()
+  })
+
+  it('swaps a Chinese-only friend left from a Chinese chat for one who speaks English', async () => {
+    const { useNavState } = await import('../../composables/useNavState')
+    const { characters } = await import('../../data/characters')
+    const { selectedCharacter } = useNavState()
+    selectedCharacter.value = characters.find(c => c.id === 'meiling')
+
+    const wrapper = await mountWithText('I agree.')
+    await submitButton(wrapper).trigger('click')
+    await flushPromises()
+
+    const friend = characters.find(c => c.id === submitAnswer.mock.calls[0][1].characterId)
+    expect(friend.languages).toContain('en')
+    selectedCharacter.value = null
+    wrapper.unmount()
+  })
+})

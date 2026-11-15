@@ -228,14 +228,14 @@ watch(() => props.words, (newWords) => initCards(newWords), { immediate: true })
             </button>
             <div class="min-w-0">
               <!-- Word-by-word highlight mode for sentence -->
-              <p v-if="voiceSpeed === 'word' && highlightSentenceIndex >= 0" class="break-words text-body text-ink">
+              <p v-if="voiceSpeed === 'word' && highlightSentenceIndex >= 0" class="break-words text-body text-ink" :lang="TARGET_LANG_TAG">
                 "<span
                   v-for="(w, i) in sentenceWords"
                   :key="i"
                   :class="i === highlightSentenceIndex ? 'rounded-[4px] bg-accent-soft px-0.5 text-accent' : ''"
                 >{{ w }}{{ i < sentenceWords.length - 1 ? ' ' : '' }}</span>"
               </p>
-              <p v-else class="break-words text-body text-ink">
+              <p v-else class="break-words text-body text-ink" :lang="TARGET_LANG_TAG">
                 "{{ currentWord?.example }}"
               </p>
               <p v-if="bilingual && currentWord?.nativeExample" class="mt-1 text-caption text-ink-muted">

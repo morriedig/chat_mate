@@ -7,6 +7,7 @@ import { useSpeakingQueue } from '../../composables/useSpeakingQueue'
 import CmBottomSheet from '../ui/CmBottomSheet.vue'
 import CmAvatar from '../ui/CmAvatar.vue'
 import CmButton from '../ui/CmButton.vue'
+import { TARGET_LANG_TAG } from '../../edition'
 
 const { t } = useI18n()
 
@@ -100,7 +101,7 @@ onMounted(load)
               aria-hidden="true"
             ><span class="material-symbols-outlined !text-[16px]">check</span></span>
             <span v-else class="size-5 shrink-0 rounded-[6px] border border-ink-muted" aria-hidden="true"></span>
-            <span class="min-w-0 break-words">{{ tg.phrase }}</span>
+            <span class="min-w-0 break-words" :lang="TARGET_LANG_TAG">{{ tg.phrase }}</span>
             <span class="sr-only">, {{ usedTargets.includes(tg) ? t('mission.used') : t('mission.notUsed') }}</span>
           </li>
         </ul>
@@ -141,7 +142,7 @@ onMounted(load)
           <p v-if="!summary.points?.length" class="text-body text-ink">{{ t('taskChat.nothingToFix') }}</p>
           <ol class="space-y-3">
             <li v-for="(point, i) in summary.points" :key="i" class="summary-point rounded-[14px] border border-hairline bg-surface p-3.5">
-              <p class="break-words text-body text-ink">“{{ point.original }}”</p>
+              <p class="break-words text-body text-ink" :lang="TARGET_LANG_TAG">“{{ point.original }}”</p>
               <div class="mt-2.5 rounded-[10px] bg-warning-soft px-3 py-2.5">
                 <p class="text-caption font-medium text-warning">{{ t('taskChat.hint') }}</p>
                 <p class="text-caption text-ink-secondary">{{ point.hint }}</p>
@@ -150,7 +151,7 @@ onMounted(load)
                 <p class="flex items-center gap-1 text-caption font-medium text-success">
                   <span class="material-symbols-outlined !text-[18px]" aria-hidden="true">check</span>{{ t('taskChat.suggested') }}
                 </p>
-                <p class="break-words text-body text-ink">{{ point.corrected }}</p>
+                <p class="break-words text-body text-ink" :lang="TARGET_LANG_TAG">{{ point.corrected }}</p>
                 <p v-if="point.explanation" class="mt-1 text-caption text-ink-secondary">{{ point.explanation }}</p>
               </div>
               <button
@@ -169,7 +170,7 @@ onMounted(load)
               <span class="material-symbols-outlined !text-[18px] text-accent" aria-hidden="true">event_repeat</span>
               {{ t('taskChat.repeatTomorrow.title') }}
             </h3>
-            <p class="mt-2 break-words text-body text-ink">“{{ repeatSentence.original }}”</p>
+            <p class="mt-2 break-words text-body text-ink" :lang="TARGET_LANG_TAG">“{{ repeatSentence.original }}”</p>
             <p class="mt-1 break-words text-caption text-ink-secondary">{{ repeatSentence.cue }}</p>
             <p v-if="repeat.status === 'queued'" class="mt-2 flex items-center gap-1 text-meta text-success" role="status">
               <span class="material-symbols-outlined !text-[16px]" aria-hidden="true">check</span>{{ t('taskChat.repeatTomorrow.queued') }}

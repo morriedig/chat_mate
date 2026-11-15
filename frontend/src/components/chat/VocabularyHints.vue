@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { TARGET_LANG_TAG } from '../../edition'
 
 const { t } = useI18n()
 
@@ -36,7 +37,7 @@ watch(() => props.hints, () => { openWord.value = null })
           :aria-expanded="openWord === hint.word"
           class="vocab-hint inline-flex min-h-11 max-w-[14rem] shrink-0 items-center rounded-[6px] border px-2 text-caption font-medium"
           :class="openWord === hint.word ? 'border-accent/30 bg-accent-soft text-accent' : 'border-hairline bg-surface-raised text-ink active:bg-surface-sunken'"
-        ><span class="truncate">{{ hint.word }}</span></button>
+        ><span class="truncate" :lang="TARGET_LANG_TAG">{{ hint.word }}</span></button>
       </div>
       <div v-if="$slots.trailing" class="flex shrink-0 items-center border-l border-hairline pr-1 sm:pr-3">
         <slot name="trailing" />
@@ -44,7 +45,7 @@ watch(() => props.hints, () => { openWord.value = null })
     </div>
     <div v-if="openHint" class="vocab-hint-detail mx-4 mb-2 max-h-32 overflow-y-auto rounded-[10px] bg-surface-sunken px-3 py-2 sm:mx-6" role="region" :aria-label="openHint.word">
       <p class="break-words text-caption text-ink-secondary">{{ openHint.description }}</p>
-      <p v-if="openHint.example" class="mt-1 text-caption text-ink [overflow-wrap:anywhere]">“{{ openHint.example }}”</p>
+      <p v-if="openHint.example" class="mt-1 text-caption text-ink [overflow-wrap:anywhere]" :lang="TARGET_LANG_TAG">“{{ openHint.example }}”</p>
     </div>
   </div>
 </template>

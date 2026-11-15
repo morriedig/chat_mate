@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n'
 import { useVocabularyBank } from '../../composables/useVocabularyBank'
 import CmBottomSheet from '../ui/CmBottomSheet.vue'
 import CmStateBlock from '../ui/CmStateBlock.vue'
+import { TARGET_LANG_TAG } from '../../edition'
 
 const { t } = useI18n()
 const emit = defineEmits(['close'])
@@ -62,10 +63,10 @@ function handleRemove(id) {
         >
           <div class="min-w-0 flex-1 py-1">
             <p class="break-words">
-              <span class="text-body font-medium text-ink">{{ entry.word }}</span>
+              <span class="text-body font-medium text-ink" :lang="TARGET_LANG_TAG">{{ entry.word }}</span>
               <span v-if="entry.translation" class="ml-2 text-caption text-ink-secondary">{{ entry.translation }}</span>
             </p>
-            <p v-if="entry.context" class="mt-0.5 truncate text-caption text-ink-muted">“{{ entry.context }}”</p>
+            <p v-if="entry.context" class="mt-0.5 truncate text-caption text-ink-muted" :lang="TARGET_LANG_TAG">“{{ entry.context }}”</p>
             <p class="mt-0.5 text-meta text-ink-muted tabular-nums">{{ entry.source }} · {{ entry.addedAt }}</p>
           </div>
           <button

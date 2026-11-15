@@ -52,26 +52,33 @@ export function createAnnotator(toSimplified, pinyinFn) {
 }
 
 const LATIN_OR_DIGIT = /[\p{Script=Latin}\p{Nd}]/u
+// Full-width punctuation (，。？！、「」…) already carries its own space
+const FULL_WIDTH_PUNCT = /^(?=\p{P})[\u3000-\u303F\uFF00-\uFFEF]$/u
 
 /**
  * One line of pinyin for a sentence: syllables separated by spaces,
- * punctuation kept after the syllable before it, and runs of Latin letters
- * and digits set apart from syllables (我叫Emma → wǒ jiào Emma, 台北101 → tái běi 101).
+ * punctuation kept after the syllable before it with no space after full-width
+ * punctuation (Emma，你 → Emma，nǐ), and runs of Latin letters and digits set
+ * apart from syllables (我叫Emma → wǒ jiào Emma, 台北101 → tái běi 101).
  */
 export function pinyinLine(chars) {
   let out = ''
   let afterSyllable = false
+  let afterFullWidthPunct = false
   for (const { char, pinyin } of chars) {
     if (pinyin) {
-      out += (out && !out.endsWith(' ') ? ' ' : '') + pinyin
+      out += (out && !out.endsWith(' ') && !afterFullWidthPunct ? ' ' : '') + pinyin
+      afterFullWidthPunct = false
       afterSyllable = true
       continue
     }
     if (/\s/.test(char)) {
       if (out && !out.endsWith(' ')) out += ' '
+      afterFullWidthPunct = false
     } else {
       if (afterSyllable && LATIN_OR_DIGIT.test(char)) out += ' '
       out += char
+      afterFullWidthPunct = FULL_WIDTH_PUNCT.test(char)
     }
     afterSyllable = false
   }

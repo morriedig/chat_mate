@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { TARGET_LANG_TAG } from '../../edition'
 
 const { t } = useI18n()
 
@@ -20,6 +21,15 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['retry'])
+
+// A correction reads "<original>" → "<corrected>" — <explanation in the native language>:
+// only the fix is target-language content
+const EXPLANATION_SEPARATOR = ' — '
+function splitCorrection(correction) {
+  const text = String(correction ?? '')
+  const at = text.indexOf(EXPLANATION_SEPARATOR)
+  return at === -1 ? { fix: text, why: '' } : { fix: text.slice(0, at), why: text.slice(at + EXPLANATION_SEPARATOR.length) }
+}
 
 // Scores read as one quiet line of text, not coloured pills
 const scores = computed(() => {
@@ -68,7 +78,7 @@ const scores = computed(() => {
         v-for="(correction, i) in feedback.grammar.corrections"
         :key="i"
         class="break-words text-body text-ink"
-      >{{ correction }}</p>
+      ><span :lang="TARGET_LANG_TAG">{{ splitCorrection(correction).fix }}</span><template v-if="splitCorrection(correction).why">{{ EXPLANATION_SEPARATOR }}{{ splitCorrection(correction).why }}</template></p>
     </div>
 
     <!-- Suggestions -->
@@ -78,6 +88,7 @@ const scores = computed(() => {
         v-for="(alt, i) in feedback.alternatives"
         :key="i"
         class="break-words text-body text-ink"
+        :lang="TARGET_LANG_TAG"
       >“{{ alt }}”</p>
     </div>
 

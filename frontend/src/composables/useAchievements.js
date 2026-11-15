@@ -36,12 +36,14 @@ const ALL_ACHIEVEMENTS = [
 ]
 
 // The Chinese edition drops achievements for hidden features (diary, articles), polyglot,
-// which needs 3 friends while that edition has 2, and hiragana_master, which needs 46
-// script characters while the zh foundation lessons have 21
+// which needs 3 friends while that edition has 2, hiragana_master, which needs 46
+// script characters while the zh foundation lessons have 21, and script_scholar, which
+// needs 5 foundation lessons while zh has 3
+const UNREACHABLE_IN_ZH = ['polyglot', 'hiragana_master', 'script_scholar']
 function isHidden(a) {
   return (a.category === 'writing' && !isFeatureEnabled('diary')) ||
     (a.id === 'bookworm' && !isFeatureEnabled('articles')) ||
-    ((a.id === 'polyglot' || a.id === 'hiragana_master') && IS_ZH)
+    (UNREACHABLE_IN_ZH.includes(a.id) && IS_ZH)
 }
 export const ACHIEVEMENTS = ALL_ACHIEVEMENTS.filter(a => !isHidden(a))
 
