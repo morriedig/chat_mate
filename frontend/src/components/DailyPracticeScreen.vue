@@ -321,7 +321,8 @@ onBeforeUnmount(() => {
         @back="handleBack"
       >
         <template #below>
-          <div class="px-4 pb-2 min-[375px]:px-5">
+          <!-- An edition with a single level has nothing to switch -->
+          <div v-if="levelOptions.length > 1" class="px-4 pb-2 min-[375px]:px-5">
             <CmSegmentedControl
               :options="levelOptions"
               :model-value="level"
@@ -456,11 +457,11 @@ onBeforeUnmount(() => {
                 <div v-if="current.item.mistake" class="space-y-1.5 rounded-[10px] border border-hairline bg-surface-sunken px-3 py-3 text-caption">
                   <p class="flex items-start gap-1.5 text-ink-secondary break-words">
                     <span class="material-symbols-outlined mt-px shrink-0 !text-[18px] text-error" aria-hidden="true">close</span>
-                    <span class="min-w-0 line-through decoration-error">{{ current.item.mistake.wrong }}</span>
+                    <span class="min-w-0 line-through decoration-error" :lang="TARGET_LANG_TAG">{{ current.item.mistake.wrong }}</span>
                   </p>
                   <p class="flex items-start gap-1.5 text-ink break-words">
                     <span class="material-symbols-outlined mt-px shrink-0 !text-[18px] text-success" aria-hidden="true">check</span>
-                    <span class="min-w-0">{{ current.item.mistake.right }}</span>
+                    <span class="min-w-0" :lang="TARGET_LANG_TAG">{{ current.item.mistake.right }}</span>
                   </p>
                   <p class="text-ink-secondary">{{ current.item.mistake.why }}</p>
                 </div>
@@ -483,7 +484,7 @@ onBeforeUnmount(() => {
                     :class="OPTION_CLASS[optionState(opt.id)]"
                   >
                     <span class="material-symbols-outlined mt-0.5 shrink-0" :class="OPTION_ICON_CLASS[optionState(opt.id)]" aria-hidden="true">{{ OPTION_ICON[optionState(opt.id)] }}</span>
-                    <span class="min-w-0 flex-1">{{ opt.text }}</span>
+                    <span class="min-w-0 flex-1" :lang="TARGET_LANG_TAG">{{ opt.text }}</span>
                   </button>
                 </div>
                 <template v-if="picked !== null">
@@ -523,11 +524,11 @@ onBeforeUnmount(() => {
                   <p class="text-ink break-words">{{ check.comment }}</p>
                   <p v-if="check.corrected && check.corrected.trim() !== sentence.trim()" class="break-words">
                     <span class="text-ink-muted">{{ t('dailyPractice.corrected') }}</span>
-                    <span class="text-ink">{{ check.corrected }}</span>
+                    <span class="text-ink" :lang="TARGET_LANG_TAG">{{ check.corrected }}</span>
                   </p>
                   <button v-if="check.better" type="button" @click="speak(check.better)" class="block min-h-11 w-full text-left break-words">
                     <span class="text-ink-muted">{{ t('dailyPractice.better') }}</span>
-                    <span class="text-accent">{{ check.better }}</span>
+                    <span class="text-accent" :lang="TARGET_LANG_TAG">{{ check.better }}</span>
                   </button>
                 </div>
                 <p v-else-if="checkFailed" class="text-caption text-ink-secondary">
@@ -557,7 +558,7 @@ onBeforeUnmount(() => {
                     :class="OPTION_CLASS[optionState(opt.id)]"
                   >
                     <span class="material-symbols-outlined shrink-0" :class="OPTION_ICON_CLASS[optionState(opt.id)]" aria-hidden="true">{{ OPTION_ICON[optionState(opt.id)] }}</span>
-                    <span class="min-w-0 flex-1">{{ opt.text }}</span>
+                    <span class="min-w-0 flex-1" :lang="TARGET_LANG_TAG">{{ opt.text }}</span>
                   </button>
                 </div>
               </div>
@@ -581,7 +582,7 @@ onBeforeUnmount(() => {
                   </span>
                 </button>
                 <ul v-if="current.item.collocations?.length" class="flex flex-wrap gap-2">
-                  <li v-for="c in current.item.collocations" :key="c" class="max-w-full"><CmChip>{{ c }}</CmChip></li>
+                  <li v-for="c in current.item.collocations" :key="c" class="max-w-full"><CmChip :lang="TARGET_LANG_TAG">{{ c }}</CmChip></li>
                 </ul>
                 <p v-if="current.item.note" class="text-caption text-ink-secondary">{{ current.item.note }}</p>
                 <CmButton v-if="stage === 'learn'" block @click="stage = 'quiz'">{{ t('dailyPractice.startPractice') }}</CmButton>

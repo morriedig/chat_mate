@@ -144,7 +144,7 @@ watch([() => props.words, () => props.cloze], () => initQuiz(props.words, props.
       <div v-if="isClozeMode" class="relative mb-4 rounded-[14px] border border-hairline bg-surface p-5 shadow-[var(--cm-shadow-small)]" data-testid="quiz-prompt">
         <span class="absolute left-0 top-5 h-9 w-[3px] rounded-r-[3px] bg-accent" aria-hidden="true"></span>
         <p class="mb-3 text-caption text-ink-secondary">{{ t('learning.fillBlank') }}</p>
-        <p class="text-section font-medium text-ink">
+        <p class="text-section font-medium text-ink" :lang="TARGET_LANG_TAG">
           {{ sentenceParts(currentQuestion?.sentence).before }}<span
             class="mx-1 inline-block min-w-[4.5rem] border-b-2 px-2 text-center"
             :class="isAnswered ? 'border-success text-success' : 'border-accent text-accent'"
@@ -179,7 +179,7 @@ watch([() => props.words, () => props.cloze], () => initQuiz(props.words, props.
           <span class="flex size-6 shrink-0 items-center justify-center rounded-[6px] border border-hairline bg-surface-raised text-meta font-medium text-ink-secondary" aria-hidden="true">
             {{ String.fromCharCode(65 + index) }}
           </span>
-          <span class="min-w-0 flex-1 break-words text-body text-ink">{{ isClozeMode ? option.text : option.meaning }}</span>
+          <span class="min-w-0 flex-1 break-words text-body text-ink" :lang="isClozeMode ? TARGET_LANG_TAG : null">{{ isClozeMode ? option.text : option.meaning }}</span>
           <span v-if="isAnswered && isCorrectOption(option)" class="material-symbols-outlined shrink-0 text-success" aria-hidden="true">check_circle</span>
           <span v-if="isAnswered && selectedAnswer?.id === option.id && !isCorrectOption(option)" class="material-symbols-outlined shrink-0 text-error" aria-hidden="true">cancel</span>
         </button>
@@ -206,7 +206,7 @@ watch([() => props.words, () => props.cloze], () => initQuiz(props.words, props.
             <span class="font-medium">{{ t('learning.whyLabel') }}</span>
             {{ currentQuestion.explain }}
           </p>
-          <p v-else-if="!isClozeMode" class="break-words text-caption text-ink-secondary">
+          <p v-else-if="!isClozeMode" class="break-words text-caption text-ink-secondary" :lang="TARGET_LANG_TAG">
             {{ currentQuestion?.example }}
           </p>
         </div>
@@ -251,11 +251,11 @@ watch([() => props.words, () => props.cloze], () => initQuiz(props.words, props.
               {{ answer.isCorrect ? 'check_circle' : 'cancel' }}
             </span>
             <template v-if="isClozeMode">
-              <span class="shrink-0 text-body font-medium text-ink">{{ answer.word.answer }}</span>
-              <span class="min-w-0 flex-1 truncate text-left text-caption text-ink-muted">{{ answer.word.sentence }}</span>
+              <span class="shrink-0 text-body font-medium text-ink" :lang="TARGET_LANG_TAG">{{ answer.word.answer }}</span>
+              <span class="min-w-0 flex-1 truncate text-left text-caption text-ink-muted" :lang="TARGET_LANG_TAG">{{ answer.word.sentence }}</span>
             </template>
             <template v-else>
-              <span class="shrink-0 text-body font-medium text-ink">{{ answer.word.word }}</span>
+              <span class="shrink-0 text-body font-medium text-ink" :lang="TARGET_LANG_TAG">{{ answer.word.word }}</span>
               <span class="text-ink-muted" aria-hidden="true">-</span>
               <span class="min-w-0 flex-1 truncate text-caption text-ink-muted">{{ answer.word.meaning }}</span>
             </template>

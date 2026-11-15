@@ -40,7 +40,7 @@ function rate(confidence) {
     <template v-else>
       <div class="space-y-2 rounded-[10px] border border-hairline bg-surface-sunken px-3 py-3">
         <p v-if="word.translation" class="text-body font-medium text-ink break-words">{{ word.translation }}</p>
-        <p v-if="word.context" class="text-caption text-ink-secondary break-words">“{{ word.context }}”</p>
+        <p v-if="word.context" class="text-caption text-ink-secondary break-words" :lang="TARGET_LANG_TAG">“{{ word.context }}”</p>
         <p v-if="!word.translation && !word.context" class="text-caption text-ink-secondary">{{ t('dailyPractice.noSavedMeaning') }}</p>
       </div>
       <PracticeRating @rate="rate" />

@@ -10,7 +10,7 @@ import { useOnlineStatus } from '../composables/useOnlineStatus'
 import { useVocabularyBank } from '../composables/useVocabularyBank'
 import { useDailyOpinion, getConnectorInfo } from '../composables/useDailyOpinion'
 import { SCAFFOLD_STEPS } from '../data/dailyOpinion'
-import { characters } from '../data/characters'
+import { characterFor } from '../data/characters'
 import { detectConnectors, segmentByConnectors } from '../utils/connectorDetect'
 import { analyzeStructure, splitSentences, pickBestSentence } from '../utils/opinionStructure'
 import DiaryFeedback from './diary/DiaryFeedback.vue'
@@ -47,7 +47,8 @@ const {
   markSentenceSaved,
 } = useDailyOpinion()
 
-const character = computed(() => selectedCharacter.value || characters[0])
+// The opinion drill is in English: a friend picked for a Chinese chat (Mei-ling) doesn't carry over
+const character = computed(() => characterFor('en', selectedCharacter.value))
 const mt = computed(() => motherTongue.value || 'en')
 
 const questionGloss = computed(() => (mt.value === 'en' ? '' : question.value[mt.value]))

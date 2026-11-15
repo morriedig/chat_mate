@@ -118,13 +118,14 @@ describe('weekly quests per edition', () => {
 })
 
 describe('achievements per edition', () => {
-  it('drops diary, article and polyglot achievements in the Chinese edition', async () => {
+  it('drops diary, article and unreachable achievements in the Chinese edition', async () => {
     const { ACHIEVEMENTS } = await load('../../composables/useAchievements.js', 'zh')
     const ids = ACHIEVEMENTS.map(a => a.id)
     expect(ACHIEVEMENTS.some(a => a.category === 'writing')).toBe(false)
     expect(ids).not.toContain('bookworm')
     expect(ids).not.toContain('polyglot')
     expect(ids).not.toContain('hiragana_master')
+    expect(ids).not.toContain('script_scholar')
     expect(ids).toContain('first_chat')
   })
 

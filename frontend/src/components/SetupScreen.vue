@@ -462,8 +462,8 @@ function handleStart() {
 
         <!-- ========== LEARNING MODE OPTIONS ========== -->
         <template v-if="primaryMode === 'learning'">
-          <!-- Target Language (hidden when there is only one to learn; it is preselected) -->
-          <section v-if="availableTargetLanguages.length > 1" aria-labelledby="home-target-title">
+          <!-- Target Language (hidden in an edition without the language switch; its language is preselected) -->
+          <section v-if="isFeatureEnabled('languageSwitch')" aria-labelledby="home-target-title">
             <h2 id="home-target-title" class="mb-2 px-1 text-caption font-medium text-ink-secondary">{{ t('setup.targetLanguage') }}</h2>
             <div role="radiogroup" aria-labelledby="home-target-title" class="divide-y divide-hairline overflow-hidden rounded-[14px] border border-hairline bg-surface">
               <button

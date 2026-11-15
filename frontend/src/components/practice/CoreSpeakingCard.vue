@@ -83,7 +83,7 @@ onBeforeUnmount(() => {
       </p>
       <p v-if="showPattern" class="text-body font-medium text-ink break-words">
         <span class="text-caption font-normal text-ink-muted">{{ t('dailyPractice.speak.patternLabel') }}</span>
-        {{ prompt.pattern }}
+        <span :lang="TARGET_LANG_TAG">{{ prompt.pattern }}</span>
       </p>
     </div>
 
@@ -128,7 +128,7 @@ onBeforeUnmount(() => {
       <div class="space-y-3 border-t border-hairline pt-4" role="status">
         <div class="rounded-[10px] border border-hairline bg-surface-sunken px-3 py-2.5">
           <p class="text-meta text-ink-muted">{{ attempt.mode === 'voice' ? t('dailyPractice.speak.youSaid') : t('dailyPractice.speak.youWrote') }}</p>
-          <p class="mt-1 text-body text-ink break-words">{{ attempt.text }}</p>
+          <p class="mt-1 text-body text-ink break-words" :lang="TARGET_LANG_TAG">{{ attempt.text }}</p>
         </div>
 
         <div v-if="prompt.target" class="core-target rounded-[10px] bg-success-soft px-3 py-2.5">

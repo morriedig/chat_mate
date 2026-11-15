@@ -82,6 +82,15 @@ describe('DailyPracticeScreen (Chinese edition)', () => {
     wrapper.unmount()
   })
 
+  it('hides the level switcher when the edition has a single level', async () => {
+    seedPlan({ core: { ...baseCore, errorCompletedAt: '2026-11-15T00:00:00Z' } })
+    const { wrapper } = await mountScreen()
+
+    expect(wrapper.find('[aria-label="dailyPractice.levelLabel"]').exists()).toBe(false)
+    expect(wrapper.findAll('[role=radio]').some(b => b.text().startsWith('levels.'))).toBe(false)
+    wrapper.unmount()
+  })
+
   it('marks the pattern title as Chinese and shows its pinyin under it', async () => {
     seedPlan({ core: { ...baseCore, errorCompletedAt: '2026-11-15T00:00:00Z' } })
     const { wrapper } = await mountScreen()
