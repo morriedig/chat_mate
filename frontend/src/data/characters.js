@@ -69,7 +69,40 @@ export const characters = [
     languages: ['en', 'ja'],
     recommendedFor: 'beginner',
   },
+  // Taiwanese friends for learners of Taiwan Mandarin (the Chinese edition, docs/plans/zh-edition.md)
+  {
+    id: 'meiling',
+    name: 'Mei-ling', // 林美玲 Lin Mei-ling
+    age: 27,
+    location: 'Taipei',
+    occupation: 'Office Worker',
+    avatar: '👩‍💼',
+    accentColor: '#f2b8a2',
+    tagline: 'Warm Taipei local who loves bubble tea and night markets',
+    traits: ['warm', 'friendly', 'patient'],
+    languages: ['zh'],
+    recommendedFor: 'beginner',
+  },
+  {
+    id: 'zhiwei',
+    name: 'Chih-wei', // 陳志偉 Chen Chih-wei
+    age: 34,
+    location: 'Tainan',
+    occupation: 'Café Owner',
+    avatar: '👨‍🍳',
+    accentColor: '#b7c99a',
+    tagline: 'Runs a small café in Tainan, relaxed and funny',
+    traits: ['relaxed', 'funny', 'easygoing'],
+    languages: ['zh'],
+    recommendedFor: 'beginner',
+  },
 ]
+
+// The preferred friend if they speak the language, else the first friend who does
+export function characterFor(language, preferred = null) {
+  if (preferred?.languages?.includes(language)) return preferred
+  return characters.find(c => c.languages.includes(language)) || characters[0]
+}
 
 export const levels = [
   {

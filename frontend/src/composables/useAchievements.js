@@ -1,7 +1,8 @@
 import { ref, computed } from 'vue'
+import { IS_ZH, isFeatureEnabled } from '../edition'
 
 // Achievement definitions
-export const ACHIEVEMENTS = [
+const ALL_ACHIEVEMENTS = [
   // First Steps
   { id: 'first_chat', category: 'first_steps', icon: '💬', condition: (p) => p.messagesSent >= 1 },
   { id: 'ice_breaker', category: 'first_steps', icon: '🧊', condition: (p) => p.messagesSent >= 10 },
@@ -33,6 +34,15 @@ export const ACHIEVEMENTS = [
   { id: 'level_speaker', category: 'mastery', icon: '💬', condition: (p) => p.totalXP >= 600 },
   { id: 'level_legend', category: 'mastery', icon: '👑', condition: (p) => p.totalXP >= 5500 },
 ]
+
+// The Chinese edition drops achievements for hidden features (diary, articles) and polyglot,
+// which needs 3 friends while that edition has 2
+function isHidden(a) {
+  return (a.category === 'writing' && !isFeatureEnabled('diary')) ||
+    (a.id === 'bookworm' && !isFeatureEnabled('articles')) ||
+    (a.id === 'polyglot' && IS_ZH)
+}
+export const ACHIEVEMENTS = ALL_ACHIEVEMENTS.filter(a => !isHidden(a))
 
 // Singleton UI state
 export const showAchievementUnlock = ref(false)

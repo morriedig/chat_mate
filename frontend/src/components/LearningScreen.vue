@@ -11,7 +11,8 @@ import { getChaptersByLevel, getChapterWords, getChapterConversations, getPreLes
 import { usePreLessonProgress } from '../composables/usePreLessonProgress'
 import { useMotherTongue } from '../composables/useMotherTongue'
 import { pickMissionTargets, createMission } from '../composables/useConnectorMission'
-import { characters, levels } from '../data/characters.js'
+import { levels, characterFor } from '../data/characters.js'
+import { DEFAULT_LEVEL } from '../edition'
 import { chapterSymbol } from '../utils/chapterSymbol'
 import VocabularyCard from './learning/VocabularyCard.vue'
 import FlashcardMode from './learning/FlashcardMode.vue'
@@ -271,9 +272,10 @@ function handleUseInChat(result) {
   if (targetIds.length === 0) return
 
   // Chat levels are beginner/intermediate/advanced only
-  const chatLevel = levels.find(l => l.id === props.level.id) || levels.find(l => l.id === 'intermediate')
+  const chatLevel = levels.find(l => l.id === props.level.id) || levels.find(l => l.id === DEFAULT_LEVEL)
   setChatState({
-    character: lastChatCharacter.value || characters[0],
+    // The last chat friend if they speak the language being practiced, else the first who does
+    character: characterFor(props.targetLanguage, lastChatCharacter.value),
     level: chatLevel,
     // The AI friend speaks the language being practiced, not the UI language
     language: props.targetLanguage,

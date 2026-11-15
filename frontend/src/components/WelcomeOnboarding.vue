@@ -3,12 +3,15 @@ import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import CmButton from './ui/CmButton.vue'
 import CmProgress from './ui/CmProgress.vue'
+import { isFeatureEnabled } from '../edition'
 
 const { t } = useI18n()
 
 const emit = defineEmits(['close', 'take-test'])
 
 const step = ref(0)
+// The Chinese edition has one level and no placement test
+const canTakeTest = isFeatureEnabled('placementTest')
 
 // Each page has one line-art diagram: message exchange, remembered note, level path
 const slides = [
@@ -108,6 +111,9 @@ function finish() {
         <div class="space-y-2 pb-4 pt-4">
           <CmButton v-if="step < slides.length - 1" block @click="next">
             {{ t('welcome.next') }}
+          </CmButton>
+          <CmButton v-else-if="!canTakeTest" block data-test="welcome-finish" @click="finish">
+            {{ t('welcome.skipPick') }}
           </CmButton>
           <template v-else>
             <CmButton block @click="takeTest">

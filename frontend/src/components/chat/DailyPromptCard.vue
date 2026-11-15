@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
+import { isFeatureEnabled } from '../../edition'
 
 const { t } = useI18n()
 const router = useRouter()
@@ -12,6 +13,9 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['use-prompt', 'dismiss'])
+
+// The Chinese edition has no diary
+const showDiary = isFeatureEnabled('diary')
 
 // Observation-focused daily prompts by level
 const PROMPTS = {
@@ -84,7 +88,9 @@ const todayPrompt = computed(() => {
           {{ t('dailyPrompt.tryIt') }}
         </button>
         <button
+          v-if="showDiary"
           type="button"
+          data-test="write-in-diary"
           @click="router.push({ path: '/diary', query: { prompt: todayPrompt } })"
           class="inline-flex min-h-11 items-center gap-1 rounded-[10px] px-1 text-caption font-medium text-accent"
         >

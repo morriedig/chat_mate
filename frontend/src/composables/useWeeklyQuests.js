@@ -1,8 +1,9 @@
 import { ref, computed } from 'vue'
+import { isFeatureEnabled } from '../edition'
 
 const STORAGE_KEY = 'chatmate_weeklyQuests'
 
-const QUEST_POOL = [
+const ALL_QUESTS = [
   { id: 'chat_5', family: 'chat', target: 5, reward: 50, key: 'weeklyQuests.quests.chat5' },
   { id: 'chat_10', family: 'chat', target: 10, reward: 80, key: 'weeklyQuests.quests.chat10' },
   { id: 'vocab_10', family: 'vocab', target: 10, reward: 40, key: 'weeklyQuests.quests.vocab10' },
@@ -12,14 +13,17 @@ const QUEST_POOL = [
   { id: 'streak_5', family: 'streak', target: 5, reward: 60, key: 'weeklyQuests.quests.streak5' },
   { id: 'streak_7', family: 'streak', target: 7, reward: 100, key: 'weeklyQuests.quests.streak7' },
   { id: 'minutes_30', family: null, target: 30, reward: 40, key: 'weeklyQuests.quests.minutes30' },
-  { id: 'challenge_3', family: null, target: 3, reward: 50, key: 'weeklyQuests.quests.challenge3' },
-  { id: 'diary_entries_3', family: 'diary_entries', target: 3, reward: 30, key: 'weeklyQuests.quests.diaryEntries3' },
-  { id: 'diary_entries_5', family: 'diary_entries', target: 5, reward: 50, key: 'weeklyQuests.quests.diaryEntries5' },
-  { id: 'diary_vocab_use_5', family: 'diary_vocab', target: 5, reward: 25, key: 'weeklyQuests.quests.diaryVocabUse5' },
-  { id: 'diary_vocab_use_10', family: 'diary_vocab', target: 10, reward: 40, key: 'weeklyQuests.quests.diaryVocabUse10' },
-  { id: 'diary_word_count_150', family: 'diary_words', target: 150, reward: 25, key: 'weeklyQuests.quests.diaryWordCount150' },
-  { id: 'diary_word_count_300', family: 'diary_words', target: 300, reward: 40, key: 'weeklyQuests.quests.diaryWordCount300' },
+  { id: 'challenge_3', family: null, target: 3, reward: 50, key: 'weeklyQuests.quests.challenge3', feature: 'dailyChallenge' },
+  { id: 'diary_entries_3', family: 'diary_entries', target: 3, reward: 30, key: 'weeklyQuests.quests.diaryEntries3', feature: 'diary' },
+  { id: 'diary_entries_5', family: 'diary_entries', target: 5, reward: 50, key: 'weeklyQuests.quests.diaryEntries5', feature: 'diary' },
+  { id: 'diary_vocab_use_5', family: 'diary_vocab', target: 5, reward: 25, key: 'weeklyQuests.quests.diaryVocabUse5', feature: 'diary' },
+  { id: 'diary_vocab_use_10', family: 'diary_vocab', target: 10, reward: 40, key: 'weeklyQuests.quests.diaryVocabUse10', feature: 'diary' },
+  { id: 'diary_word_count_150', family: 'diary_words', target: 150, reward: 25, key: 'weeklyQuests.quests.diaryWordCount150', feature: 'diary' },
+  { id: 'diary_word_count_300', family: 'diary_words', target: 300, reward: 40, key: 'weeklyQuests.quests.diaryWordCount300', feature: 'diary' },
 ]
+
+// Quests for features this edition hides (diary, daily challenge) are never picked
+export const QUEST_POOL = ALL_QUESTS.filter(q => !q.feature || isFeatureEnabled(q.feature))
 
 function getWeekId() {
   const now = new Date()

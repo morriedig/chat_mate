@@ -4,6 +4,7 @@ import './style.css'
 import App from './App.vue'
 import i18n from './i18n'
 import router from './router'
+import { landingPageUrl } from './utils/landingPage'
 
 // The app is meant to run inside the iOS shell; in a normal browser the deployed
 // site sends people to the landing page. `?web=1` keeps browser access for testing.
@@ -26,7 +27,7 @@ app.config.errorHandler = (err, vm, info) => {
 }
 
 if (shouldUseLandingPage()) {
-  location.replace(new URL('..', location.href.split('#')[0]).href)
+  location.replace(landingPageUrl(location.href))
 } else {
   app.mount('#app')
 }

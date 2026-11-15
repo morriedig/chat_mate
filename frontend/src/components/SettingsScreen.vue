@@ -8,6 +8,7 @@ import { useMotherTongue, supportedLanguages } from '../composables/useMotherTon
 import { useUserProgress } from '../composables/useUserProgress'
 import { useVoiceSettings } from '../composables/useVoiceSettings'
 import { languageCode } from '../utils/levelCode'
+import { isFeatureEnabled } from '../edition'
 import { exportBackup, pickBackupFile, parseBackup, previewRestore, applyRestore, clearAllData, BackupError } from '../composables/useBackup'
 import CmAppBar from './ui/CmAppBar.vue'
 import CmButton from './ui/CmButton.vue'
@@ -135,8 +136,8 @@ function handleReset() {
     <CmAppBar :title="t('settings.title')" :back-label="t('common.back')" @back="router.push('/')" />
 
     <div class="mx-auto max-w-lg space-y-8 px-4 pb-[max(32px,env(safe-area-inset-bottom))] pt-6 min-[375px]:px-5">
-      <!-- Language -->
-      <section aria-labelledby="settings-language">
+      <!-- Language (the Chinese edition's interface and native language are fixed to English) -->
+      <section v-if="isFeatureEnabled('languageSwitch')" aria-labelledby="settings-language">
         <h2 id="settings-language" class="mb-2 px-4 text-caption font-medium text-ink-secondary">{{ t('setup.motherTongue') }}</h2>
         <div role="radiogroup" aria-labelledby="settings-language" class="divide-y divide-hairline overflow-hidden rounded-[14px] border border-hairline bg-surface">
           <button
