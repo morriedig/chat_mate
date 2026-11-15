@@ -29,7 +29,8 @@
 - 已知取捨（不改）：英文版建置多一個 152 bytes 的 edition chunk（precache 71→72）；英文版上線要等中文版建置成功；英文版學中文時學習頁聊天角色改成 Mei-ling；拼音「長得」固定 zhǎng de；簡體輸入不會自動轉繁體比對
 - [x] 320／390 × 淺色／深色巡檢中文版：首頁、每日練習、學習、設定、拼音課、聊天設定，沒有超出畫面、沒有 JS 錯誤（修正後再巡一次聊天畫面）
 - [x] 後端部署 @24→@25（2026-11-15），正式環境實打：美玲／志偉中文招呼繁體台灣口語、Emma 英文照常、中文句子檢查回 measure-word
-- [ ] 前端合併 master 上線（英文版不變、中文版 /chat_mate/zh/app/）
+- [x] 前端合併 master 上線（b981f8c）：/chat_mate/zh/、/chat_mate/zh/app/ 200；正式網址實測中文版跟美玲聊天、英文版首頁正常
+- [ ] 修 token 頻率限制：原本全站每分鐘只發 1 個 token（以網域計，所有使用者共用），改成每個 clientId 分開＋全體上限（coder 進行中）→ tester → 角度 1、3 → 部署
 - [ ] E iOS：capacitor.config.ts＋typescript、ios-zh/、註冊 bundle ID
 - [x] 圖示：Codex 畫（Noto Sans TC Bold，OFL），已傳給使用者
 - [ ] 使用者核可圖示
