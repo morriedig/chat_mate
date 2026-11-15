@@ -16,19 +16,21 @@ function getClientId() {
   return clientId
 }
 
-// Build token URL based on backend type
+// Build token URL based on backend type; clientId lets the server rate-limit tokens per device
+// (every user shares the same origin)
 function getTokenUrl() {
   const origin = encodeURIComponent(window.location.origin)
+  const clientId = encodeURIComponent(getClientId())
 
   // Check if API_URL is a Google Apps Script (contains 'script.google.com')
   if (API_URL.includes('script.google.com')) {
-    return `${API_URL}?action=token&origin=${origin}`
+    return `${API_URL}?action=token&origin=${origin}&clientId=${clientId}`
   }
 
   // For local/Node.js server, construct token endpoint
   // API_URL might be 'http://localhost:3000/chat' or 'http://localhost:3000'
   const baseUrl = API_URL.replace(/\/chat$/, '')
-  return `${baseUrl}/token?origin=${origin}`
+  return `${baseUrl}/token?origin=${origin}&clientId=${clientId}`
 }
 
 // Request auth token from server
