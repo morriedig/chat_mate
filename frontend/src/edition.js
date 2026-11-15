@@ -27,7 +27,6 @@ export const FIXED_UI_LOCALE = IS_ZH ? 'en' : null
 export const LEVELS = IS_ZH ? ['beginner'] : ['beginner', 'intermediate', 'advanced']
 export const DEFAULT_LEVEL = IS_ZH ? 'beginner' : 'intermediate'
 
-// Features the Chinese edition hides (their content or scoring is English-only)
 // Features the Chinese edition hides (tests build their edition mocks from this list)
 export const HIDDEN_IN_ZH = [
   'dailyOpinion', // 今日觀點
