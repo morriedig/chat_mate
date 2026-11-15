@@ -7,6 +7,8 @@
  * between words); punctuation is ignored and shown attached to the character
  * before it. Each part has `space`: whether a space follows it when shown.
  */
+import { IS_ZH } from '../edition'
+
 const HAN = /\p{Script=Han}/u
 
 function tokens(text) {
@@ -42,7 +44,8 @@ function hanTokens(text) {
 }
 
 export function diffWords(written, target) {
-  const useHan = HAN.test(String(written || '')) || HAN.test(String(target || ''))
+  // Only the Chinese edition compares per character; English results stay as they were
+  const useHan = IS_ZH && (HAN.test(String(written || '')) || HAN.test(String(target || '')))
   const tokenize = useHan ? hanTokens : wordTokens
   const a = tokenize(written).map(t => t.key)
   const bTokens = tokenize(target)

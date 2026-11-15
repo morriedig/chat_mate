@@ -1,4 +1,5 @@
 import { ref, computed } from 'vue'
+import { IS_ZH } from '../edition'
 
 /**
  * Mistakes caught in chat, sentence checks and diaries, kept for review.
@@ -35,12 +36,16 @@ function persist() {
   }
 }
 
-// Keeps Chinese characters; Chinese punctuation and spaces between characters are dropped
+// The Chinese edition keeps Chinese characters (Chinese punctuation and spaces between
+// characters are dropped). The English edition keeps only English, as before: a Chinese
+// correction normalizes to '' and is dropped, so it never reaches English daily practice.
 export function normalizeSentence(text) {
-  return String(text || '')
+  const base = String(text || '')
     .toLowerCase()
     .replace(/[‘’]/g, "'")
     .replace(/[“”]/g, '"')
+  if (!IS_ZH) return base.replace(/[^a-z0-9' ]+/g, ' ').replace(/\s+/g, ' ').trim()
+  return base
     .replace(/[^a-z0-9' \p{Script=Han}]+/gu, ' ')
     .replace(/\s+/g, ' ')
     .replace(/(\p{Script=Han}) (?=\p{Script=Han})/gu, '$1')
