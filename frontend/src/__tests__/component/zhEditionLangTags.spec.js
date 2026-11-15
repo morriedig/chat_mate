@@ -87,3 +87,15 @@ describe('lang tag on Chinese content', () => {
     expect(wrapper.find('[lang]').exists()).toBe(false)
   })
 })
+
+describe('lang tag on the chat input', () => {
+  it.each([
+    ['zh', 'zh', 'zh-Hant-TW'],
+    ['zh', 'en', undefined],
+    ['en', 'zh', undefined],
+  ])('%s edition, %s chat: textarea lang is %s', async (edition, language, lang) => {
+    const C = await load('../../components/chat/ChatInput.vue', edition)
+    const wrapper = mount(C, { props: { modelValue: '', language } })
+    expect(wrapper.find('textarea').attributes('lang')).toBe(lang)
+  })
+})

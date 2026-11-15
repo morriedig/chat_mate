@@ -199,14 +199,14 @@ watch(() => props.words, (newWords) => initCards(newWords), { immediate: true })
             </button>
             <div class="min-w-0">
               <!-- Word-by-word highlight mode -->
-              <p v-if="voiceSpeed === 'word' && highlightMeaningIndex >= 0" class="text-title text-ink">
+              <p v-if="voiceSpeed === 'word' && highlightMeaningIndex >= 0" class="text-title text-ink" :lang="TARGET_LANG_TAG">
                 <span
                   v-for="(w, i) in meaningWords"
                   :key="i"
                   :class="i === highlightMeaningIndex ? 'rounded-[4px] bg-accent-soft px-0.5 text-accent' : ''"
                 >{{ w }}{{ i < meaningWords.length - 1 ? ' ' : '' }}</span>
               </p>
-              <p v-else class="text-title text-ink">
+              <p v-else class="text-title text-ink" :lang="TARGET_LANG_TAG">
                 {{ currentWord?.meaning }}
               </p>
               <p v-if="bilingual && currentWord?.nativeMeaning" class="text-caption text-ink-secondary">

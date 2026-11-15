@@ -87,7 +87,8 @@ function initQuests() {
     const selectedQuests = selectQuests(3)
     questData.value = {
       weekId: currentWeek,
-      quests: selectedQuests.map(q => ({
+      // feature only filters the pool; it isn't stored, so saved quests look as they did before it
+      quests: selectedQuests.map(({ feature, ...q }) => ({
         ...q,
         progress: 0,
         completed: false,

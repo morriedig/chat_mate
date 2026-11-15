@@ -179,7 +179,7 @@ watch([() => props.words, () => props.cloze], () => initQuiz(props.words, props.
           <span class="flex size-6 shrink-0 items-center justify-center rounded-[6px] border border-hairline bg-surface-raised text-meta font-medium text-ink-secondary" aria-hidden="true">
             {{ String.fromCharCode(65 + index) }}
           </span>
-          <span class="min-w-0 flex-1 break-words text-body text-ink" :lang="isClozeMode ? TARGET_LANG_TAG : null">{{ isClozeMode ? option.text : option.meaning }}</span>
+          <span class="min-w-0 flex-1 break-words text-body text-ink" :lang="TARGET_LANG_TAG">{{ isClozeMode ? option.text : option.meaning }}</span>
           <span v-if="isAnswered && isCorrectOption(option)" class="material-symbols-outlined shrink-0 text-success" aria-hidden="true">check_circle</span>
           <span v-if="isAnswered && selectedAnswer?.id === option.id && !isCorrectOption(option)" class="material-symbols-outlined shrink-0 text-error" aria-hidden="true">cancel</span>
         </button>
@@ -257,7 +257,7 @@ watch([() => props.words, () => props.cloze], () => initQuiz(props.words, props.
             <template v-else>
               <span class="shrink-0 text-body font-medium text-ink" :lang="TARGET_LANG_TAG">{{ answer.word.word }}</span>
               <span class="text-ink-muted" aria-hidden="true">-</span>
-              <span class="min-w-0 flex-1 truncate text-caption text-ink-muted">{{ answer.word.meaning }}</span>
+              <span class="min-w-0 flex-1 truncate text-caption text-ink-muted" :lang="TARGET_LANG_TAG">{{ answer.word.meaning }}</span>
             </template>
           </li>
         </ul>
