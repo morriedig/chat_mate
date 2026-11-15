@@ -3,6 +3,7 @@ import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { playTTS, stopTTS, splitTextForHighlight } from '../../utils/tts'
 import { useLearningProgress } from '../../composables/useLearningProgress'
+import { TARGET_LANG_TAG } from '../../edition'
 
 const { t } = useI18n()
 const { markConversationCompleted } = useLearningProgress()
@@ -255,6 +256,7 @@ function getRoleLabel(role) {
             <p
               v-if="voiceSpeed === 'word' && highlightMessageIndex === index && highlightWordIndex >= 0"
               class="break-words text-body text-ink"
+              :lang="TARGET_LANG_TAG"
             >
               <span
                 v-for="(w, wi) in getMessageWords(message.text)"
@@ -262,7 +264,7 @@ function getRoleLabel(role) {
                 :class="wi === highlightWordIndex ? 'rounded-[4px] bg-surface px-0.5 text-accent' : ''"
               >{{ w }}{{ wi < getMessageWords(message.text).length - 1 ? ' ' : '' }}</span>
             </p>
-            <p v-else class="break-words text-body text-ink">
+            <p v-else class="break-words text-body text-ink" :lang="TARGET_LANG_TAG">
               {{ message.text }}
             </p>
             <p v-if="message.pinyin" class="mt-0.5 break-words text-caption text-ink-muted">{{ message.pinyin }}</p>

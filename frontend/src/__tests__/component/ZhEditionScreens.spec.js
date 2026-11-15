@@ -111,11 +111,12 @@ describe('Chinese edition home screen', () => {
     expect(wrapper.findAll('[data-test="chat-mode"]').map(m => m.text()).join()).not.toContain('setup.modes.article.name')
   })
 
-  it('starts the free chat in Mandarin', async () => {
+  it('starts the free chat in Mandarin at the preselected (only) level', async () => {
     const wrapper = createWrapper()
     await openChatMode(wrapper)
+    expect(wrapper.find('[data-test="chat-level"]').attributes('aria-checked')).toBe('true')
     await wrapper.find('[data-test="character"]').trigger('click')
-    await wrapper.find('[data-test="chat-level"]').trigger('click')
+    expect(wrapper.find('button.start-button').attributes('disabled')).toBeUndefined()
     await wrapper.find('button.start-button').trigger('click')
 
     expect(setChatState).toHaveBeenCalledWith(expect.objectContaining({ language: 'zh' }))
@@ -123,12 +124,13 @@ describe('Chinese edition home screen', () => {
     expect(mockPush).toHaveBeenCalledWith('/chat')
   })
 
-  it('learns Chinese at beginner level only', () => {
+  it('learns Chinese at the preselected beginner level, with no language to pick', () => {
     const wrapper = createWrapper()
-    const targets = wrapper.findAll('[data-test="target-language"]')
-    expect(targets).toHaveLength(1)
-    expect(targets[0].attributes('aria-checked')).toBe('true')
-    expect(wrapper.findAll('[data-test="learning-level"]')).toHaveLength(1)
+    expect(wrapper.find('[data-test="target-language"]').exists()).toBe(false)
+    const levels = wrapper.findAll('[data-test="learning-level"]')
+    expect(levels).toHaveLength(1)
+    expect(levels[0].attributes('aria-checked')).toBe('true')
+    expect(wrapper.find('button.start-button').attributes('disabled')).toBeUndefined()
   })
 })
 

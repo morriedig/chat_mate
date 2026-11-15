@@ -5,6 +5,7 @@ import { useFlashcard } from '../../composables/useFlashcard'
 import { playTTS, isTTSAvailable, splitTextForHighlight } from '../../utils/tts'
 import CmButton from '../ui/CmButton.vue'
 import CmProgress from '../ui/CmProgress.vue'
+import { TARGET_LANG_TAG } from '../../edition'
 
 const { t } = useI18n()
 
@@ -160,7 +161,7 @@ watch(() => props.words, (newWords) => initCards(newWords), { immediate: true })
       <Transition name="cm-card" mode="out-in">
         <!-- Front (Word) -->
         <div v-if="!isFlipped" key="front" class="flex flex-1 flex-col items-center justify-center text-center">
-          <span class="break-words text-display font-medium text-ink" data-heading>
+          <span class="break-words text-display font-medium text-ink" :lang="TARGET_LANG_TAG" data-heading>
             {{ currentWord?.word }}
           </span>
           <span v-if="bilingual && currentWord?.nativeWord" class="mt-1 text-body text-ink-secondary">

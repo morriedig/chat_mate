@@ -41,20 +41,29 @@ export function createAnnotator(toSimplified, pinyinFn) {
   }
 }
 
+const LATIN_OR_DIGIT = /[\p{Script=Latin}\p{Nd}]/u
+
 /**
  * One line of pinyin for a sentence: syllables separated by spaces,
- * punctuation kept after the syllable before it.
+ * punctuation kept after the syllable before it, and runs of Latin letters
+ * and digits set apart from syllables (我叫Emma → wǒ jiào Emma, 台北101 → tái běi 101).
  */
 export function pinyinLine(chars) {
   let out = ''
+  let afterSyllable = false
   for (const { char, pinyin } of chars) {
     if (pinyin) {
       out += (out && !out.endsWith(' ') ? ' ' : '') + pinyin
-    } else if (/\s/.test(char)) {
+      afterSyllable = true
+      continue
+    }
+    if (/\s/.test(char)) {
       if (out && !out.endsWith(' ')) out += ' '
     } else {
+      if (afterSyllable && LATIN_OR_DIGIT.test(char)) out += ' '
       out += char
     }
+    afterSyllable = false
   }
   return out.trim()
 }

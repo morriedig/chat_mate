@@ -5,6 +5,9 @@
   "setup": {
     "yourLevel": "Your Mandarin level"
   },
+  "home": {
+    "moreHint": "Free chat, learning and your learning record are here"
+  },
   "dailyOpinion": {
     "placeholder": "Answer in Mandarin: say what you think, give a reason, then wrap up."
   },

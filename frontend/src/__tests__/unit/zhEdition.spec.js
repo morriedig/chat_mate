@@ -163,4 +163,11 @@ describe('pinyin (Chinese edition)', () => {
   it('keeps punctuation after the syllable before it and skips non-Chinese spacing', async () => {
     expect(await toPinyin().then(a => a('你好嗎？我很好。'))).toBe('nǐ hǎo ma？ wǒ hěn hǎo。')
   })
+
+  it('sets Latin letters and digits apart from the syllables around them', async () => {
+    const annotate = await toPinyin()
+    expect(annotate('我叫Emma，你呢？')).toBe('wǒ jiào Emma， nǐ ne？')
+    expect(annotate('台北101')).toBe('tái běi 101')
+    expect(annotate('我住101號')).toBe('wǒ zhù 101 hào')
+  })
 })
