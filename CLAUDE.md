@@ -195,6 +195,7 @@ chat_mate/
 │   └── SETUP.md
 │
 └── docs/
+    ├── apps.md                         # 兩個 App（Chat Mate／Chat Mate 華語）總說明
     ├── README.md                       # Gamification system overview
     ├── learning-mode.md                # Learning mode & YAML chapter docs
     ├── diary-feature-analysis.md       # Diary feature design & analysis

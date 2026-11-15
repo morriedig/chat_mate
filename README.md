@@ -1,5 +1,7 @@
 # Chat Mate
 
+> **這個 repo 現在產出兩個 App：Chat Mate（學英文）和 Chat Mate 華語（學台灣華語）。最新說明見 [`docs/apps.md`](docs/apps.md)；下面的內容較舊。**
+
 An AI conversation companion for language learners. Practice English through natural conversations with AI characters at your skill level.
 
 ## Features
