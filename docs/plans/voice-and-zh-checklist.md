@@ -30,7 +30,7 @@
 - [x] 320／390 × 淺色／深色巡檢中文版：首頁、每日練習、學習、設定、拼音課、聊天設定，沒有超出畫面、沒有 JS 錯誤（修正後再巡一次聊天畫面）
 - [x] 後端部署 @24→@25（2026-11-15），正式環境實打：美玲／志偉中文招呼繁體台灣口語、Emma 英文照常、中文句子檢查回 measure-word
 - [x] 前端合併 master 上線（b981f8c）：/chat_mate/zh/、/chat_mate/zh/app/ 200；正式網址實測中文版跟美玲聊天、英文版首頁正常
-- [ ] 修 token 頻率限制：原本全站每分鐘只發 1 個 token（以網域計，所有使用者共用），改成每個 clientId 分開＋全體上限（coder 進行中）→ tester → 角度 1、3 → 部署
+- [x] 修 token 頻率限制：原本全站每分鐘只發 1 個 token（以網域計，所有使用者共用），改成每個 clientId 10 秒 1 個＋全體每 10 分鐘 300 個；tester 全過、角度 1、3 APPROVE；後端 @26、前端 212bf4f 上線；正式環境實測三個 client 連續拿到 token、同 client 10 秒內被擋、聊天第一次就成功
 - [ ] E iOS：capacitor.config.ts＋typescript、ios-zh/、註冊 bundle ID
 - [x] 圖示：Codex 畫（Noto Sans TC Bold，OFL），已傳給使用者
 - [ ] 使用者核可圖示
@@ -42,3 +42,4 @@
 - lang 守護測試只抓漏標，不抓錯標（FeedbackPanel tips 若回英文）
 - 英文版上線綁在中文版建置成功（deploy.yml 同一個 job）
 - 簡體輸入不會自動轉繁體比對
+- token：全體上限可被偽造 clientId 刷光（最長擋 10 分鐘，比原本好）；被擋的請求也會搶 script lock
