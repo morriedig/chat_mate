@@ -9,8 +9,9 @@ import { hanCoverage, langAttributes } from '../helpers/langCoverage'
 // A new screen that shows target-language content gets a scenario here.
 vi.mock('vue-i18n', () => ({ useI18n: () => ({ t: key => key, locale: ref('en') }) }))
 vi.mock('vue-router', () => ({ useRouter: () => ({ push: vi.fn(), replace: vi.fn() }) }))
+const tts = vi.hoisted(() => ({ play: null }))
 vi.mock('../../utils/tts', () => ({
-  playTTS: vi.fn().mockResolvedValue(undefined),
+  playTTS: (...args) => tts.play?.(...args) ?? Promise.resolve(),
   stopTTS: vi.fn(),
   isTTSAvailable: () => true,
   splitTextForHighlight: text => text.split(' '),
@@ -58,43 +59,37 @@ vi.mock('../../composables/useSpeakingQueue', () => ({
 }))
 
 // ---------- Chinese fixtures (explanations stay English: they are not tagged) ----------
-const WORDS = [
-  { id: 1, word: '珍奶', pinyin: 'zhēn nǎi', meaning: 'bubble tea', example: '我要一杯珍奶。', sentencePinyin: 'wǒ yào yì bēi zhēn nǎi.' },
-  { id: 2, word: '捷運', pinyin: 'jié yùn', meaning: 'MRT', example: '我坐捷運。' },
-  { id: 3, word: '便當', pinyin: 'biàn dāng', meaning: 'lunch box', example: '我買便當。' },
-  { id: 4, word: '夜市', pinyin: 'yè shì', meaning: 'night market', example: '我去夜市。' },
-]
-const CLOZE = [
-  { id: 'c1', type: 'cloze', sentence: '我___一杯珍奶。', answer: '要', options: ['要', '是', '在', '有'], explain: 'Use it for wanting something.' },
-  { id: 'c2', type: 'cloze', sentence: '他___學生。', answer: '是', options: ['是', '要', '在', '有'], explain: 'Links two nouns.' },
-]
-const PATTERNS = [
-  {
-    id: 'pattern:beginner:yao', level: 'beginner', pattern: '我要……', pinyin: 'wǒ yào ……', meaning: 'I want …', when: '',
-    examples: [{ zh: '我要一杯珍奶。', en: 'I want a bubble tea.', pinyin: 'wǒ yào yì bēi zhēn nǎi.' }],
-    choice: { situation: 'At a drink shop', options: ['我要一杯珍奶。', '我一杯要珍奶。'], answer: 0, explain: 'The amount goes after the verb.' },
-    task: 'Order something you like.', match: ['我要'],
-    mistake: { wrong: '我一杯要珍奶。', right: '我要一杯珍奶。', why: 'The amount goes after the verb.' },
-  },
-  {
-    id: 'pattern:beginner:xiang', level: 'beginner', pattern: '我想……', pinyin: 'wǒ xiǎng ……', meaning: 'I would like …', when: '',
-    examples: [{ zh: '我想去夜市。', en: 'I would like to go to the night market.', pinyin: 'wǒ xiǎng qù yè shì.' }],
-    choice: { situation: 'Making plans', options: ['我想去夜市。', '我去想夜市。'], answer: 0, explain: 'The verb comes after the helper.' },
-    task: 'Say where you would like to go.', match: ['我想'],
-    mistake: { wrong: '我去想夜市。', right: '我想去夜市。', why: 'The verb follows the helper.' },
-  },
-]
-const VOCAB = [
-  { id: 'word:beginner:yeshi', level: 'beginner', word: '夜市', pinyin: 'yè shì', pos: 'n.', meaning: 'night market', example: { zh: '我們去夜市吧。', en: "Let's go to the night market.", pinyin: 'wǒ men qù yè shì ba.' }, collocations: ['逛夜市'], note: '' },
-  { id: 'word:beginner:jieyun', level: 'beginner', word: '捷運', pinyin: 'jié yùn', pos: 'n.', meaning: 'MRT', example: { zh: '我坐捷運。', en: 'I take the MRT.' }, collocations: [], note: '' },
-  { id: 'word:beginner:biandang', level: 'beginner', word: '便當', pinyin: 'biàn dāng', pos: 'n.', meaning: 'lunch box', example: { zh: '我買便當。', en: 'I buy a lunch box.' }, collocations: [], note: '' },
-]
-const LISTEN_DICTATION = { id: 'listen:dictation', mode: 'dictation', zh: '我要這個。', en: 'I want this one.', pinyin: 'wǒ yào zhè ge.' }
-const LISTEN_CHOOSE = { id: 'listen:choose', mode: 'choose', zh: '我要這個。', en: 'I want this one.', options: ['我要這個。', '我要那個。'] }
-vi.mock('../../data/dailyLoader', () => ({
-  getDailyPatterns: () => PATTERNS,
-  getDailyVocab: () => VOCAB,
-}))
+// Real content, so the test sees what the zh edition shows (meanings and titles are Chinese there)
+const {
+  getChapterWords, getChapterConversations, getChapterCloze, getChapterCharacters,
+} = await vi.importActual('../../data/chapterLoader')
+const { getDailyPatterns, getDailyVocab } = await vi.importActual('../../data/dailyLoader')
+
+const CHAPTER = 'zh-ordering-food-and-drinks' // chapters/zh/beginner/02-ordering-food-and-drinks.yml
+const WORDS = getChapterWords(CHAPTER, 'zh', 'en')
+const CLOZE = getChapterCloze(CHAPTER, 'zh', 'en')
+const CONVERSATIONS = getChapterConversations(CHAPTER, 'zh', 'en')
+const FOUNDATION_CHARACTERS = getChapterCharacters('pinyin-02-initials', 'zh', 'en') // chapters/zh/foundation
+
+// daily/zh/beginner/patterns.yml and vocab.yml; the screen reads them through the mocked loader
+// below in both editions, so the English run walks the same steps
+const PATTERNS = getDailyPatterns('beginner', 'zh').slice(0, 2)
+const VOCAB = getDailyVocab('beginner', 'zh').slice(0, 3)
+const WRONG_CHOICE = PATTERNS[1].choice.options.find((_, i) => i !== PATTERNS[1].choice.answer)
+// Listening items as useDailyPractice.buildListening saves them, from the patterns' examples
+const listenFields = ex => ({ zh: ex.zh, en: ex.en, pinyin: ex.pinyin || '' })
+const LISTEN_DICTATION = { id: 'listen:dictation', mode: 'dictation', ...listenFields(PATTERNS[0].examples[0]) }
+const LISTEN_CHOOSE = {
+  id: 'listen:choose', mode: 'choose', ...listenFields(PATTERNS[0].examples[0]),
+  options: [PATTERNS[0].examples[0].zh, PATTERNS[1].examples[0].zh, PATTERNS[1].examples[1].zh],
+}
+vi.mock('../../data/dailyLoader', async (importOriginal) => {
+  const actual = await importOriginal()
+  return {
+    getDailyPatterns: level => actual.getDailyPatterns(level, 'zh'),
+    getDailyVocab: level => actual.getDailyVocab(level, 'zh'),
+  }
+})
 
 function todayKey() {
   const d = new Date()
@@ -151,6 +146,16 @@ function hearing(interim) {
 }
 
 const button = (wrapper, text) => wrapper.findAll('button').find(b => b.text() === text)
+// Exact match: single-character words are substrings of other options
+const radio = (wrapper, text) => wrapper.findAll('[role=radio]').find(b => b.findAll('span').some(s => s.text() === text))
+
+// Playback that stays on the first word, so the word-by-word highlight markup is on screen
+function holdOnFirstWord() {
+  tts.play = (text, lang, speed, onWord) => {
+    onWord?.(0)
+    return new Promise(() => {})
+  }
+}
 
 // Each scenario mounts a component, walks it through its states and calls snap() on each one
 const SCENARIOS = [
@@ -163,10 +168,10 @@ const SCENARIOS = [
     snap(wrapper, 'pattern: learn')
     await button(wrapper, 'dailyPractice.startPractice').trigger('click')
     snap(wrapper, 'pattern: quiz')
-    await wrapper.findAll('[role=radio]').find(b => b.text().includes('我去想')).trigger('click')
+    await radio(wrapper, WRONG_CHOICE).trigger('click')
     snap(wrapper, 'pattern: quiz answered')
     await button(wrapper, 'dailyPractice.next').trigger('click')
-    await wrapper.find('#dp-own-sentence').setValue('我一杯要珍奶')
+    await wrapper.find('#dp-own-sentence').setValue(PATTERNS[1].mistake.wrong)
     await button(wrapper, 'dailyPractice.check').trigger('click')
     await flushPromises()
     snap(wrapper, 'pattern: sentence check')
@@ -175,7 +180,7 @@ const SCENARIOS = [
     snap(wrapper, 'word: learn')
     await button(wrapper, 'dailyPractice.startPractice').trigger('click')
     snap(wrapper, 'word: quiz')
-    await wrapper.findAll('[role=radio]').find(b => b.text().includes('夜市')).trigger('click')
+    await radio(wrapper, VOCAB[0].word).trigger('click')
     snap(wrapper, 'word: quiz answered')
     await button(wrapper, 'dailyPractice.next').trigger('click')
     await wrapper.findAll('[role=group] button')[0].trigger('click')
@@ -217,6 +222,14 @@ const SCENARIOS = [
     snap(wrapper, 'card')
     return wrapper
   }],
+  ['VocabularyCard (word by word)', async ({ load, snap }) => {
+    holdOnFirstWord()
+    const C = await load('../../components/learning/VocabularyCard.vue')
+    const wrapper = mount(C, { props: { word: WORDS[0], language: 'zh', voiceSpeed: 'word' } })
+    for (const play of wrapper.findAll('button[aria-label="learning.conversation.playAudio"]')) await play.trigger('click')
+    snap(wrapper, 'meaning and sentence highlighted')
+    return wrapper
+  }],
   ['FlashcardMode', async ({ load, snap }) => {
     const C = await load('../../components/learning/FlashcardMode.vue')
     const wrapper = mount(C, { props: { words: [WORDS[0]], language: 'zh' } })
@@ -225,16 +238,19 @@ const SCENARIOS = [
     snap(wrapper, 'back')
     return wrapper
   }],
+  ['FlashcardMode (word by word)', async ({ load, snap }) => {
+    holdOnFirstWord()
+    const C = await load('../../components/learning/FlashcardMode.vue')
+    const wrapper = mount(C, { props: { words: [WORDS[0]], language: 'zh', voiceSpeed: 'word' } })
+    await wrapper.find('[data-testid="flashcard"]').trigger('click')
+    for (const play of wrapper.findAll('button[aria-label="learning.conversation.playAudio"]')) await play.trigger('click')
+    snap(wrapper, 'meaning and sentence highlighted')
+    return wrapper
+  }],
   ['ConversationPractice', async ({ load, snap }) => {
     const C = await load('../../components/learning/ConversationPractice.vue')
-    const conversations = [{
-      id: 'c1', title: 'Drinks',
-      messages: [
-        { role: 'partner', text: '你要喝什麼？', pinyin: 'nǐ yào hē shén me？', nativeText: 'What would you like to drink?' },
-        { role: 'user', text: '我要一杯珍奶。', nativeText: 'A bubble tea, please.' },
-      ],
-    }]
-    const wrapper = mount(C, { props: { conversations, language: 'zh' } })
+    const wrapper = mount(C, { props: { conversations: CONVERSATIONS, language: 'zh' } })
+    snap(wrapper, 'conversation list')
     await wrapper.find('[data-testid="conversation-item"]').trigger('click')
     snap(wrapper, 'dialogue')
     return wrapper
@@ -340,7 +356,7 @@ const SCENARIOS = [
     const wrapper = mount(C, { attachTo: document.body })
     await flushPromises()
     await wrapper.find('.core-more').trigger('click')
-    await wrapper.findAll('[role=radio]').find(b => b.text().includes('我要這個')).trigger('click')
+    await radio(wrapper, LISTEN_CHOOSE.zh).trigger('click')
     await button(wrapper, 'dailyPractice.next').trigger('click')
     await flushPromises()
     expect(wrapper.text()).toContain('dailyPractice.doneTitle')
@@ -384,11 +400,7 @@ const SCENARIOS = [
   }],
   ['CharacterCard (zh foundation)', async ({ load, snap }) => {
     const C = await load('../../components/learning/CharacterCard.vue')
-    const character = {
-      id: 'pinyin-02-initials_b', char: 'b', reading: "b as in 'boy'", romaji: 'b', audioHint: "Like English 'b' in 'boy'",
-      examples: [{ word: '爸', reading: 'bà', meaning: 'dad' }, { word: '不', reading: 'bù', meaning: 'not' }],
-    }
-    const wrapper = mount(C, { props: { character, language: 'zh' } })
+    const wrapper = mount(C, { props: { character: FOUNDATION_CHARACTERS[0], language: 'zh' } })
     snap(wrapper, 'card')
     return wrapper
   }],
@@ -431,6 +443,7 @@ async function run(setup, edition) {
 
 describe('lang coverage of Chinese content', () => {
   beforeEach(() => {
+    tts.play = null
     stt.available = false
     stt.listenOnce = null
     localStorage.clear()
@@ -455,5 +468,14 @@ describe('lang coverage of Chinese content', () => {
     for (const { label, html } of snaps) {
       expect(langAttributes(html), label).toEqual([])
     }
+  })
+})
+
+describe('isEnglishExplanation', () => {
+  it('leaves English sentences that quote Chinese words out of the check, but not Chinese with one English word', async () => {
+    const { isEnglishExplanation } = await import('../helpers/langCoverage.js')
+    expect(isEnglishExplanation('The simplest way to order: 我要 + item.')).toBe(true)
+    expect(isEnglishExplanation('我要一杯 latte。')).toBe(false)
+    expect(isEnglishExplanation('手搖飲店')).toBe(false)
   })
 })

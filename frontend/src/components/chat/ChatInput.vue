@@ -3,6 +3,7 @@ import { ref, watch, nextTick, onBeforeUnmount } from 'vue'
 import { useI18n } from 'vue-i18n'
 import SpeechRescue from './SpeechRescue.vue'
 import { isSTTAvailable, listenOnce, stopListening } from '../../utils/stt'
+import { TARGET_LANG_TAG } from '../../edition'
 
 const { t } = useI18n()
 
@@ -170,6 +171,7 @@ defineExpose({ focus })
           @keydown="handleKeydown"
           :disabled="disabled"
           :aria-label="t('chat.typeMessage')"
+          :lang="language === 'zh' ? TARGET_LANG_TAG : null"
           class="block min-h-12 min-w-0 flex-1 resize-none rounded-[10px] border border-hairline bg-surface-sunken px-3.5 py-[11px] text-[16px] leading-6 text-ink placeholder:text-ink-muted focus:border-accent focus:outline-none disabled:opacity-55"
           :placeholder="t('chat.typeMessage')"
           rows="1"

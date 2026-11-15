@@ -115,6 +115,28 @@ describe('weekly quests per edition', () => {
     const { QUEST_POOL } = await load('../../composables/useWeeklyQuests.js', 'en')
     expect(QUEST_POOL).toHaveLength(16)
   })
+
+  it('saves the picked quests without the feature field', async () => {
+    vi.useFakeTimers({ toFake: ['Date'] })
+    try {
+      const savedIds = []
+      for (let week = 0; week < 53; week++) {
+        vi.setSystemTime(new Date(2026, 0, 1 + week * 7, 12))
+        localStorage.clear()
+        await load('../../composables/useWeeklyQuests.js', 'en')
+        const { quests } = JSON.parse(localStorage.getItem('chatmate_weeklyQuests'))
+        for (const quest of quests) {
+          expect(Object.keys(quest).sort()).toEqual(['claimed', 'completed', 'family', 'id', 'key', 'progress', 'reward', 'target'])
+          savedIds.push(quest.id)
+        }
+      }
+      // Some week has to pick a quest whose definition has feature, or the check above proves nothing
+      expect(savedIds.some(id => id.startsWith('diary_') || id === 'challenge_3')).toBe(true)
+    } finally {
+      vi.useRealTimers()
+      localStorage.clear()
+    }
+  })
 })
 
 describe('achievements per edition', () => {

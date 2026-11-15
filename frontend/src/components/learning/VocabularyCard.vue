@@ -155,14 +155,14 @@ async function playSentence() {
       </button>
       <div class="min-w-0">
         <!-- Word-by-word highlight mode -->
-        <p v-if="voiceSpeed === 'word' && highlightMeaningIndex >= 0" class="text-body text-ink-secondary">
+        <p v-if="voiceSpeed === 'word' && highlightMeaningIndex >= 0" class="text-body text-ink-secondary" :lang="TARGET_LANG_TAG">
           <span
             v-for="(w, i) in meaningWords"
             :key="i"
             :class="i === highlightMeaningIndex ? 'rounded-[4px] bg-accent-soft px-0.5 text-accent' : ''"
           >{{ w }}{{ i < meaningWords.length - 1 ? ' ' : '' }}</span>
         </p>
-        <p v-else class="text-body text-ink-secondary">{{ word.meaning }}</p>
+        <p v-else class="text-body text-ink-secondary" :lang="TARGET_LANG_TAG">{{ word.meaning }}</p>
         <p v-if="bilingual && word.nativeMeaning" class="text-caption text-ink-muted">{{ word.nativeMeaning }}</p>
       </div>
     </div>

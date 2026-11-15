@@ -177,7 +177,7 @@ function getRoleLabel(role) {
         <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
       </button>
       <div class="min-w-0 flex-1">
-        <h3 class="truncate text-body font-medium text-ink">
+        <h3 class="truncate text-body font-medium text-ink" :lang="selectedConversation ? TARGET_LANG_TAG : null">
           {{ selectedConversation ? selectedConversation.title : t('learning.conversation.title') }}
         </h3>
         <p class="truncate text-meta text-ink-muted">
@@ -223,7 +223,7 @@ function getRoleLabel(role) {
           >
             <span class="material-symbols-outlined shrink-0 text-ink-muted" aria-hidden="true">forum</span>
             <span class="min-w-0 flex-1">
-              <span class="block truncate text-body font-medium text-ink">{{ conv.title }}</span>
+              <span class="block truncate text-body font-medium text-ink" :lang="TARGET_LANG_TAG">{{ conv.title }}</span>
               <span class="block text-meta tabular-nums text-ink-muted">{{ conv.messages.length }} {{ t('learning.conversation.messages') }}</span>
             </span>
             <span class="material-symbols-outlined shrink-0 text-ink-muted" aria-hidden="true">chevron_right</span>
