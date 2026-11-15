@@ -91,7 +91,7 @@ onBeforeUnmount(() => {
     <template v-if="!attempt">
       <div v-if="inputMode === 'voice'" class="space-y-3 border-t border-hairline pt-4">
         <p v-if="listening" class="min-h-6 text-body text-ink break-words" role="status" aria-live="polite">
-          {{ interim || t('dailyPractice.speak.listening') }}
+          <span v-if="interim" :lang="TARGET_LANG_TAG">{{ interim }}</span><template v-else>{{ t('dailyPractice.speak.listening') }}</template>
         </p>
         <CmButton v-if="!listening" block class="core-speak" @click="speakNow">
           <span class="material-symbols-outlined" aria-hidden="true">mic</span>{{ t('dailyPractice.speak.speak') }}

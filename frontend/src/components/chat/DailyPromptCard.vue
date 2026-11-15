@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
-import { isFeatureEnabled } from '../../edition'
+import { isFeatureEnabled, TARGET_LANG_TAG } from '../../edition'
 
 const { t } = useI18n()
 const router = useRouter()
@@ -66,7 +66,7 @@ const todayPrompt = computed(() => {
       <div class="flex items-start gap-2">
         <div class="min-w-0 flex-1 pt-0.5">
           <p class="text-meta font-medium text-ink-secondary">{{ t('dailyPrompt.label') }}</p>
-          <p class="mt-1 text-body text-ink">{{ todayPrompt }}</p>
+          <p class="mt-1 text-body text-ink" :lang="language === 'zh' ? TARGET_LANG_TAG : null">{{ todayPrompt }}</p>
         </div>
         <button
           type="button"

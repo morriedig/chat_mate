@@ -99,6 +99,7 @@ const scores = computed(() => {
         v-for="(tip, i) in feedback.naturalness.tips"
         :key="i"
         class="break-words text-body text-ink"
+        :lang="TARGET_LANG_TAG"
       >{{ tip }}</p>
     </div>
   </div>

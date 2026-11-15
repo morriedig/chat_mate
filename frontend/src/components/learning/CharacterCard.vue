@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { playTTS, isTTSAvailable } from '../../utils/tts'
+import { TARGET_LANG_TAG } from '../../edition'
 
 const { t } = useI18n()
 
@@ -135,7 +136,7 @@ async function playExample(word) {
               >
                 <span class="material-symbols-outlined !text-[18px]" aria-hidden="true">volume_up</span>
               </button>
-              <span class="text-body font-medium text-ink">{{ example.word }}</span>
+              <span class="text-body font-medium text-ink" :lang="TARGET_LANG_TAG">{{ example.word }}</span>
               <span v-if="example.reading" class="text-caption text-accent">{{ example.reading }}</span>
               <span class="text-caption text-ink-muted">{{ example.meaning }}</span>
             </li>

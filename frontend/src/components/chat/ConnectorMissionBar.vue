@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import CmChip from '../ui/CmChip.vue'
+import { TARGET_LANG_TAG } from '../../edition'
 
 const { t } = useI18n()
 
@@ -102,7 +103,7 @@ const hasEnd = computed(() => !!(props.task || props.endLabel))
           :done="usedIds.includes(target.id)"
           class="mission-chip whitespace-nowrap"
           :class="usedIds.includes(target.id) ? 'is-used' : ''"
-        >{{ target.phrase }}<span v-if="usedIds.includes(target.id)" class="sr-only">, {{ t('mission.used') }}</span></CmChip>
+        ><span :lang="TARGET_LANG_TAG">{{ target.phrase }}</span><span v-if="usedIds.includes(target.id)" class="sr-only">, {{ t('mission.used') }}</span></CmChip>
       </li>
     </ul>
 

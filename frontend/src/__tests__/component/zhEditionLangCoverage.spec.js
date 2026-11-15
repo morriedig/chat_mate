@@ -8,16 +8,27 @@ import { hanCoverage, langAttributes } from '../helpers/langCoverage'
 // lang="zh-Hant-TW" (Traditional glyphs), and the English edition renders no lang at all.
 // A new screen that shows target-language content gets a scenario here.
 vi.mock('vue-i18n', () => ({ useI18n: () => ({ t: key => key, locale: ref('en') }) }))
-vi.mock('vue-router', () => ({ useRouter: () => ({ push: vi.fn() }) }))
+vi.mock('vue-router', () => ({ useRouter: () => ({ push: vi.fn(), replace: vi.fn() }) }))
 vi.mock('../../utils/tts', () => ({
   playTTS: vi.fn().mockResolvedValue(undefined),
   stopTTS: vi.fn(),
   isTTSAvailable: () => true,
   splitTextForHighlight: text => text.split(' '),
 }))
-vi.mock('../../utils/stt', () => ({ isSTTAvailable: () => false, listenOnce: vi.fn(), stopListening: vi.fn() }))
+// Speech recognition is off unless a scenario turns it on (listening states with a live transcript)
+const stt = vi.hoisted(() => ({ available: false, listenOnce: null }))
+vi.mock('../../utils/stt', () => ({
+  isSTTAvailable: () => stt.available,
+  listenOnce: (...args) => stt.listenOnce?.(...args) ?? new Promise(() => {}),
+  stopListening: vi.fn(),
+  extendListening: () => false,
+}))
 vi.mock('../../composables/useLearningProgress', () => ({
-  useLearningProgress: () => ({ markConversationCompleted: vi.fn(), markQuizCompleted: vi.fn() }),
+  useLearningProgress: () => ({
+    markConversationCompleted: vi.fn(),
+    markQuizCompleted: vi.fn(),
+    getChapterCompletionStatus: () => ({ quiz: false, conversation: false, complete: false }),
+  }),
 }))
 vi.mock('../../composables/useDailyGoal', () => ({ useDailyGoal: () => ({ startTimer: vi.fn(), stopTimer: vi.fn() }) }))
 vi.mock('../../composables/useTaskChatLauncher', () => ({ useTaskChatLauncher: () => ({ startTaskChat: vi.fn() }) }))
@@ -107,6 +118,36 @@ function seedPracticePlan() {
       },
     },
   }))
+}
+
+// Core done and every extra done except one listening item, so finishing it reaches the all-done screen
+function seedAllButLastExtra() {
+  const core = {
+    errorKey: null, errorSource: 'builtin', patternId: PATTERNS[0].id, speakingSource: 'pattern', speakingItemId: null,
+    fallbackPrompt: null, errorCompletedAt: null, patternCompletedAt: null, speakingAttempt: null, speakingMode: null,
+    speakingCompletedAt: null, completedAt: '2026-11-15T00:00:00Z',
+  }
+  localStorage.setItem('chatmate_daily_practice', JSON.stringify({
+    version: 2,
+    level: 'beginner',
+    plans: {
+      [todayKey()]: {
+        level: 'beginner', patternIds: PATTERNS.map(p => p.id), wordIds: [VOCAB[0].id], mistakeIds: [], bankIds: [],
+        listening: [LISTEN_CHOOSE], done: { [PATTERNS[0].id]: true, [PATTERNS[1].id]: true, [VOCAB[0].id]: true }, core,
+      },
+    },
+  }))
+}
+
+// Speech recognition that hears `interim`, then waits until the returned function is called with the final text
+function hearing(interim) {
+  let finish
+  stt.available = true
+  stt.listenOnce = ({ onInterim }) => new Promise(resolve => {
+    onInterim?.(interim)
+    finish = resolve
+  })
+  return text => finish(text)
 }
 
 const button = (wrapper, text) => wrapper.findAll('button').find(b => b.text() === text)
@@ -206,7 +247,7 @@ const SCENARIOS = [
     const feedback = {
       grammar: { score: 80, corrections: ['"我一杯要珍奶" → "我要一杯珍奶" — The amount goes after the verb.'] },
       alternatives: ['我想要一杯珍奶。'],
-      naturalness: { score: 70, tips: ['Sounds friendly.'] },
+      naturalness: { score: 70, tips: ['說「我想要」比較客氣。'] },
     }
     const user = mount(C, { props: { message: { role: 'user', content: '我一杯要珍奶', feedback }, character, language: 'zh' } })
     await user.find('.explain-toggle').trigger('click')
@@ -231,7 +272,7 @@ const SCENARIOS = [
       grammar: { score: 80, corrections: ['"我一杯要珍奶" → "我要一杯珍奶" — The amount goes after the verb.'] },
       vocabulary: { score: 90 },
       alternatives: ['我想要一杯珍奶。'],
-      naturalness: { score: 70, tips: ['Sounds friendly.'] },
+      naturalness: { score: 70, tips: ['說「我想要」比較客氣。'] },
     }
     const wrapper = mount(C, { props: { feedback } })
     snap(wrapper, 'feedback')
@@ -293,6 +334,85 @@ const SCENARIOS = [
     snap(dictation, 'dictation checked')
     return dictation
   }],
+  ['DailyPracticeScreen (all done)', async ({ load, snap }) => {
+    seedAllButLastExtra()
+    const C = await load('../../components/DailyPracticeScreen.vue')
+    const wrapper = mount(C, { attachTo: document.body })
+    await flushPromises()
+    await wrapper.find('.core-more').trigger('click')
+    await wrapper.findAll('[role=radio]').find(b => b.text().includes('我要這個')).trigger('click')
+    await button(wrapper, 'dailyPractice.next').trigger('click')
+    await flushPromises()
+    expect(wrapper.text()).toContain('dailyPractice.doneTitle')
+    snap(wrapper, 'all done')
+    return wrapper
+  }],
+  ['ConnectorMissionBar (task chat targets)', async ({ load, snap }) => {
+    const C = await load('../../components/chat/ConnectorMissionBar.vue')
+    const targets = [{ id: 'p1', phrase: '我要……' }, { id: 'p2', phrase: '我想……' }]
+    const wrapper = mount(C, { props: { targets, usedIds: ['p1'], task: 'Order a drink you like.', canEnd: true } })
+    snap(wrapper, 'targets')
+    return wrapper
+  }],
+  ['WordSavePopup', async ({ load, snap }) => {
+    const C = await load('../../components/chat/WordSavePopup.vue')
+    const wrapper = mount(C, { props: { word: '珍奶', context: '我要一杯珍奶。' }, global: { stubs: { Teleport: true } } })
+    snap(wrapper, 'save sheet')
+    return wrapper
+  }],
+  ['VoiceConversationBar (live transcript)', async ({ load, snap }) => {
+    const finish = hearing('我要')
+    const C = await load('../../components/chat/VoiceConversationBar.vue')
+    const wrapper = mount(C, { props: { language: 'zh', friendName: 'Mei-ling' } })
+    await wrapper.find('.voice-start').trigger('click')
+    await flushPromises()
+    snap(wrapper, 'listening')
+    finish('我要一杯珍奶')
+    await flushPromises()
+    snap(wrapper, 'thinking')
+    return wrapper
+  }],
+  ['CoreSpeakingCard (listening)', async ({ load, snap }) => {
+    hearing('我要')
+    const C = await load('../../components/practice/CoreSpeakingCard.vue')
+    const prompt = { source: 'pattern', cue: 'Order something you like.', hint: 'I want …', pattern: '我要……', match: ['我要'], target: '我要一杯珍奶。' }
+    const wrapper = mount(C, { props: { prompt } })
+    await wrapper.find('.core-speak').trigger('click')
+    await flushPromises()
+    snap(wrapper, 'interim transcript')
+    return wrapper
+  }],
+  ['CharacterCard (zh foundation)', async ({ load, snap }) => {
+    const C = await load('../../components/learning/CharacterCard.vue')
+    const character = {
+      id: 'pinyin-02-initials_b', char: 'b', reading: "b as in 'boy'", romaji: 'b', audioHint: "Like English 'b' in 'boy'",
+      examples: [{ word: '爸', reading: 'bà', meaning: 'dad' }, { word: '不', reading: 'bù', meaning: 'not' }],
+    }
+    const wrapper = mount(C, { props: { character, language: 'zh' } })
+    snap(wrapper, 'card')
+    return wrapper
+  }],
+  ['LearningScreen (zh foundation)', async ({ load, snap }) => {
+    const C = await load('../../components/LearningScreen.vue')
+    const { useNavState } = await import('../../composables/useNavState')
+    const nav = useNavState()
+    nav.learningLevel.value = { id: 'beginner' }
+    nav.selectedTargetLanguage.value = 'zh'
+    nav.selectedMotherTongue.value = 'en'
+    nav.uiLanguage.value = 'en'
+    const wrapper = mount(C)
+    await flushPromises()
+    snap(wrapper, 'hub')
+    await wrapper.findAll('[data-testid="prelesson-row"]')[0].trigger('click')
+    snap(wrapper, 'foundation cards')
+    return wrapper
+  }],
+  ['DailyPromptCard', async ({ load, snap }) => {
+    const C = await load('../../components/chat/DailyPromptCard.vue')
+    const wrapper = mount(C, { props: { level: 'beginner', language: 'zh' } })
+    snap(wrapper, 'prompt')
+    return wrapper
+  }],
 ]
 
 // Runs a scenario as one edition; returns every snapshot's root element and label
@@ -311,6 +431,8 @@ async function run(setup, edition) {
 
 describe('lang coverage of Chinese content', () => {
   beforeEach(() => {
+    stt.available = false
+    stt.listenOnce = null
     localStorage.clear()
     document.body.innerHTML = ''
   })

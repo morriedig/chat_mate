@@ -4,6 +4,8 @@ defineProps({
   title: { type: String, required: true },
   description: { type: String, default: '' },
   closeLabel: { type: String, default: 'Close' },
+  // lang of the title when it is target-language content (null: none)
+  titleLang: { type: String, default: null },
 })
 const emit = defineEmits(['close'])
 </script>
@@ -16,7 +18,7 @@ const emit = defineEmits(['close'])
         <div class="flex items-start gap-3 px-5 pt-5">
           <slot name="leading" />
           <div class="min-w-0 flex-1">
-            <h2 class="text-title font-medium text-ink">{{ title }}</h2>
+            <h2 class="text-title font-medium text-ink" :lang="titleLang">{{ title }}</h2>
             <p v-if="description" class="text-caption text-ink-muted">{{ description }}</p>
           </div>
           <button type="button" @click="emit('close')" :aria-label="closeLabel" class="-mr-2 -mt-2 inline-flex size-11 shrink-0 items-center justify-center rounded-[10px] text-ink-secondary active:bg-surface-raised">

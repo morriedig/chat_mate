@@ -5,6 +5,7 @@ import { playTTS, stopTTS, isTTSAvailable } from '../../utils/tts'
 import { listenOnce, stopListening, extendListening, isSTTAvailable } from '../../utils/stt'
 import { useVoiceSettings } from '../../composables/useVoiceSettings'
 import SpeechRescue from './SpeechRescue.vue'
+import { TARGET_LANG_TAG } from '../../edition'
 
 const { t } = useI18n()
 const { pauseMs, setPauseMs, PAUSE_CHOICES } = useVoiceSettings()
@@ -191,8 +192,9 @@ onBeforeUnmount(() => {
         <span v-if="status === 'listening'" class="size-2 shrink-0 rounded-full bg-error" aria-hidden="true"></span>
         <span v-if="status === 'ready'" class="text-body font-normal text-ink-secondary">{{ t('voiceChat.readyHint') }}</span>
         <template v-else-if="status === 'speaking'">{{ t('voiceChat.speaking', { name: friendName }) }}</template>
-        <template v-else-if="status === 'listening'">{{ heard || t('voiceChat.listening') }}</template>
-        <template v-else-if="status === 'thinking'">{{ heard || t('voiceChat.thinking', { name: friendName }) }}</template>
+        <span v-else-if="(status === 'listening' || status === 'thinking') && heard" class="voice-heard" :lang="TARGET_LANG_TAG">{{ heard }}</span>
+        <template v-else-if="status === 'listening'">{{ t('voiceChat.listening') }}</template>
+        <template v-else-if="status === 'thinking'">{{ t('voiceChat.thinking', { name: friendName }) }}</template>
         <span v-else class="text-body font-normal text-ink-secondary">{{ notice || t('voiceChat.tapToTalk') }}</span>
       </p>
 

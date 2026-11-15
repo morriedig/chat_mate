@@ -12,7 +12,7 @@ import { usePreLessonProgress } from '../composables/usePreLessonProgress'
 import { useMotherTongue } from '../composables/useMotherTongue'
 import { pickMissionTargets, createMission } from '../composables/useConnectorMission'
 import { levels, characterFor } from '../data/characters.js'
-import { DEFAULT_LEVEL } from '../edition'
+import { DEFAULT_LEVEL, TARGET_LANG_TAG } from '../edition'
 import { chapterSymbol } from '../utils/chapterSymbol'
 import VocabularyCard from './learning/VocabularyCard.vue'
 import FlashcardMode from './learning/FlashcardMode.vue'
@@ -434,7 +434,7 @@ onMounted(() => {
                     class="material-symbols-outlined text-success"
                     :aria-label="t('prelesson.learned')"
                   >check_circle</span>
-                  <span v-else class="flex size-10 items-center justify-center rounded-[10px] border border-hairline bg-surface-raised text-title font-medium text-ink" aria-hidden="true">{{ glyphFor(pl.icon) }}</span>
+                  <span v-else class="flex size-10 items-center justify-center rounded-[10px] border border-hairline bg-surface-raised text-title font-medium text-ink" aria-hidden="true" :lang="TARGET_LANG_TAG">{{ glyphFor(pl.icon) }}</span>
                 </span>
                 <span class="min-w-0 flex-1">
                   <span class="block truncate text-body font-medium text-ink">{{ pl.title }}</span>
@@ -558,6 +558,7 @@ onMounted(() => {
             v-if="isPreLessonSelected"
             class="flex size-10 shrink-0 items-center justify-center rounded-[10px] border border-hairline bg-surface-raised text-title font-medium text-ink"
             aria-hidden="true"
+            :lang="TARGET_LANG_TAG"
           >{{ glyphFor(selectedChapter.icon) }}</span>
           <span v-else class="material-symbols-outlined mt-1 shrink-0 !text-[24px] text-accent" aria-hidden="true" data-testid="chapter-icon">{{ isReviewMode ? 'event_repeat' : chapterSymbol(selectedChapter.icon) }}</span>
           <div class="min-w-0">

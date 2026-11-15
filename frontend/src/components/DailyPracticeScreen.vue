@@ -396,7 +396,7 @@ onBeforeUnmount(() => {
             <div class="space-y-2 pt-5">
               <p class="text-caption font-medium text-ink-secondary">{{ t('dailyPractice.useThemHint') }}</p>
               <ul class="flex flex-wrap gap-2">
-                <li v-for="p in todayPatterns" :key="p.id" class="max-w-full"><CmChip>{{ p.pattern }}</CmChip></li>
+                <li v-for="p in todayPatterns" :key="p.id" class="max-w-full"><CmChip :lang="TARGET_LANG_TAG">{{ p.pattern }}</CmChip></li>
               </ul>
             </div>
             <div class="grid grid-cols-1 gap-2 pt-5 sm:grid-cols-2">
@@ -504,6 +504,7 @@ onBeforeUnmount(() => {
                   id="dp-own-sentence"
                   v-model="sentence"
                   :disabled="stage === 'rate'"
+                  :lang="TARGET_LANG_TAG"
                   rows="3"
                   class="block w-full resize-none rounded-[10px] border border-hairline bg-surface-sunken px-3 py-3 text-base leading-6 text-ink placeholder:text-ink-muted focus:border-accent focus:outline-none disabled:text-ink-secondary"
                   :placeholder="current.item.pattern"

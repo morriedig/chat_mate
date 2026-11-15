@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n'
 import { useVocabularyBank, generateWordId } from '../../composables/useVocabularyBank'
 import CmBottomSheet from '../ui/CmBottomSheet.vue'
 import CmButton from '../ui/CmButton.vue'
+import { TARGET_LANG_TAG } from '../../edition'
 
 const { t } = useI18n()
 
@@ -47,6 +48,7 @@ function handleRemove() {
 <template>
   <CmBottomSheet
     :title="word"
+    :title-lang="TARGET_LANG_TAG"
     :description="alreadySaved ? t('vocabBank.alreadySaved') : t('vocabBank.sheetDescription')"
     :close-label="t('chat.close')"
     @close="emit('close')"
@@ -54,7 +56,7 @@ function handleRemove() {
     <div class="word-save-sheet space-y-4">
       <div v-if="context">
         <p class="mb-1 text-caption text-ink-secondary">{{ t('vocabBank.context') }}</p>
-        <p class="rounded-[10px] border border-hairline bg-surface-sunken px-3 py-2 text-body text-ink"><span class="line-clamp-4 break-words">{{ context }}</span></p>
+        <p class="rounded-[10px] border border-hairline bg-surface-sunken px-3 py-2 text-body text-ink"><span class="line-clamp-4 break-words" :lang="TARGET_LANG_TAG">{{ context }}</span></p>
       </div>
 
       <label v-if="!alreadySaved" class="block">
