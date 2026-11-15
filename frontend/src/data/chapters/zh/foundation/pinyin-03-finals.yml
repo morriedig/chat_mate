@@ -95,7 +95,7 @@ characters:
       - word: "女"
         reading: "nǚ"
         meaning: { en: "woman / female", ja: "女", zh: "女" }
-      - word: "绿"
+      - word: "綠"
         reading: "lǜ"
         meaning: { en: "green", ja: "緑", zh: "綠" }
 
@@ -105,7 +105,7 @@ characters:
     romaji: "ai"
     audio_hint: "Like the English word 'eye' — a + i glide"
     examples:
-      - word: "爱"
+      - word: "愛"
         reading: "ài"
         meaning: { en: "love", ja: "愛", zh: "愛" }
       - word: "太"
@@ -118,7 +118,7 @@ characters:
     romaji: "ei"
     audio_hint: "Like 'ay' in 'hey' — e + i glide"
     examples:
-      - word: "谁"
+      - word: "誰"
         reading: "shéi"
         meaning: { en: "who", ja: "誰", zh: "誰" }
       - word: "北"

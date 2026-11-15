@@ -1,0 +1,403 @@
+# Chapter: Taiwan Mandarin Beginner 2 - Ordering Food and Drinks
+# Ordering at a drink stand (sweetness and ice levels) and a noodle shop,
+# for here or to go, and paying the bill.
+meta:
+  id: zh-ordering-food-and-drinks
+  title:
+    en: "Ordering Food and Drinks"
+    ja: "注文する（食事と飲み物）"
+    zh: "點餐與點飲料"
+  description:
+    en: "Order bubble tea with your sweetness and ice level, order at a noodle shop, and pay the bill."
+    ja: "甘さと氷の量を指定してタピオカミルクティーを注文し、麺の店で注文して会計します。"
+    zh: "點珍奶、選甜度冰塊，在麵店點餐，最後結帳。"
+  icon: "local_cafe"
+  order: 2
+  level: beginner
+
+words:
+  - id: wo-yao
+    word:
+      en: "I'll have"
+      zh: "我要"
+    pinyin: "wǒ yào"
+    description:
+      en: "The simplest way to order: 我要 + item. 我想要 sounds a little softer. Both are normal in Taiwan."
+      zh: "點東西時說自己要什麼。"
+    sentence:
+      en: "I'll have a bowl of beef noodles, thanks."
+      zh: "我要一碗牛肉麵，謝謝。"
+    sentencePinyin: "wǒ yào yì wǎn niú ròu miàn, xiè xie."
+
+  - id: yi-bei
+    word:
+      en: "a cup of"
+      zh: "一杯"
+    pinyin: "yì bēi"
+    description:
+      en: "Chinese needs a measure word between a number and a noun; drinks use 杯. ✗ 一珍奶 → ✓ 一杯珍奶. 一 is said yì here."
+      zh: "數飲料用「杯」。"
+    sentence:
+      en: "I'd like a hot latte."
+      zh: "我想要一杯熱拿鐵。"
+    sentencePinyin: "wǒ xiǎng yào yì bēi rè ná tiě."
+
+  - id: zhenzhu-naicha
+    word:
+      en: "bubble tea"
+      zh: "珍珠奶茶"
+    pinyin: "zhēn zhū nǎi chá"
+    description:
+      en: "Milk tea with tapioca pearls. Everyone shortens it to 珍奶 (zhēn nǎi)."
+      zh: "加了珍珠的奶茶，大家常說「珍奶」。"
+    sentence:
+      en: "This shop's bubble tea is famous."
+      zh: "這家的珍珠奶茶很有名。"
+    sentencePinyin: "zhè jiā de zhēn zhū nǎi chá hěn yǒu míng."
+
+  - id: ban-tang
+    word:
+      en: "half sugar"
+      zh: "半糖"
+    pinyin: "bàn táng"
+    description:
+      en: "Sweetness levels: 全糖 (full), 少糖 (less), 半糖 (half), 微糖 (wéi táng, a little), 無糖 (none)."
+      zh: "甜度一半。"
+    sentence:
+      en: "Half sugar for my green tea."
+      zh: "我的綠茶要半糖。"
+    sentencePinyin: "wǒ de lǜ chá yào bàn táng."
+
+  - id: shao-bing
+    word:
+      en: "less ice"
+      zh: "少冰"
+    pinyin: "shǎo bīng"
+    description:
+      en: "Ice levels: 正常冰 (regular), 少冰 (less), 微冰 (a little), 去冰 (no ice). Say sweetness first, then ice: 半糖少冰."
+      zh: "冰塊少一點。"
+    sentence:
+      en: "A black tea, less ice, thanks."
+      zh: "一杯紅茶，少冰，謝謝。"
+    sentencePinyin: "yì bēi hóng chá, shǎo bīng, xiè xie."
+
+  - id: qu-bing
+    word:
+      en: "no ice"
+      zh: "去冰"
+    pinyin: "qù bīng"
+    description:
+      en: "No ice cubes, but the drink is still cold. If you want it hot, ask for 熱的."
+      zh: "不要冰塊。"
+    sentence:
+      en: "It's so cold today. No ice in my milk tea."
+      zh: "天氣好冷，我的奶茶要去冰。"
+    sentencePinyin: "tiān qì hǎo lěng, wǒ de nǎi chá yào qù bīng."
+
+  - id: wu-tang
+    word:
+      en: "no sugar"
+      zh: "無糖"
+    pinyin: "wú táng"
+    description:
+      en: "No sugar at all. Very common with tea: 無糖綠茶."
+      zh: "完全不加糖。"
+    sentence:
+      en: "These days I only drink unsweetened tea."
+      zh: "我最近都喝無糖的茶。"
+    sentencePinyin: "wǒ zuì jìn dōu hē wú táng de chá."
+
+  - id: da-bei
+    word:
+      en: "large (size)"
+      zh: "大杯"
+    pinyin: "dà bēi"
+    description:
+      en: "Large cup; medium is 中杯. The clerk may ask 大杯還是中杯？ and you can just answer 大杯."
+      zh: "大的杯子。中的叫中杯。"
+    sentence:
+      en: "I'll have a large winter melon tea."
+      zh: "我要大杯的冬瓜茶。"
+    sentencePinyin: "wǒ yào dà bēi de dōng guā chá."
+
+  - id: nei-yong
+    word:
+      en: "for here"
+      zh: "內用"
+    pinyin: "nèi yòng"
+    description:
+      en: "To eat or drink in the shop. You will hear 內用還是外帶？ (For here or to go?) at almost every counter."
+      zh: "在店裡吃。"
+    sentence:
+      en: "For here, two people."
+      zh: "內用，兩個人。"
+    sentencePinyin: "nèi yòng, liǎng ge rén."
+
+  - id: wai-dai
+    word:
+      en: "to go"
+      zh: "外帶"
+    pinyin: "wài dài"
+    description:
+      en: "Takeaway. Plastic bags cost extra in Taiwan, so the clerk may ask if you need one."
+      zh: "帶走，不在店裡吃。"
+    sentence:
+      en: "To go, please. Could you put it in a bag?"
+      zh: "我要外帶，可以幫我裝袋嗎？"
+    sentencePinyin: "wǒ yào wài dài, kě yǐ bāng wǒ zhuāng dài ma?"
+
+  - id: you-shenme-tuijian
+    word:
+      en: "what do you recommend"
+      zh: "有什麼推薦"
+    pinyin: "yǒu shén me tuī jiàn"
+    description:
+      en: "Ask the staff for a suggestion. Start with 請問 to be polite: 請問有什麼推薦？"
+      zh: "請店員介紹好吃的東西。"
+    sentence:
+      en: "Excuse me, what do you recommend?"
+      zh: "請問你們有什麼推薦？"
+    sentencePinyin: "qǐng wèn nǐ men yǒu shén me tuī jiàn?"
+
+  - id: bu-yao-jia
+    word:
+      en: "don't add"
+      zh: "不要加"
+    pinyin: "bú yào jiā"
+    description:
+      en: "Leave something out. Handy for 香菜 (coriander), 蔥 (scallions) or 辣 (chili). 不 becomes bú before a fourth tone."
+      zh: "請店家不要放某樣東西。"
+    sentence:
+      en: "No coriander, please."
+      zh: "不要加香菜，謝謝。"
+    sentencePinyin: "bú yào jiā xiāng cài, xiè xie."
+
+  - id: hao-chi
+    word:
+      en: "tasty"
+      zh: "好吃"
+    pinyin: "hǎo chī"
+    description:
+      en: "Delicious, for food. For drinks say 好喝 (hǎo hē). 好好吃 means 'so tasty'."
+      zh: "食物的味道很好。"
+    sentence:
+      en: "The braised pork rice here is so good!"
+      zh: "這家的滷肉飯好好吃！"
+    sentencePinyin: "zhè jiā de lǔ ròu fàn hǎo hǎo chī!"
+
+  - id: jiezhang
+    word:
+      en: "to pay the bill"
+      zh: "結帳"
+    pinyin: "jié zhàng"
+    description:
+      en: "At small shops you pay when you order. At sit-down restaurants, catch the staff's eye and say 我要結帳."
+      zh: "吃完付錢。"
+    sentence:
+      en: "Excuse me, we'd like to pay."
+      zh: "不好意思，我們要結帳。"
+    sentencePinyin: "bù hǎo yì si, wǒ men yào jié zhàng."
+
+  - id: yigong-duoshao-qian
+    word:
+      en: "how much altogether"
+      zh: "一共多少錢"
+    pinyin: "yí gòng duō shǎo qián"
+    description:
+      en: "Asks for the total. Prices are usually said with 塊 (kuài): 六十五塊."
+      zh: "問全部要付多少錢。"
+    sentence:
+      en: "Two bubble teas. How much altogether?"
+      zh: "兩杯珍奶，一共多少錢？"
+    sentencePinyin: "liǎng bēi zhēn nǎi, yí gòng duō shǎo qián?"
+
+chat:
+  conversations:
+    - id: order-1-bubble-tea
+      title:
+        en: "At a Tea Shop"
+        zh: "手搖飲店"
+      messages:
+        - role: partner
+          text:
+            en: "Hi, what would you like to drink?"
+            zh: "你好，請問要喝什麼？"
+          pinyin: "nǐ hǎo, qǐng wèn yào hē shén me?"
+        - role: user
+          text:
+            en: "I'll have a bubble tea."
+            zh: "我要一杯珍珠奶茶。"
+          pinyin: "wǒ yào yì bēi zhēn zhū nǎi chá."
+        - role: partner
+          text:
+            en: "Sweetness and ice?"
+            zh: "甜度冰塊呢？"
+          pinyin: "tián dù bīng kuài ne?"
+        - role: user
+          text:
+            en: "Half sugar, less ice, thanks."
+            zh: "半糖少冰，謝謝。"
+          pinyin: "bàn táng shǎo bīng, xiè xie."
+        - role: partner
+          text:
+            en: "Large or medium?"
+            zh: "大杯還是中杯？"
+          pinyin: "dà bēi hái shì zhōng bēi?"
+        - role: user
+          text:
+            en: "Large. Could you put it in a bag?"
+            zh: "大杯。可以幫我裝袋嗎？"
+          pinyin: "dà bēi. kě yǐ bāng wǒ zhuāng dài ma?"
+        - role: partner
+          text:
+            en: "Sure. That's 65 dollars altogether."
+            zh: "好的，一共六十五塊。"
+          pinyin: "hǎo de, yí gòng liù shí wǔ kuài."
+        - role: user
+          text:
+            en: "OK, here you go."
+            zh: "好，給你。"
+          pinyin: "hǎo, gěi nǐ."
+
+    - id: order-2-noodle-shop
+      title:
+        en: "Noodle Shop"
+        zh: "麵店"
+      messages:
+        - role: partner
+          text:
+            en: "Welcome! For here or to go?"
+            zh: "歡迎光臨！內用還是外帶？"
+          pinyin: "huān yíng guāng lín! nèi yòng hái shì wài dài?"
+        - role: user
+          text:
+            en: "For here. What do you recommend?"
+            zh: "內用。請問有什麼推薦？"
+          pinyin: "nèi yòng. qǐng wèn yǒu shén me tuī jiàn?"
+        - role: partner
+          text:
+            en: "Our beef noodles are really good, and the side dishes are nice too."
+            zh: "我們的牛肉麵很好吃，小菜也不錯。"
+          pinyin: "wǒ men de niú ròu miàn hěn hǎo chī, xiǎo cài yě bú cuò."
+        - role: user
+          text:
+            en: "Then I'll have a bowl of beef noodles, no coriander."
+            zh: "那我要一碗牛肉麵，不要加香菜。"
+          pinyin: "nà wǒ yào yì wǎn niú ròu miàn, bú yào jiā xiāng cài."
+        - role: partner
+          text:
+            en: "OK. Do you want it spicy?"
+            zh: "好，要辣嗎？"
+          pinyin: "hǎo, yào là ma?"
+        - role: user
+          text:
+            en: "Just a little."
+            zh: "一點點就好。"
+          pinyin: "yì diǎn diǎn jiù hǎo."
+        - role: partner
+          text:
+            en: "Sure. Please have a seat for a moment."
+            zh: "好的，請先坐一下。"
+          pinyin: "hǎo de, qǐng xiān zuò yí xià."
+        - role: user
+          text:
+            en: "Thanks!"
+            zh: "謝謝！"
+          pinyin: "xiè xie!"
+
+    - id: order-3-paying
+      title:
+        en: "Paying the Bill"
+        zh: "結帳"
+      messages:
+        - role: partner
+          text:
+            en: "How was everything?"
+            zh: "吃得還好嗎？"
+          pinyin: "chī de hái hǎo ma?"
+        - role: user
+          text:
+            en: "Delicious! Excuse me, we'd like to pay."
+            zh: "很好吃！不好意思，我們要結帳。"
+          pinyin: "hěn hǎo chī! bù hǎo yì si, wǒ men yào jié zhàng."
+        - role: partner
+          text:
+            en: "Sure. Two bowls of beef noodles and a plate of greens."
+            zh: "好的，兩碗牛肉麵跟一盤燙青菜。"
+          pinyin: "hǎo de, liǎng wǎn niú ròu miàn gēn yì pán tàng qīng cài."
+        - role: user
+          text:
+            en: "How much altogether?"
+            zh: "一共多少錢？"
+          pinyin: "yí gòng duō shǎo qián?"
+        - role: partner
+          text:
+            en: "420 dollars altogether."
+            zh: "一共四百二十塊。"
+          pinyin: "yí gòng sì bǎi èr shí kuài."
+        - role: user
+          text:
+            en: "Can I pay by card?"
+            zh: "可以刷卡嗎？"
+          pinyin: "kě yǐ shuā kǎ ma?"
+        - role: partner
+          text:
+            en: "Sorry, we only take cash."
+            zh: "不好意思，我們只收現金。"
+          pinyin: "bù hǎo yì si, wǒ men zhǐ shōu xiàn jīn."
+        - role: user
+          text:
+            en: "No problem. Here's 500."
+            zh: "沒問題，給你五百。"
+          pinyin: "méi wèn tí, gěi nǐ wǔ bǎi."
+        - role: partner
+          text:
+            en: "Here's 80 back. Thanks for coming!"
+            zh: "找你八十塊，謝謝光臨！"
+          pinyin: "zhǎo nǐ bā shí kuài, xiè xie guāng lín!"
+
+quiz:
+  questionsPerRound: 5
+  xpReward: 20
+  # Fill-in-the-blank questions. Each answer must equal a word.zh above.
+  cloze:
+    - sentence: "老闆，我要___紅茶。"
+      options: ["一杯", "去冰", "外帶", "好吃"]
+      answer: "一杯"
+      explain:
+        en: "Drinks are counted with 杯, so 'one black tea' is 一杯紅茶."
+    - sentence: "我在減肥，綠茶要___。"
+      options: ["無糖", "少冰", "大杯", "內用"]
+      answer: "無糖"
+      explain:
+        en: "On a diet means no sugar: 無糖."
+    - sentence: "我不喜歡太冰，紅茶___就好。"
+      options: ["少冰", "半糖", "外帶", "結帳"]
+      answer: "少冰"
+      explain:
+        en: "太冰 is 'too icy', so ask for less ice: 少冰."
+    - sentence: "A：內用還是外帶？ B：___，我要帶回公司。"
+      options: ["外帶", "內用", "結帳", "大杯"]
+      answer: "外帶"
+      explain:
+        en: "Taking it back to the office means to go: 外帶."
+    - sentence: "我第一次來，請問你們___？"
+      options: ["有什麼推薦", "一共多少錢", "不要加", "結帳"]
+      answer: "有什麼推薦"
+      explain:
+        en: "First visit, so ask for a suggestion: 有什麼推薦."
+    - sentence: "我不吃香菜，麵裡___香菜。"
+      options: ["不要加", "有什麼推薦", "去冰", "好吃"]
+      answer: "不要加"
+      explain:
+        en: "To leave something out, say 不要加 + the ingredient."
+    - sentence: "不好意思，我們吃飽了，要___。"
+      options: ["結帳", "內用", "半糖", "我要"]
+      answer: "結帳"
+      explain:
+        en: "You've finished eating and want to pay: 結帳."
+    - sentence: "這家的牛肉麵真的很___！"
+      options: ["好吃", "大杯", "少冰", "外帶"]
+      answer: "好吃"
+      explain:
+        en: "Praising food: 好吃 (tasty)."

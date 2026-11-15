@@ -53,10 +53,10 @@ characters:
     romaji: "m"
     audio_hint: "Like English 'm' in 'mother'"
     examples:
-      - word: "妈"
+      - word: "媽"
         reading: "mā"
         meaning: { en: "mother", ja: "お母さん", zh: "媽媽" }
-      - word: "猫"
+      - word: "貓"
         reading: "māo"
         meaning: { en: "cat", ja: "猫", zh: "貓" }
 
@@ -66,10 +66,10 @@ characters:
     romaji: "f"
     audio_hint: "Like English 'f' in 'fun'"
     examples:
-      - word: "飞"
+      - word: "飛"
         reading: "fēi"
         meaning: { en: "to fly", ja: "飛ぶ", zh: "飛" }
-      - word: "饭"
+      - word: "飯"
         reading: "fàn"
         meaning: { en: "rice / meal", ja: "ご飯", zh: "飯" }
 

@@ -1,0 +1,398 @@
+# Chapter: Taiwan Mandarin Beginner 5 - Asking the Way
+# Ask where something is and how to get there, then follow directions:
+# straight, left, right, across, next to, how far.
+meta:
+  id: zh-asking-the-way
+  title:
+    en: "Asking the Way"
+    ja: "道をたずねる"
+    zh: "問路"
+  description:
+    en: "Ask where places are and how to get there, and understand left, right, straight and across."
+    ja: "場所や行き方をたずね、右・左・まっすぐ・向かい側などの道案内を聞き取ります。"
+    zh: "問地方在哪裡、怎麼走，聽懂左轉、右轉、一直走、對面。"
+  icon: "directions"
+  order: 5
+  level: beginner
+
+words:
+  - id: qingwen
+    word:
+      en: "excuse me (may I ask)"
+      zh: "請問"
+    pinyin: "qǐng wèn"
+    description:
+      en: "Start any question to a stranger with 請問. It's polite without being stiff."
+      zh: "有禮貌地問問題時，放在最前面。"
+    sentence:
+      en: "Excuse me, where's the restroom?"
+      zh: "請問，洗手間在哪裡？"
+    sentencePinyin: "qǐng wèn, xǐ shǒu jiān zài nǎ lǐ?"
+
+  - id: zenme-zou
+    word:
+      en: "how do I get to"
+      zh: "怎麼走"
+    pinyin: "zěn me zǒu"
+    description:
+      en: "The place comes first. ✗ 怎麼走捷運站 → ✓ 捷運站怎麼走？"
+      zh: "問去一個地方的路。"
+    sentence:
+      en: "Excuse me, how do I get to the MRT station?"
+      zh: "請問捷運站怎麼走？"
+    sentencePinyin: "qǐng wèn jié yùn zhàn zěn me zǒu?"
+
+  - id: zai-nali
+    word:
+      en: "where is"
+      zh: "在哪裡"
+    pinyin: "zài nǎ lǐ"
+    description:
+      en: "The thing you're looking for comes first: 郵局在哪裡？ ✗ 哪裡是郵局 sounds unnatural."
+      zh: "問東西或地方的位置。"
+    sentence:
+      en: "Sorry, where's the post office?"
+      zh: "不好意思，郵局在哪裡？"
+    sentencePinyin: "bù hǎo yì si, yóu jú zài nǎ lǐ?"
+
+  - id: yizhi-zou
+    word:
+      en: "go straight"
+      zh: "一直走"
+    pinyin: "yì zhí zǒu"
+    description:
+      en: "Keep going straight. 走到底 means 'to the end of the road'."
+      zh: "不轉彎，往前走。"
+    sentence:
+      en: "Go straight. When you see the bank, you're there."
+      zh: "一直走，看到銀行就到了。"
+    sentencePinyin: "yì zhí zǒu, kàn dào yín háng jiù dào le."
+
+  - id: you-zhuan
+    word:
+      en: "turn right"
+      zh: "右轉"
+    pinyin: "yòu zhuǎn"
+    description:
+      en: "Say where to turn first: 在路口右轉. ✗ 右轉在路口 → ✓ 在路口右轉."
+      zh: "往右邊轉。"
+    sentence:
+      en: "Turn right at the second intersection."
+      zh: "在第二個路口右轉。"
+    sentencePinyin: "zài dì èr ge lù kǒu yòu zhuǎn."
+
+  - id: zuo-zhuan
+    word:
+      en: "turn left"
+      zh: "左轉"
+    pinyin: "zuǒ zhuǎn"
+    description:
+      en: "Turn left. 左 (zuǒ, left) and 右 (yòu, right) are easy to mix up at first."
+      zh: "往左邊轉。"
+    sentence:
+      en: "Turn left right after the park."
+      zh: "過了公園就左轉。"
+    sentencePinyin: "guò le gōng yuán jiù zuǒ zhuǎn."
+
+  - id: hong-lu-deng
+    word:
+      en: "traffic light"
+      zh: "紅綠燈"
+    pinyin: "hóng lǜ dēng"
+    description:
+      en: "Literally 'red-green light'. A common landmark in directions."
+      zh: "路口有紅色和綠色的燈。"
+    sentence:
+      en: "Turn right when you get to the traffic light."
+      zh: "到了紅綠燈再右轉。"
+    sentencePinyin: "dào le hóng lǜ dēng zài yòu zhuǎn."
+
+  - id: lukou
+    word:
+      en: "intersection"
+      zh: "路口"
+    pinyin: "lù kǒu"
+    description:
+      en: "Where two roads meet, or a street corner. Count them: 第一個路口, 第二個路口."
+      zh: "兩條路交叉的地方。"
+    sentence:
+      en: "The café is right at the corner."
+      zh: "那家咖啡店就在路口。"
+    sentencePinyin: "nà jiā kā fēi diàn jiù zài lù kǒu."
+
+  - id: duimian
+    word:
+      en: "across from"
+      zh: "對面"
+    pinyin: "duì miàn"
+    description:
+      en: "A 在 B 的對面 = A is across from B. The reference place goes before 的對面."
+      zh: "在另一邊，面對面的位置。"
+    sentence:
+      en: "The post office is across from the bank."
+      zh: "郵局在銀行的對面。"
+    sentencePinyin: "yóu jú zài yín háng de duì miàn."
+
+  - id: pangbian
+    word:
+      en: "next to"
+      zh: "旁邊"
+    pinyin: "páng biān"
+    description:
+      en: "A 在 B 旁邊 = A is next to B. ✗ 在旁邊便利商店 → ✓ 在便利商店旁邊."
+      zh: "在東西的邊邊，很近。"
+    sentence:
+      en: "The pharmacy is right next to the convenience store."
+      zh: "藥局就在便利商店旁邊。"
+    sentencePinyin: "yào jú jiù zài biàn lì shāng diàn páng biān."
+
+  - id: fujin
+    word:
+      en: "nearby"
+      zh: "附近"
+    pinyin: "fù jìn"
+    description:
+      en: "這附近有…嗎？ = Is there a … around here? Very useful when you need an ATM or a restroom."
+      zh: "離這裡不遠的地方。"
+    sentence:
+      en: "Is there an ATM around here?"
+      zh: "這附近有提款機嗎？"
+    sentencePinyin: "zhè fù jìn yǒu tí kuǎn jī ma?"
+
+  - id: zoulu
+    word:
+      en: "to walk"
+      zh: "走路"
+    pinyin: "zǒu lù"
+    description:
+      en: "On foot. 走路五分鐘 = a five-minute walk; the time comes after 走路."
+      zh: "用腳走過去。"
+    sentence:
+      en: "It's about a five-minute walk from here."
+      zh: "從這裡走路過去大概五分鐘。"
+    sentencePinyin: "cóng zhè lǐ zǒu lù guò qù dà gài wǔ fēn zhōng."
+
+  - id: yuan-bu-yuan
+    word:
+      en: "is it far"
+      zh: "遠不遠"
+    pinyin: "yuǎn bù yuǎn"
+    description:
+      en: "A yes/no question made by saying 'far-not-far'. No 嗎 needed. ✗ 遠不遠嗎 → ✓ 遠不遠？"
+      zh: "問距離長不長。"
+    sentence:
+      en: "Is the night market far from here?"
+      zh: "夜市離這裡遠不遠？"
+    sentencePinyin: "yè shì lí zhè lǐ yuǎn bù yuǎn?"
+
+  - id: milu
+    word:
+      en: "to get lost"
+      zh: "迷路"
+    pinyin: "mí lù"
+    description:
+      en: "我迷路了 = I'm lost. The 了 shows it has already happened."
+      zh: "找不到路。"
+    sentence:
+      en: "Sorry, I think I'm lost."
+      zh: "不好意思，我好像迷路了。"
+    sentencePinyin: "bù hǎo yì si, wǒ hǎo xiàng mí lù le."
+
+  - id: guo-malu
+    word:
+      en: "to cross the street"
+      zh: "過馬路"
+    pinyin: "guò mǎ lù"
+    description:
+      en: "Cross the road. Scooters turn fast in Taiwan, so look both ways."
+      zh: "走到馬路的另一邊。"
+    sentence:
+      en: "Cross the street first, then keep walking."
+      zh: "你要先過馬路，再往前走。"
+    sentencePinyin: "nǐ yào xiān guò mǎ lù, zài wǎng qián zǒu."
+
+chat:
+  conversations:
+    - id: way-1-mrt
+      title:
+        en: "To the MRT"
+        zh: "去捷運站"
+      messages:
+        - role: partner
+          text:
+            en: "What's up? Are you looking for something?"
+            zh: "怎麼了？你在找什麼嗎？"
+          pinyin: "zěn me le? nǐ zài zhǎo shén me ma?"
+        - role: user
+          text:
+            en: "Yes. Excuse me, how do I get to the MRT station?"
+            zh: "對，請問捷運站怎麼走？"
+          pinyin: "duì, qǐng wèn jié yùn zhàn zěn me zǒu?"
+        - role: partner
+          text:
+            en: "Go straight and turn right at the traffic light."
+            zh: "一直走，到了紅綠燈右轉。"
+          pinyin: "yì zhí zǒu, dào le hóng lǜ dēng yòu zhuǎn."
+        - role: user
+          text:
+            en: "Turn right at the traffic light. And then?"
+            zh: "到紅綠燈右轉，然後呢？"
+          pinyin: "dào hóng lǜ dēng yòu zhuǎn, rán hòu ne?"
+        - role: partner
+          text:
+            en: "Then walk a bit more. The station is right next to the bank."
+            zh: "然後再走一下，捷運站就在銀行旁邊。"
+          pinyin: "rán hòu zài zǒu yí xià, jié yùn zhàn jiù zài yín háng páng biān."
+        - role: user
+          text:
+            en: "How long is the walk?"
+            zh: "走路要多久？"
+          pinyin: "zǒu lù yào duō jiǔ?"
+        - role: partner
+          text:
+            en: "About five minutes. It's not far."
+            zh: "大概五分鐘，不遠。"
+          pinyin: "dà gài wǔ fēn zhōng, bù yuǎn."
+        - role: user
+          text:
+            en: "OK, thank you!"
+            zh: "好，謝謝你！"
+          pinyin: "hǎo, xiè xie nǐ!"
+
+    - id: way-2-lost
+      title:
+        en: "I'm Lost"
+        zh: "我迷路了"
+      messages:
+        - role: partner
+          text:
+            en: "Are you OK?"
+            zh: "你還好嗎？"
+          pinyin: "nǐ hái hǎo ma?"
+        - role: user
+          text:
+            en: "Sorry, I think I'm lost. Is there a post office around here?"
+            zh: "不好意思，我好像迷路了。這附近有郵局嗎？"
+          pinyin: "bù hǎo yì si, wǒ hǎo xiàng mí lù le. zhè fù jìn yǒu yóu jú ma?"
+        - role: partner
+          text:
+            en: "Yes, it's across from that park."
+            zh: "有，在那個公園的對面。"
+          pinyin: "yǒu, zài nà ge gōng yuán de duì miàn."
+        - role: user
+          text:
+            en: "Where's the park? Is it far?"
+            zh: "公園在哪裡？遠不遠？"
+          pinyin: "gōng yuán zài nǎ lǐ? yuǎn bù yuǎn?"
+        - role: partner
+          text:
+            en: "Not far. Cross the street, turn left, and you'll see it."
+            zh: "不遠。你先過馬路，再左轉就看到了。"
+          pinyin: "bù yuǎn. nǐ xiān guò mǎ lù, zài zuǒ zhuǎn jiù kàn dào le."
+        - role: user
+          text:
+            en: "Cross the street, then turn left. Got it!"
+            zh: "先過馬路，再左轉。我知道了！"
+          pinyin: "xiān guò mǎ lù, zài zuǒ zhuǎn. wǒ zhī dào le!"
+        - role: partner
+          text:
+            en: "The post office closes at five, so hurry."
+            zh: "郵局五點關門，要快一點喔。"
+          pinyin: "yóu jú wǔ diǎn guān mén, yào kuài yì diǎn o."
+        - role: user
+          text:
+            en: "OK, thanks!"
+            zh: "好，謝謝！"
+          pinyin: "hǎo, xiè xie!"
+
+    - id: way-3-night-market
+      title:
+        en: "The Night Market"
+        zh: "找夜市"
+      messages:
+        - role: partner
+          text:
+            en: "Are you looking for the night market?"
+            zh: "你在找夜市嗎？"
+          pinyin: "nǐ zài zhǎo yè shì ma?"
+        - role: user
+          text:
+            en: "Yes! How do I get to the night market?"
+            zh: "對！請問夜市怎麼走？"
+          pinyin: "duì! qǐng wèn yè shì zěn me zǒu?"
+        - role: partner
+          text:
+            en: "Go straight along this road. It's at the very end."
+            zh: "沿著這條路一直走，走到底就是了。"
+          pinyin: "yán zhe zhè tiáo lù yì zhí zǒu, zǒu dào dǐ jiù shì le."
+        - role: user
+          text:
+            en: "Is it far on foot?"
+            zh: "走路過去遠不遠？"
+          pinyin: "zǒu lù guò qù yuǎn bù yuǎn?"
+        - role: partner
+          text:
+            en: "A bit far. About fifteen minutes on foot."
+            zh: "有一點遠，走路大概十五分鐘。"
+          pinyin: "yǒu yì diǎn yuǎn, zǒu lù dà gài shí wǔ fēn zhōng."
+        - role: user
+          text:
+            en: "That's fine, I like walking. Is there a convenience store on the way?"
+            zh: "沒關係，我喜歡走路。路上有便利商店嗎？"
+          pinyin: "méi guān xì, wǒ xǐ huān zǒu lù. lù shàng yǒu biàn lì shāng diàn ma?"
+        - role: partner
+          text:
+            en: "Yes, there's one at the first intersection."
+            zh: "有，第一個路口就有一家。"
+          pinyin: "yǒu, dì yī ge lù kǒu jiù yǒu yì jiā."
+        - role: user
+          text:
+            en: "Great, thank you!"
+            zh: "太好了，謝謝你！"
+          pinyin: "tài hǎo le, xiè xie nǐ!"
+
+quiz:
+  questionsPerRound: 5
+  xpReward: 20
+  # Fill-in-the-blank questions. Each answer must equal a word.zh above.
+  cloze:
+    - sentence: "___，洗手間在哪裡？"
+      options: ["請問", "迷路", "附近", "對面"]
+      answer: "請問"
+      explain:
+        en: "Open a question to a stranger with 請問."
+    - sentence: "請問火車站___？"
+      options: ["怎麼走", "右轉", "旁邊", "走路"]
+      answer: "怎麼走"
+      explain:
+        en: "Place + 怎麼走 asks how to get there."
+    - sentence: "你___，走到底就看到了。"
+      options: ["一直走", "附近", "迷路", "對面"]
+      answer: "一直走"
+      explain:
+        en: "走到底 (to the end) goes with 一直走 (go straight)."
+    - sentence: "到了紅綠燈要___，不是左轉。"
+      options: ["右轉", "左轉", "對面", "附近"]
+      answer: "右轉"
+      explain:
+        en: "Not left, so turn right: 右轉."
+    - sentence: "銀行在郵局的___，過馬路就到了。"
+      options: ["對面", "旁邊", "迷路", "走路"]
+      answer: "對面"
+      explain:
+        en: "You have to cross the street, so it's across from it: 對面."
+    - sentence: "這___有提款機嗎？我要領錢。"
+      options: ["附近", "對面", "左轉", "迷路"]
+      answer: "附近"
+      explain:
+        en: "這附近有…嗎？ asks if something is nearby."
+    - sentence: "我第一次來這裡，好像___了。"
+      options: ["迷路", "走路", "過馬路", "一直走"]
+      answer: "迷路"
+      explain:
+        en: "First time here and you can't find the way: 迷路了 (got lost)."
+    - sentence: "A：遠不遠？ B：不遠，___五分鐘就到了。"
+      options: ["走路", "迷路", "右轉", "對面"]
+      answer: "走路"
+      explain:
+        en: "走路 + time = how long it takes on foot."

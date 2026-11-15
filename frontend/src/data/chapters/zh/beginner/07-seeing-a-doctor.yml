@@ -1,0 +1,408 @@
+# Chapter: Taiwan Mandarin Beginner 7 - Seeing a Doctor
+# Register at a clinic with your health insurance card, describe common
+# symptoms, mention allergies, and buy medicine at a pharmacy.
+meta:
+  id: zh-seeing-a-doctor
+  title:
+    en: "Seeing a Doctor"
+    ja: "病院に行く"
+    zh: "看醫生"
+  description:
+    en: "Register at a clinic, describe a cold, fever or stomach trouble, and get medicine at the pharmacy."
+    ja: "クリニックで受付をし、風邪や熱、お腹の調子を伝え、薬局で薬を買います。"
+    zh: "在診所掛號，說出感冒、發燒、拉肚子，去藥局拿藥。"
+  icon: "stethoscope"
+  order: 7
+  level: beginner
+
+words:
+  - id: kan-yisheng
+    word:
+      en: "to see a doctor"
+      zh: "看醫生"
+    pinyin: "kàn yī shēng"
+    description:
+      en: "Go to the doctor. Here 看 means 'consult'. ✗ 看見醫生 means 'catch sight of a doctor'."
+      zh: "生病了去給醫生檢查。"
+    sentence:
+      en: "I'm not feeling well. I'm going to see a doctor this afternoon."
+      zh: "我不舒服，下午要去看醫生。"
+    sentencePinyin: "wǒ bù shū fú, xià wǔ yào qù kàn yī shēng."
+
+  - id: zhensuo
+    word:
+      en: "clinic"
+      zh: "診所"
+    pinyin: "zhěn suǒ"
+    description:
+      en: "A small neighborhood clinic. For a cold, most people go to a clinic, not a hospital (醫院)."
+      zh: "小的醫院，看小病的地方。"
+    sentence:
+      en: "There's an ear, nose and throat clinic near my home."
+      zh: "我家附近有一間耳鼻喉科診所。"
+    sentencePinyin: "wǒ jiā fù jìn yǒu yì jiān ěr bí hóu kē zhěn suǒ."
+
+  - id: guahao
+    word:
+      en: "to register"
+      zh: "掛號"
+    pinyin: "guà hào"
+    description:
+      en: "Sign in at the front desk (or online) before seeing the doctor. You pay a small 掛號費."
+      zh: "看醫生前先登記。"
+    sentence:
+      en: "I'd like to register for internal medicine."
+      zh: "我想掛號，看內科。"
+    sentencePinyin: "wǒ xiǎng guà hào, kàn nèi kē."
+
+  - id: jianbaoka
+    word:
+      en: "health insurance card"
+      zh: "健保卡"
+    pinyin: "jiàn bǎo kǎ"
+    description:
+      en: "Your National Health Insurance card. Bring it every time; without it you pay much more."
+      zh: "看醫生要用的卡。"
+    sentence:
+      en: "Please give me your health insurance card."
+      zh: "請給我你的健保卡。"
+    sentencePinyin: "qǐng gěi wǒ nǐ de jiàn bǎo kǎ."
+
+  - id: nali-bu-shufu
+    word:
+      en: "what's wrong"
+      zh: "哪裡不舒服"
+    pinyin: "nǎ lǐ bù shū fú"
+    description:
+      en: "Literally 'where are you uncomfortable?'. The first thing a doctor asks. Answer with the body part + 痛."
+      zh: "醫生問你身體哪裡有問題。"
+    sentence:
+      en: "What's bothering you today?"
+      zh: "你今天哪裡不舒服？"
+    sentencePinyin: "nǐ jīn tiān nǎ lǐ bù shū fú?"
+
+  - id: ganmao
+    word:
+      en: "to have a cold"
+      zh: "感冒"
+    pinyin: "gǎn mào"
+    description:
+      en: "Works as a noun or a verb. 我感冒了 = I've caught a cold; the 了 shows a change."
+      zh: "常見的小病，會流鼻水、咳嗽。"
+    sentence:
+      en: "I've caught a cold. My nose keeps running."
+      zh: "我感冒了，一直流鼻水。"
+    sentencePinyin: "wǒ gǎn mào le, yì zhí liú bí shuǐ."
+
+  - id: fashao
+    word:
+      en: "to have a fever"
+      zh: "發燒"
+    pinyin: "fā shāo"
+    description:
+      en: "Temperatures are in Celsius: 發燒到三十八度 = a fever of 38°C."
+      zh: "身體很熱，體溫比平常高。"
+    sentence:
+      en: "Last night I had a fever of 38 degrees."
+      zh: "我昨天晚上發燒到三十八度。"
+    sentencePinyin: "wǒ zuó tiān wǎn shàng fā shāo dào sān shí bā dù."
+
+  - id: kesou
+    word:
+      en: "to cough"
+      zh: "咳嗽"
+    pinyin: "ké sòu"
+    description:
+      en: "In Taiwan it's read ké sòu. 咳了一個禮拜 = coughed for a week (禮拜 is everyday Taiwan for 'week')."
+      zh: "喉嚨不舒服，一直咳。"
+    sentence:
+      en: "I've been coughing for a week."
+      zh: "我咳嗽咳了一個禮拜。"
+    sentencePinyin: "wǒ ké sòu ké le yí ge lǐ bài."
+
+  - id: houlong-tong
+    word:
+      en: "sore throat"
+      zh: "喉嚨痛"
+    pinyin: "hóu lóng tòng"
+    description:
+      en: "Body part + 痛 = it hurts: 頭痛, 肚子痛, 牙齒痛. ✗ 我有痛喉嚨 → ✓ 我喉嚨痛."
+      zh: "喉嚨覺得痛。"
+    sentence:
+      en: "I have a sore throat. I can hardly talk."
+      zh: "我喉嚨痛，不太能說話。"
+    sentencePinyin: "wǒ hóu lóng tòng, bú tài néng shuō huà."
+
+  - id: toutong
+    word:
+      en: "headache"
+      zh: "頭痛"
+    pinyin: "tóu tòng"
+    description:
+      en: "Use it like a verb: 我頭痛 (I have a headache). No 有 needed."
+      zh: "頭覺得痛。"
+    sentence:
+      en: "I've had a headache since this morning."
+      zh: "我從早上就一直頭痛。"
+    sentencePinyin: "wǒ cóng zǎo shàng jiù yì zhí tóu tòng."
+
+  - id: la-duzi
+    word:
+      en: "diarrhea"
+      zh: "拉肚子"
+    pinyin: "lā dù zi"
+    description:
+      en: "The everyday word for an upset stomach with diarrhea. 吃壞肚子 = ate something bad."
+      zh: "肚子不舒服，一直跑廁所。"
+    sentence:
+      en: "I probably ate something bad. I keep having diarrhea."
+      zh: "我可能吃壞肚子，一直拉肚子。"
+    sentencePinyin: "wǒ kě néng chī huài dù zi, yì zhí lā dù zi."
+
+  - id: chi-yao
+    word:
+      en: "to take medicine"
+      zh: "吃藥"
+    pinyin: "chī yào"
+    description:
+      en: "Chinese 'eats' medicine. 飯後吃藥 = take it after meals; 一天三次 = three times a day."
+      zh: "把藥吃下去。"
+    sentence:
+      en: "Remember to take the medicine after meals, three times a day."
+      zh: "記得飯後吃藥，一天三次。"
+    sentencePinyin: "jì de fàn hòu chī yào, yì tiān sān cì."
+
+  - id: yaoju
+    word:
+      en: "pharmacy"
+      zh: "藥局"
+    pinyin: "yào jú"
+    description:
+      en: "Clinics often hand you the medicine directly. If you get a prescription (藥單), take it to a 藥局."
+      zh: "賣藥的店。"
+    sentence:
+      en: "You can take the prescription to a pharmacy to get your medicine."
+      zh: "你可以拿藥單去藥局拿藥。"
+    sentencePinyin: "nǐ kě yǐ ná yào dān qù yào jú ná yào."
+
+  - id: guomin
+    word:
+      en: "allergic"
+      zh: "過敏"
+    pinyin: "guò mǐn"
+    description:
+      en: "我對 + thing + 過敏. ✗ 我過敏對花生 → ✓ 我對花生過敏. Penicillin is 盤尼西林 in Taiwan."
+      zh: "身體對某樣東西有不好的反應。"
+    sentence:
+      en: "I'm allergic to penicillin."
+      zh: "我對盤尼西林過敏。"
+    sentencePinyin: "wǒ duì pán ní xī lín guò mǐn."
+
+  - id: duo-xiuxi
+    word:
+      en: "get more rest"
+      zh: "多休息"
+    pinyin: "duō xiū xí"
+    description:
+      en: "多 + verb = do more of it. Doctors in Taiwan always say 多喝水，多休息."
+      zh: "多花時間休息。"
+    sentence:
+      en: "The doctor said to drink more water and get more rest."
+      zh: "醫生說要多喝水、多休息。"
+    sentencePinyin: "yī shēng shuō yào duō hē shuǐ, duō xiū xí."
+
+chat:
+  conversations:
+    - id: doctor-1-front-desk
+      title:
+        en: "At the Front Desk"
+        zh: "掛號"
+      messages:
+        - role: partner
+          text:
+            en: "Hello, is this your first visit?"
+            zh: "你好，第一次來嗎？"
+          pinyin: "nǐ hǎo, dì yī cì lái ma?"
+        - role: user
+          text:
+            en: "Yes, I'd like to register."
+            zh: "對，我想掛號。"
+          pinyin: "duì, wǒ xiǎng guà hào."
+        - role: partner
+          text:
+            en: "OK, your health insurance card, please."
+            zh: "好，請給我健保卡。"
+          pinyin: "hǎo, qǐng gěi wǒ jiàn bǎo kǎ."
+        - role: user
+          text:
+            en: "Here it is. I don't have an appointment today. Is that OK?"
+            zh: "在這裡。我今天沒有預約，可以嗎？"
+          pinyin: "zài zhè lǐ. wǒ jīn tiān méi yǒu yù yuē, kě yǐ ma?"
+        - role: partner
+          text:
+            en: "Yes. There are five people ahead of you. Please fill in this form first."
+            zh: "可以，你前面還有五個人。請先填這張表。"
+          pinyin: "kě yǐ, nǐ qián miàn hái yǒu wǔ ge rén. qǐng xiān tián zhè zhāng biǎo."
+        - role: user
+          text:
+            en: "OK. How much is the registration fee?"
+            zh: "好。掛號費多少錢？"
+          pinyin: "hǎo. guà hào fèi duō shǎo qián?"
+        - role: partner
+          text:
+            en: "150. You can pay after you see the doctor."
+            zh: "一百五十塊，看完再付就好。"
+          pinyin: "yì bǎi wǔ shí kuài, kàn wán zài fù jiù hǎo."
+        - role: user
+          text:
+            en: "OK, thanks."
+            zh: "好，謝謝。"
+          pinyin: "hǎo, xiè xie."
+
+    - id: doctor-2-cold
+      title:
+        en: "I Have a Cold"
+        zh: "我感冒了"
+      messages:
+        - role: partner
+          text:
+            en: "Hello. What's bothering you today?"
+            zh: "你好，今天哪裡不舒服？"
+          pinyin: "nǐ hǎo, jīn tiān nǎ lǐ bù shū fú?"
+        - role: user
+          text:
+            en: "I have a cold. My throat hurts, and I keep coughing."
+            zh: "我感冒了，喉嚨痛，也一直咳嗽。"
+          pinyin: "wǒ gǎn mào le, hóu lóng tòng, yě yì zhí ké sòu."
+        - role: partner
+          text:
+            en: "For how long? Do you have a fever?"
+            zh: "多久了？有沒有發燒？"
+          pinyin: "duō jiǔ le? yǒu méi yǒu fā shāo?"
+        - role: user
+          text:
+            en: "Three days. I had a slight fever last night."
+            zh: "三天了。昨天晚上有一點發燒。"
+          pinyin: "sān tiān le. zuó tiān wǎn shàng yǒu yì diǎn fā shāo."
+        - role: partner
+          text:
+            en: "Open your mouth, let me look. Your throat is a little red."
+            zh: "嘴巴張開，我看一下。喉嚨有點紅。"
+          pinyin: "zuǐ ba zhāng kāi, wǒ kàn yí xià. hóu lóng yǒu diǎn hóng."
+        - role: user
+          text:
+            en: "Doctor, I'm allergic to aspirin."
+            zh: "醫生，我對阿斯匹靈過敏。"
+          pinyin: "yī shēng, wǒ duì ā sī pī líng guò mǐn."
+        - role: partner
+          text:
+            en: "OK, I'll give you something else. Three times a day, after meals."
+            zh: "好，我開別的藥給你。一天吃三次，飯後吃。"
+          pinyin: "hǎo, wǒ kāi bié de yào gěi nǐ. yì tiān chī sān cì, fàn hòu chī."
+        - role: user
+          text:
+            en: "OK. Anything else I should watch out for?"
+            zh: "好的。還要注意什麼嗎？"
+          pinyin: "hǎo de. hái yào zhù yì shén me ma?"
+        - role: partner
+          text:
+            en: "Drink more water, get more rest, and no cold drinks."
+            zh: "多喝水、多休息，不要喝冰的。"
+          pinyin: "duō hē shuǐ, duō xiū xí, bú yào hē bīng de."
+        - role: user
+          text:
+            en: "Got it. Thank you, doctor!"
+            zh: "我知道了，謝謝醫生！"
+          pinyin: "wǒ zhī dào le, xiè xie yī shēng!"
+
+    - id: doctor-3-pharmacy
+      title:
+        en: "At the Pharmacy"
+        zh: "在藥局"
+      messages:
+        - role: partner
+          text:
+            en: "Hi, do you have a prescription?"
+            zh: "你好，有藥單嗎？"
+          pinyin: "nǐ hǎo, yǒu yào dān ma?"
+        - role: user
+          text:
+            en: "No. I have diarrhea. Is there any medicine I can take?"
+            zh: "沒有。我拉肚子，有沒有藥可以吃？"
+          pinyin: "méi yǒu. wǒ lā dù zi, yǒu méi yǒu yào kě yǐ chī?"
+        - role: partner
+          text:
+            en: "When did it start? Do you have a headache?"
+            zh: "從什麼時候開始的？會不會頭痛？"
+          pinyin: "cóng shén me shí hòu kāi shǐ de? huì bú huì tóu tòng?"
+        - role: user
+          text:
+            en: "Since yesterday. No headache, but I don't have much energy."
+            zh: "從昨天開始。不會頭痛，可是沒什麼力氣。"
+          pinyin: "cóng zuó tiān kāi shǐ. bú huì tóu tòng, kě shì méi shén me lì qì."
+        - role: partner
+          text:
+            en: "Take this twice a day. If you're not better tomorrow, see a doctor."
+            zh: "這個藥一天吃兩次。如果明天還沒好，要去看醫生喔。"
+          pinyin: "zhè ge yào yì tiān chī liǎng cì. rú guǒ míng tiān hái méi hǎo, yào qù kàn yī shēng o."
+        - role: user
+          text:
+            en: "OK. Do I take the medicine before or after meals?"
+            zh: "好。飯前還是飯後吃藥？"
+          pinyin: "hǎo. fàn qián hái shì fàn hòu chī yào?"
+        - role: partner
+          text:
+            en: "After meals. And eat light food for a few days."
+            zh: "飯後吃。這幾天吃清淡一點。"
+          pinyin: "fàn hòu chī. zhè jǐ tiān chī qīng dàn yì diǎn."
+        - role: user
+          text:
+            en: "OK, thank you."
+            zh: "好，謝謝你。"
+          pinyin: "hǎo, xiè xie nǐ."
+
+quiz:
+  questionsPerRound: 5
+  xpReward: 20
+  # Fill-in-the-blank questions. Each answer must equal a word.zh above.
+  cloze:
+    - sentence: "我不舒服，下班要去___。"
+      options: ["看醫生", "健保卡", "感冒", "多休息"]
+      answer: "看醫生"
+      explain:
+        en: "Feeling unwell, so you go to see a doctor: 看醫生."
+    - sentence: "到了診所，要先在櫃台___。"
+      options: ["掛號", "過敏", "發燒", "咳嗽"]
+      answer: "掛號"
+      explain:
+        en: "The first thing at a clinic's front desk is registering: 掛號."
+    - sentence: "看醫生要記得帶___。"
+      options: ["健保卡", "藥局", "診所", "過敏"]
+      answer: "健保卡"
+      explain:
+        en: "Always bring your health insurance card: 健保卡."
+    - sentence: "醫生問：你今天___？"
+      options: ["哪裡不舒服", "多休息", "吃藥", "掛號"]
+      answer: "哪裡不舒服"
+      explain:
+        en: "Doctors start by asking what's wrong: 哪裡不舒服."
+    - sentence: "我量了體溫，三十八度半，在___。"
+      options: ["發燒", "咳嗽", "拉肚子", "過敏"]
+      answer: "發燒"
+      explain:
+        en: "38.5°C is a fever: 發燒."
+    - sentence: "我對花生___，不能吃花生。"
+      options: ["過敏", "感冒", "頭痛", "發燒"]
+      answer: "過敏"
+      explain:
+        en: "我對 + thing + 過敏 = I'm allergic to it."
+    - sentence: "記得飯後___，一天三次。"
+      options: ["吃藥", "掛號", "看醫生", "多休息"]
+      answer: "吃藥"
+      explain:
+        en: "After meals, three times a day: that's how you take medicine (吃藥)."
+    - sentence: "醫生說多喝水、___，很快就會好。"
+      options: ["多休息", "過敏", "掛號", "藥局"]
+      answer: "多休息"
+      explain:
+        en: "多喝水，多休息 is the doctor's standard advice."

@@ -1,0 +1,398 @@
+# Chapter: Taiwan Mandarin Beginner 1 - Introducing Yourself
+# Name, country, where you live, what you do, how long you've been in Taiwan.
+# Pinyin uses Taiwan readings; 一 and 不 are written with the tone you say.
+meta:
+  id: zh-self-introduction
+  title:
+    en: "Introducing Yourself"
+    ja: "自己紹介"
+    zh: "自我介紹"
+  description:
+    en: "Say your name, where you're from, what you do and how long you've been in Taiwan."
+    ja: "名前、出身、仕事、台湾に来てどのくらいかを話します。"
+    zh: "說出名字、從哪裡來、做什麼工作、來台灣多久。"
+  icon: "badge"
+  order: 1
+  level: beginner
+
+words:
+  - id: ni-hao
+    word:
+      en: "hello"
+      zh: "你好"
+    pinyin: "nǐ hǎo"
+    description:
+      en: "The everyday greeting, any time of day. To a customer or someone much older, 您好 (nín hǎo) is more polite."
+      zh: "打招呼最常用的話，什麼時候都可以說。"
+    sentence:
+      en: "Hi, I'm the new coworker."
+      zh: "你好，我是新來的同事。"
+    sentencePinyin: "nǐ hǎo, wǒ shì xīn lái de tóng shì."
+
+  - id: wo-jiao
+    word:
+      en: "my name is"
+      zh: "我叫"
+    pinyin: "wǒ jiào"
+    description:
+      en: "Put your name right after it. ✗ 我的名字叫是大衛 → ✓ 我叫大衛."
+      zh: "後面直接加上自己的名字。"
+    sentence:
+      en: "My name is David. I'm American."
+      zh: "我叫大衛，我是美國人。"
+    sentencePinyin: "wǒ jiào Dà wèi, wǒ shì Měi guó rén."
+
+  - id: ni-jiao-shenme-mingzi
+    word:
+      en: "what's your name"
+      zh: "你叫什麼名字"
+    pinyin: "nǐ jiào shén me míng zì"
+    description:
+      en: "Question words stay where the answer goes, so 什麼 comes after the verb. ✗ 什麼你的名字 → ✓ 你叫什麼名字."
+      zh: "問別人的名字。"
+    sentence:
+      en: "Excuse me, what's your name?"
+      zh: "不好意思，你叫什麼名字？"
+    sentencePinyin: "bù hǎo yì si, nǐ jiào shén me míng zì?"
+
+  - id: nice-to-meet-you
+    word:
+      en: "nice to meet you"
+      zh: "很高興認識你"
+    pinyin: "hěn gāo xìng rèn shì nǐ"
+    description:
+      en: "Say it after you exchange names. The other person often answers 我也是 (me too)."
+      zh: "第一次見面時說的客氣話。"
+    sentence:
+      en: "I'm Meiling. Nice to meet you!"
+      zh: "我是美玲，很高興認識你！"
+    sentencePinyin: "wǒ shì Měi líng, hěn gāo xìng rèn shì nǐ!"
+
+  - id: wo-laizi
+    word:
+      en: "I come from"
+      zh: "我來自"
+    pinyin: "wǒ lái zì"
+    description:
+      en: "Add a country or city. In casual talk 我是 + country + 人 (我是美國人) is just as common."
+      zh: "說自己從哪個國家或城市來。"
+    sentence:
+      en: "I'm from Canada, and I've lived in Taipei for two years."
+      zh: "我來自加拿大，在台北住了兩年。"
+    sentencePinyin: "wǒ lái zì Jiā ná dà, zài Tái běi zhù le liǎng nián."
+
+  - id: shi-na-guo-ren
+    word:
+      en: "where are you from"
+      zh: "你是哪國人"
+    pinyin: "nǐ shì nǎ guó rén"
+    description:
+      en: "Literally 'you are which-country person?'. Answer with 我是 + country + 人: 我是英國人."
+      zh: "問別人是哪一個國家的人。"
+    sentence:
+      en: "Where are you from? I'm British."
+      zh: "你是哪國人？我是英國人。"
+    sentencePinyin: "nǐ shì nǎ guó rén? wǒ shì Yīng guó rén."
+
+  - id: wo-zhu-zai
+    word:
+      en: "I live in"
+      zh: "我住在"
+    pinyin: "wǒ zhù zài"
+    description:
+      en: "The place comes right after 住在. ✗ 我住台北在 → ✓ 我住在台北."
+      zh: "說自己住在什麼地方。"
+    sentence:
+      en: "I live in Taipei, close to my office."
+      zh: "我住在台北，離公司很近。"
+    sentencePinyin: "wǒ zhù zài Tái běi, lí gōng sī hěn jìn."
+
+  - id: zuo-shenme-gongzuo
+    word:
+      en: "what do you do"
+      zh: "你做什麼工作"
+    pinyin: "nǐ zuò shén me gōng zuò"
+    description:
+      en: "Asks about someone's job. Answer with 我是 + job (我是老師) or 我在 + place + 上班."
+      zh: "問別人的工作。"
+    sentence:
+      en: "What do you do? I'm an English teacher."
+      zh: "你做什麼工作？我是英文老師。"
+    sentencePinyin: "nǐ zuò shén me gōng zuò? wǒ shì Yīng wén lǎo shī."
+
+  - id: shangban
+    word:
+      en: "to work (at a job)"
+      zh: "上班"
+    pinyin: "shàng bān"
+    description:
+      en: "Go to work / be at work; 下班 is getting off work. The place goes before it: 我在銀行上班."
+      zh: "去公司工作。下班是工作結束。"
+    sentence:
+      en: "I work at a tech company."
+      zh: "我在一家科技公司上班。"
+    sentencePinyin: "wǒ zài yì jiā kē jì gōng sī shàng bān."
+
+  - id: hui-shuo-yidian-zhongwen
+    word:
+      en: "I speak a little Chinese"
+      zh: "我會說一點中文"
+    pinyin: "wǒ huì shuō yì diǎn zhōng wén"
+    description:
+      en: "A modest answer people love to hear. 一點 goes before the noun. ✗ 我會說中文一點 → ✓ 我會說一點中文."
+      zh: "客氣地說自己的中文還不太好。"
+    sentence:
+      en: "I speak a little Chinese, but I speak slowly."
+      zh: "我會說一點中文，可是說得很慢。"
+    sentencePinyin: "wǒ huì shuō yì diǎn zhōng wén, kě shì shuō de hěn màn."
+
+  - id: xue-zhongwen
+    word:
+      en: "to study Chinese"
+      zh: "學中文"
+    pinyin: "xué zhōng wén"
+    description:
+      en: "In Taiwan people say 中文 or 華語 for Mandarin. 學 is 'to study / to learn'."
+      zh: "學習中文。"
+    sentence:
+      en: "I came to Taiwan to study Chinese. It's been half a year."
+      zh: "我來台灣學中文，已經半年了。"
+    sentencePinyin: "wǒ lái Tái wān xué zhōng wén, yǐ jīng bàn nián le."
+
+  - id: lai-taiwan-duojiu
+    word:
+      en: "how long have you been in Taiwan"
+      zh: "你來台灣多久了"
+    pinyin: "nǐ lái Tái wān duō jiǔ le"
+    description:
+      en: "The 了 at the end means 'up to now'. Answer the same way: 我來台灣三個月了."
+      zh: "問別人到台灣多長的時間了。"
+    sentence:
+      en: "How long have you been in Taiwan? Almost a year."
+      zh: "你來台灣多久了？快一年了。"
+    sentencePinyin: "nǐ lái Tái wān duō jiǔ le? kuài yì nián le."
+
+  - id: xingqu-shi
+    word:
+      en: "my hobby is"
+      zh: "我的興趣是"
+    pinyin: "wǒ de xìng qù shì"
+    description:
+      en: "Follow it with activities. Join two with 跟: 爬山跟煮菜. Taiwanese often ask 你的興趣是什麼？"
+      zh: "說自己喜歡做的事。"
+    sentence:
+      en: "My hobbies are hiking and cooking."
+      zh: "我的興趣是爬山跟煮菜。"
+    sentencePinyin: "wǒ de xìng qù shì pá shān gēn zhǔ cài."
+
+  - id: qing-duo-zhijiao
+    word:
+      en: "I look forward to working with you"
+      zh: "請多指教"
+    pinyin: "qǐng duō zhǐ jiào"
+    description:
+      en: "A polite set phrase to close an introduction, especially at work or in class. No real English match."
+      zh: "自我介紹最後常說的客氣話。"
+    sentence:
+      en: "I'm David, the new one here. I look forward to working with you."
+      zh: "我是新來的大衛，請多指教。"
+    sentencePinyin: "wǒ shì xīn lái de Dà wèi, qǐng duō zhǐ jiào."
+
+  - id: ni-ne
+    word:
+      en: "and you?"
+      zh: "你呢"
+    pinyin: "nǐ ne"
+    description:
+      en: "Bounces the same question back, so you don't have to repeat it."
+      zh: "把同一個問題問回去。"
+    sentence:
+      en: "I like coffee. How about you?"
+      zh: "我喜歡喝咖啡，你呢？"
+    sentencePinyin: "wǒ xǐ huān hē kā fēi, nǐ ne?"
+
+chat:
+  conversations:
+    - id: intro-1-new-coworker
+      title:
+        en: "New Coworker"
+        zh: "新同事"
+      messages:
+        - role: partner
+          text:
+            en: "Hi, I'm Yijun. Are you new here?"
+            zh: "你好，我是怡君。你是新來的嗎？"
+          pinyin: "nǐ hǎo, wǒ shì Yí jūn. nǐ shì xīn lái de ma?"
+        - role: user
+          text:
+            en: "Yes, my name is David. Nice to meet you."
+            zh: "對，我叫大衛。很高興認識你。"
+          pinyin: "duì, wǒ jiào Dà wèi. hěn gāo xìng rèn shì nǐ."
+        - role: partner
+          text:
+            en: "Nice to meet you too. Where are you from?"
+            zh: "我也很高興認識你。你是哪國人？"
+          pinyin: "wǒ yě hěn gāo xìng rèn shì nǐ. nǐ shì nǎ guó rén?"
+        - role: user
+          text:
+            en: "I'm from the US. I live in Taipei now."
+            zh: "我來自美國，現在住在台北。"
+          pinyin: "wǒ lái zì Měi guó, xiàn zài zhù zài Tái běi."
+        - role: partner
+          text:
+            en: "Your Chinese is really good!"
+            zh: "你的中文很好耶！"
+          pinyin: "nǐ de zhōng wén hěn hǎo ye!"
+        - role: user
+          text:
+            en: "Not really. I speak a little Chinese, that's all."
+            zh: "沒有啦，我會說一點中文而已。"
+          pinyin: "méi yǒu la, wǒ huì shuō yì diǎn zhōng wén ér yǐ."
+        - role: partner
+          text:
+            en: "Not at all. If you have questions, just ask me."
+            zh: "不會啦，有問題可以問我。"
+          pinyin: "bú huì la, yǒu wèn tí kě yǐ wèn wǒ."
+        - role: user
+          text:
+            en: "Thank you! I look forward to working with you."
+            zh: "謝謝你！請多指教。"
+          pinyin: "xiè xie nǐ! qǐng duō zhǐ jiào."
+
+    - id: intro-2-language-exchange
+      title:
+        en: "Language Exchange"
+        zh: "語言交換"
+      messages:
+        - role: partner
+          text:
+            en: "Hi, are you here for the language exchange?"
+            zh: "嗨，你是來語言交換的嗎？"
+          pinyin: "hāi, nǐ shì lái yǔ yán jiāo huàn de ma?"
+        - role: user
+          text:
+            en: "Yes! Hi, my name is Sarah. What's your name?"
+            zh: "對！你好，我叫莎拉。你叫什麼名字？"
+          pinyin: "duì! nǐ hǎo, wǒ jiào Shā lā. nǐ jiào shén me míng zì?"
+        - role: partner
+          text:
+            en: "I'm Zhiming. How long have you been in Taiwan?"
+            zh: "我叫志明。你來台灣多久了？"
+          pinyin: "wǒ jiào Zhì míng. nǐ lái Tái wān duō jiǔ le?"
+        - role: user
+          text:
+            en: "Three months. I came to Taiwan to study Chinese."
+            zh: "三個月了。我來台灣學中文。"
+          pinyin: "sān ge yuè le. wǒ lái Tái wān xué zhōng wén."
+        - role: partner
+          text:
+            en: "Impressive! What do you like to do in your free time?"
+            zh: "好厲害！你平常喜歡做什麼？"
+          pinyin: "hǎo lì hài! nǐ píng cháng xǐ huān zuò shén me?"
+        - role: user
+          text:
+            en: "My hobbies are taking photos and hiking. And you?"
+            zh: "我的興趣是拍照跟爬山。你呢？"
+          pinyin: "wǒ de xìng qù shì pāi zhào gēn pá shān. nǐ ne?"
+        - role: partner
+          text:
+            en: "I like hiking too! Let's go together next time."
+            zh: "我也喜歡爬山！下次一起去吧。"
+          pinyin: "wǒ yě xǐ huān pá shān! xià cì yì qǐ qù ba."
+        - role: user
+          text:
+            en: "Sure! Nice to meet you!"
+            zh: "好啊，很高興認識你！"
+          pinyin: "hǎo a, hěn gāo xìng rèn shì nǐ!"
+
+    - id: intro-3-taxi-chat
+      title:
+        en: "Chatting in a Taxi"
+        zh: "計程車上"
+      messages:
+        - role: partner
+          text:
+            en: "Your Chinese is pretty good! Where are you from?"
+            zh: "你的中文說得不錯喔！你是哪國人？"
+          pinyin: "nǐ de zhōng wén shuō de bú cuò o! nǐ shì nǎ guó rén?"
+        - role: user
+          text:
+            en: "Thanks! I'm British."
+            zh: "謝謝！我是英國人。"
+          pinyin: "xiè xie! wǒ shì Yīng guó rén."
+        - role: partner
+          text:
+            en: "What do you do here in Taiwan?"
+            zh: "你在台灣做什麼工作？"
+          pinyin: "nǐ zài Tái wān zuò shén me gōng zuò?"
+        - role: user
+          text:
+            en: "I'm an engineer. I work at a tech company."
+            zh: "我是工程師，在一家科技公司上班。"
+          pinyin: "wǒ shì gōng chéng shī, zài yì jiā kē jì gōng sī shàng bān."
+        - role: partner
+          text:
+            en: "So where do you live?"
+            zh: "那你住在哪裡？"
+          pinyin: "nà nǐ zhù zài nǎ lǐ?"
+        - role: user
+          text:
+            en: "I live in Da'an District, close to my office."
+            zh: "我住在大安區，離公司很近。"
+          pinyin: "wǒ zhù zài Dà ān qū, lí gōng sī hěn jìn."
+        - role: partner
+          text:
+            en: "Nice! Welcome to Taiwan."
+            zh: "不錯耶！歡迎你來台灣。"
+          pinyin: "bú cuò ye! huān yíng nǐ lái Tái wān."
+        - role: user
+          text:
+            en: "Thanks, I really like Taiwan!"
+            zh: "謝謝，我很喜歡台灣！"
+          pinyin: "xiè xie, wǒ hěn xǐ huān Tái wān!"
+
+quiz:
+  questionsPerRound: 5
+  xpReward: 20
+  # Fill-in-the-blank questions. Each answer must equal a word.zh above.
+  cloze:
+    - sentence: "你好，___大衛，是新來的同事。"
+      options: ["我叫", "我住在", "我來自", "你呢"]
+      answer: "我叫"
+      explain:
+        en: "Introduce your name with 我叫 + name."
+    - sentence: "A：你是哪國人？ B：___美國，現在住在台中。"
+      options: ["我來自", "我叫", "上班", "你呢"]
+      answer: "我來自"
+      explain:
+        en: "The question asks where you're from, so answer with 我來自 + country."
+    - sentence: "___台北的大安區，走路十分鐘就到公司。"
+      options: ["我住在", "我叫", "你呢", "請多指教"]
+      answer: "我住在"
+      explain:
+        en: "Where you live: 我住在 + place."
+    - sentence: "我是新來的同事，___！"
+      options: ["請多指教", "你呢", "我叫", "學中文"]
+      answer: "請多指教"
+      explain:
+        en: "請多指教 is the polite phrase that ends an introduction."
+    - sentence: "我喜歡看電影，___？"
+      options: ["你呢", "你好", "我叫", "請多指教"]
+      answer: "你呢"
+      explain:
+        en: "你呢 turns the same question back to the other person: 'and you?'"
+    - sentence: "我在一家銀行___，每天九點到公司。"
+      options: ["上班", "學中文", "我叫", "你呢"]
+      answer: "上班"
+      explain:
+        en: "在 + place + 上班 = work at a place."
+    - sentence: "A：你會說中文嗎？ B：___，可是說得很慢。"
+      options: ["我會說一點中文", "你來台灣多久了", "你叫什麼名字", "很高興認識你"]
+      answer: "我會說一點中文"
+      explain:
+        en: "A modest yes: 我會說一點中文 (I speak a little Chinese)."
+    - sentence: "A：___？ B：快兩年了。"
+      options: ["你來台灣多久了", "你是哪國人", "你做什麼工作", "你叫什麼名字"]
+      answer: "你來台灣多久了"
+      explain:
+        en: "The answer is a length of time, so the question is 你來台灣多久了."
