@@ -25,10 +25,19 @@
 - [x] D 課程內容：拼音課改繁體、8 章初級、每日句型單字
 - [x] 合併四條線（1aa6e2a）；tester：前端 900／900（en、zh 設定各一次）、後端 22／22、兩版建置、內容檢查全過
 - [x] reviewer 第 1 輪：角度 2、3 APPROVE；角度 1 退回（學習頁等中文沒標 lang）、角度 4 退回（CLAUDE.md 沒寫 edition 與部署）
-- [ ] 修正（coder 進行中：lang、單一等級自動選、More practice 說明、拼音行英數字、句型拼音、成就、測試 mock 統一、CLAUDE.md）→ tester → 角度 1、4 再審
+- [x] 修正 5 輪（lang 標記改由守護測試＋真實資料把關、英文版學習語言區塊回歸、英文版中文錯題回歸、單一等級自動選、拼音「嗨」與動詞後「得」、角色名統一 Chih-wei、CLAUDE.md）；最後 tester 979／979（en、zh 各一次）、後端 22／22；角度 1、2、3、4 APPROVE
 - 已知取捨（不改）：英文版建置多一個 152 bytes 的 edition chunk（precache 71→72）；英文版上線要等中文版建置成功；英文版學中文時學習頁聊天角色改成 Mei-ling；拼音「長得」固定 zhǎng de；簡體輸入不會自動轉繁體比對
 - [x] 320／390 × 淺色／深色巡檢中文版：首頁、每日練習、學習、設定、拼音課、聊天設定，沒有超出畫面、沒有 JS 錯誤（修正後再巡一次聊天畫面）
-- [ ] 後端部署（clasp，先上）→ 前端合併上線（英文版不變、中文版 /chat_mate/zh/app/）
-- [ ] E iOS：capacitor.config.ts＋typescript、ios-zh/、註冊 bundle ID、圖示（Codex 畫）
+- [x] 後端部署 @24→@25（2026-11-15），正式環境實打：美玲／志偉中文招呼繁體台灣口語、Emma 英文照常、中文句子檢查回 measure-word
+- [ ] 前端合併 master 上線（英文版不變、中文版 /chat_mate/zh/app/）
+- [ ] E iOS：capacitor.config.ts＋typescript、ios-zh/、註冊 bundle ID
+- [x] 圖示：Codex 畫（Noto Sans TC Bold，OFL），已傳給使用者
+- [ ] 使用者核可圖示
 - [ ] 使用者：App Store Connect 建「Chat Mate 華語」記錄
 - [ ] TestFlight
+
+## 之後再做（審查 suggestion）
+- 中文目標打勾：「一……就……」切成「一」「就」，含「一」就會打勾
+- lang 守護測試只抓漏標，不抓錯標（FeedbackPanel tips 若回英文）
+- 英文版上線綁在中文版建置成功（deploy.yml 同一個 job）
+- 簡體輸入不會自動轉繁體比對
