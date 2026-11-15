@@ -266,6 +266,8 @@ POST /api/chat
   Body: { messages, characterId, levelId, language, isGreeting, article, challengeContext }
   Returns: { reply, hints }
   With Claude, the character prompt goes in the system field; challengeContext is the practice goal for task chats
+  Characters: emma, marcus, sophia, james, yuki, plus the Taiwan friends meiling (林美玲, Taipei office worker) and zhiwei (陳志偉, Tainan café owner)
+  language 'zh' = Taiwan Mandarin in Traditional characters (Taiwan words, never Simplified); zh beginner has its own level rules
 
 POST /api/diary-feedback
   Body: { diaryText, language, level, characterId, nativeLanguage, streakDays }
@@ -277,11 +279,11 @@ POST /feedback   (GAS: action 'feedback')
   corrections[i] reads "<original>" → "<corrected>" — <explanation in nativeLanguage>; correctionTypes[i] is its error type
 
 POST /sentence-check   (GAS: action 'sentence-check'; needs ANTHROPIC_API_KEY)
-  Body: { sentence, pattern, meaning, task, level, nativeLanguage }
+  Body: { sentence, pattern, meaning, task, level, nativeLanguage, language? }   (language: target language, default 'en')
   Returns: { check: { usedPattern, isNatural, corrected, comment, better, errorType } }
 
 POST /chat-summary   (GAS: action 'chat-summary'; needs ANTHROPIC_API_KEY)
-  Body: { messages: [{ role: 'user'|'assistant', content }], patterns: [{ id, pattern, match }], level, nativeLanguage }
+  Body: { messages: [{ role: 'user'|'assistant', content }], patterns: [{ id, pattern, match }], level, nativeLanguage, language? }   (language default 'en')
   Returns: { summary: { points: [{ original, hint, corrected, explanation, type }], usedPatternIds, encouragement,
     repeatTomorrow: { enabled, original, target, cue, hint, patternId } } }
   repeatTomorrow is one of the learner's own sentences (target = minimal fix); the server drops it if it isn't from the learner or the cue/hint gives the target away
@@ -293,6 +295,8 @@ POST /speech-rescue   (GAS: action 'speech-rescue'; needs ANTHROPIC_API_KEY; Hai
 
 Error types: article, tense, third-person-s, plural, connector, word-choice, other
   (diary corrections[].type, feedback correctionTypes[], sentence-check errorType, chat-summary points[].type)
+  When the target language is 'zh': measure-word, aspect (了/過/著), word-order, de-particle (的/得/地), word-choice, other
+  The lists, language validation and repeatTomorrow checks live in backend/lib/rules.js; Code.gs carries a copy (cd backend && npm test checks it)
 nativeLanguage 'zh' adds Mandarin-speaker checks (articles, tense, -s, plurals, connectors) to every feedback prompt.
 
 Daily limit: every AI endpoint counts toward a per-client and a global daily cap (Taiwan time).

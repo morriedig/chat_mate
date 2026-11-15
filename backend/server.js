@@ -3,6 +3,9 @@ import cors from 'cors';
 import crypto from 'crypto';
 import 'dotenv/config';
 import Anthropic from '@anthropic-ai/sdk';
+import {
+  VALID_LANGUAGES, getErrorTypes, getErrorTypeDescription, resolveLanguage, sanitizeRepeatTomorrow,
+} from './lib/rules.js';
 
 const app = express();
 
@@ -525,9 +528,9 @@ app.get('/token', (req, res) => {
 });
 
 // Valid parameter values
-const VALID_CHARACTERS = ['emma', 'marcus', 'sophia', 'james', 'yuki'];
+const VALID_CHARACTERS = ['emma', 'marcus', 'sophia', 'james', 'yuki', 'meiling', 'zhiwei'];
 const VALID_LEVELS = ['beginner', 'intermediate', 'advanced'];
-const VALID_LANGUAGES = ['en', 'ja', 'zh'];
+// VALID_LANGUAGES comes from lib/rules.js
 
 app.post('/chat', async (req, res) => {
   try {
@@ -718,15 +721,19 @@ function buildSystemPrompt(character, level, language = 'en', article = null) {
   const dailyContext = article ? null : generateDailyContext(character, language);
   const articleContext = article ? buildArticleContext(article, language) : null;
 
-  const languageName = language === 'ja' ? 'Japanese' : language === 'zh' ? 'Chinese' : 'English';
+  const languageName = language === 'ja' ? 'Japanese' : language === 'zh' ? 'Taiwan Mandarin (Traditional Chinese characters)' : 'English';
 
   const fillerWords = language === 'ja'
     ? 'えーと、なんか、まあ、ちょっと'
-    : 'like, you know, actually, honestly';
+    : language === 'zh'
+      ? TAIWAN_FILLER_WORDS
+      : 'like, you know, actually, honestly';
 
   const bridges = language === 'ja'
     ? '「そういえば...」「それで思い出したんだけど...」「ところで...」'
-    : '"That reminds me...", "Speaking of...", "Oh by the way..."';
+    : language === 'zh'
+      ? TAIWAN_BRIDGES
+      : '"That reminds me...", "Speaking of...", "Oh by the way..."';
 
   const contextSection = articleContext
     ? `## Article Discussion
@@ -807,10 +814,13 @@ ${levelInstructions}
 
 10. **Voice**:
    - Always speak as yourself in the first person ("I", "me", "my")
-   - Never refer to yourself by your own name or in the third person`;
+   - Never refer to yourself by your own name or in the third person${language === 'zh' ? getTaiwanChatRules() : ''}`;
 }
 
 function getCharacterPrompt(character, language = 'en') {
+  const taiwanPrompt = getTaiwanCharacterPrompt(character);
+  if (taiwanPrompt) return taiwanPrompt;
+
   if (language === 'ja') {
     const prompts = {
       emma: `あなたはエマ、シアトルに住む28歳のグラフィックデザイナーです。
@@ -1034,6 +1044,9 @@ function getCharacterPrompt(character, language = 'en') {
 }
 
 function getLevelInstructions(level, language = 'en') {
+  // Chinese is beginner-only for now; other Chinese levels keep the general instructions below
+  if (language === 'zh' && level === 'beginner') return TAIWAN_BEGINNER_INSTRUCTIONS;
+
   if (language === 'ja') {
     const instructions = {
       beginner: `**A1-A2レベル: 優しくて忍耐強い友達**
@@ -1117,6 +1130,9 @@ Example: "So I finally caved and tried that place everyone's been hyping up - go
 }
 
 function generateDailyContext(character, language = 'en') {
+  const taiwanContexts = getTaiwanDailyContexts(character);
+  if (taiwanContexts) return taiwanContexts[Math.floor(Math.random() * taiwanContexts.length)];
+
   if (language === 'ja') {
     const contexts = {
       emma: [
@@ -1284,6 +1300,135 @@ ${article.content}
 - Keep it conversational, not like an interview or test`;
 }
 
+// === TAIWAN MANDARIN PROMPTS (identical in server.js and Code.gs) ===
+// Chinese is taught as Taiwan Mandarin in Traditional characters. These pieces go into the prompts that write or
+// check Chinese for a learner; English and Japanese prompts never use them.
+
+function getTaiwanMandarinRules() {
+  return '\n\n## Taiwan Mandarin\n' +
+    'The learner is learning Taiwan Mandarin (臺灣華語) written in Traditional characters.\n' +
+    '- Write every Chinese word in Traditional characters (繁體字). Never use Simplified characters, not even in one word.\n' +
+    '- Use Taiwan words, not Mainland ones: 捷運 (not 地鐵), 計程車 (not 出租車), 便利商店 (not 便利店), 腳踏車 (not 自行車), 影片 (not 視頻), 軟體 (not 軟件), 網路 (not 網絡), 訊息 (not 信息), 品質 (not 質量).\n' +
+    '- Taiwan usage is correct, never a mistake: 有 + verb for something that happened (我有去), 好喔, 對啊, 蠻 + adjective.';
+}
+
+// The counterpart of getNativeLanguageRules for learners of Mandarin
+function getMandarinLearnerRules() {
+  return getTaiwanMandarinRules() + '\n\n## Common errors for learners of Mandarin\n' +
+    'Pay particular attention to:\n' +
+    '- Measure words: missing or wrong (一個書 → 一本書, 三咖啡 → 三杯咖啡)\n' +
+    '- Aspect: 了/過/著 missing, extra or misplaced (我已經吃飯 → 我已經吃飯了, 我沒去過了 → 我沒去過)\n' +
+    '- Word order: time and place come before the verb (我吃飯在家 → 我在家吃飯, 我去捷運站明天 → 我明天去捷運站)\n' +
+    '- 的/得/地 mixed up (他跑的很快 → 他跑得很快)\n' +
+    'When one of these appears, point it out before smaller style issues and tag it with the matching type. Do not invent errors: a correct sentence stays correct.';
+}
+
+// /feedback: the app parses each correction, and its parser only accepts ASCII double quotes
+function getMandarinFeedbackRules() {
+  return getMandarinLearnerRules() + '\n\n## Format for Chinese\n' +
+    '- Keep the correction format exactly, with ASCII double quotes ("), e.g. "一個書" → "一本書" — <explanation>. Never use 「」, 『』 or curly quotes around the original or corrected words.\n' +
+    '- Corrected words, tips and alternatives are Chinese in Traditional characters, no pinyin. When the explanation mentions a Chinese word, add its pinyin with tone marks, e.g. 本 (běn).';
+}
+
+// /chat: added after the core behavior rules
+function getTaiwanChatRules() {
+  return '\n\n11. **Taiwan Mandarin**:\n' +
+    '   - Talk like a friend in Taiwan. Write Traditional characters (繁體字) only, never Simplified, and no pinyin or English translations in "message" (the app shows pinyin itself)\n' +
+    '   - Use Taiwan words: 捷運, 公車, 計程車, 機車, 腳踏車, 便利商店, 悠遊卡, 夜市, 珍珠奶茶, 早餐店\n' +
+    '   - Rules 7 and 9 are written for English: instead of contractions use natural sentence-final particles (啊、喔、啦、耶、吧), and good hooks look like 其實…, 說真的…, 對了…\n' +
+    '   - Hints: "word" is a short phrase in Traditional characters, "description" is 2-4 English words, "example" is one short, easy sentence in Traditional characters';
+}
+
+var TAIWAN_FILLER_WORDS = '嗯、那個、就是、對啊、真的假的';
+var TAIWAN_BRIDGES = '「對了...」「說到這個...」「欸，我想到...」';
+
+var TAIWAN_BEGINNER_INSTRUCTIONS = `**A1-A2 Level: A patient friend who uses simple, clear language**
+
+Use only high-frequency words. Keep sentences short. Avoid idioms.
+
+- Only very common everyday words (TOCFL A1-A2)
+- Short sentences, about 5-10 characters each; 2-3 sentences per message at most
+- Simple patterns: 我喜歡…、你要…嗎？、…很好吃、我想去…
+- NO 成語 (four-character idioms), NO slang, NO internet jokes
+- Ask one easy question at a time
+- Speak like a patient friend using simple, clear language
+
+Example: 「我喜歡這家咖啡店。咖啡很好喝。你呢？」`;
+
+// Friends who live in Taiwan; the description is the same whatever the language. '' for everyone else.
+function getTaiwanCharacterPrompt(character) {
+  var prompts = {
+    meiling: `You are Lin Meiling (林美玲), a 27-year-old office worker in Taipei.
+
+**Personality:**
+- Warm, friendly and easy to talk to
+- Curious about the other person's life in Taiwan
+- Reacts with feeling ("真的嗎？", "好好喔！", "哇，好厲害")
+- Loves bubble tea (always 半糖少冰) and night market food
+
+**Signature phrases (use occasionally, not every message):**
+- "真的假的？" for surprise
+- "我跟你說喔，" when starting a thought
+- "好啊！" when agreeing to a plan
+
+**Background & current life:**
+- Works in marketing at a company in 信義區 and takes the 捷運 every day
+- Lives in a small apartment near 公館 with a roommate
+- Knows every night market: 士林, 饒河, 寧夏; favorite foods are 雞排 and 蚵仔煎
+- Tries a new 飲料店 every week
+- Hikes up 象山 on weekends when the weather is good`,
+
+    zhiwei: `You are Chen Zhiwei (陳志偉), a 34-year-old who runs a small café in Tainan.
+
+**Personality:**
+- Relaxed, laid-back and funny; likes to joke about himself
+- Patient and unhurried, like life in Tainan
+- Proud of Tainan food and happy to recommend places
+- Talks to every customer like an old friend
+
+**Signature phrases (use occasionally, not every message):**
+- "沒關係啦，慢慢來。" when the other person is unsure
+- "哈哈，對啊！" when agreeing
+- "我跟你講，" before a recommendation
+
+**Background & current life:**
+- Opened his café in an old house near 神農街 five years ago
+- Gets up early to bake and make coffee; rides a 機車 everywhere
+- Loves Tainan breakfast: 牛肉湯, 碗粿, 虱目魚粥
+- Has a lazy orange cat named 布丁 that sleeps in the café window
+- Used to work in Taipei, moved back home to Tainan for a slower life`,
+  };
+  return prompts[character] || '';
+}
+
+// Today's context for the Taiwan friends, in Chinese; null for everyone else
+function getTaiwanDailyContexts(character) {
+  var contexts = {
+    meiling: [
+      '今天早上捷運好擠，差點上不去。',
+      '中午跟同事去買珍珠奶茶，半糖少冰。',
+      '下班想去士林夜市吃雞排。',
+      '今天開會開了三個小時，好累。',
+      '週末想去九份走走，可是好像會下雨。',
+      '在便利商店買了新口味的茶葉蛋。',
+      '家附近開了一家新的飲料店，排隊的人好多。',
+      '今天下大雨，忘記帶傘，只好在便利商店買一把。',
+    ],
+    zhiwei: [
+      '今天店裡來了一群日本客人，大家都點了拿鐵。',
+      '早上五點就起來烤麵包，現在有點想睡。',
+      '台南今天好熱，冰咖啡賣得特別好。',
+      '隔壁阿姨又送我一袋芒果。',
+      '下午沒什麼客人，布丁在窗邊睡了一整個下午。',
+      '騎機車去市場買牛奶，順便吃了一碗牛肉湯。',
+      '想做一個新的甜點，可是一直失敗。',
+      '今天有客人問我早餐吃哪裡，我講了十分鐘。',
+    ],
+  };
+  return contexts[character] || null;
+}
+// === END TAIWAN MANDARIN PROMPTS ===
+
 // === FEEDBACK ENDPOINT ===
 app.post('/feedback', async (req, res) => {
   try {
@@ -1364,8 +1509,8 @@ app.post('/feedback', async (req, res) => {
                 },
                 correctionTypes: {
                   type: 'array',
-                  items: { type: 'string', enum: ERROR_TYPES },
-                  description: 'One error type per item in corrections, same order and length. ' + ERROR_TYPE_DESCRIPTION
+                  items: { type: 'string', enum: getErrorTypes(language) },
+                  description: 'One error type per item in corrections, same order and length. ' + getErrorTypeDescription(language)
                 }
               },
               required: ['score', 'corrections', 'correctionTypes']
@@ -1446,7 +1591,7 @@ Be encouraging but accurate. Score relative to their level (${levelName}).
 - Naturalness: How natural does this sound to a native speaker? Provide tips for more natural expression.
 - Alternatives: Suggest 1-3 alternative ways to express the same idea more naturally in ${languageName}.
 
-If the message is perfect, give high scores and minimal corrections. Keep feedback concise.${language === 'en' ? getNativeLanguageRules(nativeLanguage) : ''}${contextText}
+If the message is perfect, give high scores and minimal corrections. Keep feedback concise.${language === 'en' ? getNativeLanguageRules(nativeLanguage) : language === 'zh' ? getMandarinFeedbackRules() : ''}${contextText}
 
 User's message to analyze: "${userMessage}"`;
 
@@ -1456,22 +1601,36 @@ User's message to analyze: "${userMessage}"`;
 }
 
 // === DIARY FEEDBACK ENDPOINT ===
-const SENTENCE_CHECK_SCHEMA = {
-  type: 'object',
-  properties: {
-    usedPattern: { type: 'boolean', description: 'Whether the sentence uses the target pattern (natural variations count)' },
-    isNatural: { type: 'boolean', description: 'Whether the sentence is grammatical and natural for a native speaker' },
-    corrected: { type: 'string', description: 'The sentence with the minimum fixes; identical to the input if nothing needs fixing' },
-    comment: { type: 'string', description: "One or two short, friendly sentences in the learner's native language about the main fix or what was good" },
-    better: { type: 'string', description: "One natural version that uses the pattern and keeps the learner's idea" },
-    errorType: { type: 'string', enum: ERROR_TYPES, description: 'Kind of the main fix; "other" when the sentence needed no fix. ' + ERROR_TYPE_DESCRIPTION },
-  },
-  required: ['usedPattern', 'isNatural', 'corrected', 'comment', 'better', 'errorType'],
-};
+// The errorType enum follows the target language
+function getSentenceCheckSchema(language) {
+  return {
+    type: 'object',
+    properties: {
+      usedPattern: { type: 'boolean', description: 'Whether the sentence uses the target pattern (natural variations count)' },
+      isNatural: { type: 'boolean', description: 'Whether the sentence is grammatical and natural for a native speaker' },
+      corrected: { type: 'string', description: 'The sentence with the minimum fixes; identical to the input if nothing needs fixing' },
+      comment: { type: 'string', description: "One or two short, friendly sentences in the learner's native language about the main fix or what was good" },
+      better: { type: 'string', description: "One natural version that uses the pattern and keeps the learner's idea" },
+      errorType: { type: 'string', enum: getErrorTypes(language), description: 'Kind of the main fix; "other" when the sentence needed no fix. ' + getErrorTypeDescription(language) },
+    },
+    required: ['usedPattern', 'isNatural', 'corrected', 'comment', 'better', 'errorType'],
+  };
+}
 
-function buildSentenceCheckPrompt(sentence, pattern, meaning, task, level, nativeLanguage) {
+function buildSentenceCheckPrompt(sentence, pattern, meaning, task, level, nativeLanguage, language = 'en') {
   const levelName = level === 'beginner' ? 'A1-A2' : level === 'advanced' ? 'C1' : 'B1-B2';
   const nativeName = nativeLanguage === 'zh' ? 'Traditional Chinese (Taiwan)' : nativeLanguage === 'ja' ? 'Japanese' : 'English';
+  if (language === 'zh') {
+    return 'You are a friendly friend from Taiwan helping a ' + levelName + ' learner of Taiwan Mandarin whose native language is ' + nativeName + '.\n' +
+      'They are practicing the pattern "' + pattern + '"' + (meaning ? ' (' + meaning + ')' : '') + '.\n' +
+      (task ? 'Their task was: ' + task + '\n' : '') +
+      'Check the Chinese sentence they wrote. Judge it against their level: do not rewrite a correct, natural sentence just to make it fancier, and accept short, simple sentences.\n' +
+      'Write "corrected" and "better" in Traditional characters only, no pinyin; keep "better" short and easy for their level.\n' +
+      'Write "comment" in ' + nativeName + ', like a friend, not a teacher. When it mentions a Chinese word, add its pinyin with tone marks, e.g. 杯 (bēi). If they did not use the pattern, say so gently and show how.\n' +
+      'Set errorType to the kind of the main fix ("other" if nothing needed fixing).' +
+      getMandarinLearnerRules() + '\n\n' +
+      'Sentence: "' + sentence + '"';
+  }
   return `You are a friendly English-speaking friend helping a ${levelName} learner whose native language is ${nativeName}.\n` +
     `They are practicing the pattern "${pattern}"${meaning ? ` (${meaning})` : ''}.\n` +
     (task ? `Their task was: ${task}\n` : '') +
@@ -1699,9 +1858,7 @@ app.post('/speech-rescue', async (req, res) => {
 });
 
 // === ERROR TYPES & NATIVE-LANGUAGE RULES ===
-// Every correction is tagged so the app can bring a learner's most common error kinds back for review more often
-var ERROR_TYPES = ['article', 'tense', 'third-person-s', 'plural', 'connector', 'word-choice', 'other'];
-var ERROR_TYPE_DESCRIPTION = 'Error kind: article (a/an/the), tense (verb tense or verb form), third-person-s (he/she/it verb without -s), plural (plurals or countability), connector (linking words, e.g. sentence-initial So/And/But, a fragment starting with Because, "Although ... but"), word-choice (wrong or unnatural word or collocation), other';
+// Error types per target language live in lib/rules.js (getErrorTypes / getErrorTypeDescription)
 
 // Extra checks for learners whose native language is Mandarin; empty for everyone else
 function getNativeLanguageRules(nativeLanguage) {
@@ -1717,52 +1874,55 @@ function getNativeLanguageRules(nativeLanguage) {
 }
 
 // === CHAT SUMMARY (end of a task chat) ===
-var CHAT_SUMMARY_SCHEMA = {
-  type: 'object',
-  properties: {
-    points: {
-      type: 'array',
-      description: 'The 1-3 most useful fixes from the learner\'s own messages, most important first. Empty only if the learner made no real mistakes.',
-      items: {
+// The points[].type enum follows the target language
+function getChatSummarySchema(language) {
+  return {
+    type: 'object',
+    properties: {
+      points: {
+        type: 'array',
+        description: 'The 1-3 most useful fixes from the learner\'s own messages, most important first. Empty only if the learner made no real mistakes.',
+        items: {
+          type: 'object',
+          properties: {
+            original: { type: 'string', description: 'The learner\'s exact words that need fixing (a short excerpt of one of their messages)' },
+            hint: { type: 'string', description: 'A short nudge in the learner\'s native language that helps them fix it themselves, without giving the answer' },
+            corrected: { type: 'string', description: 'The corrected version of original, with the minimum changes' },
+            explanation: { type: 'string', description: 'One short sentence in the learner\'s native language explaining why' },
+            type: { type: 'string', enum: getErrorTypes(language), description: getErrorTypeDescription(language) }
+          },
+          required: ['original', 'hint', 'corrected', 'explanation', 'type']
+        }
+      },
+      usedPatternIds: {
+        type: 'array',
+        items: { type: 'string' },
+        description: 'Ids of the target patterns the learner actually used naturally in their own messages'
+      },
+      encouragement: { type: 'string', description: 'One warm sentence in the learner\'s native language about something specific they did well' },
+      repeatTomorrow: {
         type: 'object',
+        description: 'One of the learner\'s own sentences for them to say again tomorrow from a cue',
         properties: {
-          original: { type: 'string', description: 'The learner\'s exact words that need fixing (a short excerpt of one of their messages)' },
-          hint: { type: 'string', description: 'A short nudge in the learner\'s native language that helps them fix it themselves, without giving the answer' },
-          corrected: { type: 'string', description: 'The corrected version of original, with the minimum changes' },
-          explanation: { type: 'string', description: 'One short sentence in the learner\'s native language explaining why' },
-          type: { type: 'string', enum: ERROR_TYPES, description: ERROR_TYPE_DESCRIPTION }
+          enabled: { type: 'boolean', description: 'false only when no learner sentence is worth repeating' },
+          original: { type: 'string', description: 'The learner\'s exact sentence (or a short excerpt of it)' },
+          target: { type: 'string', description: 'original with only the necessary fixes; identical to original when it had no mistake' },
+          cue: { type: 'string', description: 'In the learner\'s native language: what to say, as a situation or meaning. Must not contain the target words' },
+          hint: { type: 'string', description: 'In the learner\'s native language: one short nudge (e.g. the tense or structure to watch). Must not give away the target' },
+          patternId: { type: 'string', description: 'Id of the target pattern this sentence uses, or empty' }
         },
-        required: ['original', 'hint', 'corrected', 'explanation', 'type']
+        required: ['enabled', 'original', 'target', 'cue', 'hint', 'patternId']
       }
     },
-    usedPatternIds: {
-      type: 'array',
-      items: { type: 'string' },
-      description: 'Ids of the target patterns the learner actually used naturally in their own messages'
-    },
-    encouragement: { type: 'string', description: 'One warm sentence in the learner\'s native language about something specific they did well' },
-    repeatTomorrow: {
-      type: 'object',
-      description: 'One of the learner\'s own sentences for them to say again tomorrow from a cue',
-      properties: {
-        enabled: { type: 'boolean', description: 'false only when no learner sentence is worth repeating' },
-        original: { type: 'string', description: 'The learner\'s exact sentence (or a short excerpt of it)' },
-        target: { type: 'string', description: 'original with only the necessary fixes; identical to original when it had no mistake' },
-        cue: { type: 'string', description: 'In the learner\'s native language: what to say, as a situation or meaning. Must not contain the target words' },
-        hint: { type: 'string', description: 'In the learner\'s native language: one short nudge (e.g. the tense or structure to watch). Must not give away the target' },
-        patternId: { type: 'string', description: 'Id of the target pattern this sentence uses, or empty' }
-      },
-      required: ['enabled', 'original', 'target', 'cue', 'hint', 'patternId']
-    }
-  },
-  required: ['points', 'usedPatternIds', 'encouragement', 'repeatTomorrow']
-};
+    required: ['points', 'usedPatternIds', 'encouragement', 'repeatTomorrow']
+  };
+}
 
 var CHAT_SUMMARY_MAX_MESSAGES = 40;
 var CHAT_SUMMARY_MAX_CHARS = 12000;
 
 // Returns an error message, or '' when the chat-summary request body is valid
-function validateChatSummaryInput(messages, patterns, level, nativeLanguage) {
+function validateChatSummaryInput(messages, patterns, level, nativeLanguage, language) {
   if (!Array.isArray(messages) || messages.length === 0 || messages.length > CHAT_SUMMARY_MAX_MESSAGES) return 'Invalid messages';
   var total = 0;
   var userLines = 0;
@@ -1784,11 +1944,12 @@ function validateChatSummaryInput(messages, patterns, level, nativeLanguage) {
     }
   }
   if (VALID_LEVELS.indexOf(level) === -1) return 'Invalid level';
+  if (!resolveLanguage(language)) return 'Invalid language';
   if (VALID_LANGUAGES.indexOf(nativeLanguage) === -1) return 'Invalid native language';
   return '';
 }
 
-function buildChatSummaryPrompt(messages, patterns, level, nativeLanguage) {
+function buildChatSummaryPrompt(messages, patterns, level, nativeLanguage, language) {
   var levelName = level === 'beginner' ? 'A1-A2' : level === 'advanced' ? 'C1' : 'B1-B2';
   var nativeName = nativeLanguage === 'zh' ? 'Traditional Chinese (Taiwan)' : nativeLanguage === 'ja' ? 'Japanese' : 'English';
   var transcript = messages.map(function(m) {
@@ -1798,6 +1959,19 @@ function buildChatSummaryPrompt(messages, patterns, level, nativeLanguage) {
     var also = Array.isArray(p.match) && p.match.length ? ' (also counts: ' + p.match.join(', ') + ')' : '';
     return '- ' + p.id + ': "' + p.pattern + '"' + also;
   }).join('\n');
+  if (language === 'zh') {
+    return 'You are a friendly friend from Taiwan helping a ' + levelName + ' learner of Taiwan Mandarin whose native language is ' + nativeName + '.\n' +
+      'They just finished a practice chat. Pick the 1-3 most useful fixes from the LEARNER\'s lines only (never the friend\'s).\n' +
+      'Judge against their level: skip tiny slips and style preferences, and do not rewrite correct, natural sentences. Prefer mistakes that would confuse a listener or that they repeated.\n' +
+      'Write "corrected" in Traditional characters only, no pinyin. Write "hint", "explanation" and "encouragement" in ' + nativeName + ', like a friend, not a teacher; when the explanation mentions a Chinese word, add its pinyin with tone marks. The hint must not contain the corrected words.\n' +
+      'Set usedPatternIds to the ids of the target patterns the learner really used in their own messages (natural variations count).\n' +
+      'Pick ONE sentence for repeatTomorrow, which the learner will say again tomorrow from a cue. If any learner sentence has a real mistake, you MUST pick one of those: the one whose mistake would most confuse a listener, or a mistake they repeated. Only when every sentence is correct, pick a useful reusable chunk. ' +
+      '"original" is the learner\'s exact words, copied character for character (only punctuation may differ). "target" is that same sentence with only the necessary fixes, in Traditional characters: never write a new or unrelated example. If the learner made no mistakes, pick a natural sentence of theirs worth getting fluent with and set target equal to original. ' +
+      'Write "cue" (what to say, as a situation or meaning) and "hint" in ' + nativeName + '; neither may contain the target sentence, in characters or in pinyin, or give it away, and the cue must not translate the target pattern phrase word for word (describe the situation and the idea instead). The hint may name the point to watch (the measure word, where 了 goes, the word order) without writing the answer. Set patternId to the target pattern it uses, or "". Set enabled to false only if the learner wrote nothing usable.' +
+      getMandarinLearnerRules() + '\n\n' +
+      'Target patterns:\n' + patternText + '\n\n' +
+      'Chat:\n' + transcript;
+  }
   return 'You are a friendly English-speaking friend helping a ' + levelName + ' learner whose native language is ' + nativeName + '.\n' +
     'They just finished a practice chat. Pick the 1-3 most useful fixes from the LEARNER\'s lines only (never the friend\'s).\n' +
     'Judge against their level: skip tiny slips and style preferences, and do not rewrite correct, natural sentences. Prefer mistakes that would confuse a listener or that they repeated.\n' +
@@ -1820,37 +1994,14 @@ var MOCK_CHAT_SUMMARY = {
   repeatTomorrow: { enabled: true, original: 'Yesterday I go to the office', target: 'Yesterday I went to the office', cue: '說說你昨天去了辦公室', hint: '注意昨天發生的事', patternId: '' }
 };
 
-var REPEAT_TOMORROW_MAX_CHARS = 300;
-
-function normalizeForCompare(text) {
-  return String(text || '').toLowerCase().replace(/[^a-z0-9' ]+/g, ' ').replace(/\s+/g, ' ').trim();
-}
-
-// Keep repeatTomorrow only when it is the learner's own sentence and the cue doesn't give the answer away
-function sanitizeRepeatTomorrow(item, messages, knownIds) {
-  var off = { enabled: false, original: '', target: '', cue: '', hint: '', patternId: '' };
-  if (!item || typeof item !== 'object' || item.enabled !== true) return off;
-  var fields = ['original', 'target', 'cue', 'hint'];
-  for (var i = 0; i < fields.length; i++) {
-    var value = item[fields[i]];
-    if (typeof value !== 'string' || value.length > REPEAT_TOMORROW_MAX_CHARS) return off;
-  }
-  var original = item.original.trim();
-  var target = item.target.trim();
-  var cue = item.cue.trim();
-  if (!original || !target || !cue) return off;
-  var learnerText = normalizeForCompare(messages.filter(function(m) { return m.role === 'user'; }).map(function(m) { return m.content; }).join(' \n '));
-  if (learnerText.indexOf(normalizeForCompare(original)) === -1) return off;
-  var normalTarget = normalizeForCompare(target);
-  if (normalTarget && (normalizeForCompare(cue).indexOf(normalTarget) !== -1 || normalizeForCompare(item.hint).indexOf(normalTarget) !== -1)) return off;
-  var patternId = typeof item.patternId === 'string' && knownIds.indexOf(item.patternId) !== -1 ? item.patternId : '';
-  return { enabled: true, original: original, target: target, cue: cue, hint: item.hint.trim(), patternId: patternId };
-}
+// normalizeForCompare / sanitizeRepeatTomorrow live in lib/rules.js
 
 // Daily practice sentence check. Needs ANTHROPIC_API_KEY; the frontend falls back to a local pattern check.
 app.post('/sentence-check', async (req, res) => {
   try {
     const { sentence, pattern, meaning = '', task = '', level = 'intermediate', nativeLanguage = 'zh', clientId, origin, authToken } = req.body;
+    // Optional target language; English when missing
+    const language = resolveLanguage(req.body.language);
 
     if (!sentence || typeof sentence !== 'string' || sentence.trim().length === 0 || sentence.length > 500) {
       return res.status(400).json({ success: false, error: 'Invalid sentence' });
@@ -1863,6 +2014,9 @@ app.post('/sentence-check', async (req, res) => {
     }
     if (!VALID_LEVELS.includes(level)) {
       return res.status(400).json({ success: false, error: 'Invalid level' });
+    }
+    if (!language) {
+      return res.status(400).json({ success: false, error: 'Invalid language' });
     }
     if (!VALID_LANGUAGES.includes(nativeLanguage)) {
       return res.status(400).json({ success: false, error: 'Invalid native language' });
@@ -1884,8 +2038,8 @@ app.post('/sentence-check', async (req, res) => {
     }
 
     const rawText = await generateJson({
-      contents: [{ role: 'user', parts: [{ text: buildSentenceCheckPrompt(sentence, pattern, meaning, task, level, nativeLanguage) }] }],
-      generationConfig: { responseSchema: SENTENCE_CHECK_SCHEMA },
+      contents: [{ role: 'user', parts: [{ text: buildSentenceCheckPrompt(sentence, pattern, meaning, task, level, nativeLanguage, language) }] }],
+      generationConfig: { responseSchema: getSentenceCheckSchema(language) },
     }, { model: CLAUDE_FEEDBACK_MODEL, effort: 'low' });
 
     res.json({ success: true, check: JSON.parse(rawText) });
@@ -1904,11 +2058,12 @@ app.post('/sentence-check', async (req, res) => {
 app.post('/chat-summary', async (req, res) => {
   try {
     const { messages, patterns = [], level = 'intermediate', nativeLanguage = 'zh', clientId, origin, authToken } = req.body;
-
-    const invalid = validateChatSummaryInput(messages, patterns, level, nativeLanguage);
+    const invalid = validateChatSummaryInput(messages, patterns, level, nativeLanguage, req.body.language);
     if (invalid) {
       return res.status(400).json({ success: false, error: invalid });
     }
+    // Optional target language; English when missing
+    const language = resolveLanguage(req.body.language);
     if (!isAllowedOrigin(origin || '')) {
       return res.status(403).json({ success: false, error: 'Unauthorized origin' });
     }
@@ -1930,15 +2085,15 @@ app.post('/chat-summary', async (req, res) => {
     }
 
     const rawText = await generateJson({
-      contents: [{ role: 'user', parts: [{ text: buildChatSummaryPrompt(messages, patterns, level, nativeLanguage) }] }],
-      generationConfig: { responseSchema: CHAT_SUMMARY_SCHEMA },
+      contents: [{ role: 'user', parts: [{ text: buildChatSummaryPrompt(messages, patterns, level, nativeLanguage, language) }] }],
+      generationConfig: { responseSchema: getChatSummarySchema(language) },
     }, { model: CLAUDE_FEEDBACK_MODEL, effort: 'low' });
 
     const summary = JSON.parse(rawText);
     const knownIds = patterns.map(p => p.id);
     summary.points = (summary.points || []).slice(0, 3);
     summary.usedPatternIds = (summary.usedPatternIds || []).filter(id => knownIds.includes(id));
-    summary.repeatTomorrow = sanitizeRepeatTomorrow(summary.repeatTomorrow, messages, knownIds);
+    summary.repeatTomorrow = sanitizeRepeatTomorrow(summary.repeatTomorrow, messages, knownIds, language);
     res.json({ success: true, summary });
   } catch (error) {
     console.error('Chat summary error:', error);
@@ -2046,7 +2201,7 @@ app.post('/diary-feedback', async (req, res) => {
               corrected: { type: 'string', description: 'Corrected version' },
               explanation: { type: 'string', description: 'Brief explanation' },
               severity: { type: 'string', description: 'minor, moderate, or major' },
-              type: { type: 'string', enum: ERROR_TYPES, description: ERROR_TYPE_DESCRIPTION }
+              type: { type: 'string', enum: getErrorTypes(language), description: getErrorTypeDescription(language) }
             },
             required: ['original', 'corrected', 'explanation', 'severity', 'type']
           }
@@ -2178,11 +2333,12 @@ function buildDiaryFeedbackPrompt(character, level, targetLanguage, nativeLangua
 - Pay attention to particle usage (は/が, に/で, etc.)
 - Note when expressions sound too textbook-like vs natural diary style`;
   } else if (targetLanguage === 'zh') {
-    languageSpecificRules = `## Language-Specific Rules (Chinese)
-- Include pinyin with tone marks for new vocabulary and corrections (e.g., xuéxí 学习)
-- Note differences between 口语 (colloquial) and 书面语 (written/formal) when relevant
-- Focus on measure words (量词) - these are commonly misused
-- Pay attention to 了/过/着 usage for aspect
+    languageSpecificRules = `## Language-Specific Rules (Taiwan Mandarin)
+- The learner is learning Taiwan Mandarin: write every Chinese word in Traditional characters with Taiwan usage, never Simplified characters or Mainland-only words (e.g. 捷運 not 地鐵, 計程車 not 出租車)
+- Include pinyin with tone marks for new vocabulary and corrections (e.g., xuéxí 學習)
+- Note differences between 口語 (colloquial) and 書面語 (written/formal) when relevant
+- Focus on measure words (量詞) - these are commonly misused
+- Pay attention to 了/過/著 usage for aspect
 - Note when sentence structure follows non-Chinese patterns`;
   } else {
     languageSpecificRules = `## Language-Specific Rules (English)
@@ -2232,7 +2388,7 @@ ${languageSpecificRules}
    - severity "major": Meaning is unclear or wrong
    - severity "moderate": Understandable but noticeably unnatural
    - severity "minor": Small issues, still sounds okay
-   - type: the error kind (article, tense, third-person-s, plural, connector, word-choice, other)
+   - type: the error kind (${getErrorTypes(targetLanguage).join(', ')})
 
 4. **betterExpressions**: Suggest 1-3 more natural alternatives for phrases that are correct but sound learner-like. Include context for when to use the upgraded version.
 
