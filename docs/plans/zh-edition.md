@@ -106,7 +106,7 @@
 
 ## 英文版會跟著變的地方（接受）
 
-英文版本來就能學中文（母語選 English 時學習語言是 zh，學習頁會載入 zh 章節，也能從學習頁開中文聊天）。以下改動會讓這條路徑也跟著變，屬於改善，接受：拼音課改繁體、多出 8 章初級中文、朗讀 zh-TW、中文聊天與批改改用新的台灣華語 prompt。
+英文版本來就能學中文（母語選 English 時學習語言是 zh，學習頁會載入 zh 章節，也能從學習頁開中文聊天）。以下改動會讓這條路徑也跟著變，屬於改善，接受（另含：學習頁開的中文聊天角色改為 Mei-ling，先前用其他角色的中文聊天紀錄從學習頁打不開；中文聊天點字取整個詞；中文目標打勾用子字串比對）：拼音課改繁體、多出 8 章初級中文、朗讀 zh-TW、中文聊天與批改改用新的台灣華語 prompt。
 
 ## 不做（第一版）
 
@@ -145,7 +145,7 @@
 
 - 單元測試：edition 設定、`TARGET_LANG`、拼音標注（含台灣讀音對照）、中文聽寫比對、每日練習載入 zh 與中文作答門檻、預設等級、錯誤類型依語言、`main.js` 導向、Capacitor 設定（不帶變數時與現在相同）。
 - 後端測試：把純函式（`normalizeForCompare`、`sanitizeRepeatTomorrow`、錯誤類型選擇、`language` 驗證）抽到新的 ESM 模組 `backend/lib/rules.js`，`server.js` import 它（`backend/package.json` 是 `type: module`，不能用 `require.main`；`server.js` 最外層有 `setInterval`，測試不能 import `server.js`）。用 `node --test backend/test/` 測（`backend/package.json` 加 `test` script）；Code.gs 同步同一份邏輯（GAS 不能 import，內容照抄並加註「與 backend/lib/rules.js 同步」）。
-- **不帶 `VITE_EDITION` 建置的 dist 與改動前比對**：檔案清單（忽略檔名 hash）與 precache 數量相同、沒有拼音 chunk。章節與每日練習 YAML 是 eager glob，新中文內容會讓英文版 JS 變大，屬預期。
+- **不帶 `VITE_EDITION` 建置的 dist 與改動前比對**：檔案清單（忽略檔名 hash）只多一個 edition 常數 chunk（約 150 bytes，precache 71→72，2026-11-15 接受）、沒有拼音 chunk、不含 `zh-Hant-TW`。章節與每日練習 YAML 是 eager glob，新中文內容會讓英文版 JS 變大，屬預期。
 - 章節檢查腳本跑過所有 zh 章節。
 - Playwright 冒煙測試中文版主要流程（含確認 `/sentence-check`、`/chat-summary` 送出 `language: 'zh'`）；320／390 寬度巡檢中文版各畫面。
 - 後端實打：中文的對話、訊息批改、句子檢查、小結各一次，確認回繁體、錯誤類型在中文清單內；英文版同樣各打一次確認沒變。
