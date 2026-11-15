@@ -172,6 +172,13 @@ html:lang(zh) body, html:lang(zh-TW) body, html:lang(zh-Hant) body {
   line-height: 1.7;
 }
 
+/* Chinese content marked with lang inside an English page (Chinese edition): roomier
+   lines, no tracking; no font-size, so Tailwind text-* sizes still apply */
+:not(html)[lang|="zh"] {
+  line-height: 1.7;
+  letter-spacing: 0;
+}
+
 h1, h2, h3, [data-heading] {
   font-feature-settings: "palt" 1;
   letter-spacing: 0;

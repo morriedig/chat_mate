@@ -1,7 +1,10 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { mount } from '@vue/test-utils'
 import ChatMessage from '../../components/chat/ChatMessage.vue'
 import { CONNECTOR_TARGETS } from '../../data/opinionChat'
+
+// English edition, also when the suite runs with VITE_EDITION=zh
+vi.mock('../../edition', () => import('../helpers/englishEdition'))
 
 // Mock vue-i18n
 vi.mock('vue-i18n', () => ({
@@ -188,6 +191,38 @@ describe('ChatMessage', () => {
         highlightTargets: CONNECTOR_TARGETS
       })
       expect(wrapper.findAll('.connector-mark')).toHaveLength(0)
+    })
+  })
+
+  describe('Chinese', () => {
+    // Tap at a character offset inside the friend's reply
+    function tapAt(wrapper, offset) {
+      const p = wrapper.find('.clickable-words')
+      const textNode = p.element.firstChild
+      document.caretRangeFromPoint = vi.fn(() => ({ startContainer: textNode, startOffset: offset }))
+      return p.trigger('click', { clientX: 10, clientY: 10 })
+    }
+
+    afterEach(() => {
+      delete document.caretRangeFromPoint
+    })
+
+    it('picks the whole word in a Chinese chat', async () => {
+      const wrapper = createWrapper({ message: { role: 'assistant', content: '我想喝珍珠奶茶' }, language: 'zh' })
+      await tapAt(wrapper, 4)
+      expect(wrapper.emitted('word-tap')[0][0].word).toBe('珍珠')
+    })
+
+    it('still picks one character in a Japanese chat', async () => {
+      const wrapper = createWrapper({ message: { role: 'assistant', content: '日本語を勉強します' }, language: 'ja' })
+      await tapAt(wrapper, 0)
+      expect(wrapper.emitted('word-tap')[0][0].word).toBe('日')
+    })
+
+    it('adds no lang attribute in the English edition', () => {
+      const wrapper = createWrapper({ message: { role: 'assistant', content: '你好' }, language: 'zh', showPinyin: true })
+      expect(wrapper.find('[lang]').exists()).toBe(false)
+      expect(wrapper.find('.message-pinyin').exists()).toBe(false)
     })
   })
 })

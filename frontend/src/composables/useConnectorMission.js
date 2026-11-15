@@ -95,10 +95,31 @@ export function createMission({ chapterId, title, connectors, targetIds }) {
  */
 export function getUsedTargetIds(mission, messages) {
   if (!mission) return []
+  const chinese = (mission.connectors || []).filter(isChineseTarget)
   const used = new Set()
   for (const msg of messages) {
     if (msg.role !== 'user') continue
     detectConnectors(msg.content, mission.connectors).forEach(id => used.add(id))
+    chineseUsedIds(msg.content, chinese).forEach(id => used.add(id))
   }
   return mission.targets.map(t => t.id).filter(id => used.has(id))
+}
+
+const HAN = /\p{Script=Han}/u
+const phrasesOf = target => target.phrases || (target.phrase ? [target.phrase] : [])
+const isChineseTarget = target => phrasesOf(target).some(p => HAN.test(p))
+
+/**
+ * Chinese has no spaces between words, so detectConnectors' word-boundary match
+ * never fires inside a sentence: a Chinese target counts when every part of one
+ * of its phrases (split at "……" or other punctuation) appears in the text.
+ */
+function chineseUsedIds(text, targets) {
+  const src = String(text || '')
+  return targets
+    .filter(t => phrasesOf(t).some(phrase => {
+      const parts = String(phrase).split(/[^\p{Script=Han}A-Za-z0-9]+/u).filter(Boolean)
+      return parts.length > 0 && parts.every(part => src.includes(part))
+    }))
+    .map(t => t.id)
 }

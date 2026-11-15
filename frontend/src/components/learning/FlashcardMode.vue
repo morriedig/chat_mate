@@ -168,6 +168,7 @@ watch(() => props.words, (newWords) => initCards(newWords), { immediate: true })
           </span>
           <span v-if="currentWord?.reading" class="mt-1 text-body text-accent">{{ currentWord.reading }}</span>
           <span v-if="currentWord?.phonetic" class="mt-1 text-caption text-ink-muted">{{ currentWord.phonetic }}</span>
+          <span v-if="currentWord?.pinyin" class="mt-1 text-body text-accent">{{ currentWord.pinyin }}</span>
 
           <button
             type="button"

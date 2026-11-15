@@ -81,3 +81,25 @@ describe('connector mission', () => {
     ])
   })
 })
+
+describe('connector mission: Chinese targets', () => {
+  const connectors = [
+    { id: 'ask', phrase: '請問' },
+    { id: 'when', phrase: '……的時候' },
+    { id: 'because', phrase: '因為' },
+  ]
+  const mission = createMission({ chapterId: 'zh-test', title: 'Test', connectors, targetIds: ['ask', 'when', 'because'] })
+
+  it('counts a Chinese phrase found anywhere in the sentence', () => {
+    const messages = [{ role: 'user', content: '請問這個多少錢？' }]
+    expect(getUsedTargetIds(mission, messages)).toEqual(['ask'])
+  })
+
+  it('needs every part of a phrase split by an ellipsis, and skips AI turns', () => {
+    const messages = [
+      { role: 'assistant', content: '因為下雨，所以我們在家。' },
+      { role: 'user', content: '我小的時候住在台中。' },
+    ]
+    expect(getUsedTargetIds(mission, messages)).toEqual(['when'])
+  })
+})

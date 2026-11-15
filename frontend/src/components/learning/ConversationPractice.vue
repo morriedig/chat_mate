@@ -265,6 +265,7 @@ function getRoleLabel(role) {
             <p v-else class="break-words text-body text-ink">
               {{ message.text }}
             </p>
+            <p v-if="message.pinyin" class="mt-0.5 break-words text-caption text-ink-muted">{{ message.pinyin }}</p>
 
             <!-- Native translation (bilingual mode) -->
             <p

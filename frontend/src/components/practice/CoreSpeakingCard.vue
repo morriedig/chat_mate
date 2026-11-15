@@ -4,7 +4,8 @@ import { useI18n } from 'vue-i18n'
 import { listenOnce, stopListening, isSTTAvailable } from '../../utils/stt'
 import { playTTS } from '../../utils/tts'
 import { usesPattern } from '../../composables/useSentenceCheck'
-import { countEnglishWords } from '../../composables/useDailyPractice'
+import { countAnswerUnits } from '../../composables/useDailyPractice'
+import { TARGET_LANG } from '../../edition'
 import PracticeCard from './PracticeCard.vue'
 import CmButton from '../ui/CmButton.vue'
 import CmIconButton from '../ui/CmIconButton.vue'
@@ -35,14 +36,15 @@ const sourceLabel = computed(() => {
 })
 // A sentence to repeat shows only the cue and hint; a pattern prompt also shows the skeleton
 const showPattern = computed(() => !isQueueSentence.value && !!props.prompt.pattern)
-const typedWords = computed(() => countEnglishWords(typed.value))
+// English words, or Chinese characters in the Chinese edition
+const typedWords = computed(() => countAnswerUnits(typed.value))
 
 async function speakNow() {
   micMessage.value = ''
   interim.value = ''
   listening.value = true
   try {
-    const text = await listenOnce({ language: 'en', onInterim: s => { interim.value = s } })
+    const text = await listenOnce({ language: TARGET_LANG, onInterim: s => { interim.value = s } })
     if (text) {
       emit('submit', { mode: 'voice', text })
     } else {
@@ -135,7 +137,7 @@ onBeforeUnmount(() => {
               <p class="text-meta font-medium text-success">{{ t('dailyPractice.speak.sayItLike') }}</p>
               <p class="mt-1 text-body text-ink break-words">{{ prompt.target }}</p>
             </div>
-            <CmIconButton icon="volume_up" :label="t('dailyPractice.listen')" class="-mr-2" @click="playTTS(prompt.target, 'en', 'normal')" />
+            <CmIconButton icon="volume_up" :label="t('dailyPractice.listen')" class="-mr-2" @click="playTTS(prompt.target, TARGET_LANG, 'normal')" />
           </div>
         </div>
 

@@ -6,14 +6,21 @@ import { shuffleArray } from '../../utils/shuffle'
 import { diffWords } from '../../utils/wordDiff'
 import PracticeCard from './PracticeCard.vue'
 import CmButton from '../ui/CmButton.vue'
+import { IS_ZH, TARGET_LANG } from '../../edition'
+import { targetField, translationField } from '../../composables/useDailyPractice'
 
 const { t } = useI18n()
 
 const props = defineProps({
-  // { id, mode: 'choose' | 'dictation', en, zh, options? }
+  // { id, mode: 'choose' | 'dictation', en, zh, options? }; the Chinese edition has zh (sentence), en, pinyin
   item: { type: Object, required: true },
 })
 const emit = defineEmits(['done'])
+
+const tf = targetField()
+const xf = translationField()
+const targetLangAttr = IS_ZH ? 'zh-Hant-TW' : undefined
+const sentence = computed(() => props.item[tf])
 
 const picked = ref(null)
 const typed = ref('')
@@ -21,7 +28,7 @@ const checked = ref(false)
 const options = ref([])
 
 function play(speed = 'normal') {
-  playTTS(props.item.en, 'en', speed)
+  playTTS(sentence.value, TARGET_LANG, speed)
 }
 
 watch(() => props.item.id, () => {
@@ -32,9 +39,9 @@ watch(() => props.item.id, () => {
   play()
 }, { immediate: true })
 
-const diff = computed(() => diffWords(typed.value, props.item.en))
+const diff = computed(() => diffWords(typed.value, sentence.value))
 const answered = computed(() => props.item.mode === 'choose' ? picked.value !== null : checked.value)
-const correct = computed(() => props.item.mode === 'choose' ? picked.value === props.item.en : diff.value.matches)
+const correct = computed(() => props.item.mode === 'choose' ? picked.value === sentence.value : diff.value.matches)
 
 function finish() {
   emit('done', { correct: correct.value, confidence: correct.value ? 4 : 2 })
@@ -42,7 +49,7 @@ function finish() {
 
 function optionState(option) {
   if (picked.value === null) return 'idle'
-  if (option === props.item.en) return 'right'
+  if (option === sentence.value) return 'right'
   return option === picked.value ? 'wrong' : 'other'
 }
 
@@ -87,7 +94,7 @@ onBeforeUnmount(stopTTS)
           :class="{ idle: 'text-ink-muted', right: 'text-success', wrong: 'text-error', other: 'text-ink-muted' }[optionState(option)]"
           aria-hidden="true"
         >{{ { right: 'check_circle', wrong: 'cancel' }[optionState(option)] || 'radio_button_unchecked' }}</span>
-        <span class="min-w-0 flex-1">{{ option }}</span>
+        <span class="min-w-0 flex-1" :lang="targetLangAttr">{{ option }}</span>
       </button>
     </div>
 
@@ -110,11 +117,12 @@ onBeforeUnmount(stopTTS)
         <span class="material-symbols-outlined !text-[18px]" :class="correct ? '' : 'text-error'" aria-hidden="true">{{ correct ? 'check_circle' : 'cancel' }}</span>
         {{ correct ? t('listening.correct') : t('listening.answerWas') }}
       </p>
-      <p class="text-body text-ink break-words">
-        <template v-if="item.mode === 'dictation'"><template v-for="(part, i) in diff.parts" :key="i"><span :class="part.same ? '' : 'rounded-[4px] bg-error-soft px-0.5 font-medium text-error underline decoration-1 underline-offset-4'">{{ part.text }}</span>{{ ' ' }}</template></template>
-        <template v-else>{{ item.en }}</template>
+      <p class="text-body text-ink break-words" :lang="targetLangAttr">
+        <template v-if="item.mode === 'dictation'"><template v-for="(part, i) in diff.parts" :key="i"><span :class="part.same ? '' : 'rounded-[4px] bg-error-soft px-0.5 font-medium text-error underline decoration-1 underline-offset-4'">{{ part.text }}</span>{{ part.space ? ' ' : '' }}</template></template>
+        <template v-else>{{ sentence }}</template>
       </p>
-      <p v-if="item.zh" class="text-caption text-ink-secondary break-words">{{ item.zh }}</p>
+      <p v-if="IS_ZH && item.pinyin" class="text-caption text-ink-muted break-words">{{ item.pinyin }}</p>
+      <p v-if="item[xf]" class="text-caption text-ink-secondary break-words">{{ item[xf] }}</p>
       <p v-if="item.mode === 'dictation' && !correct" class="text-meta text-ink-muted">{{ t('listening.missedWords') }}</p>
     </div>
 
