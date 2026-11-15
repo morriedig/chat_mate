@@ -17,8 +17,8 @@
 
 ## 做法總則
 
-- 版本設定集中在新 `src/edition.js`，由建置參數 `VITE_EDITION`（`en` 預設／`zh`）決定。所有分支都用 `import.meta.env.VITE_EDITION === 'zh'` 這種**建置時就決定**的條件，英文版建置時中文專屬程式（含拼音套件）會被整段刪掉。
-- 「學習語言」不再寫死 `'en'`：新增 `targetLang()`（英文版 en、中文版 zh），**只替換目前寫死 `'en'` 的地方**（朗讀、辨識、聽寫比對、例句欄位、API 請求）；`LearningScreen`、`ChatScreen` 已經用使用者選的語言，維持原樣（英文版學中文時仍是 zh）。
+- 版本設定集中在新 `src/edition.js`，由建置參數 `VITE_EDITION`（`en` 預設／`zh`）決定。所有分支都用 `edition.js` 匯出的常數（`IS_ZH` 等，**建置時就決定**），英文版建置時中文專屬程式（含拼音套件）會被整段刪掉。
+- 「學習語言」不再寫死 `'en'`：新增常數 `TARGET_LANG`（英文版 en、中文版 zh），**只替換目前寫死 `'en'` 的地方**（朗讀、辨識、聽寫比對、例句欄位、API 請求）；`LearningScreen`、`ChatScreen` 已經用使用者選的語言，維持原樣（英文版學中文時仍是 zh）。
 - 版本判斷集中在 `edition.js`，各處只 import 它匯出的常數（不直接寫 `import.meta.env`）；單元測試 mock `edition.js` 測中文分支，另外 CI 外再跑一次 `VITE_EDITION=zh vitest run` 確認建置常數下也綠。
 
 ## 做完的樣子（第一版 MVP）
@@ -34,11 +34,11 @@
 ### 2. 首頁與每個入口（中文版）
 | 入口 | 中文版 | 備註 |
 |---|---|---|
-| 任務對話 | 保留 | 語言改 `targetLang()`；角色取支援 zh 的角色；`usePatternTask.js` 另寫一組初級中文情境題（點餐、問路、買東西等） |
+| 任務對話 | 保留 | 語言改 `TARGET_LANG`；角色取支援 zh 的角色；`usePatternTask.js` 另寫一組初級中文情境題（點餐、問路、買東西等） |
 | 每日練習 | 保留 | 見第 3 項 |
 | 學習章節 | 保留 | 只顯示 zh 的入門＋初級 |
-| 自由聊天 | 保留 | `SetupScreen` 的 `CHAT_LANGUAGE` 改 `targetLang()`；`useNavState` 預設語言改 `targetLang()` |
-| 語音模式 | 保留 | 辨識與朗讀語言跟著 `targetLang()` |
+| 自由聊天 | 保留 | `SetupScreen` 的 `CHAT_LANGUAGE` 改 `TARGET_LANG`；`useNavState` 預設語言改 `TARGET_LANG` |
+| 語音模式 | 保留 | 辨識與朗讀語言跟著 `TARGET_LANG` |
 | 角色扮演情境 | 隱藏 | 情境內容是英文 |
 | 觀點聊天、今日觀點 | 隱藏 | 英文連接詞練習 |
 | 日記 | 隱藏 | 初級寫日記太難，第二版再開 |
@@ -59,13 +59,13 @@
 
 ### 3. 每日練習改成依語言
 - 等級：`useDailyPractice` 的 `defaultLevel()`、`LEVELS`，`useTaskChatLauncher` 的預設等級，都從 edition 取（中文版只有 beginner）。
-- 載入：`getDailyPatterns`／`getDailyVocab` 帶 `targetLang()`（含 `DailyPracticeScreen.vue:119` 單字測驗干擾選項）。
+- 載入：`getDailyPatterns`／`getDailyVocab` 帶 `TARGET_LANG`（含 `DailyPracticeScreen.vue:119` 單字測驗干擾選項）。
 - 中文 `patterns.yml` 欄位與英文版相同（`choice`、`examples`、`match`、`task`、`mistake.wrong/right/why`），檢查腳本一併檢查。
-- 例句欄位**由版本決定，不接母語**：英文版學習語言 `en`、翻譯 `zh`（與現在相同）；中文版學習語言 `zh`、翻譯 `en`、另有 `pinyin`。新增 `targetField()`／`translationField()`。要改的地方：`useDailyPractice.js` 的 `buildListening`（目前只收有 `ex.en` 的例句，產出的 `en`／`zh` 欄位）、`DailyPracticeScreen.vue` 第 430、438、441、442、566、569、570 行、`ListeningCard.vue` 第 117 行。
+- 例句欄位**由版本決定，不接母語**：英文版學習語言 `en`、翻譯 `zh`（與現在相同）；中文版學習語言 `zh`、翻譯 `en`、另有 `pinyin`。新增 `TARGET_LANG`／`TRANSLATION_LANG`。要改的地方：`useDailyPractice.js` 的 `buildListening`（目前只收有 `ex.en` 的例句，產出的 `en`／`zh` 欄位）、`DailyPracticeScreen.vue` 第 430、438、441、442、566、569、570 行、`ListeningCard.vue` 第 117 行。
 - 拼音顯示：中文版在句型卡、單字卡、聽力題答案的學習語言那行下方顯示 `pinyin`。
-- 朗讀：`DailyPracticeScreen.vue`（`speak()`）、`ListeningCard.vue`、`BankWordCard.vue`、`MistakeCard.vue`、`CoreSpeakingCard.vue` 的固定 `'en'` 改 `targetLang()`。
+- 朗讀：`DailyPracticeScreen.vue`（`speak()`）、`ListeningCard.vue`、`BankWordCard.vue`、`MistakeCard.vue`、`CoreSpeakingCard.vue` 的固定 `'en'` 改 `TARGET_LANG`。
 - 聽寫比對：`utils/wordDiff.js` 對中文改以「字」為單位比對、忽略標點（目前中文整句會被清成空字串，`diffWords('隨便打', '我要一杯珍奶').matches === true`，2026-11-14 實測）。`ListeningCard.vue` 讀 `item.en` 的地方改讀學習語言欄位。
-- 第 3 步打字門檻：中文至少 2 個漢字（`useDailyPractice` 的 `isValidCoreAnswer` 與 `CoreSpeakingCard.vue:38` 的按鈕門檻都改）。`CoreSpeakingCard` 的辨識語言用 `targetLang()`。
+- 第 3 步打字門檻：中文至少 2 個漢字（`useDailyPractice` 的 `isValidCoreAnswer` 與 `CoreSpeakingCard.vue:38` 的按鈕門檻都改）。`CoreSpeakingCard` 的辨識語言用 `TARGET_LANG`。
 
 ### 4. 內容
 - 入門：三章拼音課改繁體、台灣讀音。
@@ -141,7 +141,7 @@
 
 ## 驗證
 
-- 單元測試：edition 設定、`targetLang()`、拼音標注（含台灣讀音對照）、中文聽寫比對、每日練習載入 zh 與中文作答門檻、預設等級、錯誤類型依語言、`main.js` 導向、Capacitor 設定（不帶變數時與現在相同）。
+- 單元測試：edition 設定、`TARGET_LANG`、拼音標注（含台灣讀音對照）、中文聽寫比對、每日練習載入 zh 與中文作答門檻、預設等級、錯誤類型依語言、`main.js` 導向、Capacitor 設定（不帶變數時與現在相同）。
 - 後端測試：把純函式（`normalizeForCompare`、`sanitizeRepeatTomorrow`、錯誤類型選擇、`language` 驗證）抽到新的 ESM 模組 `backend/lib/rules.js`，`server.js` import 它（`backend/package.json` 是 `type: module`，不能用 `require.main`；`server.js` 最外層有 `setInterval`，測試不能 import `server.js`）。用 `node --test backend/test/` 測（`backend/package.json` 加 `test` script）；Code.gs 同步同一份邏輯（GAS 不能 import，內容照抄並加註「與 backend/lib/rules.js 同步」）。
 - **不帶 `VITE_EDITION` 建置的 dist 與改動前比對**：檔案清單（忽略檔名 hash）與 precache 數量相同、沒有拼音 chunk。章節與每日練習 YAML 是 eager glob，新中文內容會讓英文版 JS 變大，屬預期。
 - 章節檢查腳本跑過所有 zh 章節。
@@ -187,7 +187,7 @@
   - 後端測試改為抽出 `backend/lib/rules.js`（ESM，不能用 `require.main`；`server.js` 有最外層 `setInterval`）。
   - 學習頁中文聊天的目標打勾改用子字串比對。
   - 補兩個連到隱藏頁的按鈕（每日練習完成畫面、聊天題目卡）。
-  - 另採納：自由聊天角色過濾與 `VALID_CHARACTERS`、中文排版規則套到元素、字級轉換與字數測試、中文分支的測試跑法、`dist-zh/` 輸出、`transformIndexHtml`、`targetLang()` 只換寫死的地方、介面固定 en、著陸頁不放 sw.js、dist 比對忽略 hash。
+  - 另採納：自由聊天角色過濾與 `VALID_CHARACTERS`、中文排版規則套到元素、字級轉換與字數測試、中文分支的測試跑法、`dist-zh/` 輸出、`transformIndexHtml`、`TARGET_LANG` 只換寫死的地方、介面固定 en、著陸頁不放 sw.js、dist 比對忽略 hash。
 - 第 5 輪（1 個 critical）：
   - `useMistakes` 的 `normalizeSentence` 保留漢字（否則中文錯題全部被丟掉），中文 `/feedback` 沿用引號格式。
   - 另採納：單字干擾選項帶語言、中文 YAML 欄位對齊、`[lang|=zh]` 不設字級、`publicDir` 分開、`ios-zh/` 由複製產生並檢查 bundle ID、部署帶齊環境變數、版本常數集中在 `edition.js`、章節對話拼音、今日路線剩 2 步、polyglot 成就、後端 test script。
