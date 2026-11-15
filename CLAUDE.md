@@ -153,7 +153,7 @@ chat_mate/
 │   │   │   └── useShareCard.js         # Social media card generation (html2canvas)
 │   │   │
 │   │   ├── data/
-│   │   │   ├── characters.js           # 7 AI characters (Emma, Marcus, Sophia, James, Yuki; Taiwan: Meiling, Zhiwei)
+│   │   │   ├── characters.js           # 7 AI characters (Emma, Marcus, Sophia, James, Yuki; Taiwan: Mei-ling, Chih-wei — ids meiling, zhiwei)
 │   │   │   ├── articles.js             # Reading articles by level with [[word]] markers
 │   │   │   ├── vocabulary.js           # Legacy vocabulary data
 │   │   │   ├── chapterLoader.js        # YAML loader via import.meta.glob + js-yaml
@@ -270,7 +270,7 @@ Router uses **hash mode** (`/#/chat`) for GitHub Pages compatibility.
 
 One codebase builds two apps, chosen at build time with `VITE_EDITION`:
 - unset / `en`: Chat Mate, English for Mandarin speakers
-- `zh`: Chat Mate 華語, Taiwan Mandarin (Traditional) for English speakers: one level (beginner), Mei-ling and Zhiwei only, diary / articles / role-play / opinion / retell / placement test hidden
+- `zh`: Chat Mate 華語, Taiwan Mandarin (Traditional) for English speakers: one level (beginner), Mei-ling and Chih-wei only (ids meiling, zhiwei); features listed in `HIDDEN_IN_ZH` in edition.js are hidden
 
 Read the edition only through `frontend/src/edition.js` (`IS_ZH`, `TARGET_LANG`, `TARGET_LANG_TAG`, `LEVELS`, `isFeatureEnabled`...); never `import.meta.env.VITE_EDITION` elsewhere. `frontend/editionBuild.js` holds the build-side settings (base path, `public-zh/`, `dist-zh/`, app name). zh UI strings override English in `src/i18n/locales/zh-edition.en.json`. Tests mock the edition with `src/__tests__/helpers/editions.js`. Plan: `docs/plans/zh-edition.md`.
 
@@ -404,4 +404,4 @@ When modifying backend logic, remember to sync changes between:
 - `backend/Code.gs` (Google Apps Script)
 
 Both files contain the same prompt logic and should stay in sync.
-Shared rules live in `backend/lib/rules.js`; Code.gs carries a word-for-word copy between the `// === SHARED RULES ...` markers. Edit rules.js first, copy it over, then run `cd backend && npm test`.
+Shared rules live in `backend/lib/rules.js`; Code.gs carries a word-for-word copy between the `// === SHARED RULES ...` markers. Edit rules.js first, copy it over, then run `cd backend && npm test`. The Taiwan Mandarin prompts sit between `// === TAIWAN MANDARIN PROMPTS ...` markers and must be identical in server.js and Code.gs (the same test checks it). Run the frontend tests for both editions: `npx vitest run` and `VITE_EDITION=zh npx vitest run`.
