@@ -31,9 +31,9 @@
 - [x] 後端部署 @24→@25（2026-11-15），正式環境實打：美玲／志偉中文招呼繁體台灣口語、Emma 英文照常、中文句子檢查回 measure-word
 - [x] 前端合併 master 上線（b981f8c）：/chat_mate/zh/、/chat_mate/zh/app/ 200；正式網址實測中文版跟美玲聊天、英文版首頁正常
 - [x] 修 token 頻率限制：原本全站每分鐘只發 1 個 token（以網域計，所有使用者共用），改成每個 clientId 10 秒 1 個＋全體每 10 分鐘 300 個；tester 全過、角度 1、3 APPROVE；後端 @26、前端 212bf4f 上線；正式環境實測三個 client 連續拿到 token、同 client 10 秒內被擋、聊天第一次就成功
-- [ ] E iOS：capacitor.config.ts＋typescript、ios-zh/、註冊 bundle ID
+- [x] E iOS：capacitor.config.ts（CHATMATE_EDITION，未帶時等於舊 JSON）＋typescript、frontend/ios-zh/、bundle ID com.morrie.chatmate.zh 已用 API 註冊；兩個專案 xcodebuild 成功；角度 2 APPROVE；合併 master
 - [x] 圖示：Codex 畫（Noto Sans TC Bold，OFL），已傳給使用者
-- [ ] 使用者核可圖示
+- [x] 使用者核可圖示（2026-11-15「沒問題」）
 - [ ] 使用者：App Store Connect 建「Chat Mate 華語」記錄
 - [ ] TestFlight
 
