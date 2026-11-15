@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>支援 – Chat Mate</title>
+    <meta name="description" content="Chat Mate 常見問題與聯絡方式。" />
+    <meta name="theme-color" content="#2badee" />
+    <link rel="icon" href="app/icons/icon-192x192.png" />
+    <link rel="apple-touch-icon" href="app/icons/apple-touch-icon.png" />
+    <style>
+      :root {
+        --bg: #f6f8f9;
+        --surface: #ffffff;
+        --text: #0d171b;
+        --muted: #4c6b7a;
+        --primary: #2badee;
+        --link: #0b7bb3;
+        --border: #e2eaee;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #101c22;
+          --surface: #17252d;
+          --text: #eef4f7;
+          --muted: #9db3bf;
+          --link: #6cc7f3;
+          --border: #24363f;
+        }
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Noto Sans TC", "Segoe UI", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.7;
+        overflow-wrap: anywhere;
+      }
+      main { max-width: 640px; margin: 0 auto; padding: 40px 16px calc(48px + env(safe-area-inset-bottom)); }
+      .back { display: inline-block; margin-bottom: 20px; color: var(--link); text-decoration: none; font-size: 15px; }
+      h1 { font-size: 28px; margin: 0; letter-spacing: -0.01em; line-height: 1.3; }
+      .lead { color: var(--muted); margin: 8px 0 24px; font-size: 16px; }
+      h2.group { font-size: 15px; color: var(--muted); font-weight: 600; margin: 28px 0 10px; }
+      section { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 16px 18px; margin-bottom: 12px; }
+      h3 { font-size: 17px; margin: 0 0 6px; line-height: 1.4; }
+      p { margin: 0 0 8px; }
+      p:last-child, ol:last-child, ul:last-child { margin-bottom: 0; }
+      ol, ul { margin: 0 0 8px; padding-left: 1.3em; }
+      li { margin-bottom: 4px; }
+      a { color: var(--link); }
+      .contact { text-align: center; }
+      .contact a { font-weight: 600; font-size: 17px; }
+      footer { text-align: center; color: var(--muted); font-size: 14px; margin-top: 32px; }
+      footer a { color: var(--muted); }
+    </style>
+  </head>
+  <body>
+    <main>
+      <a class="back" href="./">← Chat Mate</a>
+      <h1>支援</h1>
+      <p class="lead">Chat Mate 讓你和 AI 朋友用英文聊天，把會的英文變成說得出口的英文。每天有 3 分鐘的練習、用句型完成的任務對話，聊完還有朋友語氣的小結。不用註冊或登入，學習資料都存在你的裝置上。</p>
+
+      <h2 class="group">常見問題</h2>
+
+      <section>
+        <h3>麥克風或語音輸入不能用？</h3>
+        <p>語音輸入需要「麥克風」和「語音辨識」兩個權限。第一次按麥克風時 iPhone 會詢問；如果之前按了不允許，可以到 iPhone 的「設定 → Chat Mate」把「麥克風」和「語音辨識」打開，再回到 App。</p>
+        <p>不想用語音也沒關係，所有練習都可以改用打字。語音辨識使用 Apple 的服務，詳見<a href="privacy.html">隱私權政策</a>。</p>
+      </section>
+
+      <section>
+        <h3>怎麼備份和還原？</h3>
+        <ol>
+          <li>到「設定 → 備份所有資料」，iPhone 會跳出分享選單。</li>
+          <li>選「儲存到檔案」，再選 iCloud Drive 或其他你想放的位置。</li>
+          <li>換手機或重新安裝後，到「設定 → 從檔案還原」選這個檔案。還原前會先列出會新增、覆蓋、移除幾筆資料。</li>
+        </ol>
+        <p>還原會完整取代這台裝置上的資料。備份檔沒有加密，裡面有聊天和日記，請妥善保管。我們收不到你的備份檔，所以 App 刪除後如果沒有備份，資料無法找回。</p>
+      </section>
+
+      <section>
+        <h3>為什麼出現「今天的 AI 用量用完了」？</h3>
+        <p>為了讓每個人都能穩定使用，每台裝置每天可以使用 AI 約 150 次（聊天的每次回覆、句子批改、聊天小結都算一次），每天台灣時間午夜重新計算。用完之後，單字、字卡、測驗這些不需要 AI 的練習還是可以照常做。</p>
+      </section>
+
+      <section>
+        <h3>我的聊天內容會被保存嗎？</h3>
+        <p>聊天紀錄只存在你的裝置上。你送出的內容會經過我們的伺服器轉給 AI 產生回覆，伺服器不保存。詳見<a href="privacy.html">隱私權政策</a>。</p>
+      </section>
+
+      <section>
+        <h3>怎麼刪除所有資料？</h3>
+        <p>到「設定 → 清除所有紀錄」，或直接刪除 App。刪除後無法復原，需要的話先備份。</p>
+      </section>
+
+      <h2 class="group">聯絡我們</h2>
+      <section class="contact">
+        <p>有問題、建議，或想請我們刪除資料，請寫信給我們：</p>
+        <p><a href="mailto:{{SUPPORT_EMAIL}}">{{SUPPORT_EMAIL}}</a></p>
+      </section>
+
+      <footer><a href="./">首頁</a> · <a href="privacy.html">隱私權政策</a></footer>
+    </main>
+  </body>
+</html>
