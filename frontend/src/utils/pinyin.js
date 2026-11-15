@@ -23,7 +23,13 @@ import { IS_ZH } from '../edition'
 export const CUSTOM_PINYIN = {
   长得: 'zhǎng de', // 長得很高 (pinyin-pro: cháng dé)
   垃圾: 'lè sè', // Taiwan reading
+  嗨: 'hāi', // pinyin-pro: hēi
 }
+
+// Verbs often followed by the complement particle 得 (说得很好, 吃得很饱), which pinyin-pro
+// reads dé; after these 得 is the neutral de. Simplified, since that is what pinyin-pro sees.
+// 得到 on its own (dé dào) and 我得走 (děi) have no listed verb before 得, so they are untouched.
+const DE_VERBS = new Set(Array.from('过说做吃睡写跑唱玩学讲走来住念画跳打穿弹考卖变长觉记显懂听看笑哭开'))
 
 /**
  * Build an annotator from a Traditional → Simplified converter and pinyin-pro's
@@ -37,7 +43,11 @@ export function createAnnotator(toSimplified, pinyinFn) {
     // Character-level conversion keeps the length; if it ever doesn't, read the original
     const source = converted.length === original.length ? converted : original
     const readings = pinyinFn(source.join(''), { type: 'all' })
-    return original.map((char, i) => ({ char, pinyin: readings[i]?.isZh ? readings[i].pinyin : '' }))
+    return original.map((char, i) => {
+      if (!readings[i]?.isZh) return { char, pinyin: '' }
+      const deAfterVerb = source[i] === '得' && DE_VERBS.has(source[i - 1])
+      return { char, pinyin: deAfterVerb ? 'de' : readings[i].pinyin }
+    })
   }
 }
 

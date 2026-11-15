@@ -156,6 +156,18 @@ describe('pinyin (Chinese edition)', () => {
     expect(await toPinyin().then(a => a('倒垃圾'))).toBe('dǎo lè sè')
   })
 
+  it('reads 嗨 as hāi', async () => {
+    expect(await toPinyin().then(a => a('嗨！'))).toBe('hāi！')
+  })
+
+  it('reads the complement 得 after a verb as neutral de, and leaves 得到 alone', async () => {
+    const annotate = await toPinyin()
+    expect(annotate('你今天過得怎麼樣？')).toBe('nǐ jīn tiān guò de zěn me yàng？')
+    expect(annotate('他說得很好')).toBe('tā shuō de hěn hǎo')
+    expect(annotate('我看得到')).toBe('wǒ kàn de dào')
+    expect(annotate('我得到一個禮物')).toMatch(/^wǒ dé dào/)
+  })
+
   it('leaves 東西南北 alone', async () => {
     expect(await toPinyin().then(a => a('東西南北'))).toBe('dōng xī nán běi')
   })
