@@ -34,8 +34,9 @@
 - [x] E iOS：capacitor.config.ts（CHATMATE_EDITION，未帶時等於舊 JSON）＋typescript、frontend/ios-zh/、bundle ID com.morrie.chatmate.zh 已用 API 註冊；兩個專案 xcodebuild 成功；角度 2 APPROVE；合併 master
 - [x] 圖示：Codex 畫（Noto Sans TC Bold，OFL），已傳給使用者
 - [x] 使用者核可圖示（2026-11-15「沒問題」）
-- [ ] 使用者：App Store Connect 建「Chat Mate 華語」記錄
-- [ ] TestFlight
+- [x] App Store Connect 記錄「Chat Mate 華語」（2026-11-16，使用者在網頁按建立）
+- [x] TestFlight：Build 1（1.0）上傳、VALID；App Store 描述檔「Chat Mate Mandarin App Store」以 API 建立（手動簽章，同英文版）；內部群組「Me」可看全部 build，使用者已加入
+- [ ] 使用者實機測試中文版
 
 ## 之後再做（審查 suggestion）
 - 中文目標打勾：「一……就……」切成「一」「就」，含「一」就會打勾
