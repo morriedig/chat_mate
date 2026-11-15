@@ -157,19 +157,50 @@ function checkDailyLimit(clientId) {
 }
 
 // === TOKEN RATE LIMITING ===
-const TOKEN_RATE_LIMIT_MS = 60000; // 1 token per minute per origin
+// Every user shares one origin (web and the iOS apps), so tokens are limited per origin + clientId.
+// Old clients that send no valid clientId fall back to one token per minute per origin.
+const TOKEN_CLIENT_WINDOW_MS = 10000; // 1 token per 10 seconds per client
+const TOKEN_ORIGIN_WINDOW_MS = 60000; // 1 token per minute per origin (clients without clientId)
+const TOKEN_GLOBAL_LIMIT = 300; // tokens across all clients...
+const TOKEN_GLOBAL_WINDOW_MS = 600000; // ...per 10 minutes
 
-function checkTokenRateLimit(origin) {
-  const cache = CacheService.getScriptCache();
-  const key = 'token_ratelimit_' + (origin || 'unknown');
-  const lastRequest = cache.get(key);
+function isValidClientId(clientId) {
+  return typeof clientId === 'string' && clientId.length > 0 && clientId.length <= 256;
+}
+
+// CacheService keys are capped at 250 characters, so long origins / clientIds are cut
+function getTokenRateLimitKey(origin, clientId) {
+  if (!isValidClientId(clientId)) return 'token_ratelimit_' + (origin || 'unknown');
+  return 'token_client_' + String(origin || 'unknown').slice(0, 100) + '|' + clientId.slice(0, 128);
+}
+
+function checkTokenRateLimit(origin, clientId) {
+  const hasClientId = isValidClientId(clientId);
+  const key = getTokenRateLimitKey(origin, clientId);
+  const windowMs = hasClientId ? TOKEN_CLIENT_WINDOW_MS : TOKEN_ORIGIN_WINDOW_MS;
   const now = Date.now();
-
-  if (lastRequest && (now - parseInt(lastRequest)) < TOKEN_RATE_LIMIT_MS) {
-    return false;
+  const globalKey = 'token_global_' + Math.floor(now / TOKEN_GLOBAL_WINDOW_MS);
+  const lock = LockService.getScriptLock();
+  const locked = lock.tryLock(2000);
+  try {
+    const cache = CacheService.getScriptCache();
+    const values = cache.getAll([key, globalKey]);
+    const lastRequest = values[key];
+    if (lastRequest && (now - parseInt(lastRequest, 10)) < windowMs) {
+      return false;
+    }
+    const issued = parseInt(values[globalKey], 10) || 0;
+    if (issued >= TOKEN_GLOBAL_LIMIT) {
+      return false;
+    }
+    const update = {};
+    update[key] = now.toString();
+    update[globalKey] = String(issued + 1);
+    cache.putAll(update, TOKEN_GLOBAL_WINDOW_MS / 1000);
+    return true;
+  } finally {
+    if (locked) lock.releaseLock();
   }
-  cache.put(key, now.toString(), 120);
-  return true;
 }
 
 // === MAIN ENDPOINT ===
@@ -178,6 +209,7 @@ function doGet(e) {
   const params = e ? e.parameter : {};
   const origin = params.origin || '';
   const action = params.action || '';
+  const clientId = params.clientId;
 
   // Token request endpoint
   if (action === 'token') {
@@ -187,7 +219,7 @@ function doGet(e) {
     }
 
     // Rate limit token requests
-    if (!checkTokenRateLimit(origin)) {
+    if (!checkTokenRateLimit(origin, clientId)) {
       return createResponse({ success: false, error: 'Token rate limit exceeded. Try again later.' });
     }
 

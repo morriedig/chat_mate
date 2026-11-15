@@ -329,8 +329,10 @@ nativeLanguage 'zh' adds Mandarin-speaker checks (articles, tense, -s, plurals, 
 Daily limit: every AI endpoint counts toward a per-client and a global daily cap (Taiwan time).
   Over the cap: { success: false, isDailyLimit: true } (HTTP 429 from server.js; GAS always answers 200)
 
-GET /token
+GET /token?origin=<origin>&clientId=<clientId>   (GAS: ?action=token&origin=…&clientId=…)
   Returns: Auth token (1-hour expiry)
+  Rate limit: 1 token per 10 s per origin + clientId (string, 1–256 chars, the app's chatmate_clientId);
+  without a valid clientId, 1 token per minute per origin (old clients); at most 300 tokens per 10 minutes overall
 
 GET /status
   Returns: API key status and health check

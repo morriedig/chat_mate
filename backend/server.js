@@ -54,11 +54,17 @@ const KEY_COOLDOWN_MS = 60000; // 1 minute cooldown for exhausted keys
 
 // === TOKEN MANAGEMENT ===
 const TOKEN_EXPIRY_MS = 3600 * 1000; // 1 hour
-const TOKEN_RATE_LIMIT_MS = 60000; // 1 token per minute per origin
+// Every user shares one origin (web and the iOS apps), so tokens are limited per origin + clientId.
+// Old clients that send no valid clientId fall back to one token per minute per origin.
+const TOKEN_CLIENT_WINDOW_MS = 10000; // 1 token per 10 seconds per client
+const TOKEN_ORIGIN_WINDOW_MS = 60000; // 1 token per minute per origin (clients without clientId)
+const TOKEN_GLOBAL_LIMIT = 300; // tokens across all clients...
+const TOKEN_GLOBAL_WINDOW_MS = 600000; // ...per 10 minutes
 const RATE_LIMIT_MS = 1000; // 1 request per second
 
 const tokenStore = new Map(); // token -> { createdAt: timestamp }
-const tokenRateLimits = new Map(); // origin -> lastTokenRequest timestamp
+const tokenRateLimits = new Map(); // origin or origin + clientId -> lastTokenRequest timestamp
+const tokenGlobalWindow = { start: 0, count: 0 }; // tokens issued in the current 10-minute window
 const clientRateLimits = new Map(); // clientId -> lastRequest timestamp
 const MAX_MAP_ENTRIES = 10000;
 
@@ -99,16 +105,29 @@ function getHost(value) {
   return match ? match[1].toLowerCase() : '';
 }
 
-function checkTokenRateLimit(origin) {
-  const key = origin || 'unknown';
+function isValidClientId(clientId) {
+  return typeof clientId === 'string' && clientId.length > 0 && clientId.length <= 256;
+}
+
+function checkTokenRateLimit(origin, clientId) {
+  const hasClientId = isValidClientId(clientId);
+  const key = hasClientId ? `client:${origin || 'unknown'}|${clientId}` : `origin:${origin || 'unknown'}`;
+  const windowMs = hasClientId ? TOKEN_CLIENT_WINDOW_MS : TOKEN_ORIGIN_WINDOW_MS;
   const lastRequest = tokenRateLimits.get(key);
   const now = Date.now();
 
-  if (lastRequest && (now - lastRequest) < TOKEN_RATE_LIMIT_MS) {
+  if (lastRequest && (now - lastRequest) < windowMs) {
     return false;
   }
-  if (tokenRateLimits.size >= MAX_MAP_ENTRIES) return false;
+  const windowStart = Math.floor(now / TOKEN_GLOBAL_WINDOW_MS) * TOKEN_GLOBAL_WINDOW_MS;
+  if (tokenGlobalWindow.start !== windowStart) {
+    tokenGlobalWindow.start = windowStart;
+    tokenGlobalWindow.count = 0;
+  }
+  if (tokenGlobalWindow.count >= TOKEN_GLOBAL_LIMIT) return false;
+  if (!lastRequest && tokenRateLimits.size >= MAX_MAP_ENTRIES) return false;
   tokenRateLimits.set(key, now);
+  tokenGlobalWindow.count++;
   return true;
 }
 
@@ -514,7 +533,7 @@ app.get('/token', (req, res) => {
   }
 
   // Rate limit token requests
-  if (!checkTokenRateLimit(origin)) {
+  if (!checkTokenRateLimit(origin, req.query.clientId)) {
     return res.status(429).json({ success: false, error: 'Token rate limit exceeded. Try again later.' });
   }
 
