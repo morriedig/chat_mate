@@ -48,3 +48,11 @@ xcodebuild -project ios-zh/App/App.xcodeproj -scheme App -configuration Release 
 /usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' build/ChatMateZh.xcarchive/Products/Applications/App.app/Info.plist
 # com.morrie.chatmate.zh
 ```
+
+### Upload
+
+Export with **manual** signing; automatic cloud signing fails with "Cloud signing permission error" for the API key. Each bundle ID needs an App Store provisioning profile made from the local "Apple Distribution" certificate (create it with the App Store Connect API `POST /v1/profiles`, type `IOS_APP_STORE`, and install it into `~/Library/MobileDevice/Provisioning Profiles/`). Profiles: `com.morrie.chatmate.zh` → "Chat Mate Mandarin App Store".
+
+ExportOptions.plist (kept outside the repo because it holds the team ID): `method` app-store-connect, `destination` upload, `signingStyle` manual, `signingCertificate` Apple Distribution, `provisioningProfiles` {bundle ID: profile name}, `manageAppVersionAndBuildNumber` false. Then `xcodebuild -exportArchive -archivePath … -exportOptionsPlist … -exportPath …` with the same `-authenticationKey*` flags; it prints "Uploaded App".
+
+TestFlight: the internal group "Me" (all builds) exists on both apps.
