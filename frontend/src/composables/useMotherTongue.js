@@ -1,4 +1,5 @@
 import { ref, watch } from 'vue'
+import { FIXED_NATIVE_LANG } from '../edition'
 
 const STORAGE_KEY = 'chatmate_motherTongue'
 
@@ -16,6 +17,8 @@ export const supportedLanguages = allLanguages.filter(lang => !HIDDEN_LANGUAGES.
 
 // Get saved mother tongue or default to 'en'
 function getSavedMotherTongue() {
+  // The Chinese edition is for English speakers: the native language is always English
+  if (FIXED_NATIVE_LANG) return FIXED_NATIVE_LANG
   const saved = localStorage.getItem(STORAGE_KEY)
   if (saved && supportedLanguages.some(l => l.id === saved)) {
     return saved
@@ -33,6 +36,7 @@ export function useMotherTongue() {
   })
 
   function setMotherTongue(langId) {
+    if (FIXED_NATIVE_LANG) return
     if (supportedLanguages.some(l => l.id === langId)) {
       motherTongue.value = langId
     }

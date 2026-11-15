@@ -2,7 +2,8 @@ import { useRouter } from 'vue-router'
 import { useNavState } from './useNavState'
 import { useDailyPractice } from './useDailyPractice'
 import { createPatternTask } from './usePatternTask'
-import { characters, levels } from '../data/characters'
+import { levels, characterFor } from '../data/characters'
+import { TARGET_LANG, DEFAULT_LEVEL } from '../edition'
 
 /**
  * Opens the task chat with today's daily-practice patterns as targets.
@@ -15,10 +16,11 @@ export function useTaskChatLauncher() {
 
   function startTaskChat() {
     setChatState({
-      character: selectedCharacter.value || characters[0],
-      level: levels.find(l => l.id === level.value) || levels.find(l => l.id === 'intermediate'),
-      // The AI friend always speaks English while the app focuses on English
-      language: 'en',
+      // The last chosen friend if they speak the language being learned, else the first who does
+      character: characterFor(TARGET_LANG, selectedCharacter.value),
+      level: levels.find(l => l.id === level.value) || levels.find(l => l.id === DEFAULT_LEVEL),
+      // The AI friend speaks the language this edition teaches
+      language: TARGET_LANG,
       mode: 'free',
       scenario: createPatternTask(todayPatterns.value),
     })

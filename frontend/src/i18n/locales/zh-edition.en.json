@@ -1,0 +1,33 @@
+{
+  "app": {
+    "subtitle": "Turn the Mandarin you know into Mandarin you can say"
+  },
+  "setup": {
+    "yourLevel": "Your Mandarin level"
+  },
+  "dailyOpinion": {
+    "placeholder": "Answer in Mandarin: say what you think, give a reason, then wrap up."
+  },
+  "dailyPractice": {
+    "speak": {
+      "typePlaceholder": "Write one sentence in Mandarin",
+      "typeNote": "At least 2 Chinese characters. Typing finishes today too, but it doesn’t count as speaking."
+    }
+  },
+  "characters": {
+    "meiling": { "tagline": "Bubble tea, night markets & Taipei life" },
+    "zhiwei": { "tagline": "Runs a small café in Tainan, always joking" }
+  },
+  "welcome": {
+    "slide2Body": "Tell Mei-ling about your job, your weekend, your favorite night market snack — she'll bring it up next time. Your friendship grows across sessions.",
+    "slide3Title": "Start from the beginning",
+    "slide3Body": "Your friend keeps things simple: short sentences, everyday words, and pinyin when you need it.",
+    "skipPick": "Let's start"
+  },
+  "settings": {
+    "tagline": "Mandarin speaking practice"
+  },
+  "retell": {
+    "howRounds": "Say the same thing in Mandarin three times: {a}s, then {b}s, then {c}s."
+  }
+}

@@ -1,9 +1,10 @@
 import { ref } from 'vue'
+import { TARGET_LANG } from '../edition'
 
 // Shared navigation state (singleton)
 const selectedCharacter = ref(null)
 const selectedLevel = ref(null)
-const selectedLanguage = ref('en')
+const selectedLanguage = ref(TARGET_LANG)
 const selectedArticle = ref(null)
 const chatMode = ref('free')
 const activeScenario = ref(null)

@@ -26,6 +26,7 @@ import CmAvatar from './ui/CmAvatar.vue'
 import CmIconButton from './ui/CmIconButton.vue'
 import CmButton from './ui/CmButton.vue'
 import { levelCode, languageCode } from '../utils/levelCode'
+import { TARGET_LANG, LEVELS, isFeatureEnabled } from '../edition'
 
 const { t, locale } = useI18n()
 const router = useRouter()
@@ -45,6 +46,12 @@ const placementBanner = ref(null)
 
 // Restore last session
 const last = loadLastSession()
+
+// Friends who speak the language this edition teaches (a character without a list speaks English),
+// and the levels this edition has content for
+const chatCharacters = characters.filter(c => (c.languages || ['en']).includes(TARGET_LANG))
+const levelOptions = levels.filter(l => LEVELS.includes(l.id))
+const findLevel = (id) => levelOptions.find(l => l.id === id) || null
 
 // Primary mode: 'chat' or 'learning'
 const primaryMode = ref(last?.type || 'learning')
@@ -67,24 +74,25 @@ const placement = readPlacementResult()
 // Initial level: placement > nav state > last session > null
 const initialLevel = (() => {
   if (placement?.level) {
-    const match = levels.find(l => l.id === placement.level)
+    const match = findLevel(placement.level)
     if (match) return match
   }
-  if (navSelectedLevel.value) return navSelectedLevel.value
-  if (last?.type === 'chat') return levels.find(l => l.id === last.levelId) || null
+  if (navSelectedLevel.value) return LEVELS.includes(navSelectedLevel.value.id) ? navSelectedLevel.value : null
+  if (last?.type === 'chat') return findLevel(last.levelId)
   return null
 })()
 
 const selectedCharacter = ref(
-  last?.type === 'chat' ? characters.find(c => c.id === last.characterId) || null : null
+  last?.type === 'chat' ? chatCharacters.find(c => c.id === last.characterId) || null : null
 )
 const selectedLevel = ref(initialLevel)
-const selectedChatMode = ref(last?.type === 'chat' ? last.mode || 'free' : 'free')
+const lastChatMode = last?.type === 'chat' ? last.mode || 'free' : 'free'
+const selectedChatMode = ref(lastChatMode === 'article' && !isFeatureEnabled('articles') ? 'free' : lastChatMode)
 
 // Learning mode options
 const selectedLearningLevel = ref(
-  placement?.level ? levels.find(l => l.id === placement.level) || null
-    : last?.type === 'learning' ? levels.find(l => l.id === last.levelId) || null
+  placement?.level ? findLevel(placement.level)
+    : last?.type === 'learning' ? findLevel(last.levelId)
     : null
 )
 const lastTargetLanguage = last?.type === 'learning' ? last.targetLanguage : null
@@ -114,9 +122,11 @@ function dismissPlacementBanner() {
   placementBanner.value = null
 }
 
-// Available target languages (exclude mother tongue)
+// Available target languages (exclude mother tongue); an edition without the language
+// switch only teaches its own language
 const availableTargetLanguages = computed(() => {
-  return supportedLanguages.filter(lang => lang.id !== motherTongue.value)
+  return supportedLanguages.filter(lang => lang.id !== motherTongue.value &&
+    (isFeatureEnabled('languageSwitch') || lang.id === TARGET_LANG))
 })
 
 // With only one language to learn there is nothing to choose, so pick it
@@ -138,8 +148,8 @@ function handleMotherTongueChange(langId) {
 const canStartChat = computed(() => selectedCharacter.value && selectedLevel.value)
 const canStartLearning = computed(() => selectedLearningLevel.value && selectedTargetLanguage.value)
 
-// The AI friend always speaks English while the app focuses on English
-const CHAT_LANGUAGE = 'en'
+// The AI friend speaks the language this edition teaches
+const CHAT_LANGUAGE = TARGET_LANG
 
 // Main path: today's practice → task chat with today's patterns → retell drill.
 // Everything else (free chat setup, learning, extras) sits under "More".
@@ -151,22 +161,24 @@ const moreOpen = ref((() => {
 })())
 // The route marks one step as current: practice until it is done, then task chat
 const currentStep = computed(() => (practiceDone.value ? 2 : 1))
-const routeSteps = computed(() => [1, 2, 3].map(n => ({ n, current: n === currentStep.value })))
+// Say-it-three-times counts English words only, so the Chinese edition's route has 2 steps
+const ROUTE_STEPS = isFeatureEnabled('retell') ? [1, 2, 3] : [1, 2]
+const routeSteps = computed(() => ROUTE_STEPS.map(n => ({ n, current: n === currentStep.value })))
 
 const primaryModeOptions = computed(() => [
   { id: 'chat', icon: 'forum', name: t('setup.primaryModes.chat.name'), desc: t('setup.primaryModes.chat.description') },
   { id: 'learning', icon: 'school', name: t('setup.primaryModes.learning.name'), desc: t('setup.primaryModes.learning.description') },
-  { id: 'diary', icon: 'edit_note', name: t('diary.mode'), desc: t('diary.modeDesc') },
-])
+  { id: 'diary', icon: 'edit_note', name: t('diary.mode'), desc: t('diary.modeDesc'), feature: 'diary' },
+].filter(m => isFeatureEnabled(m.feature)))
 const chatModeOptions = computed(() => [
   { id: 'free', icon: 'chat_bubble', name: t('setup.modes.free.name'), desc: t('setup.modes.free.description') },
-  { id: 'article', icon: 'article', name: t('setup.modes.article.name'), desc: t('setup.modes.article.description') },
-])
+  { id: 'article', icon: 'article', name: t('setup.modes.article.name'), desc: t('setup.modes.article.description'), feature: 'articles' },
+].filter(m => isFeatureEnabled(m.feature)))
 const tools = computed(() => [
   { id: 'progress', icon: 'insights', label: t('progressPanel.title'), isNew: progressHasNew.value, open: () => { showProgress.value = true } },
-  { id: 'scenarios', icon: 'theater_comedy', label: t('scenarios.title'), open: () => { showScenarios.value = true } },
-  { id: 'placement', icon: 'quiz', label: t('placementTest.title'), open: () => router.push('/placement-test') },
-])
+  { id: 'scenarios', icon: 'theater_comedy', label: t('scenarios.title'), feature: 'roleplay', open: () => { showScenarios.value = true } },
+  { id: 'placement', icon: 'quiz', label: t('placementTest.title'), feature: 'placementTest', open: () => router.push('/placement-test') },
+].filter(tool => isFeatureEnabled(tool.feature)))
 
 const canStart = computed(() =>
   (primaryMode.value === 'chat' && canStartChat.value) ||
@@ -180,7 +192,7 @@ function toggleMore() {
 
 // Opinion chat entry (chat-first prototype): always English, intermediate level
 const { topic: opinionTopic } = useOpinionChat()
-const opinionCharacter = computed(() => selectedCharacter.value || characters[0])
+const opinionCharacter = computed(() => selectedCharacter.value || chatCharacters[0])
 
 function handleStartOpinionChat() {
   setChatState({
@@ -244,7 +256,7 @@ function handleStart() {
         <h1 class="min-w-0 truncate text-title font-semibold text-ink">{{ t('app.title') }}</h1>
         <div class="flex shrink-0 items-center gap-1">
           <!-- Mother Tongue / UI Language Selector (combined) -->
-          <div class="relative">
+          <div v-if="isFeatureEnabled('languageSwitch')" class="relative">
             <select
               :value="motherTongue"
               @change="handleMotherTongueChange($event.target.value)"
@@ -307,7 +319,7 @@ function handleStart() {
         </ol>
       </section>
 
-      <section class="mb-3">
+      <section v-if="isFeatureEnabled('dailyOpinion')" class="mb-3">
         <DailyOpinionCard class="min-w-0" @open="router.push('/daily-opinion')" />
       </section>
 
@@ -326,7 +338,7 @@ function handleStart() {
 
       <div v-show="moreOpen" id="home-more" class="mt-6 space-y-8">
         <!-- Opinion chat (free chat about today's topic) -->
-        <section>
+        <section v-if="isFeatureEnabled('opinionChat')">
           <button
             type="button"
             @click="handleStartOpinionChat"
@@ -374,7 +386,7 @@ function handleStart() {
             <h2 id="home-partner-title" class="mb-2 px-1 text-caption font-medium text-ink-secondary">{{ t('setup.choosePartner') }}</h2>
             <div role="radiogroup" aria-labelledby="home-partner-title" class="divide-y divide-hairline overflow-hidden rounded-[14px] border border-hairline bg-surface">
               <button
-                v-for="char in characters"
+                v-for="char in chatCharacters"
                 :key="char.id"
                 type="button"
                 role="radio"
@@ -399,7 +411,7 @@ function handleStart() {
             <h2 id="home-level-title" class="mb-2 px-1 text-caption font-medium text-ink-secondary">{{ t('setup.yourLevel') }}</h2>
             <div role="radiogroup" aria-labelledby="home-level-title" class="divide-y divide-hairline overflow-hidden rounded-[14px] border border-hairline bg-surface">
               <button
-                v-for="level in levels"
+                v-for="level in levelOptions"
                 :key="level.id"
                 type="button"
                 role="radio"
@@ -474,7 +486,7 @@ function handleStart() {
             <h2 id="home-learning-level-title" class="mb-2 px-1 text-caption font-medium text-ink-secondary">{{ t('setup.learningLevel') }}</h2>
             <div role="radiogroup" aria-labelledby="home-learning-level-title" class="divide-y divide-hairline overflow-hidden rounded-[14px] border border-hairline bg-surface">
               <button
-                v-for="level in levels"
+                v-for="level in levelOptions"
                 :key="level.id"
                 type="button"
                 role="radio"
@@ -515,7 +527,7 @@ function handleStart() {
         </template>
 
         <!-- Daily Challenge Card (shown when chat mode selected) -->
-        <section v-if="primaryMode === 'chat' && canStartChat">
+        <section v-if="primaryMode === 'chat' && canStartChat && isFeatureEnabled('dailyChallenge')">
           <DailyChallengeCard
             :level="selectedLevel?.id || 'intermediate'"
             :language="locale"

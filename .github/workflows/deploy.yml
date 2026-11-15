@@ -33,12 +33,25 @@ jobs:
           VITE_API_URL: ${{ secrets.VITE_API_URL }}
         run: npm run build
 
-      # Landing page at /chat_mate/, the app (loaded by the iOS shell) at /chat_mate/app/
+      # Chinese edition (Taiwan Mandarin for English speakers) builds into dist-zh/
+      - name: Build Chinese edition
+        working-directory: frontend
+        env:
+          GITHUB_PAGES: true
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
+          VITE_EDITION: zh
+        run: npm run build
+
+      # Landing page at /chat_mate/, the app (loaded by the iOS shell) at /chat_mate/app/;
+      # the Chinese edition's landing page at /chat_mate/zh/ and its app at /chat_mate/zh/app/
       - name: Assemble site
         run: |
           mkdir site
           cp -r frontend/landing/. site/
           cp -r frontend/dist site/app
+          mkdir site/zh
+          cp -r frontend/landing-zh/. site/zh/
+          cp -r frontend/dist-zh site/zh/app
 
       - name: Deploy to gh-pages branch
         uses: peaceiris/actions-gh-pages@v4

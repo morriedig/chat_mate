@@ -1,7 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { enEdition, zhEdition } from '../helpers/editions'
 
-async function load() {
+// English build unless a test asks for the Chinese edition
+async function load(edition = enEdition) {
   vi.resetModules()
+  vi.doMock('../../edition', () => edition)
   return import('../../composables/useMotherTongue')
 }
 
@@ -28,5 +31,23 @@ describe('useMotherTongue', () => {
     const { useMotherTongue } = await load()
 
     expect(useMotherTongue().motherTongue.value).toBe('zh')
+  })
+
+  describe('Chinese edition', () => {
+    it('is always English, whatever was saved', async () => {
+      localStorage.setItem('chatmate_motherTongue', 'zh')
+      const { useMotherTongue } = await load(zhEdition)
+
+      expect(useMotherTongue().motherTongue.value).toBe('en')
+    })
+
+    it('ignores attempts to change it', async () => {
+      const { useMotherTongue } = await load(zhEdition)
+      const { motherTongue, setMotherTongue } = useMotherTongue()
+
+      setMotherTongue('zh')
+
+      expect(motherTongue.value).toBe('en')
+    })
   })
 })

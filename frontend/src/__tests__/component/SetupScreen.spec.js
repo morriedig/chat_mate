@@ -3,6 +3,9 @@ import { mount } from '@vue/test-utils'
 import { ref } from 'vue'
 import SetupScreen from '../../components/SetupScreen.vue'
 
+// English build (stays English in a VITE_EDITION=zh test run)
+vi.mock('../../edition', async () => (await import('../helpers/editions')).enEdition)
+
 // Mock vue-router
 const mockPush = vi.fn()
 vi.mock('vue-router', () => ({
@@ -80,7 +83,8 @@ vi.mock('../../composables/useLastSession', () => ({
 vi.mock('../../data/characters.js', () => ({
   characters: [
     { id: 'sakura', name: 'Sakura', avatar: '🌸', age: '25', location: 'Tokyo' },
-    { id: 'kenji', name: 'Kenji', avatar: '🎌', age: '30', location: 'Osaka' }
+    { id: 'kenji', name: 'Kenji', avatar: '🎌', age: '30', location: 'Osaka' },
+    { id: 'meiling', name: 'Mei-ling', avatar: '👩‍💼', age: '27', location: 'Taipei', languages: ['zh'] }
   ],
   levels: [
     { id: 'beginner', icon: '🌱' },
@@ -189,6 +193,15 @@ describe('SetupScreen', () => {
 
       expect(wrapper.text()).toContain('Sakura')
       expect(wrapper.text()).toContain('Kenji')
+    })
+
+    it('should leave out friends who only speak Chinese', async () => {
+      const wrapper = createWrapper()
+      const modeCards = wrapper.findAll('[data-test="primary-mode"]')
+      await modeCards[0].trigger('click')
+
+      expect(wrapper.findAll('[data-test="character"]')).toHaveLength(2)
+      expect(wrapper.text()).not.toContain('Mei-ling')
     })
 
     it('should show level selection when in chat mode', async () => {
