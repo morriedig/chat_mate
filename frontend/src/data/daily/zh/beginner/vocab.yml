@@ -1,0 +1,529 @@
+level: beginner
+words:
+  - id: jie
+    word: "借"
+    pinyin: "jiè"
+    pos: "v."
+    meaning: "to borrow; to lend"
+    example:
+      zh: "我可以借你的傘嗎？"
+      pinyin: "wǒ kě yǐ jiè nǐ de sǎn ma?"
+      en: "Can I borrow your umbrella?"
+    collocations: ["借錢", "借我一下", "跟朋友借書"]
+    note: "One verb for both directions: 跟你借 = borrow from you; 借你 or 借給你 = lend to you."
+
+  - id: dai-bring
+    word: "帶"
+    pinyin: "dài"
+    pos: "v."
+    meaning: "to bring; to take along"
+    example:
+      zh: "明天記得帶護照。"
+      pinyin: "míng tiān jì de dài hù zhào."
+      en: "Remember to bring your passport tomorrow."
+    collocations: ["帶傘", "帶朋友來", "帶小孩去公園"]
+    note: "English splits bring and take by direction; 帶 covers both. Add 來 or 去 for direction: 帶來, 帶去."
+
+  - id: na
+    word: "拿"
+    pinyin: "ná"
+    pos: "v."
+    meaning: "to pick up; to fetch; to hold in your hand"
+    example:
+      zh: "我去樓下拿外送。"
+      pinyin: "wǒ qù lóu xià ná wài sòng."
+      en: "I'm going downstairs to get the food delivery."
+    collocations: ["拿東西", "拿藥", "拿給我"]
+    note: "拿 is about your hands: picking up, carrying, fetching. 帶 is having something with you while you go somewhere."
+
+  - id: chuan
+    word: "穿"
+    pinyin: "chuān"
+    pos: "v."
+    meaning: "to wear (clothes, shoes)"
+    example:
+      zh: "今天很冷，多穿一件外套。"
+      pinyin: "jīn tiān hěn lěng, duō chuān yí jiàn wài tào."
+      en: "It's cold today. Put on an extra jacket."
+    collocations: ["穿外套", "穿鞋子", "穿得很正式"]
+    note: "Use 穿 for things your body goes into: clothes, shoes, socks. Hats and glasses use 戴."
+
+  - id: dai-wear
+    word: "戴"
+    pinyin: "dài"
+    pos: "v."
+    meaning: "to wear (hats, glasses, watches, masks)"
+    example:
+      zh: "騎機車要戴安全帽。"
+      pinyin: "qí jī chē yào dài ān quán mào."
+      en: "You have to wear a helmet on a scooter."
+    collocations: ["戴眼鏡", "戴口罩", "戴手錶"]
+    note: "Accessories use 戴, not 穿. ✗ 穿眼鏡 → ✓ 戴眼鏡. Same sound as 帶 (bring) but a different character."
+
+  - id: kan
+    word: "看"
+    pinyin: "kàn"
+    pos: "v."
+    meaning: "to look at; to watch; to read"
+    example:
+      zh: "我晚上喜歡在家看書。"
+      pinyin: "wǒ wǎn shàng xǐ huān zài jiā kàn shū."
+      en: "In the evening I like reading at home."
+    collocations: ["看電視", "看書", "看醫生"]
+    note: "One verb for look, watch and read. 看醫生 means 'see a doctor'."
+
+  - id: kandao
+    word: "看到"
+    pinyin: "kàn dào"
+    pos: "v."
+    meaning: "to see (actually catch sight of)"
+    example:
+      zh: "你有看到我的手機嗎？"
+      pinyin: "nǐ yǒu kàn dào wǒ de shǒu jī ma?"
+      en: "Have you seen my phone?"
+    collocations: ["看到你", "沒看到", "看到訊息"]
+    note: "看 is the action of looking; 看到 is the result, really seeing it. 我沒看到 = I didn't see it."
+
+  - id: ting
+    word: "聽"
+    pinyin: "tīng"
+    pos: "v."
+    meaning: "to listen; to hear"
+    example:
+      zh: "我每天坐捷運的時候聽音樂。"
+      pinyin: "wǒ měi tiān zuò jié yùn de shí hòu tīng yīn yuè."
+      en: "I listen to music on the MRT every day."
+    collocations: ["聽音樂", "聽不懂", "聽說"]
+    note: "聽不懂 = can't understand what you hear; 聽不到 = can't hear it at all. 聽說 = I heard that…"
+
+  - id: shuo
+    word: "說"
+    pinyin: "shuō"
+    pos: "v."
+    meaning: "to say; to speak"
+    example:
+      zh: "你可以再說一次嗎？"
+      pinyin: "nǐ kě yǐ zài shuō yí cì ma?"
+      en: "Could you say that again?"
+    collocations: ["說中文", "說話", "說謝謝"]
+    note: "說 + language: 說中文. For 'tell someone' use 告訴, not 說."
+
+  - id: gaosu
+    word: "告訴"
+    pinyin: "gào sù"
+    pos: "v."
+    meaning: "to tell (someone)"
+    example:
+      zh: "到了請告訴我。"
+      pinyin: "dào le qǐng gào sù wǒ."
+      en: "Please tell me when we get there."
+    collocations: ["告訴你", "告訴老闆", "不要告訴別人"]
+    note: "告訴 + person (+ what). ✗ 說我 → ✓ 告訴我. In Taiwan it's read gào sù."
+
+  - id: zhidao
+    word: "知道"
+    pinyin: "zhī dào"
+    pos: "v."
+    meaning: "to know (a fact)"
+    example:
+      zh: "你知道他的電話嗎？"
+      pinyin: "nǐ zhī dào tā de diàn huà ma?"
+      en: "Do you know his phone number?"
+    collocations: ["我知道了", "不知道", "知道怎麼走"]
+    note: "Facts and information use 知道; people use 認識. 我知道了 = got it."
+
+  - id: renshi
+    word: "認識"
+    pinyin: "rèn shì"
+    pos: "v."
+    meaning: "to know (a person); to get to know"
+    example:
+      zh: "我們是在公司認識的。"
+      pinyin: "wǒ men shì zài gōng sī rèn shì de."
+      en: "We met at work."
+    collocations: ["認識新朋友", "很高興認識你", "認識路"]
+    note: "Knowing a person is 認識, not 知道. ✗ 我知道她 → ✓ 我認識她."
+
+  - id: hui
+    word: "會"
+    pinyin: "huì"
+    pos: "aux."
+    meaning: "can (a learned skill); will (likely to happen)"
+    example:
+      zh: "明天會下雨嗎？"
+      pinyin: "míng tiān huì xià yǔ ma?"
+      en: "Will it rain tomorrow?"
+    collocations: ["會游泳", "會說中文", "會不會"]
+    note: "Two uses: a learned skill (我會開車) and something likely to happen (明天會下雨)."
+
+  - id: neng
+    word: "能"
+    pinyin: "néng"
+    pos: "aux."
+    meaning: "can (be able to; circumstances allow)"
+    example:
+      zh: "我今天晚上不能去，要加班。"
+      pinyin: "wǒ jīn tiān wǎn shàng bù néng qù, yào jiā bān."
+      en: "I can't go tonight. I have to work late."
+    collocations: ["能不能", "不能去", "能幫我嗎"]
+    note: "能 is about ability or circumstances. 不能 often means 'can't make it' or 'not allowed'."
+
+  - id: keyi
+    word: "可以"
+    pinyin: "kě yǐ"
+    pos: "aux."
+    meaning: "may; can (permission)"
+    example:
+      zh: "這裡可以拍照嗎？"
+      pinyin: "zhè lǐ kě yǐ pāi zhào ma?"
+      en: "Can I take photos here?"
+    collocations: ["可以嗎", "不可以", "可以刷卡"]
+    note: "For permission and possibility. 可以 alone works as an answer: 'Sure, you can.'"
+
+  - id: xiang
+    word: "想"
+    pinyin: "xiǎng"
+    pos: "v."
+    meaning: "to want to; to think about; to miss"
+    example:
+      zh: "我很想我的家人。"
+      pinyin: "wǒ hěn xiǎng wǒ de jiā rén."
+      en: "I really miss my family."
+    collocations: ["想去", "想家", "我想一下"]
+    note: "想 + verb = want to (softer than 要). 想 + person = miss someone."
+
+  - id: yao
+    word: "要"
+    pinyin: "yào"
+    pos: "v."
+    meaning: "to want; to need to; going to"
+    example:
+      zh: "我明天要早起。"
+      pinyin: "wǒ míng tiān yào zǎo qǐ."
+      en: "I need to get up early tomorrow."
+    collocations: ["我要這個", "要不要", "要多久"]
+    note: "Stronger than 想: want, need to, or a near-future plan. 不要 means 'don't'."
+
+  - id: xihuan
+    word: "喜歡"
+    pinyin: "xǐ huān"
+    pos: "v."
+    meaning: "to like"
+    example:
+      zh: "你喜歡吃什麼？"
+      pinyin: "nǐ xǐ huān chī shén me?"
+      en: "What do you like to eat?"
+    collocations: ["喜歡吃辣", "很喜歡", "不喜歡"]
+    note: "Degree words go before it: 很喜歡, 最喜歡. ✗ 喜歡很多 for 'like a lot'."
+
+  - id: juede
+    word: "覺得"
+    pinyin: "jué de"
+    pos: "v."
+    meaning: "to feel; to think (give an opinion)"
+    example:
+      zh: "你覺得這件怎麼樣？"
+      pinyin: "nǐ jué de zhè jiàn zěn me yàng?"
+      en: "What do you think of this one?"
+    collocations: ["覺得很好", "我覺得", "覺得累"]
+    note: "For opinions, 我覺得 is more natural than 我想."
+
+  - id: kai
+    word: "開"
+    pinyin: "kāi"
+    pos: "v."
+    meaning: "to open; to turn on; to drive"
+    example:
+      zh: "可以幫我開冷氣嗎？"
+      pinyin: "kě yǐ bāng wǒ kāi lěng qì ma?"
+      en: "Could you turn on the air-con for me?"
+    collocations: ["開門", "開車", "開會"]
+    note: "開 covers open, turn on, drive and hold (a meeting). Turning off is 關."
+
+  - id: guan
+    word: "關"
+    pinyin: "guān"
+    pos: "v."
+    meaning: "to close; to turn off"
+    example:
+      zh: "出門前記得關燈。"
+      pinyin: "chū mén qián jì de guān dēng."
+      en: "Remember to turn off the lights before you go out."
+    collocations: ["關門", "關冷氣", "關手機"]
+    note: "The opposite of 開. ✗ 開掉 → ✓ 關掉 (turn it off)."
+
+  - id: zuo
+    word: "坐"
+    pinyin: "zuò"
+    pos: "v."
+    meaning: "to sit; to take (bus, MRT, plane)"
+    example:
+      zh: "我每天坐公車上班。"
+      pinyin: "wǒ měi tiān zuò gōng chē shàng bān."
+      en: "I take the bus to work every day."
+    collocations: ["坐捷運", "坐飛機", "請坐"]
+    note: "You 'sit' public transport: 坐捷運, 坐公車. Scooters and bikes you ride yourself use 騎."
+
+  - id: qi
+    word: "騎"
+    pinyin: "qí"
+    pos: "v."
+    meaning: "to ride (a scooter, a bike)"
+    example:
+      zh: "我騎機車去公司。"
+      pinyin: "wǒ qí jī chē qù gōng sī."
+      en: "I ride my scooter to work."
+    collocations: ["騎機車", "騎腳踏車", "騎 YouBike"]
+    note: "Anything you sit astride and control uses 騎. 坐機車 means riding on the back as a passenger."
+
+  - id: deng
+    word: "等"
+    pinyin: "děng"
+    pos: "v."
+    meaning: "to wait (for)"
+    example:
+      zh: "等我一下，我馬上來。"
+      pinyin: "děng wǒ yí xià, wǒ mǎ shàng lái."
+      en: "Wait a sec, I'll be right there."
+    collocations: ["等一下", "等公車", "等很久"]
+    note: "No word for 'for': 等你 = wait for you. 等一下 also means 'later'."
+
+  - id: zhao
+    word: "找"
+    pinyin: "zhǎo"
+    pos: "v."
+    meaning: "to look for; to give change"
+    example:
+      zh: "我在找我的鑰匙。"
+      pinyin: "wǒ zài zhǎo wǒ de yào shi."
+      en: "I'm looking for my keys."
+    collocations: ["找工作", "找人", "找到了"]
+    note: "找 = look for; 找到 = actually find it. In a shop, 找你十塊 = here's ten back."
+
+  - id: yong
+    word: "用"
+    pinyin: "yòng"
+    pos: "v."
+    meaning: "to use"
+    example:
+      zh: "這台機器怎麼用？"
+      pinyin: "zhè tái jī qì zěn me yòng?"
+      en: "How do you use this machine?"
+    collocations: ["用手機付", "用中文說", "不用了"]
+    note: "用 + tool + verb: 用中文說 = say it in Chinese. 不用 = no need."
+
+  - id: song
+    word: "送"
+    pinyin: "sòng"
+    pos: "v."
+    meaning: "to give (as a gift); to deliver; to see someone off"
+    example:
+      zh: "這是送你的。"
+      pinyin: "zhè shì sòng nǐ de."
+      en: "This is for you."
+    collocations: ["送禮物", "送你回家", "免費送"]
+    note: "Giving a present is 送, not 給. 我送你回家 = I'll take you home."
+
+  - id: bang
+    word: "幫"
+    pinyin: "bāng"
+    pos: "v."
+    meaning: "to help; to do something for someone"
+    example:
+      zh: "你可以幫我拍照嗎？"
+      pinyin: "nǐ kě yǐ bāng wǒ pāi zhào ma?"
+      en: "Could you take a photo for me?"
+    collocations: ["幫我一下", "幫忙", "幫你拿"]
+    note: "幫 + person + verb = do it for them. 需要幫忙嗎？ = Do you need help?"
+
+  - id: lei
+    word: "累"
+    pinyin: "lèi"
+    pos: "adj."
+    meaning: "tired"
+    example:
+      zh: "今天工作好多，好累。"
+      pinyin: "jīn tiān gōng zuò hǎo duō, hǎo lèi."
+      en: "So much work today. I'm exhausted."
+    collocations: ["好累", "累死了", "不會累"]
+    note: "Adjectives work like verbs, with no 是. ✗ 我是累 → ✓ 我很累."
+
+  - id: mang
+    word: "忙"
+    pinyin: "máng"
+    pos: "adj."
+    meaning: "busy"
+    example:
+      zh: "你最近忙不忙？"
+      pinyin: "nǐ zuì jìn máng bù máng?"
+      en: "Have you been busy lately?"
+    collocations: ["很忙", "忙完", "忙什麼"]
+    note: "很 before an adjective is often just glue, not 'very'. 你在忙什麼？ = What are you busy with?"
+
+  - id: fangbian
+    word: "方便"
+    pinyin: "fāng biàn"
+    pos: "adj."
+    meaning: "convenient"
+    example:
+      zh: "住在捷運站旁邊很方便。"
+      pinyin: "zhù zài jié yùn zhàn páng biān hěn fāng biàn."
+      en: "Living next to an MRT station is convenient."
+    collocations: ["很方便", "方便嗎", "交通方便"]
+    note: "你現在方便嗎？ = Is now a good time to talk? Very polite on the phone."
+
+  - id: pianyi
+    word: "便宜"
+    pinyin: "pián yí"
+    pos: "adj."
+    meaning: "cheap"
+    example:
+      zh: "夜市的衣服比較便宜。"
+      pinyin: "yè shì de yī fú bǐ jiào pián yí."
+      en: "Clothes at the night market are cheaper."
+    collocations: ["很便宜", "便宜一點", "可以便宜一點嗎"]
+    note: "Same 便 as in 方便, but read pián here. 可以便宜一點嗎？ = Can you give me a better price?"
+
+  - id: gui
+    word: "貴"
+    pinyin: "guì"
+    pos: "adj."
+    meaning: "expensive"
+    example:
+      zh: "台北的房租好貴。"
+      pinyin: "Tái běi de fáng zū hǎo guì."
+      en: "Rent in Taipei is so expensive."
+    collocations: ["太貴了", "不貴", "有一點貴"]
+    note: "太貴了 = too expensive. After 太 + adjective you normally add 了."
+
+  - id: renao
+    word: "熱鬧"
+    pinyin: "rè nào"
+    pos: "adj."
+    meaning: "lively; bustling"
+    example:
+      zh: "週末的夜市很熱鬧。"
+      pinyin: "zhōu mò de yè shì hěn rè nào."
+      en: "Night markets are lively on weekends."
+    collocations: ["很熱鬧", "熱鬧的地方", "湊熱鬧"]
+    note: "A positive word in Taiwan: busy, noisy and fun. The opposite is 安靜 (quiet)."
+
+  - id: yijing
+    word: "已經"
+    pinyin: "yǐ jīng"
+    pos: "adv."
+    meaning: "already"
+    example:
+      zh: "我已經到了。"
+      pinyin: "wǒ yǐ jīng dào le."
+      en: "I'm already here."
+    collocations: ["已經到了", "已經吃了", "已經很晚了"]
+    note: "Usually paired with 了 at the end: 已經…了."
+
+  - id: hai
+    word: "還"
+    pinyin: "hái"
+    pos: "adv."
+    meaning: "still; also; in addition"
+    example:
+      zh: "你還在公司嗎？"
+      pinyin: "nǐ hái zài gōng sī ma?"
+      en: "Are you still at the office?"
+    collocations: ["還沒", "還有", "還好"]
+    note: "還 = still; 還有 = and also / there's more; 還好 = not bad, or luckily."
+
+  - id: zai-again
+    word: "再"
+    pinyin: "zài"
+    pos: "adv."
+    meaning: "again (in the future)"
+    example:
+      zh: "請你再說一次。"
+      pinyin: "qǐng nǐ zài shuō yí cì."
+      en: "Please say it again."
+    collocations: ["再說一次", "再見", "再來一碗"]
+    note: "再 is for a repeat that hasn't happened yet. For a repeat that already happened, use 又."
+
+  - id: you-again
+    word: "又"
+    pinyin: "yòu"
+    pos: "adv."
+    meaning: "again (already happened)"
+    example:
+      zh: "他今天又遲到了。"
+      pinyin: "tā jīn tiān yòu chí dào le."
+      en: "He was late again today."
+    collocations: ["又來了", "又下雨了", "又忘了"]
+    note: "又 is for repeats that already happened, often with a 'not again' feeling. Future repeats use 再."
+
+  - id: cai
+    word: "才"
+    pinyin: "cái"
+    pos: "adv."
+    meaning: "not until; only then; only"
+    example:
+      zh: "我十點才起床。"
+      pinyin: "wǒ shí diǎn cái qǐ chuáng."
+      en: "I didn't get up until ten."
+    collocations: ["才到", "才剛", "才一百塊"]
+    note: "才 means later or less than expected. A 才 sentence about the past normally has no 了."
+
+  - id: jiu
+    word: "就"
+    pinyin: "jiù"
+    pos: "adv."
+    meaning: "already (earlier than expected); right away; just"
+    example:
+      zh: "我六點就到了。"
+      pinyin: "wǒ liù diǎn jiù dào le."
+      en: "I was there by six already."
+    collocations: ["馬上就來", "就是這個", "就好"]
+    note: "就 means earlier or sooner than expected, the opposite of 才. 一點點就好 = just a little is fine."
+
+  - id: yidian
+    word: "一點"
+    pinyin: "yì diǎn"
+    pos: "m."
+    meaning: "a little (bit)"
+    example:
+      zh: "可以說慢一點嗎？"
+      pinyin: "kě yǐ shuō màn yì diǎn ma?"
+      en: "Could you speak a bit more slowly?"
+    collocations: ["一點點", "快一點", "便宜一點"]
+    note: "Adjective + 一點 asks for 'a bit more …': 慢一點. For a complaint, use 有一點 + adjective: 有一點貴."
+
+  - id: yixia
+    word: "一下"
+    pinyin: "yí xià"
+    pos: "phr."
+    meaning: "for a moment; a quick … (softens a request)"
+    example:
+      zh: "你可以看一下這個嗎？"
+      pinyin: "nǐ kě yǐ kàn yí xià zhè ge ma?"
+      en: "Could you take a quick look at this?"
+    collocations: ["等一下", "看一下", "試一下"]
+    note: "Verb + 一下 makes a request shorter and softer. Taiwanese use it all the time."
+
+  - id: jiche
+    word: "機車"
+    pinyin: "jī chē"
+    pos: "n."
+    meaning: "scooter; motorbike"
+    example:
+      zh: "台灣的機車好多。"
+      pinyin: "Tái wān de jī chē hǎo duō."
+      en: "There are so many scooters in Taiwan."
+    collocations: ["騎機車", "停機車", "機車駕照"]
+    note: "In Taiwan 機車 means a scooter or motorbike. Ride it with 騎."
+
+  - id: shouji
+    word: "手機"
+    pinyin: "shǒu jī"
+    pos: "n."
+    meaning: "mobile phone"
+    example:
+      zh: "我的手機快沒電了。"
+      pinyin: "wǒ de shǒu jī kuài méi diàn le."
+      en: "My phone is almost out of battery."
+    collocations: ["手機號碼", "滑手機", "手機沒電"]
+    note: "Phones take the measure word 支 in Taiwan: 一支手機."

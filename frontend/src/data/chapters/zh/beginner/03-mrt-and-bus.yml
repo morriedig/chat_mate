@@ -1,0 +1,398 @@
+# Chapter: Taiwan Mandarin Beginner 3 - MRT and Bus
+# EasyCard top-ups, changing MRT lines, directions on the platform,
+# asking which bus to take and how long the ride is.
+meta:
+  id: zh-mrt-and-bus
+  title:
+    en: "Taking the MRT and Bus"
+    ja: "MRTとバスに乗る"
+    zh: "搭捷運、坐公車"
+  description:
+    en: "Top up your EasyCard, change MRT lines, ask which bus to take and how long the ride is."
+    ja: "悠遊カードのチャージ、MRTの乗り換え、何番のバスか、どのくらいかかるかを聞きます。"
+    zh: "悠遊卡加值、捷運換線、問要坐幾號公車、坐多久。"
+  icon: "directions_subway"
+  order: 3
+  level: beginner
+
+words:
+  - id: jieyun
+    word:
+      en: "MRT (metro)"
+      zh: "捷運"
+    pinyin: "jié yùn"
+    description:
+      en: "The metro in Taipei and Kaohsiung. 'Take the MRT' is 搭捷運 or 坐捷運."
+      zh: "城市裡的地下鐵。"
+    sentence:
+      en: "I take the MRT to work every day."
+      zh: "我每天搭捷運上班。"
+    sentencePinyin: "wǒ měi tiān dā jié yùn shàng bān."
+
+  - id: jieyun-zhan
+    word:
+      en: "MRT station"
+      zh: "捷運站"
+    pinyin: "jié yùn zhàn"
+    description:
+      en: "站 means station or stop. Use it after a name too: 中山站 (Zhongshan Station)."
+      zh: "搭捷運的地方。"
+    sentence:
+      en: "Where's the nearest MRT station?"
+      zh: "最近的捷運站在哪裡？"
+    sentencePinyin: "zuì jìn de jié yùn zhàn zài nǎ lǐ?"
+
+  - id: youyouka
+    word:
+      en: "EasyCard"
+      zh: "悠遊卡"
+    pinyin: "yōu yóu kǎ"
+    description:
+      en: "The tap card for the MRT and buses. You can also pay with it at convenience stores."
+      zh: "搭捷運、公車用的卡。"
+    sentence:
+      en: "My EasyCard is almost out of money."
+      zh: "我的悠遊卡快沒錢了。"
+    sentencePinyin: "wǒ de yōu yóu kǎ kuài méi qián le."
+
+  - id: jiazhi
+    word:
+      en: "to top up"
+      zh: "加值"
+    pinyin: "jiā zhí"
+    description:
+      en: "Add money to a card, at a station machine or a convenience store counter. The amount goes after it: 加值五百."
+      zh: "把錢加到卡裡。"
+    sentence:
+      en: "I'd like to top up 500 dollars."
+      zh: "我要加值五百塊。"
+    sentencePinyin: "wǒ yào jiā zhí wǔ bǎi kuài."
+
+  - id: shuaka
+    word:
+      en: "to tap a card"
+      zh: "刷卡"
+    pinyin: "shuā kǎ"
+    description:
+      en: "Tap your card at the gate or on the bus. In shops the same word means 'pay by card'."
+      zh: "把卡放在機器上感應。"
+    sentence:
+      en: "Remember to tap your card when you get on the bus."
+      zh: "上公車的時候要記得刷卡。"
+    sentencePinyin: "shàng gōng chē de shí hòu yào jì de shuā kǎ."
+
+  - id: zuo-dao
+    word:
+      en: "to ride to"
+      zh: "坐到"
+    pinyin: "zuò dào"
+    description:
+      en: "坐到 + stop = ride as far as that stop. 坐 (sit) is the everyday verb for taking transport."
+      zh: "搭車到某一站。"
+    sentence:
+      en: "It's twenty minutes from here to Taipei Main Station."
+      zh: "從這裡坐到台北車站要二十分鐘。"
+    sentencePinyin: "cóng zhè lǐ zuò dào Tái běi chē zhàn yào èr shí fēn zhōng."
+
+  - id: huan-xian
+    word:
+      en: "to change lines"
+      zh: "換線"
+    pinyin: "huàn xiàn"
+    description:
+      en: "Switch to another MRT line. Lines are usually called by color: 紅線 (red), 藍線 (blue)."
+      zh: "換搭另一條捷運線。"
+    sentence:
+      en: "Change lines at Taipei Main Station and take the blue line to City Hall."
+      zh: "在台北車站換線，坐藍線到市政府。"
+    sentencePinyin: "zài Tái běi chē zhàn huàn xiàn, zuò lán xiàn dào Shì zhèng fǔ."
+
+  - id: wang
+    word:
+      en: "toward"
+      zh: "往"
+    pinyin: "wǎng"
+    description:
+      en: "Shows direction. Platforms and buses are labeled by the last stop: 往淡水 = toward Tamsui."
+      zh: "表示方向。"
+    sentence:
+      en: "The train toward Tamsui is on platform 2."
+      zh: "往淡水的捷運在二號月台。"
+    sentencePinyin: "wǎng Dàn shuǐ de jié yùn zài èr hào yuè tái."
+
+  - id: xia-yi-zhan
+    word:
+      en: "next stop"
+      zh: "下一站"
+    pinyin: "xià yí zhàn"
+    description:
+      en: "You hear 下一站 before every stop. 一 is said yí before a fourth tone."
+      zh: "接下來的那一站。"
+    sentence:
+      en: "Is the next stop Zhongshan?"
+      zh: "下一站是中山站嗎？"
+    sentencePinyin: "xià yí zhàn shì Zhōng shān zhàn ma?"
+
+  - id: xia-che
+    word:
+      en: "to get off"
+      zh: "下車"
+    pinyin: "xià chē"
+    description:
+      en: "Get off a bus, train or car; 上車 is get on. The stop goes before it: 在中山站下車."
+      zh: "離開車子。上車是進到車子裡。"
+    sentence:
+      en: "I'm getting off at the next stop."
+      zh: "我在下一站下車。"
+    sentencePinyin: "wǒ zài xià yí zhàn xià chē."
+
+  - id: chukou
+    word:
+      en: "exit"
+      zh: "出口"
+    pinyin: "chū kǒu"
+    description:
+      en: "Big stations have numbered exits: 三號出口 (Exit 3). A handy place to meet friends."
+      zh: "出去的地方。"
+    sentence:
+      en: "Let's meet at Exit 3."
+      zh: "我們在三號出口見。"
+    sentencePinyin: "wǒ men zài sān hào chū kǒu jiàn."
+
+  - id: gongche
+    word:
+      en: "bus"
+      zh: "公車"
+    pinyin: "gōng chē"
+    description:
+      en: "City bus. Wave at the driver so the bus stops for you."
+      zh: "在城市裡跑的大車。"
+    sentence:
+      en: "Taking the bus is more convenient from here."
+      zh: "這裡坐公車比較方便。"
+    sentencePinyin: "zhè lǐ zuò gōng chē bǐ jiào fāng biàn."
+
+  - id: ji-hao-gongche
+    word:
+      en: "which bus number"
+      zh: "幾號公車"
+    pinyin: "jǐ hào gōng chē"
+    description:
+      en: "幾 asks for a number. The answer replaces it: 坐十二號公車."
+      zh: "問要坐號碼多少的公車。"
+    sentence:
+      en: "Which bus goes to the zoo?"
+      zh: "去動物園要坐幾號公車？"
+    sentencePinyin: "qù dòng wù yuán yào zuò jǐ hào gōng chē?"
+
+  - id: yao-duojiu
+    word:
+      en: "how long does it take"
+      zh: "要多久"
+    pinyin: "yào duō jiǔ"
+    description:
+      en: "Put it after the trip you're asking about: 坐捷運去要多久？"
+      zh: "問需要多長的時間。"
+    sentence:
+      en: "How long does it take to get to the airport by MRT from here?"
+      zh: "從這裡坐捷運去機場要多久？"
+    sentencePinyin: "cóng zhè lǐ zuò jié yùn qù jī chǎng yào duō jiǔ?"
+
+  - id: zuo-guo-zhan
+    word:
+      en: "to miss your stop"
+      zh: "坐過站"
+    pinyin: "zuò guò zhàn"
+    description:
+      en: "Ride past the stop you wanted. 我坐過站了 = I missed my stop."
+      zh: "太晚下車，超過要下的那一站。"
+    sentence:
+      en: "I fell asleep and missed my stop."
+      zh: "我睡著了，結果坐過站。"
+    sentencePinyin: "wǒ shuì zháo le, jié guǒ zuò guò zhàn."
+
+chat:
+  conversations:
+    - id: mrt-1-top-up
+      title:
+        en: "Topping Up"
+        zh: "悠遊卡加值"
+      messages:
+        - role: partner
+          text:
+            en: "Hello, do you need any help?"
+            zh: "你好，需要幫忙嗎？"
+          pinyin: "nǐ hǎo, xū yào bāng máng ma?"
+        - role: user
+          text:
+            en: "Hi, I'd like to top up my EasyCard."
+            zh: "你好，我的悠遊卡要加值。"
+          pinyin: "nǐ hǎo, wǒ de yōu yóu kǎ yào jiā zhí."
+        - role: partner
+          text:
+            en: "How much?"
+            zh: "要加多少？"
+          pinyin: "yào jiā duō shǎo?"
+        - role: user
+          text:
+            en: "I'd like to top up 500 dollars."
+            zh: "我要加值五百塊。"
+          pinyin: "wǒ yào jiā zhí wǔ bǎi kuài."
+        - role: partner
+          text:
+            en: "OK, there's 530 on the card now."
+            zh: "好，現在卡裡有五百三十塊。"
+          pinyin: "hǎo, xiàn zài kǎ lǐ yǒu wǔ bǎi sān shí kuài."
+        - role: user
+          text:
+            en: "Thanks. Which line goes to Ximen?"
+            zh: "謝謝。請問去西門要坐哪一線？"
+          pinyin: "xiè xie. qǐng wèn qù Xī mén yào zuò nǎ yí xiàn?"
+        - role: partner
+          text:
+            en: "Take the blue line toward Dingpu."
+            zh: "坐藍線，往頂埔的方向就對了。"
+          pinyin: "zuò lán xiàn, wǎng Dǐng pǔ de fāng xiàng jiù duì le."
+        - role: user
+          text:
+            en: "OK, got it. Thank you!"
+            zh: "好，我知道了，謝謝！"
+          pinyin: "hǎo, wǒ zhī dào le, xiè xie!"
+
+    - id: mrt-2-transfer
+      title:
+        en: "Changing Lines"
+        zh: "換線"
+      messages:
+        - role: partner
+          text:
+            en: "You look a bit lost. Where are you going?"
+            zh: "你看起來在找路，要去哪裡？"
+          pinyin: "nǐ kàn qǐ lái zài zhǎo lù, yào qù nǎ lǐ?"
+        - role: user
+          text:
+            en: "I'm going to Xiangshan. Do I need to change lines?"
+            zh: "我要去象山，要換線嗎？"
+          pinyin: "wǒ yào qù Xiàng shān, yào huàn xiàn ma?"
+        - role: partner
+          text:
+            en: "Yes. Change to the red line at Taipei Main Station."
+            zh: "要，你在台北車站換紅線。"
+          pinyin: "yào, nǐ zài Tái běi chē zhàn huàn hóng xiàn."
+        - role: user
+          text:
+            en: "Which direction?"
+            zh: "往哪個方向？"
+          pinyin: "wǎng nǎ ge fāng xiàng?"
+        - role: partner
+          text:
+            en: "Toward Xiangshan. Ride to the last stop."
+            zh: "往象山，坐到最後一站。"
+          pinyin: "wǎng Xiàng shān, zuò dào zuì hòu yí zhàn."
+        - role: user
+          text:
+            en: "How long does it take from Taipei Main Station?"
+            zh: "從台北車站坐過去要多久？"
+          pinyin: "cóng Tái běi chē zhàn zuò guò qù yào duō jiǔ?"
+        - role: partner
+          text:
+            en: "About fifteen minutes, I think."
+            zh: "大概十五分鐘吧。"
+          pinyin: "dà gài shí wǔ fēn zhōng ba."
+        - role: user
+          text:
+            en: "OK, thank you!"
+            zh: "好，謝謝你！"
+          pinyin: "hǎo, xiè xie nǐ!"
+
+    - id: mrt-3-bus
+      title:
+        en: "Taking the Bus"
+        zh: "搭公車"
+      messages:
+        - role: partner
+          text:
+            en: "Are you waiting for the bus too?"
+            zh: "你也在等公車嗎？"
+          pinyin: "nǐ yě zài děng gōng chē ma?"
+        - role: user
+          text:
+            en: "Yes. Which bus goes to the train station?"
+            zh: "對。請問去火車站要坐幾號公車？"
+          pinyin: "duì. qǐng wèn qù huǒ chē zhàn yào zuò jǐ hào gōng chē?"
+        - role: partner
+          text:
+            en: "Number 12 is fine. Just wait here."
+            zh: "坐十二號就可以了，在這裡等就好。"
+          pinyin: "zuò shí èr hào jiù kě yǐ le, zài zhè lǐ děng jiù hǎo."
+        - role: user
+          text:
+            en: "How long does it take by bus?"
+            zh: "坐公車過去要多久？"
+          pinyin: "zuò gōng chē guò qù yào duō jiǔ?"
+        - role: partner
+          text:
+            en: "About twenty minutes if there's no traffic."
+            zh: "不塞車的話，大概二十分鐘。"
+          pinyin: "bù sāi chē de huà, dà gài èr shí fēn zhōng."
+        - role: user
+          text:
+            en: "OK. Do I tap my card when I get on?"
+            zh: "好。上車要刷卡嗎？"
+          pinyin: "hǎo. shàng chē yào shuā kǎ ma?"
+        - role: partner
+          text:
+            en: "Yes. Tap once when you get on and again when you get off."
+            zh: "對，上車刷一次，下車再刷一次。"
+          pinyin: "duì, shàng chē shuā yí cì, xià chē zài shuā yí cì."
+        - role: user
+          text:
+            en: "Got it, thanks!"
+            zh: "了解，謝謝！"
+          pinyin: "liǎo jiě, xiè xie!"
+
+quiz:
+  questionsPerRound: 5
+  xpReward: 20
+  # Fill-in-the-blank questions. Each answer must equal a word.zh above.
+  cloze:
+    - sentence: "我的___快沒錢了，要去加值。"
+      options: ["悠遊卡", "捷運站", "出口", "公車"]
+      answer: "悠遊卡"
+      explain:
+        en: "The card you top up for the MRT and buses is the 悠遊卡 (EasyCard)."
+    - sentence: "卡裡沒錢了，我要___一千塊。"
+      options: ["加值", "刷卡", "換線", "下車"]
+      answer: "加值"
+      explain:
+        en: "Adding money to a card is 加值; the amount comes after it."
+    - sentence: "去象山要在台北車站___，改坐紅線。"
+      options: ["換線", "下車", "加值", "坐過站"]
+      answer: "換線"
+      explain:
+        en: "Switching to the red line means changing lines: 換線."
+    - sentence: "A：你在哪裡下車？ B：我在___下車。"
+      options: ["下一站", "出口", "捷運", "公車"]
+      answer: "下一站"
+      explain:
+        en: "You get off at a stop, so the answer is 下一站 (the next stop)."
+    - sentence: "我們在捷運站二號___見面。"
+      options: ["出口", "下一站", "悠遊卡", "公車"]
+      answer: "出口"
+      explain:
+        en: "二號出口 is Exit 2, a common meeting point."
+    - sentence: "我一直看手機，結果___了。"
+      options: ["坐過站", "換線", "加值", "刷卡"]
+      answer: "坐過站"
+      explain:
+        en: "Looking at your phone too long makes you miss your stop: 坐過站."
+    - sentence: "從這裡坐捷運去機場___？"
+      options: ["要多久", "幾號公車", "下一站", "出口"]
+      answer: "要多久"
+      explain:
+        en: "Asking about travel time: 要多久 goes at the end."
+    - sentence: "上公車的時候要記得___。"
+      options: ["刷卡", "加值", "出口", "換線"]
+      answer: "刷卡"
+      explain:
+        en: "When you board a bus you tap your card: 刷卡."

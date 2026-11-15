@@ -1,0 +1,403 @@
+# Chapter: Taiwan Mandarin Beginner 4 - At the Convenience Store
+# Heating food, bags, paying, receipts (載具, 統編), paying bills and
+# sending parcels: the questions Taiwanese clerks ask every day.
+meta:
+  id: zh-convenience-store
+  title:
+    en: "At the Convenience Store"
+    ja: "コンビニで"
+    zh: "在便利商店"
+  description:
+    en: "Heat up lunch, answer the clerk's questions about bags and receipts, pay bills and send a parcel."
+    ja: "お弁当を温め、袋やレシートの質問に答え、支払いや荷物の発送をします。"
+    zh: "微波便當、回答店員問的袋子和發票，繳費、寄包裹。"
+  icon: "storefront"
+  order: 4
+  level: beginner
+
+words:
+  - id: bianli-shangdian
+    word:
+      en: "convenience store"
+      zh: "便利商店"
+    pinyin: "biàn lì shāng diàn"
+    description:
+      en: "Open 24 hours and on almost every corner. People also say 超商 or just the store's name."
+      zh: "二十四小時都開的小商店。"
+    sentence:
+      en: "There's a convenience store right downstairs from my place."
+      zh: "我家樓下就有一家便利商店。"
+    sentencePinyin: "wǒ jiā lóu xià jiù yǒu yì jiā biàn lì shāng diàn."
+
+  - id: you-mai
+    word:
+      en: "do you sell"
+      zh: "有賣"
+    pinyin: "yǒu mài"
+    description:
+      en: "Ask if a shop has something: 你們有賣 + item + 嗎？ Careful: 賣 mài (sell) and 買 mǎi (buy) differ only in tone."
+      zh: "問店裡有沒有某樣東西。"
+    sentence:
+      en: "Excuse me, do you sell umbrellas?"
+      zh: "請問你們有賣雨傘嗎？"
+    sentencePinyin: "qǐng wèn nǐ men yǒu mài yǔ sǎn ma?"
+
+  - id: weibo
+    word:
+      en: "to microwave"
+      zh: "微波"
+    pinyin: "wéi bō"
+    description:
+      en: "Used as a verb. In Taiwan 微 is read wéi. When you buy a lunch box the clerk asks 要微波嗎？"
+      zh: "用微波爐把食物弄熱。"
+    sentence:
+      en: "Could you microwave this lunch box for me?"
+      zh: "這個便當可以幫我微波嗎？"
+    sentencePinyin: "zhè ge biàn dāng kě yǐ bāng wǒ wéi bō ma?"
+
+  - id: jiare
+    word:
+      en: "to heat up"
+      zh: "加熱"
+    pinyin: "jiā rè"
+    description:
+      en: "Heat up food or drinks. A general word you can use anywhere."
+      zh: "讓東西變熱。"
+    sentence:
+      en: "Can this bottle of milk be heated?"
+      zh: "這瓶牛奶可以加熱嗎？"
+    sentencePinyin: "zhè píng niú nǎi kě yǐ jiā rè ma?"
+
+  - id: daizi
+    word:
+      en: "bag"
+      zh: "袋子"
+    pinyin: "dài zi"
+    description:
+      en: "Plastic bags cost a little money in Taiwan, so clerks ask 需要袋子嗎？"
+      zh: "裝東西用的袋。"
+    sentence:
+      en: "How much is a bag?"
+      zh: "一個袋子多少錢？"
+    sentencePinyin: "yí ge dài zi duō shǎo qián?"
+
+  - id: bu-yong
+    word:
+      en: "no need"
+      zh: "不用"
+    pinyin: "bú yòng"
+    description:
+      en: "The polite way to turn down an offer: 不用，謝謝. ✗ 不要 can sound blunt here."
+      zh: "表示不需要。"
+    sentence:
+      en: "I don't need a bag, thanks."
+      zh: "不用袋子，謝謝。"
+    sentencePinyin: "bú yòng dài zi, xiè xie."
+
+  - id: fapiao
+    word:
+      en: "receipt"
+      zh: "發票"
+    pinyin: "fā piào"
+    description:
+      en: "Taiwanese receipts double as lottery tickets, drawn every two months. That's why people keep them."
+      zh: "買東西後拿到的單子，可以對獎。"
+    sentence:
+      en: "Please give me the receipt. I want to check the lottery."
+      zh: "請給我發票，我要對獎。"
+    sentencePinyin: "qǐng gěi wǒ fā piào, wǒ yào duì jiǎng."
+
+  - id: zaiju
+    word:
+      en: "e-receipt barcode"
+      zh: "載具"
+    pinyin: "zài jù"
+    description:
+      en: "A barcode on your phone that saves receipts electronically. The clerk asks 有載具嗎？ — show the barcode or say 沒有."
+      zh: "手機上存電子發票的條碼。"
+    sentence:
+      en: "I have an e-receipt barcode. Please scan this one."
+      zh: "我有載具，請幫我掃這個條碼。"
+    sentencePinyin: "wǒ yǒu zài jù, qǐng bāng wǒ sǎo zhè ge tiáo mǎ."
+
+  - id: tongyi-bianhao
+    word:
+      en: "company tax ID"
+      zh: "統一編號"
+    pinyin: "tǒng yī biān hào"
+    description:
+      en: "A company's 8-digit tax number, often shortened to 統編. Say 我要打統編 when your company pays you back."
+      zh: "公司的號碼，買東西報帳要用。"
+    sentence:
+      en: "I need the company tax ID on the receipt."
+      zh: "我要打統一編號。"
+    sentencePinyin: "wǒ yào dǎ tǒng yī biān hào."
+
+  - id: huiyuan
+    word:
+      en: "member"
+      zh: "會員"
+    pinyin: "huì yuán"
+    description:
+      en: "Store membership. Clerks often ask 有會員嗎？ If not, just say 沒有."
+      zh: "加入店家的人，可以集點。"
+    sentence:
+      en: "I'm not a member, thanks."
+      zh: "我沒有會員，謝謝。"
+    sentencePinyin: "wǒ méi yǒu huì yuán, xiè xie."
+
+  - id: dazhe
+    word:
+      en: "discount"
+      zh: "打折"
+    pinyin: "dǎ zhé"
+    description:
+      en: "On sale. The number shows what you pay, not what you save: 八折 = pay 80%, i.e. 20% off."
+      zh: "價錢比原來便宜。"
+    sentence:
+      en: "Are drinks on sale today?"
+      zh: "今天飲料有打折嗎？"
+    sentencePinyin: "jīn tiān yǐn liào yǒu dǎ zhé ma?"
+
+  - id: fuxian
+    word:
+      en: "to pay cash"
+      zh: "付現"
+    pinyin: "fù xiàn"
+    description:
+      en: "Pay in cash. The other choices are 刷卡 (card) and 用悠遊卡 (EasyCard)."
+      zh: "用現金付錢。"
+    sentence:
+      en: "I'll pay cash. Here's a hundred."
+      zh: "我付現，給你一百。"
+    sentencePinyin: "wǒ fù xiàn, gěi nǐ yì bǎi."
+
+  - id: zhaoqian
+    word:
+      en: "to give change"
+      zh: "找錢"
+    pinyin: "zhǎo qián"
+    description:
+      en: "When paying, you'll hear 找你三十塊 (here's thirty back)."
+      zh: "把多的錢還給客人。"
+    sentence:
+      en: "He forgot to give me my change."
+      zh: "他忘了找錢給我。"
+    sentencePinyin: "tā wàng le zhǎo qián gěi wǒ."
+
+  - id: jiaofei
+    word:
+      en: "to pay a bill"
+      zh: "繳費"
+    pinyin: "jiǎo fèi"
+    description:
+      en: "You can pay phone, water and even parking bills at the counter. Just hand over the bill."
+      zh: "付電話、水電等等的費用。"
+    sentence:
+      en: "Can I pay my bill here?"
+      zh: "我想在這裡繳費，可以嗎？"
+    sentencePinyin: "wǒ xiǎng zài zhè lǐ jiǎo fèi, kě yǐ ma?"
+
+  - id: ji-baoguo
+    word:
+      en: "to send a parcel"
+      zh: "寄包裹"
+    pinyin: "jì bāo guǒ"
+    description:
+      en: "Convenience stores send parcels around Taiwan and hold online orders for pickup (取貨)."
+      zh: "把東西寄給別人。"
+    sentence:
+      en: "I'd like to send a parcel to Taichung."
+      zh: "我想寄包裹到台中。"
+    sentencePinyin: "wǒ xiǎng jì bāo guǒ dào Tái zhōng."
+
+chat:
+  conversations:
+    - id: store-1-lunch
+      title:
+        en: "Buying Lunch"
+        zh: "買午餐"
+      messages:
+        - role: partner
+          text:
+            en: "Welcome!"
+            zh: "歡迎光臨！"
+          pinyin: "huān yíng guāng lín!"
+        - role: user
+          text:
+            en: "Hi, could you microwave this lunch box for me?"
+            zh: "你好，這個便當可以幫我微波嗎？"
+          pinyin: "nǐ hǎo, zhè ge biàn dāng kě yǐ bāng wǒ wéi bō ma?"
+        - role: partner
+          text:
+            en: "Sure, about a minute. Anything else?"
+            zh: "好，大概一分鐘。還需要什麼嗎？"
+          pinyin: "hǎo, dà gài yì fēn zhōng. hái xū yào shén me ma?"
+        - role: user
+          text:
+            en: "And this bottle of green tea."
+            zh: "還有這瓶綠茶。"
+          pinyin: "hái yǒu zhè píng lǜ chá."
+        - role: partner
+          text:
+            en: "That's 105 altogether. Do you need a bag?"
+            zh: "一共一百零五塊。需要袋子嗎？"
+          pinyin: "yí gòng yì bǎi líng wǔ kuài. xū yào dài zi ma?"
+        - role: user
+          text:
+            en: "No need, thanks. I'll pay with my EasyCard."
+            zh: "不用，謝謝。我用悠遊卡付。"
+          pinyin: "bú yòng, xiè xie. wǒ yòng yōu yóu kǎ fù."
+        - role: partner
+          text:
+            en: "OK, tap here please. Do you have an e-receipt barcode?"
+            zh: "好，請感應。有載具嗎？"
+          pinyin: "hǎo, qǐng gǎn yìng. yǒu zài jù ma?"
+        - role: user
+          text:
+            en: "Yes, here it is."
+            zh: "有，在這裡。"
+          pinyin: "yǒu, zài zhè lǐ."
+
+    - id: store-2-receipt
+      title:
+        en: "Coffee for Work"
+        zh: "幫公司買咖啡"
+      messages:
+        - role: partner
+          text:
+            en: "Hi, are you a member?"
+            zh: "你好，有會員嗎？"
+          pinyin: "nǐ hǎo, yǒu huì yuán ma?"
+        - role: user
+          text:
+            en: "No. I need the company tax ID on the receipt."
+            zh: "沒有。我要打統一編號。"
+          pinyin: "méi yǒu. wǒ yào dǎ tǒng yī biān hào."
+        - role: partner
+          text:
+            en: "OK, what's the number?"
+            zh: "好，請說統編。"
+          pinyin: "hǎo, qǐng shuō tǒng biān."
+        - role: user
+          text:
+            en: "Can I write it down for you?"
+            zh: "我寫給你看，好嗎？"
+          pinyin: "wǒ xiě gěi nǐ kàn, hǎo ma?"
+        - role: partner
+          text:
+            en: "No problem. By the way, the second coffee is half price."
+            zh: "沒問題。這些咖啡第二杯半價喔。"
+          pinyin: "méi wèn tí. zhè xiē kā fēi dì èr bēi bàn jià o."
+        - role: user
+          text:
+            en: "There's a discount? Then I'll take two."
+            zh: "有打折喔？那我要兩杯。"
+          pinyin: "yǒu dǎ zhé o? nà wǒ yào liǎng bēi."
+        - role: partner
+          text:
+            en: "OK, 90 altogether. Cash or card?"
+            zh: "好，一共九十塊。付現還是刷卡？"
+          pinyin: "hǎo, yí gòng jiǔ shí kuài. fù xiàn hái shì shuā kǎ?"
+        - role: user
+          text:
+            en: "Cash. Here's a hundred."
+            zh: "付現。給你一百。"
+          pinyin: "fù xiàn. gěi nǐ yì bǎi."
+        - role: partner
+          text:
+            en: "Here's ten back, and this is your receipt."
+            zh: "找你十塊，這是你的發票。"
+          pinyin: "zhǎo nǐ shí kuài, zhè shì nǐ de fā piào."
+
+    - id: store-3-parcel
+      title:
+        en: "Sending a Parcel"
+        zh: "寄包裹"
+      messages:
+        - role: partner
+          text:
+            en: "Hi, what can I do for you?"
+            zh: "你好，需要什麼？"
+          pinyin: "nǐ hǎo, xū yào shén me?"
+        - role: user
+          text:
+            en: "Hi, I'd like to send a parcel to Kaohsiung."
+            zh: "你好，我想寄包裹到高雄。"
+          pinyin: "nǐ hǎo, wǒ xiǎng jì bāo guǒ dào Gāo xióng."
+        - role: partner
+          text:
+            en: "OK. Please fill in the details on the machine first, then bring the slip over."
+            zh: "好，請先在機器上填資料，再拿單子過來。"
+          pinyin: "hǎo, qǐng xiān zài jī qì shàng tián zī liào, zài ná dān zi guò lái."
+        - role: user
+          text:
+            en: "OK. I also want to pay a bill. Can I pay for both together?"
+            zh: "好。我也想繳費，可以一起結嗎？"
+          pinyin: "hǎo. wǒ yě xiǎng jiǎo fèi, kě yǐ yì qǐ jié ma?"
+        - role: partner
+          text:
+            en: "Sure, give me the bill."
+            zh: "可以，帳單給我。"
+          pinyin: "kě yǐ, zhàng dān gěi wǒ."
+        - role: user
+          text:
+            en: "Here it is. Oh, and do you sell tape?"
+            zh: "在這裡。對了，你們有賣膠帶嗎？"
+          pinyin: "zài zhè lǐ. duì le, nǐ men yǒu mài jiāo dài ma?"
+        - role: partner
+          text:
+            en: "Yes, in the second row at the back."
+            zh: "有，在後面第二排。"
+          pinyin: "yǒu, zài hòu miàn dì èr pái."
+        - role: user
+          text:
+            en: "OK, thanks!"
+            zh: "好，謝謝！"
+          pinyin: "hǎo, xiè xie!"
+
+quiz:
+  questionsPerRound: 5
+  xpReward: 20
+  # Fill-in-the-blank questions. Each answer must equal a word.zh above.
+  cloze:
+    - sentence: "這個便當要___嗎？大概一分鐘就好。"
+      options: ["微波", "寄包裹", "繳費", "打折"]
+      answer: "微波"
+      explain:
+        en: "Lunch boxes get heated in the microwave: 微波."
+    - sentence: "A：需要袋子嗎？ B：___，我有帶。"
+      options: ["不用", "有賣", "付現", "會員"]
+      answer: "不用"
+      explain:
+        en: "You brought your own bag, so politely say no: 不用."
+    - sentence: "請問你們___雨傘嗎？"
+      options: ["有賣", "不用", "加熱", "找錢"]
+      answer: "有賣"
+      explain:
+        en: "Asking whether a shop sells something: 有賣 + item + 嗎."
+    - sentence: "公司會幫我出錢，我要打___。"
+      options: ["統一編號", "載具", "會員", "袋子"]
+      answer: "統一編號"
+      explain:
+        en: "When your company pays, the receipt needs its tax ID: 統一編號."
+    - sentence: "A：付現還是刷卡？ B：___，給你五百。"
+      options: ["付現", "打折", "繳費", "微波"]
+      answer: "付現"
+      explain:
+        en: "You're handing over 500 in cash, so: 付現."
+    - sentence: "電話費可以在便利商店___。"
+      options: ["繳費", "加熱", "打折", "找錢"]
+      answer: "繳費"
+      explain:
+        en: "Paying a bill is 繳費."
+    - sentence: "這瓶飲料今天有___，買兩瓶比較便宜。"
+      options: ["打折", "付現", "發票", "微波"]
+      answer: "打折"
+      explain:
+        en: "Cheaper today means it's on sale: 打折."
+    - sentence: "我想___到高雄，要多少錢？"
+      options: ["寄包裹", "繳費", "微波", "加熱"]
+      answer: "寄包裹"
+      explain:
+        en: "Sending something to another city: 寄包裹."

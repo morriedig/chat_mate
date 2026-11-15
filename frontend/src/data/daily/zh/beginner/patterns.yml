@@ -1,0 +1,617 @@
+level: beginner
+patterns:
+  - id: wo-xiang-yao
+    pack: daily
+    pattern: "我想要……"
+    pinyin: "wǒ xiǎng yào ……"
+    meaning: "I'd like … (a polite way to ask for something)"
+    when: "Ordering, shopping or asking for something. Softer than 我要. Follow it with a noun or a verb."
+    examples:
+      - zh: "我想要一杯冰美式。"
+        pinyin: "wǒ xiǎng yào yì bēi bīng měi shì."
+        en: "I'd like an iced Americano."
+      - zh: "我想要換一個大一點的。"
+        pinyin: "wǒ xiǎng yào huàn yí ge dà yì diǎn de."
+        en: "I'd like to swap it for a bigger one."
+    choice:
+      situation: "At a café, you want one hot latte."
+      options:
+        - "我想要一杯熱拿鐵。"
+        - "我想要一熱拿鐵。"
+        - "熱拿鐵我想要一個杯。"
+      answer: 0
+      explain: "Drinks need the measure word 杯 between the number and the drink: 一杯熱拿鐵."
+    task: "Use this pattern: what would you like to eat tonight?"
+    match: ["我想要"]
+    mistake:
+      wrong: "我想要一咖啡。"
+      right: "我想要一杯咖啡。"
+      why: "A number can't go straight before a noun. Drinks need the measure word 杯: 一杯咖啡."
+
+  - id: qing-wen
+    pack: daily
+    pattern: "請問……？"
+    pinyin: "qǐng wèn ……?"
+    meaning: "Excuse me, may I ask …?"
+    when: "Before any question to a stranger, a clerk or a coworker you don't know well. Polite but not stiff."
+    examples:
+      - zh: "請問這裡可以坐嗎？"
+        pinyin: "qǐng wèn zhè lǐ kě yǐ zuò ma?"
+        en: "Excuse me, can I sit here?"
+      - zh: "請問你們幾點關門？"
+        pinyin: "qǐng wèn nǐ men jǐ diǎn guān mén?"
+        en: "Excuse me, what time do you close?"
+    choice:
+      situation: "You want to ask a stranger where the restroom is."
+      options:
+        - "請問，洗手間在哪裡？"
+        - "請問我，洗手間在哪裡？"
+        - "洗手間在哪裡請問？"
+      answer: 0
+      explain: "請問 already means 'may I ask'. It goes at the start, with nothing after it."
+    task: "Use this pattern to ask a shop clerk a question."
+    match: ["請問"]
+    mistake:
+      wrong: "請問我一個問題。"
+      right: "我可以問你一個問題嗎？"
+      why: "請問 means 'may I ask', so 請問我 sounds like 'please ask me'. For 'Can I ask you something?' say 我可以問你一個問題嗎？"
+
+  - id: keyi-ma
+    pack: daily
+    pattern: "……可以……嗎？"
+    pinyin: "…… kě yǐ …… ma?"
+    meaning: "Can I / could you …? (asking permission)"
+    when: "Asking whether something is allowed: sitting somewhere, paying by card, trying something on."
+    examples:
+      - zh: "我可以刷卡嗎？"
+        pinyin: "wǒ kě yǐ shuā kǎ ma?"
+        en: "Can I pay by card?"
+      - zh: "這件衣服可以試穿嗎？"
+        pinyin: "zhè jiàn yī fú kě yǐ shì chuān ma?"
+        en: "Can I try this on?"
+    choice:
+      situation: "You want to ask the waiter if you can sit by the window."
+      options:
+        - "我可以坐窗戶旁邊嗎？"
+        - "我可以坐旁邊窗戶嗎？"
+        - "可以我坐窗戶旁邊嗎？"
+      answer: 0
+      explain: "The subject comes first (我可以…), and in place words the reference thing comes first: 窗戶旁邊 = next to the window."
+    task: "Use this pattern to ask permission for something at work or in a shop."
+    match: ["可以", "嗎"]
+    mistake:
+      wrong: "可以我用你的筆嗎？"
+      right: "我可以用你的筆嗎？"
+      why: "The subject goes before 可以: 我可以…嗎？ Don't copy the English 'Can I…' word order."
+
+  - id: zai-nali
+    pack: daily
+    pattern: "……在哪裡？"
+    pinyin: "…… zài nǎ lǐ?"
+    meaning: "Where is …?"
+    when: "Looking for a place or a thing. The thing goes first and 在哪裡 last."
+    examples:
+      - zh: "請問廁所在哪裡？"
+        pinyin: "qǐng wèn cè suǒ zài nǎ lǐ?"
+        en: "Excuse me, where's the toilet?"
+      - zh: "你的公司在哪裡？"
+        pinyin: "nǐ de gōng sī zài nǎ lǐ?"
+        en: "Where's your office?"
+    choice:
+      situation: "You're looking for the MRT station."
+      options:
+        - "捷運站在哪裡？"
+        - "哪裡是捷運站在？"
+        - "在哪裡捷運站？"
+      answer: 0
+      explain: "Question words stay where the answer would be: 捷運站在哪裡？ (The station is at ___.)"
+    task: "Use this pattern to ask where something is in your neighborhood."
+    match: ["在哪裡"]
+    mistake:
+      wrong: "在哪裡是銀行？"
+      right: "銀行在哪裡？"
+      why: "Chinese doesn't move question words to the front. Keep the normal order and put 在哪裡 where the answer goes."
+
+  - id: duoshao-qian
+    pack: daily
+    pattern: "……多少錢？"
+    pinyin: "…… duō shǎo qián?"
+    meaning: "How much is …?"
+    when: "Asking a price. The item goes first. Prices are usually said with 塊."
+    examples:
+      - zh: "這個便當多少錢？"
+        pinyin: "zhè ge biàn dāng duō shǎo qián?"
+        en: "How much is this lunch box?"
+      - zh: "一張票多少錢？"
+        pinyin: "yì zhāng piào duō shǎo qián?"
+        en: "How much is one ticket?"
+    choice:
+      situation: "You want to know the price of a cup of bubble tea."
+      options:
+        - "一杯珍奶多少錢？"
+        - "多少錢一個珍奶杯？"
+        - "珍奶是多少錢嗎？"
+      answer: 0
+      explain: "Item first, then 多少錢. 多少錢 is already a question, so there's no 嗎."
+    task: "Use this pattern to ask the price of something you bought this week."
+    match: ["多少錢"]
+    mistake:
+      wrong: "這個多少錢嗎？"
+      right: "這個多少錢？"
+      why: "多少 already makes it a question. Don't add 嗎 to a sentence with a question word."
+
+  - id: you-meiyou
+    pack: daily
+    pattern: "有沒有……？"
+    pinyin: "yǒu méi yǒu ……?"
+    meaning: "Is there / do you have …?"
+    when: "Asking if something exists or if a shop has it. Means the same as …有…嗎？ and is very common in speech."
+    examples:
+      - zh: "這附近有沒有便利商店？"
+        pinyin: "zhè fù jìn yǒu méi yǒu biàn lì shāng diàn?"
+        en: "Is there a convenience store around here?"
+      - zh: "你們有沒有小一點的？"
+        pinyin: "nǐ men yǒu méi yǒu xiǎo yì diǎn de?"
+        en: "Do you have a smaller one?"
+    choice:
+      situation: "You want to ask a clerk if they have umbrellas."
+      options:
+        - "你們有沒有雨傘？"
+        - "你們有沒有雨傘嗎？"
+        - "你們沒有有雨傘？"
+      answer: 0
+      explain: "有沒有 is already a yes/no question, so don't add 嗎."
+    task: "Use this pattern to ask if a place near you has something."
+    match: ["有沒有"]
+    mistake:
+      wrong: "你有沒有時間嗎？"
+      right: "你有沒有時間？ / 你有時間嗎？"
+      why: "Use either 有沒有 or 嗎, never both."
+
+  - id: liang-ge
+    pack: grammar
+    pattern: "兩個……"
+    pinyin: "liǎng ge ……"
+    meaning: "two … (number + measure word + noun)"
+    when: "Between a number (or 這, 那, 幾) and a noun you need a measure word. 個 is the general one; use it when you're not sure. For two things say 兩, not 二."
+    examples:
+      - zh: "我有兩個哥哥。"
+        pinyin: "wǒ yǒu liǎng ge gē ge."
+        en: "I have two older brothers."
+      - zh: "我們組有兩個新同事。"
+        pinyin: "wǒ men zǔ yǒu liǎng ge xīn tóng shì."
+        en: "Our team has two new coworkers."
+    choice:
+      situation: "You want to say there are two people on your team."
+      options:
+        - "我們組有兩個人。"
+        - "我們組有二個人。"
+        - "我們組有兩人個。"
+      answer: 0
+      explain: "Before a measure word, 2 is 兩, not 二, and the measure word comes before the noun."
+    task: "Use 兩個 (or another number + 個) to say how many people are in your family."
+    match: ["個"]
+    mistake:
+      wrong: "我有二個問題。"
+      right: "我有兩個問題。"
+      why: "When counting things, 2 is 兩 before a measure word. 二 is for counting (一、二、三) and inside bigger numbers like 十二."
+
+  - id: le-done
+    pack: grammar
+    pattern: "……了"
+    pinyin: "…… le"
+    meaning: "did … / has changed (了 marks a finished action or a new situation)"
+    when: "Saying what happened or that something has changed. It is not a past tense, so it doesn't go on every past sentence."
+    examples:
+      - zh: "我吃飽了。"
+        pinyin: "wǒ chī bǎo le."
+        en: "I'm full."
+      - zh: "我昨天買了一支新手機。"
+        pinyin: "wǒ zuó tiān mǎi le yì zhī xīn shǒu jī."
+        en: "I bought a new phone yesterday."
+    choice:
+      situation: "A friend asks if you've eaten. Tell them you already have."
+      options:
+        - "我吃過飯了。"
+        - "我已經吃飯。"
+        - "我吃飯已經。"
+      answer: 0
+      explain: "A finished action needs 了 at the end; 已經 alone doesn't do the job. 吃過飯了 is how people say 'I've eaten'."
+    task: "Use 了 to say one thing you did this morning."
+    match: ["了"]
+    mistake:
+      wrong: "我以前常常去了夜市。"
+      right: "我以前常常去夜市。"
+      why: "了 is not a past tense. Past habits (with 常常 or 每天) don't take 了."
+
+  - id: guo-experience
+    pack: grammar
+    pattern: "……過……"
+    pinyin: "…… guò ……"
+    meaning: "have (ever) done … (experience)"
+    when: "Talking about experiences, things you've done at least once. The negative is 沒…過."
+    examples:
+      - zh: "我去過墾丁兩次。"
+        pinyin: "wǒ qù guò Kěn dīng liǎng cì."
+        en: "I've been to Kenting twice."
+      - zh: "你吃過臭豆腐嗎？"
+        pinyin: "nǐ chī guò chòu dòu fǔ ma?"
+        en: "Have you ever tried stinky tofu?"
+    choice:
+      situation: "Someone asks if you've been to Tainan. You haven't."
+      options:
+        - "我沒去過台南。"
+        - "我不去過台南。"
+        - "我沒去台南過。"
+      answer: 0
+      explain: "Experience is negated with 沒, and 過 sits right after the verb: 沒去過."
+    task: "Use 過 to say something you've tried in Taiwan."
+    match: ["過"]
+    mistake:
+      wrong: "我不吃過芒果冰。"
+      right: "我沒吃過芒果冰。"
+      why: "Use 沒 (not 不) with 過. 不 is for habits and the future."
+
+  - id: hai-mei
+    pack: grammar
+    pattern: "還沒……"
+    pinyin: "hái méi ……"
+    meaning: "not … yet"
+    when: "Something hasn't happened yet but probably will. Don't put 了 after the verb."
+    examples:
+      - zh: "我還沒吃午餐。"
+        pinyin: "wǒ hái méi chī wǔ cān."
+        en: "I haven't had lunch yet."
+      - zh: "報告我還沒寫完。"
+        pinyin: "bào gào wǒ hái méi xiě wán."
+        en: "I haven't finished the report yet."
+    choice:
+      situation: "Your coworker asks if you've finished the report. You haven't."
+      options:
+        - "還沒寫完。"
+        - "還沒寫完了。"
+        - "不寫完了。"
+      answer: 0
+      explain: "還沒 already means 'not yet'; don't add 了 to it."
+    task: "Use this pattern to say something you haven't done yet today."
+    match: ["還沒"]
+    mistake:
+      wrong: "我還沒吃了。"
+      right: "我還沒吃。"
+      why: "還沒 + verb never takes 了: the action hasn't happened, and 了 marks things that have."
+
+  - id: yao-qu
+    pack: daily
+    pattern: "我要去……"
+    pinyin: "wǒ yào qù ……"
+    meaning: "I'm going to (a place, or to do something)"
+    when: "Plans for later today or soon. The place or activity goes right after 去."
+    examples:
+      - zh: "我下班要去健身房。"
+        pinyin: "wǒ xià bān yào qù jiàn shēn fáng."
+        en: "I'm going to the gym after work."
+      - zh: "我要去郵局寄包裹。"
+        pinyin: "wǒ yào qù yóu jú jì bāo guǒ."
+        en: "I'm going to the post office to send a parcel."
+    choice:
+      situation: "Tell your friend you're going to the night market tonight."
+      options:
+        - "我今天晚上要去夜市。"
+        - "我要去今天晚上夜市。"
+        - "今天晚上我要夜市去。"
+      answer: 0
+      explain: "Time words go before the verb, and the place comes right after 去."
+    task: "Use this pattern to say where you're going after work or class."
+    match: ["要去"]
+    mistake:
+      wrong: "我要去夜市今天晚上。"
+      right: "我今天晚上要去夜市。"
+      why: "Time words like 今天晚上 go near the front, before the verb, not at the end as in English."
+
+  - id: yinwei-suoyi
+    pack: reasons
+    pattern: "因為……，所以……"
+    pinyin: "yīn wèi ……, suǒ yǐ ……"
+    meaning: "because …, so …"
+    when: "Giving a reason and its result. Chinese often uses both words together, unlike English."
+    examples:
+      - zh: "因為下雨，所以我坐計程車。"
+        pinyin: "yīn wèi xià yǔ, suǒ yǐ wǒ zuò jì chéng chē."
+        en: "It was raining, so I took a taxi."
+      - zh: "因為明天要早起，所以我想早點睡。"
+        pinyin: "yīn wèi míng tiān yào zǎo qǐ, suǒ yǐ wǒ xiǎng zǎo diǎn shuì."
+        en: "I have to get up early tomorrow, so I want to go to bed early."
+    choice:
+      situation: "Explain that you're late because of traffic."
+      options:
+        - "因為塞車，所以我遲到了。"
+        - "所以塞車，因為我遲到了。"
+        - "我遲到了因為，塞車。"
+      answer: 0
+      explain: "因為 introduces the reason first, and 所以 the result second."
+    task: "Use this pattern to explain why you're learning Chinese."
+    match: ["因為", "所以"]
+    mistake:
+      wrong: "我遲到了，所以因為塞車。"
+      right: "因為塞車，所以我遲到了。"
+      why: "The reason (因為…) usually comes first and the result (所以…) second."
+
+  - id: bi
+    pack: grammar
+    pattern: "A 比 B ……"
+    pinyin: "A bǐ B ……"
+    meaning: "A is more … than B"
+    when: "Comparing two things. The adjective comes last, with no 很 in front of it."
+    examples:
+      - zh: "捷運比公車快。"
+        pinyin: "jié yùn bǐ gōng chē kuài."
+        en: "The MRT is faster than the bus."
+      - zh: "台中比台北便宜一點。"
+        pinyin: "Tái zhōng bǐ Tái běi pián yí yì diǎn."
+        en: "Taichung is a bit cheaper than Taipei."
+    choice:
+      situation: "Say that today is hotter than yesterday."
+      options:
+        - "今天比昨天熱。"
+        - "今天比昨天很熱。"
+        - "今天熱比昨天。"
+      answer: 0
+      explain: "In a 比 sentence the adjective stands alone at the end; 很 can't go before it."
+    task: "Use 比 to compare two cities or two foods you know."
+    match: ["比"]
+    mistake:
+      wrong: "我哥哥比我很高。"
+      right: "我哥哥比我高。"
+      why: "Don't put 很 in a 比 comparison. For 'much taller', add 很多 after it: 比我高很多."
+
+  - id: wo-hui
+    pack: daily
+    pattern: "我會……"
+    pinyin: "wǒ huì ……"
+    meaning: "I can … (a skill I learned)"
+    when: "Skills you learned: languages, swimming, driving, cooking. Permission is 可以; being able to under the circumstances is 能."
+    examples:
+      - zh: "我會騎機車。"
+        pinyin: "wǒ huì qí jī chē."
+        en: "I can ride a scooter."
+      - zh: "我會說一點台語。"
+        pinyin: "wǒ huì shuō yì diǎn Tái yǔ."
+        en: "I can speak a little Taiwanese."
+    choice:
+      situation: "Tell someone you can cook a few Taiwanese dishes."
+      options:
+        - "我會煮幾道台灣菜。"
+        - "我可以煮幾道台灣菜。"
+        - "我是會煮幾道台灣菜的嗎。"
+      answer: 0
+      explain: "Cooking is a learned skill, so use 會. 可以 sounds like you're offering or asking permission."
+    task: "Use this pattern to say one skill you have."
+    match: ["會"]
+    mistake:
+      wrong: "我可以說中文一點。"
+      right: "我會說一點中文。"
+      why: "Speaking a language is a learned skill, so use 會. Also, 一點 goes before the noun."
+
+  - id: wo-xihuan
+    pack: smalltalk
+    pattern: "我喜歡……"
+    pinyin: "wǒ xǐ huān ……"
+    meaning: "I like …"
+    when: "Saying what you like. It can take a noun or a whole activity: 我喜歡爬山."
+    examples:
+      - zh: "我喜歡吃辣的。"
+        pinyin: "wǒ xǐ huān chī là de."
+        en: "I like spicy food."
+      - zh: "我很喜歡台灣的夜市。"
+        pinyin: "wǒ hěn xǐ huān Tái wān de yè shì."
+        en: "I really like Taiwan's night markets."
+    choice:
+      situation: "Tell a coworker you like hiking."
+      options:
+        - "我喜歡爬山。"
+        - "我喜歡爬山很。"
+        - "我很喜歡的爬山。"
+      answer: 0
+      explain: "喜歡 takes the activity directly. 很 goes before 喜歡, not after it."
+    task: "Use this pattern to say what you like to do on weekends."
+    match: ["喜歡"]
+    mistake:
+      wrong: "我喜歡台灣很多。"
+      right: "我很喜歡台灣。"
+      why: "'A lot' goes before the verb as 很: 很喜歡. 很多 after a verb means 'many'."
+
+  - id: wo-juede
+    pack: opinion
+    pattern: "我覺得……"
+    pinyin: "wǒ jué de ……"
+    meaning: "I think / I feel …"
+    when: "Giving your opinion or saying how you feel. The most common way to start an opinion."
+    examples:
+      - zh: "我覺得這家的牛肉麵很好吃。"
+        pinyin: "wǒ jué de zhè jiā de niú ròu miàn hěn hǎo chī."
+        en: "I think the beef noodles here are really good."
+      - zh: "我覺得今天有一點冷。"
+        pinyin: "wǒ jué de jīn tiān yǒu yì diǎn lěng."
+        en: "I feel it's a bit cold today."
+    choice:
+      situation: "Give your opinion: the movie was boring."
+      options:
+        - "我覺得那部電影很無聊。"
+        - "我覺得那個電影無聊的。"
+        - "我覺得是那部電影無聊。"
+      answer: 0
+      explain: "Movies take the measure word 部, and an adjective needs 很 in front, not 的 after it or 是 before it."
+    task: "Use this pattern to give your opinion about living in Taiwan."
+    match: ["覺得"]
+    mistake:
+      wrong: "我覺得是很好。"
+      right: "我覺得很好。"
+      why: "Adjectives don't need 是: say 很好, not 是很好."
+
+  - id: yao-bu-yao
+    pack: suggest
+    pattern: "要不要……？"
+    pinyin: "yào bú yào ……?"
+    meaning: "Do you want to …? / Shall we …?"
+    when: "Inviting someone or offering something. Friendly and very common."
+    examples:
+      - zh: "要不要一起吃晚餐？"
+        pinyin: "yào bú yào yì qǐ chī wǎn cān?"
+        en: "Want to have dinner together?"
+      - zh: "你要不要喝水？"
+        pinyin: "nǐ yào bú yào hē shuǐ?"
+        en: "Do you want some water?"
+    choice:
+      situation: "Invite a coworker to go get coffee."
+      options:
+        - "要不要一起去買咖啡？"
+        - "要不要一起去買咖啡嗎？"
+        - "你要一起去買咖啡不要？"
+      answer: 0
+      explain: "要不要 is already a question; adding 嗎 is wrong."
+    task: "Use this pattern to invite a friend to do something this weekend."
+    match: ["要不要"]
+    mistake:
+      wrong: "你要不要來嗎？"
+      right: "你要不要來？"
+      why: "Verb-not-verb questions (要不要, 是不是) never take 嗎."
+
+  - id: women-ba
+    pack: suggest
+    pattern: "我們……吧"
+    pinyin: "wǒ men …… ba"
+    meaning: "Let's …"
+    when: "Suggesting you do something together. 吧 at the end makes it soft and friendly."
+    examples:
+      - zh: "我們走吧！"
+        pinyin: "wǒ men zǒu ba!"
+        en: "Let's go!"
+      - zh: "我們明天再討論吧。"
+        pinyin: "wǒ men míng tiān zài tǎo lùn ba."
+        en: "Let's talk about it again tomorrow."
+    choice:
+      situation: "It's raining. Suggest taking a taxi."
+      options:
+        - "下雨了，我們坐計程車吧。"
+        - "下雨了，讓我們坐計程車。"
+        - "下雨了，我們吧坐計程車。"
+      answer: 0
+      explain: "'Let's' is 我們…吧 in everyday speech. 讓我們 is a word-for-word translation and sounds like a speech."
+    task: "Use this pattern to suggest something to do after work."
+    match: ["我們", "吧"]
+    mistake:
+      wrong: "讓我們去吃飯。"
+      right: "我們去吃飯吧。"
+      why: "讓我們 copies English 'let us' and sounds stiff. In conversation say 我們…吧."
+
+  - id: de-hen
+    pack: grammar
+    pattern: "……得很……"
+    pinyin: "…… de hěn ……"
+    meaning: "does … very … (how someone does something)"
+    when: "Saying how well, fast or slowly someone does something: verb + 得 + description."
+    examples:
+      - zh: "你中文說得很好。"
+        pinyin: "nǐ zhōng wén shuō de hěn hǎo."
+        en: "You speak Chinese very well."
+      - zh: "他跑得很快。"
+        pinyin: "tā pǎo de hěn kuài."
+        en: "He runs very fast."
+    choice:
+      situation: "Tell a friend she sings really well."
+      options:
+        - "你唱歌唱得很好聽。"
+        - "你唱歌很好聽得。"
+        - "你唱得歌很好聽。"
+      answer: 0
+      explain: "With a verb + object, repeat the verb before 得: 唱歌唱得很好聽."
+    task: "Use this pattern to describe how someone you know does something."
+    match: ["得很"]
+    mistake:
+      wrong: "他說中文的很好。"
+      right: "他中文說得很好。"
+      why: "Use 得 (not 的) after a verb to say how it's done. 的, 得 and 地 all sound like 'de' but aren't interchangeable."
+
+  - id: you-yidian
+    pack: daily
+    pattern: "有一點……"
+    pinyin: "yǒu yì diǎn ……"
+    meaning: "a bit … (usually something negative)"
+    when: "Softening a complaint: a bit expensive, a bit far, a bit tired. It goes before the adjective."
+    examples:
+      - zh: "這件外套有一點貴。"
+        pinyin: "zhè jiàn wài tào yǒu yì diǎn guì."
+        en: "This jacket is a bit expensive."
+      - zh: "我今天有一點累。"
+        pinyin: "wǒ jīn tiān yǒu yì diǎn lèi."
+        en: "I'm a bit tired today."
+    choice:
+      situation: "Say the restaurant is a bit far."
+      options:
+        - "那家餐廳有一點遠。"
+        - "那家餐廳遠一點有。"
+        - "那家餐廳一點遠。"
+      answer: 0
+      explain: "有一點 goes before the adjective. (Adjective + 一點 is for comparisons or requests: 快一點.)"
+    task: "Use this pattern to make a gentle complaint about something today."
+    match: ["有一點"]
+    mistake:
+      wrong: "這個有一點好。"
+      right: "這個不錯。"
+      why: "有一點 is for qualities you don't want. For something good, say 不錯 or 還不錯."
+
+  - id: bu-hao-yisi
+    pack: daily
+    pattern: "不好意思，……"
+    pinyin: "bù hǎo yì si, ……"
+    meaning: "Excuse me / Sorry, … (a light apology)"
+    when: "Getting someone's attention, squeezing past, or a small apology. Used far more than 對不起."
+    examples:
+      - zh: "不好意思，借過一下。"
+        pinyin: "bù hǎo yì si, jiè guò yí xià."
+        en: "Excuse me, can I get past?"
+      - zh: "不好意思，我遲到了。"
+        pinyin: "bù hǎo yì si, wǒ chí dào le."
+        en: "Sorry I'm late."
+    choice:
+      situation: "You want to call the waiter over to order."
+      options:
+        - "不好意思，我要點餐。"
+        - "對不起，我要點餐。"
+        - "我很抱歉，我要點餐。"
+      answer: 0
+      explain: "To get someone's attention, Taiwanese say 不好意思. 對不起 and 抱歉 are for real apologies."
+    task: "Use this pattern to politely interrupt a coworker."
+    match: ["不好意思"]
+    mistake:
+      wrong: "對不起，請問洗手間在哪裡？"
+      right: "不好意思，請問洗手間在哪裡？"
+      why: "對不起 is for real apologies. For 'excuse me' before a question, use 不好意思."
+
+  - id: zenme
+    pack: daily
+    pattern: "……怎麼……？"
+    pinyin: "…… zěn me ……?"
+    meaning: "How do you …? / How do I …?"
+    when: "Asking how to do something or how to get somewhere. 怎麼 goes right before the verb."
+    examples:
+      - zh: "這個字怎麼唸？"
+        pinyin: "zhè ge zì zěn me niàn?"
+        en: "How do you read this character?"
+      - zh: "請問機場怎麼去？"
+        pinyin: "qǐng wèn jī chǎng zěn me qù?"
+        en: "Excuse me, how do I get to the airport?"
+    choice:
+      situation: "Ask a friend how to use this machine."
+      options:
+        - "這台機器怎麼用？"
+        - "怎麼這台機器用？"
+        - "這台機器用怎麼？"
+      answer: 0
+      explain: "怎麼 goes directly before the verb: 怎麼用."
+    task: "Use this pattern to ask how to say or write a word in Chinese."
+    match: ["怎麼"]
+    mistake:
+      wrong: "怎麼我去火車站？"
+      right: "我怎麼去火車站？"
+      why: "怎麼 goes after the subject and right before the verb. Don't move it to the front like English 'how'."

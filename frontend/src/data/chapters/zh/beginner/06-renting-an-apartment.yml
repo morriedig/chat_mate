@@ -1,0 +1,403 @@
+# Chapter: Taiwan Mandarin Beginner 6 - Renting an Apartment
+# Call about a listing, view the room, ask about rent, deposit, utilities
+# and pets, then sign and move in.
+meta:
+  id: zh-renting-an-apartment
+  title:
+    en: "Renting an Apartment"
+    ja: "部屋を借りる"
+    zh: "租房子"
+  description:
+    en: "Call a landlord, view a room, ask about rent, deposit and utilities, then sign the lease."
+    ja: "大家さんに電話して内見し、家賃・敷金・光熱費を聞いて契約します。"
+    zh: "打電話給房東、看房子，問房租、押金、水電，然後簽約。"
+  icon: "apartment"
+  order: 6
+  level: beginner
+
+words:
+  - id: zu-fangzi
+    word:
+      en: "to rent a place"
+      zh: "租房子"
+    pinyin: "zū fáng zi"
+    description:
+      en: "Rent a home. 房子 means any flat or house; 找房子 is house hunting."
+      zh: "付錢住別人的房子。"
+    sentence:
+      en: "I want to rent a place near my office."
+      zh: "我想在公司附近租房子。"
+    sentencePinyin: "wǒ xiǎng zài gōng sī fù jìn zū fáng zi."
+
+  - id: fangdong
+    word:
+      en: "landlord"
+      zh: "房東"
+    pinyin: "fáng dōng"
+    description:
+      en: "The owner you rent from. 房東太太 is the landlady."
+      zh: "把房子租給你的人。"
+    sentence:
+      en: "My landlord is really nice. He often gives me fruit."
+      zh: "房東人很好，常常送我水果。"
+    sentencePinyin: "fáng dōng rén hěn hǎo, cháng cháng sòng wǒ shuǐ guǒ."
+
+  - id: taofang
+    word:
+      en: "studio (own bathroom)"
+      zh: "套房"
+    pinyin: "tào fáng"
+    description:
+      en: "A room with its own bathroom, the most common rental for one person. Rooms take the measure word 間."
+      zh: "有自己浴室的房間。"
+    sentence:
+      en: "I live in a small studio."
+      zh: "我住在一間小套房。"
+    sentencePinyin: "wǒ zhù zài yì jiān xiǎo tào fáng."
+
+  - id: yafang
+    word:
+      en: "room (shared bathroom)"
+      zh: "雅房"
+    pinyin: "yǎ fáng"
+    description:
+      en: "A room where you share the bathroom. Cheaper than a 套房 and popular with students."
+      zh: "浴室要跟別人一起用的房間。"
+    sentence:
+      en: "A shared-bathroom room is cheaper than a studio, but you share the bathroom."
+      zh: "雅房比套房便宜，可是要共用浴室。"
+    sentencePinyin: "yǎ fáng bǐ tào fáng pián yí, kě shì yào gòng yòng yù shì."
+
+  - id: fangzu
+    word:
+      en: "rent"
+      zh: "房租"
+    pinyin: "fáng zū"
+    description:
+      en: "The monthly rent. 繳房租 or 付房租 = pay the rent."
+      zh: "每個月住房子要付的錢。"
+    sentence:
+      en: "The rent here is a bit expensive."
+      zh: "這裡的房租有一點貴。"
+    sentencePinyin: "zhè lǐ de fáng zū yǒu yì diǎn guì."
+
+  - id: yige-yue-duoshao
+    word:
+      en: "how much per month"
+      zh: "一個月多少"
+    pinyin: "yí ge yuè duō shǎo"
+    description:
+      en: "Rents are quoted per month. Prices like 一萬二 mean 12,000 (一萬 = ten thousand)."
+      zh: "問每個月要付多少錢。"
+    sentence:
+      en: "How much is this studio per month?"
+      zh: "這間套房一個月多少？"
+    sentencePinyin: "zhè jiān tào fáng yí ge yuè duō shǎo?"
+
+  - id: yajin
+    word:
+      en: "deposit"
+      zh: "押金"
+    pinyin: "yā jīn"
+    description:
+      en: "Usually two months' rent, returned when you move out if nothing is damaged."
+      zh: "租房子先付的錢，搬走時還給你。"
+    sentence:
+      en: "The deposit is two months' rent."
+      zh: "押金是兩個月的房租。"
+    sentencePinyin: "yā jīn shì liǎng ge yuè de fáng zū."
+
+  - id: shuidian
+    word:
+      en: "utilities (water and power)"
+      zh: "水電"
+    pinyin: "shuǐ diàn"
+    description:
+      en: "Water and electricity. 水電費 is the utility bill; air conditioning makes summer bills high."
+      zh: "水和電。"
+    sentence:
+      en: "With the air-con on in summer, utilities cost more."
+      zh: "夏天開冷氣，水電費比較貴。"
+    sentencePinyin: "xià tiān kāi lěng qì, shuǐ diàn fèi bǐ jiào guì."
+
+  - id: baohan
+    word:
+      en: "to include"
+      zh: "包含"
+    pinyin: "bāo hán"
+    description:
+      en: "房租包含…嗎？ = Does the rent include…? Ask before you sign."
+      zh: "裡面有，算在一起。"
+    sentence:
+      en: "Does the rent include internet?"
+      zh: "房租包含網路嗎？"
+    sentencePinyin: "fáng zū bāo hán wǎng lù ma?"
+
+  - id: guanlifei
+    word:
+      en: "management fee"
+      zh: "管理費"
+    pinyin: "guǎn lǐ fèi"
+    description:
+      en: "A monthly building fee for the guard and cleaning. It may or may not be in the rent."
+      zh: "大樓每個月收的費用。"
+    sentence:
+      en: "The management fee is 800 a month."
+      zh: "管理費一個月八百塊。"
+    sentencePinyin: "guǎn lǐ fèi yí ge yuè bā bǎi kuài."
+
+  - id: kan-fangzi
+    word:
+      en: "to view a place"
+      zh: "看房子"
+    pinyin: "kàn fáng zi"
+    description:
+      en: "Go see a flat before renting. Set a time with 約: 約時間看房子."
+      zh: "租之前先去看房子。"
+    sentence:
+      en: "I'd like to view the place tomorrow afternoon."
+      zh: "我想約明天下午看房子。"
+    sentencePinyin: "wǒ xiǎng yuē míng tiān xià wǔ kàn fáng zi."
+
+  - id: keyi-yang-chongwu-ma
+    word:
+      en: "can I keep a pet"
+      zh: "可以養寵物嗎"
+    pinyin: "kě yǐ yǎng chǒng wù ma"
+    description:
+      en: "養 is 'to keep / raise'. Many landlords say no, so ask early."
+      zh: "問能不能在房子裡養動物。"
+    sentence:
+      en: "I have a cat. Can I keep a pet?"
+      zh: "我有一隻貓，可以養寵物嗎？"
+    sentencePinyin: "wǒ yǒu yì zhī māo, kě yǐ yǎng chǒng wù ma?"
+
+  - id: qianyue
+    word:
+      en: "to sign the lease"
+      zh: "簽約"
+    pinyin: "qiān yuē"
+    description:
+      en: "Sign a contract. Leases in Taiwan are usually for one year."
+      zh: "在合約上簽名。"
+    sentence:
+      en: "Shall we sign the lease next Saturday?"
+      zh: "我們下週六簽約，好嗎？"
+    sentencePinyin: "wǒ men xià zhōu liù qiān yuē, hǎo ma?"
+
+  - id: jiaju
+    word:
+      en: "furniture"
+      zh: "家具"
+    pinyin: "jiā jù"
+    description:
+      en: "有附家具嗎？ = Is it furnished? 附 means 'comes with'."
+      zh: "桌子、椅子、床這些東西。"
+    sentence:
+      en: "Is this studio furnished?"
+      zh: "這間套房有附家具嗎？"
+    sentencePinyin: "zhè jiān tào fáng yǒu fù jiā jù ma?"
+
+  - id: ban-jinlai
+    word:
+      en: "to move in"
+      zh: "搬進來"
+    pinyin: "bān jìn lái"
+    description:
+      en: "Move in, said from inside the place. 搬走 is move out."
+      zh: "把東西搬到新家住。"
+    sentence:
+      en: "When can I move in?"
+      zh: "什麼時候可以搬進來？"
+    sentencePinyin: "shén me shí hòu kě yǐ bān jìn lái?"
+
+chat:
+  conversations:
+    - id: rent-1-phone-call
+      title:
+        en: "Calling a Landlord"
+        zh: "打電話問房子"
+      messages:
+        - role: partner
+          text:
+            en: "Hello?"
+            zh: "喂，你好。"
+          pinyin: "wéi, nǐ hǎo."
+        - role: user
+          text:
+            en: "Hi, I saw your studio online. Is it still available?"
+            zh: "你好，我在網路上看到你的套房。還有嗎？"
+          pinyin: "nǐ hǎo, wǒ zài wǎng lù shàng kàn dào nǐ de tào fáng. hái yǒu ma?"
+        - role: partner
+          text:
+            en: "Yes, it is."
+            zh: "還有喔。"
+          pinyin: "hái yǒu o."
+        - role: user
+          text:
+            en: "How much is it per month?"
+            zh: "請問一個月多少？"
+          pinyin: "qǐng wèn yí ge yuè duō shǎo?"
+        - role: partner
+          text:
+            en: "Twelve thousand. The management fee is extra."
+            zh: "一萬二，管理費另外算。"
+          pinyin: "yí wàn èr, guǎn lǐ fèi lìng wài suàn."
+        - role: user
+          text:
+            en: "Does the rent include utilities?"
+            zh: "房租包含水電嗎？"
+          pinyin: "fáng zū bāo hán shuǐ diàn ma?"
+        - role: partner
+          text:
+            en: "Water is included. You pay for electricity yourself."
+            zh: "水費包含，電費要自己付。"
+          pinyin: "shuǐ fèi bāo hán, diàn fèi yào zì jǐ fù."
+        - role: user
+          text:
+            en: "OK. I'd like to set a time to see it. Is tomorrow OK?"
+            zh: "好。我想約時間看房子，明天可以嗎？"
+          pinyin: "hǎo. wǒ xiǎng yuē shí jiān kàn fáng zi, míng tiān kě yǐ ma?"
+        - role: partner
+          text:
+            en: "Sure. See you tomorrow at seven in the evening."
+            zh: "可以，明天晚上七點見。"
+          pinyin: "kě yǐ, míng tiān wǎn shàng qī diǎn jiàn."
+
+    - id: rent-2-viewing
+      title:
+        en: "Viewing the Room"
+        zh: "看房子"
+      messages:
+        - role: partner
+          text:
+            en: "This is the studio. It has air-con, a washing machine and a bed."
+            zh: "這就是套房，有冷氣、洗衣機跟床。"
+          pinyin: "zhè jiù shì tào fáng, yǒu lěng qì, xǐ yī jī gēn chuáng."
+        - role: user
+          text:
+            en: "It's very clean! Is it furnished?"
+            zh: "很乾淨！有附家具嗎？"
+          pinyin: "hěn gān jìng! yǒu fù jiā jù ma?"
+        - role: partner
+          text:
+            en: "Yes, there's a desk, chairs and a wardrobe."
+            zh: "有，桌子、椅子跟衣櫃都有。"
+          pinyin: "yǒu, zhuō zi, yǐ zi gēn yī guì dōu yǒu."
+        - role: user
+          text:
+            en: "Oh, and can I keep a pet? I have a small dog."
+            zh: "對了，可以養寵物嗎？我有一隻小狗。"
+          pinyin: "duì le, kě yǐ yǎng chǒng wù ma? wǒ yǒu yì zhī xiǎo gǒu."
+        - role: partner
+          text:
+            en: "Sorry, no pets here."
+            zh: "不好意思，這裡不能養寵物。"
+          pinyin: "bù hǎo yì si, zhè lǐ bù néng yǎng chǒng wù."
+        - role: user
+          text:
+            en: "That's a shame. So how much is the deposit?"
+            zh: "好可惜。那押金要多少？"
+          pinyin: "hǎo kě xí. nà yā jīn yào duō shǎo?"
+        - role: partner
+          text:
+            en: "Two months' rent, and the lease is at least one year."
+            zh: "押金兩個月，合約至少簽一年。"
+          pinyin: "yā jīn liǎng ge yuè, hé yuē zhì shǎo qiān yì nián."
+        - role: user
+          text:
+            en: "OK, let me think about it and get back to you."
+            zh: "好，我考慮一下再跟你說。"
+          pinyin: "hǎo, wǒ kǎo lǜ yí xià zài gēn nǐ shuō."
+
+    - id: rent-3-signing
+      title:
+        en: "Signing the Lease"
+        zh: "簽約"
+      messages:
+        - role: partner
+          text:
+            en: "Have you decided to rent it?"
+            zh: "你決定要租了嗎？"
+          pinyin: "nǐ jué dìng yào zū le ma?"
+        - role: user
+          text:
+            en: "Yes, I really like this one. When can we sign the lease?"
+            zh: "對，我很喜歡這間。什麼時候可以簽約？"
+          pinyin: "duì, wǒ hěn xǐ huān zhè jiān. shén me shí hòu kě yǐ qiān yuē?"
+        - role: partner
+          text:
+            en: "This weekend is fine. Remember to bring your passport and the deposit."
+            zh: "這個週末就可以。記得帶護照跟押金。"
+          pinyin: "zhè ge zhōu mò jiù kě yǐ. jì de dài hù zhào gēn yā jīn."
+        - role: user
+          text:
+            en: "OK. After we sign, when can I move in?"
+            zh: "好。簽約以後，什麼時候可以搬進來？"
+          pinyin: "hǎo. qiān yuē yǐ hòu, shén me shí hòu kě yǐ bān jìn lái?"
+        - role: partner
+          text:
+            en: "You can move in on the first of next month."
+            zh: "下個月一號就可以搬進來。"
+          pinyin: "xià ge yuè yī hào jiù kě yǐ bān jìn lái."
+        - role: user
+          text:
+            en: "How should I pay the rent?"
+            zh: "房租要怎麼付？"
+          pinyin: "fáng zū yào zěn me fù?"
+        - role: partner
+          text:
+            en: "Just transfer it to me before the fifth of each month."
+            zh: "每個月五號以前轉帳給我就好。"
+          pinyin: "měi ge yuè wǔ hào yǐ qián zhuǎn zhàng gěi wǒ jiù hǎo."
+        - role: user
+          text:
+            en: "No problem. Thank you!"
+            zh: "沒問題，謝謝房東！"
+          pinyin: "méi wèn tí, xiè xie fáng dōng!"
+
+quiz:
+  questionsPerRound: 5
+  xpReward: 20
+  # Fill-in-the-blank questions. Each answer must equal a word.zh above.
+  cloze:
+    - sentence: "我想在公司附近___，不要太貴。"
+      options: ["租房子", "簽約", "搬進來", "押金"]
+      answer: "租房子"
+      explain:
+        en: "Looking for a place to rent near work: 租房子."
+    - sentence: "我想要自己的浴室，所以要找___。"
+      options: ["套房", "雅房", "房東", "家具"]
+      answer: "套房"
+      explain:
+        en: "A 套房 has its own bathroom; a 雅房 doesn't."
+    - sentence: "A：這間___？ B：一萬五，管理費另外算。"
+      options: ["一個月多少", "可以養寵物嗎", "包含", "搬進來"]
+      answer: "一個月多少"
+      explain:
+        en: "The answer is a price, so the question is 一個月多少."
+    - sentence: "房租___水電嗎？還是要另外付？"
+      options: ["包含", "押金", "簽約", "家具"]
+      answer: "包含"
+      explain:
+        en: "Asking whether the rent includes utilities: 包含."
+    - sentence: "租房子的時候，通常要先付兩個月的___。"
+      options: ["押金", "家具", "水電", "房東"]
+      answer: "押金"
+      explain:
+        en: "Two months paid up front and returned later is the deposit: 押金."
+    - sentence: "我有一隻貓，請問___？"
+      options: ["可以養寵物嗎", "一個月多少", "包含", "看房子"]
+      answer: "可以養寵物嗎"
+      explain:
+        en: "You have a cat, so ask if pets are allowed: 可以養寵物嗎."
+    - sentence: "房東說這個週末可以___，要帶護照。"
+      options: ["簽約", "雅房", "水電", "房租"]
+      answer: "簽約"
+      explain:
+        en: "You bring your passport to sign the lease: 簽約."
+    - sentence: "合約簽好了，下個月一號可以___。"
+      options: ["搬進來", "看房子", "租房子", "包含"]
+      answer: "搬進來"
+      explain:
+        en: "After signing, you move in: 搬進來."

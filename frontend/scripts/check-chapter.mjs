@@ -6,7 +6,14 @@ import { createRequire } from 'node:module'
 const require = createRequire(path.resolve('package.json'))
 const yaml = require('js-yaml')
 const file = process.argv[2]
-if (!file) { console.error("usage: node scripts/check-chapter.mjs <path/to/NN-slug.yml>"); process.exit(2) }
+if (!file) { console.error("usage: node scripts/check-chapter.mjs <path/to/NN-slug.yml | path/to/daily/zh/beginner/patterns.yml | vocab.yml>"); process.exit(2) }
+const posix = path.resolve(file).split(path.sep).join('/')
+if (/\/chapters\/zh\//.test(posix) || /\/daily\/zh\//.test(posix)) {
+  const { checkZhFile } = await import('./check-zh.mjs')
+  const { errs, summary } = checkZhFile(file, yaml)
+  console.log(errs.length ? 'FAIL\n- ' + errs.join('\n- ') : summary)
+  process.exit(errs.length ? 1 : 0)
+}
 const dir = path.dirname(file)
 const errs = []
 const orders = new Map(), metaIds = new Map()

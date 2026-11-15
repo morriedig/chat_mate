@@ -6,10 +6,10 @@ meta:
     ja: "四声"
     zh: "四聲"
   description:
-    en: "Learn the four tones and neutral tone of Mandarin Chinese"
+    en: "Learn the four tones and the neutral tone of Taiwan Mandarin"
     ja: "中国語の四声と軽声を学びましょう"
-    zh: "學習中文的四聲和輕聲"
-  icon: "声"
+    zh: "學習華語的四聲和輕聲"
+  icon: "聲"
   order: 0.1
   level: foundation
   type: pre-lesson
@@ -31,7 +31,7 @@ characters:
       ja: "高くて平らな音、持続する音符のように"
     audio_hint: "High flat pitch, like 'maaaah'"
     examples:
-      - word: "妈"
+      - word: "媽"
         reading: "mā"
         meaning: { en: "mother", ja: "お母さん", zh: "媽媽" }
       - word: "他"
@@ -65,7 +65,7 @@ characters:
       ja: "低く下がってから上がる音、「えーと…」のように"
     audio_hint: "Low dipping pitch, like a thoughtful 'hmm'"
     examples:
-      - word: "马"
+      - word: "馬"
         reading: "mǎ"
         meaning: { en: "horse", ja: "馬", zh: "馬" }
       - word: "你"
@@ -82,7 +82,7 @@ characters:
       ja: "鋭く下降する音、「やめろ！」のような命令口調"
     audio_hint: "Sharp falling pitch, like an angry 'no!'"
     examples:
-      - word: "骂"
+      - word: "罵"
         reading: "mà"
         meaning: { en: "to scold", ja: "叱る", zh: "罵" }
       - word: "大"
@@ -99,7 +99,7 @@ characters:
       ja: "軽くて短い、アクセントのない音"
     audio_hint: "Light and quick, no strong pitch"
     examples:
-      - word: "吗"
+      - word: "嗎"
         reading: "ma"
         meaning: { en: "question particle", ja: "疑問の助詞", zh: "嗎（疑問助詞）" }
       - word: "的"

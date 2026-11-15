@@ -1,0 +1,398 @@
+# Chapter: Taiwan Mandarin Beginner 8 - Weekend Small Talk
+# Monday and Friday chats with coworkers: how was your weekend, any plans,
+# reacting (really? so jealous!) and accepting an invitation.
+meta:
+  id: zh-weekend-small-talk
+  title:
+    en: "Weekend Small Talk"
+    ja: "同僚と週末の雑談"
+    zh: "跟同事聊週末"
+  description:
+    en: "Ask coworkers about their weekend, share your plans, react naturally and say yes to an invitation."
+    ja: "同僚に週末のことを聞き、予定を話し、自然にあいづちを打って誘いに乗ります。"
+    zh: "問同事週末過得怎麼樣、聊計畫，自然地回應，答應邀約。"
+  icon: "weekend"
+  order: 8
+  level: beginner
+
+words:
+  - id: zhoumo
+    word:
+      en: "weekend"
+      zh: "週末"
+    pinyin: "zhōu mò"
+    description:
+      en: "Weekend. In everyday Taiwan speech Saturday and Sunday are often 禮拜六 and 禮拜天."
+      zh: "禮拜六和禮拜天。"
+    sentence:
+      en: "This weekend I want to get a good sleep."
+      zh: "這個週末我想好好睡覺。"
+    sentencePinyin: "zhè ge zhōu mò wǒ xiǎng hǎo hǎo shuì jiào."
+
+  - id: zhoumo-you-shenme-jihua
+    word:
+      en: "any plans for the weekend"
+      zh: "週末有什麼計畫"
+    pinyin: "zhōu mò yǒu shén me jì huà"
+    description:
+      en: "The Friday question. Time words go near the front: ✗ 你有什麼計畫週末 → ✓ 你週末有什麼計畫？"
+      zh: "問別人週末要做什麼。"
+    sentence:
+      en: "Do you have any plans this weekend?"
+      zh: "你這個週末有什麼計畫？"
+    sentencePinyin: "nǐ zhè ge zhōu mò yǒu shén me jì huà?"
+
+  - id: zhoumo-guo-de-zenmeyang
+    word:
+      en: "how was your weekend"
+      zh: "週末過得怎麼樣"
+    pinyin: "zhōu mò guò de zěn me yàng"
+    description:
+      en: "The Monday question. 得 links the verb 過 (spend) to how it went. ✗ 週末過的怎麼樣 uses the wrong de."
+      zh: "問別人週末好不好玩。"
+    sentence:
+      en: "Morning! How was your weekend?"
+      zh: "早安！你週末過得怎麼樣？"
+    sentencePinyin: "zǎo ān! nǐ zhōu mò guò de zěn me yàng?"
+
+  - id: hai-bucuo
+    word:
+      en: "pretty good"
+      zh: "還不錯"
+    pinyin: "hái bú cuò"
+    description:
+      en: "The safe, friendly answer to any 怎麼樣 question. Add one detail to keep the chat going."
+      zh: "表示還可以，不錯。"
+    sentence:
+      en: "Pretty good. I had dinner at a friend's place."
+      zh: "還不錯，我去朋友家吃飯。"
+    sentencePinyin: "hái bú cuò, wǒ qù péng yǒu jiā chī fàn."
+
+  - id: zai-jia-shuafei
+    word:
+      en: "to laze around at home"
+      zh: "在家耍廢"
+    pinyin: "zài jiā shuǎ fèi"
+    description:
+      en: "Taiwan slang for spending the day doing nothing at home. Friendly and a little funny."
+      zh: "在家什麼事都不做，很放鬆。"
+    sentence:
+      en: "I lazed around at home the whole weekend."
+      zh: "我整個週末都在家耍廢。"
+    sentencePinyin: "wǒ zhěng ge zhōu mò dōu zài jiā shuǎ fèi."
+
+  - id: chuqu-wan
+    word:
+      en: "to go out and have fun"
+      zh: "出去玩"
+    pinyin: "chū qù wán"
+    description:
+      en: "玩 covers trips, outings and hanging out, not just 'play'."
+      zh: "離開家去玩。"
+    sentence:
+      en: "The weather's great. Let's go out!"
+      zh: "天氣很好，我們出去玩吧！"
+    sentencePinyin: "tiān qì hěn hǎo, wǒ men chū qù wán ba!"
+
+  - id: pashan
+    word:
+      en: "to go hiking"
+      zh: "爬山"
+    pinyin: "pá shān"
+    description:
+      en: "Literally 'climb mountain'. Very popular in Taiwan; there are trails right inside the cities."
+      zh: "走路到山上。"
+    sentence:
+      en: "We're going hiking on Sunday morning."
+      zh: "我們禮拜天早上去爬山。"
+    sentencePinyin: "wǒ men lǐ bài tiān zǎo shàng qù pá shān."
+
+  - id: kan-dianying
+    word:
+      en: "to watch a movie"
+      zh: "看電影"
+    pinyin: "kàn diàn yǐng"
+    description:
+      en: "Movies take the measure word 部. ✗ 看一電影 → ✓ 看一部電影."
+      zh: "去電影院或在家看電影。"
+    sentence:
+      en: "On Saturday I'm going to a movie with friends."
+      zh: "我禮拜六跟朋友去看電影。"
+    sentencePinyin: "wǒ lǐ bài liù gēn péng yǒu qù kàn diàn yǐng."
+
+  - id: qu-nali-wan
+    word:
+      en: "where did you go"
+      zh: "去哪裡玩"
+    pinyin: "qù nǎ lǐ wán"
+    description:
+      en: "Asks where someone went for fun. Add 了 at the end for something already done: 你去哪裡玩了？"
+      zh: "問別人去什麼地方玩。"
+    sentence:
+      en: "Where did you go on this break?"
+      zh: "你這次放假去哪裡玩？"
+    sentencePinyin: "nǐ zhè cì fàng jià qù nǎ lǐ wán?"
+
+  - id: hao-lei
+    word:
+      en: "so tired"
+      zh: "好累"
+    pinyin: "hǎo lèi"
+    description:
+      en: "好 + adjective = 'so …' in casual speech. 喔 at the end makes it sound softer."
+      zh: "非常累。"
+    sentence:
+      en: "Two days of moving house. I'm so tired."
+      zh: "搬家搬了兩天，好累喔。"
+    sentencePinyin: "bān jiā bān le liǎng tiān, hǎo lèi o."
+
+  - id: hao-xianmu
+    word:
+      en: "so jealous"
+      zh: "好羨慕"
+    pinyin: "hǎo xiàn mù"
+    description:
+      en: "A friendly reaction when a coworker had a great weekend. Not negative at all."
+      zh: "很希望自己也可以那樣。"
+    sentence:
+      en: "You went to Kenting? So jealous!"
+      zh: "你去墾丁玩？好羨慕喔！"
+    sentencePinyin: "nǐ qù Kěn dīng wán? hǎo xiàn mù o!"
+
+  - id: yiqi
+    word:
+      en: "together"
+      zh: "一起"
+    pinyin: "yì qǐ"
+    description:
+      en: "Goes before the verb. ✗ 去一起 → ✓ 一起去. 要不要一起…？ is the usual invitation."
+      zh: "跟別人做同一件事。"
+    sentence:
+      en: "Want to grab dinner together after work?"
+      zh: "下班要不要一起去吃飯？"
+    sentencePinyin: "xià bān yào bú yào yì qǐ qù chī fàn?"
+
+  - id: xiaci
+    word:
+      en: "next time"
+      zh: "下次"
+    pinyin: "xià cì"
+    description:
+      en: "下次再約 politely puts an invitation off without saying no."
+      zh: "以後的那一次。"
+    sentence:
+      en: "I'm busy this time. Let's make it next time."
+      zh: "這次我沒空，下次再約吧。"
+    sentencePinyin: "zhè cì wǒ méi kòng, xià cì zài yuē ba."
+
+  - id: hao-a
+    word:
+      en: "sure!"
+      zh: "好啊"
+    pinyin: "hǎo a"
+    description:
+      en: "The usual way to accept an invitation. Plain 好 alone can sound flat."
+      zh: "答應別人。"
+    sentence:
+      en: "Sure, I want to go too!"
+      zh: "好啊，我也想去！"
+    sentencePinyin: "hǎo a, wǒ yě xiǎng qù!"
+
+  - id: zhende-ma
+    word:
+      en: "really?"
+      zh: "真的嗎"
+    pinyin: "zhēn de ma"
+    description:
+      en: "Shows interest and keeps the conversation going. Say it with a rising, surprised voice."
+      zh: "聽到意外的事情時說。"
+    sentence:
+      en: "Really? You went to Japan on your own?"
+      zh: "真的嗎？你一個人去日本？"
+    sentencePinyin: "zhēn de ma? nǐ yí ge rén qù Rì běn?"
+
+chat:
+  conversations:
+    - id: weekend-1-monday
+      title:
+        en: "Monday Morning"
+        zh: "週一早上"
+      messages:
+        - role: partner
+          text:
+            en: "Morning! How was your weekend?"
+            zh: "早！週末過得怎麼樣？"
+          pinyin: "zǎo! zhōu mò guò de zěn me yàng?"
+        - role: user
+          text:
+            en: "Pretty good! I went hiking. And you?"
+            zh: "還不錯！我去爬山了。你呢？"
+          pinyin: "hái bú cuò! wǒ qù pá shān le. nǐ ne?"
+        - role: partner
+          text:
+            en: "I just lazed around at home and binge-watched a show all day."
+            zh: "我都在家耍廢，看了一整天的劇。"
+          pinyin: "wǒ dōu zài jiā shuǎ fèi, kàn le yì zhěng tiān de jù."
+        - role: user
+          text:
+            en: "So jealous! I'm so tired after the hike."
+            zh: "好羨慕喔！我爬完山好累。"
+          pinyin: "hǎo xiàn mù o! wǒ pá wán shān hǎo lèi."
+        - role: partner
+          text:
+            en: "Which mountain did you climb?"
+            zh: "你去爬哪座山？"
+          pinyin: "nǐ qù pá nǎ zuò shān?"
+        - role: user
+          text:
+            en: "Elephant Mountain. The night view from the top is beautiful."
+            zh: "象山。上面的夜景很漂亮。"
+          pinyin: "Xiàng shān. shàng miàn de yè jǐng hěn piào liàng."
+        - role: partner
+          text:
+            en: "Really? I want to go next time too."
+            zh: "真的嗎？下次我也想去。"
+          pinyin: "zhēn de ma? xià cì wǒ yě xiǎng qù."
+        - role: user
+          text:
+            en: "Sure, let's go together next time!"
+            zh: "好啊，下次一起去！"
+          pinyin: "hǎo a, xià cì yì qǐ qù!"
+
+    - id: weekend-2-friday
+      title:
+        en: "Friday Plans"
+        zh: "週五下班前"
+      messages:
+        - role: partner
+          text:
+            en: "Finally, it's Friday! Any plans for the weekend?"
+            zh: "終於禮拜五了！你週末有什麼計畫？"
+          pinyin: "zhōng yú lǐ bài wǔ le! nǐ zhōu mò yǒu shén me jì huà?"
+        - role: user
+          text:
+            en: "I want to watch a movie with friends. And you?"
+            zh: "我想跟朋友去看電影。你呢？"
+          pinyin: "wǒ xiǎng gēn péng yǒu qù kàn diàn yǐng. nǐ ne?"
+        - role: partner
+          text:
+            en: "I'm going back to Tainan to see my parents."
+            zh: "我要回台南看我爸媽。"
+          pinyin: "wǒ yào huí Tái nán kàn wǒ bà mā."
+        - role: user
+          text:
+            en: "Really? The street food in Tainan is so good!"
+            zh: "真的嗎？台南的小吃很好吃！"
+          pinyin: "zhēn de ma? Tái nán de xiǎo chī hěn hǎo chī!"
+        - role: partner
+          text:
+            en: "Yeah, I eat too much every time I go back."
+            zh: "對啊，我每次回去都吃太多。"
+          pinyin: "duì a, wǒ měi cì huí qù dōu chī tài duō."
+        - role: user
+          text:
+            en: "So jealous! Eat some extra for me."
+            zh: "好羨慕！幫我多吃一點。"
+          pinyin: "hǎo xiàn mù! bāng wǒ duō chī yì diǎn."
+        - role: partner
+          text:
+            en: "Ha ha, no problem. Have a nice weekend!"
+            zh: "哈哈，沒問題。週末愉快！"
+          pinyin: "hā ha, méi wèn tí. zhōu mò yú kuài!"
+        - role: user
+          text:
+            en: "You too. See you next week!"
+            zh: "你也是，下禮拜見！"
+          pinyin: "nǐ yě shì, xià lǐ bài jiàn!"
+
+    - id: weekend-3-lunch
+      title:
+        en: "Lunch Invite"
+        zh: "約吃午餐"
+      messages:
+        - role: partner
+          text:
+            en: "Want to get lunch together?"
+            zh: "中午要不要一起去吃飯？"
+          pinyin: "zhōng wǔ yào bú yào yì qǐ qù chī fàn?"
+        - role: user
+          text:
+            en: "Sure! Where do you want to eat?"
+            zh: "好啊！要去哪裡吃？"
+          pinyin: "hǎo a! yào qù nǎ lǐ chī?"
+        - role: partner
+          text:
+            en: "A new ramen place just opened downstairs."
+            zh: "公司樓下新開了一家拉麵店。"
+          pinyin: "gōng sī lóu xià xīn kāi le yì jiā lā miàn diàn."
+        - role: user
+          text:
+            en: "Great! By the way, where did you go over the long weekend?"
+            zh: "讚！對了，連假你去哪裡玩了？"
+          pinyin: "zàn! duì le, lián jià nǐ qù nǎ lǐ wán le?"
+        - role: partner
+          text:
+            en: "My whole family went to Hualien. The sea was beautiful, but the drive was so tiring."
+            zh: "我們全家去花蓮，海很美，可是開車好累。"
+          pinyin: "wǒ men quán jiā qù Huā lián, hǎi hěn měi, kě shì kāi chē hǎo lèi."
+        - role: user
+          text:
+            en: "So jealous! I've never been to Hualien."
+            zh: "好羨慕！我還沒去過花蓮。"
+          pinyin: "hǎo xiàn mù! wǒ hái méi qù guò Huā lián."
+        - role: partner
+          text:
+            en: "Really? We could go together next time."
+            zh: "真的嗎？下次可以一起去啊。"
+          pinyin: "zhēn de ma? xià cì kě yǐ yì qǐ qù a."
+        - role: user
+          text:
+            en: "Sure, it's a deal!"
+            zh: "好啊，一言為定！"
+          pinyin: "hǎo a, yì yán wéi dìng!"
+
+quiz:
+  questionsPerRound: 5
+  xpReward: 20
+  # Fill-in-the-blank questions. Each answer must equal a word.zh above.
+  cloze:
+    - sentence: "A：你___？ B：還不錯，我去爬山了。"
+      options: ["週末過得怎麼樣", "週末有什麼計畫", "去哪裡玩", "真的嗎"]
+      answer: "週末過得怎麼樣"
+      explain:
+        en: "The answer is about a weekend that already happened, so ask 週末過得怎麼樣."
+    - sentence: "A：週末有什麼計畫？ B：沒有，我想___。"
+      options: ["在家耍廢", "好羨慕", "真的嗎", "下次"]
+      answer: "在家耍廢"
+      explain:
+        en: "No plans, so you'll laze around at home: 在家耍廢."
+    - sentence: "A：我去日本玩了一個禮拜。 B：___！"
+      options: ["好羨慕", "好累", "在家耍廢", "週末"]
+      answer: "好羨慕"
+      explain:
+        en: "A friendly reaction to someone's great trip: 好羨慕 (so jealous)."
+    - sentence: "A：要不要一起去吃飯？ B：___，我也餓了。"
+      options: ["好啊", "真的嗎", "下次", "好累"]
+      answer: "好啊"
+      explain:
+        en: "Accepting an invitation: 好啊."
+    - sentence: "這次我沒空，___再約吧。"
+      options: ["下次", "一起", "真的嗎", "好啊"]
+      answer: "下次"
+      explain:
+        en: "Putting it off politely: 下次再約 (let's make it next time)."
+    - sentence: "下班要不要___去看電影？"
+      options: ["一起", "下次", "好啊", "真的嗎"]
+      answer: "一起"
+      explain:
+        en: "要不要一起 + verb is the usual invitation."
+    - sentence: "我昨天爬了五個小時的山，___喔。"
+      options: ["好累", "好羨慕", "好啊", "還不錯"]
+      answer: "好累"
+      explain:
+        en: "Five hours of hiking makes you tired: 好累."
+    - sentence: "A：我下個月要結婚了！ B：___？恭喜你！"
+      options: ["真的嗎", "好累", "在家耍廢", "週末"]
+      answer: "真的嗎"
+      explain:
+        en: "Surprising news gets 真的嗎 (really?)."
