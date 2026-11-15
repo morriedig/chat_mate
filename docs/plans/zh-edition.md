@@ -78,7 +78,9 @@
 - 對話訊息可切換顯示拼音（開關放在 `ChatScreen.vue`）：先用 `opencc-js` **字級**轉換（不用 `twp` 這類詞彙轉換，會改字數，例如「計程車→出租车」）轉簡體，再用 `pinyin-pro` 標注，加「轉換前後字數相同」的測試（2026-11-14 實測：直接標繁體會錯，例如「怎麼 zěn mó」「銀行 yín xíng」「還沒 huán méi」；轉簡體後都對）。兩個套件壓縮後約 206 KB，只在中文版用動態 import 載入，並以建置時條件包住，英文版建置不產生這個 chunk。
 - 轉簡體後仍會錯的多音字（如「長得」cháng dé）與台灣讀音（如「垃圾 lèsè」「和 hàn」）用 `customPinyin` 補；只放不會誤傷其他詞的項目（實測「東西→dōng xi」會把「東西南北」也改錯），每一項都有測試。
 - 章節與每日練習的拼音寫在 YAML 裡；自動標注只用在 AI 的聊天回覆。`chapterLoader` 把 zh 的 `pinyin` 欄位傳給單字卡與章節對話 `getChapterConversations`（目前只傳 en 的 phonetic、ja 的 reading）。
-- 中文內容（對話、例句、單字）加 `lang="zh-Hant-TW"`，讓繁體字形正確；`style.css` 的中文排版規則目前只看 `<html lang>`，元素上的 `[lang|=zh]` 只加字型特性與行高（不設 font-size，避免壓過 Tailwind 字級）。只在中文版的學習語言內容上加 lang，英文版的 `ex.zh` 翻譯行不動。
+- 字形：`style.css` 的字型清單已把 PingFang TC、Noto Sans TC 排在 Figtree 之後、系統字型之前，漢字不靠 lang 也會用繁體字形；lang 標記主要給螢幕閱讀器與朗讀。
+- （2026-11-15 重新規劃，原本逐處列位置被退兩次）規則：中文版裡**每個顯示學習語言內容的元素**都加 `:lang="TARGET_LANG_TAG"`；用一個自動測試守住——以中文版測試資料掛載各畫面（每日練習各步驟、學習章節的單字／字卡／測驗含填空／對話、聊天訊息、小結、批改、提示、單字庫），檢查每個含漢字的文字節點最近的 `[lang]` 是 zh-Hant-TW。英文版不加任何 lang。
+- 原規則：中文內容（對話、例句、單字）加 `lang="zh-Hant-TW"`，讓繁體字形正確；`style.css` 的中文排版規則目前只看 `<html lang>`，元素上的 `[lang|=zh]` 只加字型特性與行高（不設 font-size，避免壓過 Tailwind 字級）。只在中文版的學習語言內容上加 lang，英文版的 `ex.zh` 翻譯行不動。
 - 介面固定英文：中文版 `i18n/index.js` 忽略 `chatmate_locale`，固定 `en`。
 - 聊天點字：中文用 `Intl.Segmenter('zh-TW', { granularity: 'word' })` 取整個詞（目前只取一個字）；拼音若用 ruby 顯示，點字取詞要照樣正常（加測試）。
 - 任務對話的句型標示（`connectorDetect.js`）對中文句中的句型標不到；第一版接受（打勾用的是子字串比對，不受影響），第二版再改。
