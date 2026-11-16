@@ -177,7 +177,7 @@ EOF
 
 - [x] Week 10 回報進度與卡關（status updates & blockers：I've finished / I'm working on / blocked by / waiting on / ETA / heads-up）— `10-status-updates.yml`
 - [x] Week 11 聽不懂時請對方說清楚（asking for clarification：Sorry, could you say that again? / What do you mean by…? / Just to clarify, … / So you're saying… / Could you give me an example?） — `11-asking-for-clarification.yml`
-- [ ] Week 12 跟同事閒聊（small talk：weekend、lunch、commute、天氣與颱風假、How's your week going? / Any plans for…? / 怎麼自然結束對話）
+- [x] Week 12 跟同事閒聊（small talk：weekend、lunch、commute、天氣與颱風假、How's your week going? / Any plans for…? / 怎麼自然結束對話） — `12-small-talk.yml`
 - [ ] Week 13 有禮貌地提出請求（making requests politely：Could you…? / Would you mind…-ing? / I was wondering if… / Is there any chance… / when you get a chance）
 - [ ] Week 14 給回饋與接受回饋（giving & receiving feedback：What worked well… / One thing I'd change… / Have you considered…? / Thanks, that's helpful / 三明治法）
 - [ ] Week 15 電話與視訊會議（phone & video calls：You're on mute / Can you see my screen? / You broke up a bit / Let me share my screen / I'll drop off now）

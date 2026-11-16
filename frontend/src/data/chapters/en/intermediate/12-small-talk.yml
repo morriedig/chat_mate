@@ -1,0 +1,456 @@
+# Chapter: Week 12 - Small Talk with Coworkers
+# Light chat before a meeting, in the pantry or on the way out: weekend, lunch,
+# commute, weather, plans, and how to end the chat naturally.
+# Structure: Open -> Share -> Wrap up.
+meta:
+  id: small-talk
+  title:
+    en: "Small Talk with Coworkers"
+    ja: "同僚との雑談"
+    zh: "跟同事閒聊"
+  description:
+    en: "Start a friendly chat about the weekend, lunch, the commute or a typhoon day, then end it politely and get back to work."
+    ja: "週末、ランチ、通勤、台風休みなどの雑談を始めて、感じよく切り上げて仕事に戻る表現です。"
+    zh: "聊週末、午餐、通勤、颱風假這類閒話，還有怎麼自然結束對話、回去工作。"
+  icon: "forum"
+  order: 12
+  level: intermediate
+
+words:
+  # Structure
+  - id: open-share-wrap-up
+    word:
+      en: "Open → Share → Wrap up"
+      ja: "切り出す → 話す → 切り上げる"
+      zh: "開場 → 分享 → 收尾"
+    reading: "OH-pun, SHAIR, RAP UP"
+    phonetic: "/ˈoʊpən ʃer ræp ʌp/"
+    description:
+      en: "A three-step small talk: open with a light question, share one thing about yourself, then wrap up kindly."
+      ja: "雑談の3ステップ：軽い質問で切り出す → 自分のことを一つ話す → 感じよく切り上げる。"
+      zh: "閒聊的三步驟：先用輕鬆的問題開場、分享一件自己的事、再親切地收尾。"
+    sentence:
+      en: "I asked about her weekend, mentioned my hiking trip, and then said I had to get back to work."
+      ja: "彼女に週末のことを聞いて、自分のハイキングの話をして、仕事に戻らなきゃと伝えました。"
+      zh: "我先問她週末過得如何，提到我去爬山，然後說我得回去工作了。"
+
+  # Opening
+  - id: hows-your-week-going
+    word:
+      en: "How's your week going"
+      ja: 今週はどうですか
+      zh: 這週過得怎麼樣
+    reading: "HOWZ yor WEEK GOH-ing"
+    phonetic: "/haʊz jɔːr wiːk ˈɡoʊɪŋ/"
+    description:
+      en: "A safe opener for any day. Add 'so far' on Monday to Wednesday: 'How's your week going so far?'"
+      ja: "いつでも使える無難な切り出し。週の前半は so far を付けてもよい。"
+      zh: "任何一天都能用的開場白，週一到週三可以加 so far。"
+    sentence:
+      en: "Hey, how's your week going so far?"
+      ja: "やあ、今週はここまでどう？"
+      zh: "嘿，這週到目前過得怎麼樣？"
+
+  - id: anything-fun
+    word:
+      en: "Did you do anything fun"
+      ja: 何か楽しいことをしましたか
+      zh: 有沒有做什麼好玩的事
+    reading: "did yoo DOO EN-ee-thing FUN"
+    phonetic: "/dɪd juː duː ˈeniθɪŋ fʌn/"
+    description:
+      en: "The classic Monday question. Add 'over the weekend'. ✗ Did you have a fun on the weekend? → ✓ Did you do anything fun over the weekend?"
+      ja: "月曜の定番の質問。over the weekend を付けて使う。"
+      zh: "週一的經典問題，後面加 over the weekend。✗ Did you have a fun on the weekend? → ✓ Did you do anything fun over the weekend?"
+    sentence:
+      en: "Did you do anything fun over the long weekend?"
+      ja: "連休中、何か楽しいことをした？"
+      zh: "連假有沒有做什麼好玩的事？"
+
+  - id: how-was-your-commute
+    word:
+      en: "How was your commute"
+      ja: 通勤はどうでしたか
+      zh: 今天上班路上還順利嗎
+    reading: "HOW wuz yor kuh-MYOOT"
+    phonetic: "/haʊ wʌz jɔːr kəˈmjuːt/"
+    description:
+      en: "Good for talking about the MRT, traffic or rain. Stress 'MYOOT' in commute."
+      ja: "電車の混雑や渋滞、雨の話につなげやすい。commute は mute の部分を強く読む。"
+      zh: "很適合接捷運、塞車、下雨的話題，commute 的 mute 要重讀。"
+    sentence:
+      en: "How was your commute? I heard the MRT was delayed this morning."
+      ja: "通勤はどうだった？今朝は電車が遅れていたって聞いたけど。"
+      zh: "今天上班路上還順利嗎？聽說早上捷運誤點。"
+
+  # Sharing news
+  - id: have-you-tried
+    word:
+      en: "Have you tried"
+      ja: 〜は試しましたか
+      zh: 你有試過……嗎
+    reading: "HAV yoo TRYD"
+    phonetic: "/hæv juː traɪd/"
+    description:
+      en: "Ask about a restaurant, a drink or an app. Use the past participle 'tried', not 'try'. ✗ Have you try → ✓ Have you tried"
+      ja: "お店、飲み物、アプリなどを聞くとき。過去分詞 tried を使う。"
+      zh: "問對方有沒有吃過、喝過、用過某樣東西，要用過去分詞 tried。✗ Have you try → ✓ Have you tried"
+    sentence:
+      en: "Have you tried the new noodle place near the station?"
+      ja: "駅の近くにできた新しい麺の店、行った？"
+      zh: "你有試過車站附近那間新開的麵店嗎？"
+
+  - id: did-you-hear-about
+    word:
+      en: "Did you hear about"
+      ja: 〜のこと聞きましたか
+      zh: 你有聽說……嗎
+    reading: "did yoo HEER uh-BOWT"
+    phonetic: "/dɪd juː hɪr əˈbaʊt/"
+    description:
+      en: "Share news that everyone is talking about, like a typhoon day off. Keep it to neutral news, not gossip about people."
+      ja: "みんなが話しているニュースを共有するとき。台風休みなど。人のうわさ話は避ける。"
+      zh: "分享大家都在討論的消息，像是颱風假。聊中性的新聞就好，不要八卦別人。"
+    sentence:
+      en: "Did you hear about the typhoon day off tomorrow?"
+      ja: "明日、台風で休みになるって聞いた？"
+      zh: "你有聽說明天放颱風假嗎？"
+
+  - id: can-you-believe
+    word:
+      en: "Can you believe"
+      ja: 信じられますか
+      zh: 你敢相信嗎
+    reading: "KAN yoo bih-LEEV"
+    phonetic: "/kæn juː bɪˈliːv/"
+    description:
+      en: "Show surprise about the weather or the time. Followed by a clause: 'Can you believe it's already November?'"
+      ja: "天気や時間の早さに驚いたときに。後ろは文：Can you believe it's already November?"
+      zh: "對天氣或時間過得快表示驚訝，後面接完整句子。"
+    sentence:
+      en: "Can you believe it's already November? This year went so fast."
+      ja: "もう11月だなんて信じられる？今年はあっという間だったね。"
+      zh: "你敢相信已經十一月了嗎？今年過得好快。"
+
+  # Reacting
+  - id: tell-me-about-it
+    word:
+      en: "Tell me about it"
+      ja: 本当にそうですよね
+      zh: 我也是，超有同感
+    reading: "TEL mee uh-BOWT it"
+    phonetic: "/tel miː əˈbaʊt ɪt/"
+    description:
+      en: "It means 'I totally agree', not 'please explain'. Use it when the other person complains about something you feel too."
+      ja: "「説明して」ではなく「まったく同感」という意味。相手の愚痴に共感するときに使う。"
+      zh: "意思是「我完全同意」，不是請對方說明。對方抱怨的事你也有同感時用。"
+    sentence:
+      en: "Tell me about it. I waited forty minutes for a bus this morning."
+      ja: "本当にそうだよね。今朝バスを40分も待ったよ。"
+      zh: "我也是。今天早上我等公車等了四十分鐘。"
+
+  - id: sounds-like-fun
+    word:
+      en: "That sounds like fun"
+      ja: 楽しそうですね
+      zh: 聽起來很好玩
+    reading: "THAT SOWNDZ lyk FUN"
+    phonetic: "/ðæt saʊndz laɪk fʌn/"
+    description:
+      en: "A friendly reaction to someone's plan. Then ask a question to keep it going. ✗ That sounds fun-ly → ✓ That sounds like fun."
+      ja: "相手の予定に対する好意的な反応。そのあと質問をして会話をつなげる。"
+      zh: "對別人的計畫表示好感，後面再補一個問題，對話才不會斷掉。"
+    sentence:
+      en: "That sounds like fun. Who are you going with?"
+      ja: "楽しそうですね。誰と行くんですか？"
+      zh: "聽起來很好玩。你跟誰一起去？"
+
+  - id: lucky-you
+    word:
+      en: "Lucky you"
+      ja: うらやましいです
+      zh: 你真幸運
+    reading: "LUK-ee YOO"
+    phonetic: "/ˈlʌki juː/"
+    description:
+      en: "A light, friendly way to say you're a bit jealous, for example about a vacation. Say it with a smile."
+      ja: "少しうらやましい気持ちを軽く伝える言い方。休暇の話などに。笑顔で言う。"
+      zh: "輕鬆表示有點羨慕，例如對方要去度假。要帶著笑容說。"
+    sentence:
+      en: "You're off to Okinawa next week? Lucky you!"
+      ja: "来週は沖縄に行くの？うらやましい！"
+      zh: "你下週要去沖繩？你真幸運！"
+
+  - id: i-could-use
+    word:
+      en: "I could use"
+      ja: 〜がほしいです
+      zh: 我需要來個
+    reading: "ay KOOD YOOZ"
+    phonetic: "/aɪ kʊd juːz/"
+    description:
+      en: "Say what you need right now: 'I could use a coffee' or 'I could use a break.' It sounds natural, not demanding."
+      ja: "今ほしいものを自然に言う表現：I could use a coffee. 強い要求には聞こえない。"
+      zh: "自然地說出你現在需要什麼，聽起來不會像在要求別人。"
+    sentence:
+      en: "It's only Tuesday and I could use a long weekend already."
+      ja: "まだ火曜日なのに、もう連休がほしいよ。"
+      zh: "才週二而已，我就已經想放連假了。"
+
+  # Looking ahead
+  - id: any-plans-for
+    word:
+      en: "Any plans for"
+      ja: 〜の予定はありますか
+      zh: 有什麼安排嗎
+    reading: "EN-ee PLANZ for"
+    phonetic: "/ˈeni plænz fɔːr/"
+    description:
+      en: "Ask about the weekend, a holiday or a break. It is short for 'Do you have any plans for...'. Don't say 'Any plan'."
+      ja: "週末や祝日、休暇の予定を聞く。Do you have any plans for... の省略。plans と複数形にする。"
+      zh: "問對方週末、假日有沒有安排，是 Do you have any plans for... 的簡短說法，plans 要加 s。"
+    sentence:
+      en: "Any plans for the Mid-Autumn Festival holiday?"
+      ja: "中秋節の連休は何か予定ある？"
+      zh: "中秋連假有什麼安排嗎？"
+
+  # Wrapping up
+  - id: anyway
+    word:
+      en: "Anyway"
+      ja: とにかく
+      zh: 總之
+    reading: "EN-ee-way"
+    phonetic: "/ˈeniweɪ/"
+    description:
+      en: "A signal that you are changing the topic or ending the chat. Pause after it, then say what's next: 'Anyway, I'd better...'."
+      ja: "話題を変える、または会話を終える合図。そのあと次の行動を言う。"
+      zh: "表示要換話題或準備結束對話，後面接下一步要做什麼。"
+    sentence:
+      en: "Anyway, I'd better check my email before the meeting."
+      ja: "とにかく、会議の前にメールを確認しておかないと。"
+      zh: "總之，開會前我得先看一下 email。"
+
+  - id: get-back-to-work
+    word:
+      en: "I should get back to work"
+      ja: そろそろ仕事に戻らないと
+      zh: 我該回去工作了
+    reading: "ay SHOOD GET BAK too WERK"
+    phonetic: "/aɪ ʃʊd ɡet bæk tuː wɜːrk/"
+    description:
+      en: "A polite way to end the chat. Put the reason on yourself, not on the other person. 'I should...' sounds softer than 'I have to...'."
+      ja: "感じよく会話を終える言い方。理由は自分側に置く。I have to より I should のほうがやわらかい。"
+      zh: "禮貌地結束聊天，把理由放在自己身上；I should 比 I have to 柔和。"
+    sentence:
+      en: "I should get back to work. I have a report due at three."
+      ja: "そろそろ仕事に戻らないと。3時が期限のレポートがあるんだ。"
+      zh: "我該回去工作了，三點前要交一份報告。"
+
+  - id: nice-chatting
+    word:
+      en: "It was nice chatting"
+      ja: お話しできて楽しかったです
+      zh: 跟你聊天很開心
+    reading: "it wuz NYS CHAT-ing"
+    phonetic: "/ɪt wʌz naɪs ˈtʃætɪŋ/"
+    description:
+      en: "Say it at the end, in the past tense. You can add 'with you': 'It was nice chatting with you.'"
+      ja: "会話の最後に、過去形で言う。with you を付けてもよい。"
+      zh: "要在結束時說，用過去式。可以加 with you。"
+    sentence:
+      en: "It was nice chatting with you. Have a good rest of your day."
+      ja: "お話しできて楽しかったです。今日の残りもいい一日を。"
+      zh: "跟你聊天很開心，祝你今天剩下的時間順利。"
+
+  - id: catch-up-soon
+    word:
+      en: "Let's catch up soon"
+      ja: 近いうちにまた話しましょう
+      zh: 改天再聊
+    reading: "LETS KACH UP SOON"
+    phonetic: "/lets kætʃ ʌp suːn/"
+    description:
+      en: "A warm way to end, especially with someone you don't see often. 'Catch up' means to talk about what's new in each other's lives."
+      ja: "あまり会わない人との会話の締めに。catch up はお互いの近況を話すこと。"
+      zh: "很適合對不常見面的人收尾。catch up 是聊彼此近況的意思。"
+    sentence:
+      en: "Let's catch up soon. Maybe lunch next week?"
+      ja: "近いうちにまた話そう。来週ランチはどう？"
+      zh: "改天再聊吧，下週一起吃午餐如何？"
+
+chat:
+  conversations:
+    - id: talk-1-monday-pantry
+      title:
+        en: "Monday Morning"
+        ja: "月曜の朝"
+        zh: "週一早上的茶水間"
+      messages:
+        - role: partner
+          text:
+            en: "Morning! Did you do anything fun over the long weekend?"
+            ja: "おはよう！連休は何か楽しいことをした？"
+            zh: "早啊！連假有沒有做什麼好玩的事？"
+        - role: user
+          text:
+            en: "Morning! I went hiking in Yilan. How's your week going so far?"
+            ja: "おはよう！宜蘭にハイキングに行ったよ。今週はここまでどう？"
+            zh: "早！我去宜蘭爬山了。你這週到目前過得怎麼樣？"
+        - role: partner
+          text:
+            en: "Honestly, I have three deadlines before Friday."
+            ja: "正直、金曜までに締め切りが3つあるんだ。"
+            zh: "老實說，週五前我有三個死線。"
+        - role: user
+          text:
+            en: "Tell me about it. I could use another coffee already."
+            ja: "本当にそうだよね。もうコーヒーをおかわりしたいくらい。"
+            zh: "我也是。我現在就想再來一杯咖啡了。"
+        - role: partner
+          text:
+            en: "Have you tried the cold brew in the pantry? It's actually good."
+            ja: "給湯室のコールドブリュー、飲んだ？意外とおいしいよ。"
+            zh: "你有試過茶水間的冷萃咖啡嗎？其實還不錯。"
+        - role: user
+          text:
+            en: "Not yet. Anyway, thanks for the tip. I should get back to work."
+            ja: "まだなんだ。とにかく、教えてくれてありがとう。そろそろ仕事に戻らないと。"
+            zh: "還沒。總之謝謝你的推薦，我該回去工作了。"
+
+    - id: talk-2-typhoon-lunch
+      title:
+        en: "Typhoon and Lunch"
+        ja: "台風とランチ"
+        zh: "颱風假和午餐"
+      messages:
+        - role: partner
+          text:
+            en: "Did you hear about the typhoon? They might cancel work tomorrow."
+            ja: "台風のこと聞いた？明日は休みになるかもしれないって。"
+            zh: "你有聽說颱風的事嗎？明天可能會放颱風假。"
+        - role: user
+          text:
+            en: "I did! Can you believe it's already the third one this year?"
+            ja: "聞いたよ！今年もう3つ目だなんて信じられる？"
+            zh: "有啊！你敢相信這已經是今年第三個颱風了嗎？"
+        - role: partner
+          text:
+            en: "Lucky you, you live close to the office. I had a terrible commute today."
+            ja: "うらやましいな、会社の近くに住んでいて。今日は通勤が大変だったよ。"
+            zh: "你真幸運，住得離公司近。我今天通勤超慘。"
+        - role: user
+          text:
+            en: "Oh no. How was your commute? Was the MRT stuck again?"
+            ja: "それは大変。通勤はどうだったの？また電車が止まった？"
+            zh: "天啊，你路上還順利嗎？捷運又卡住了嗎？"
+        - role: partner
+          text:
+            en: "Yes, twenty minutes. Want to get lunch? I know a new ramen place."
+            ja: "うん、20分も。ランチ行かない？新しいラーメン屋を知ってるんだ。"
+            zh: "對，卡了二十分鐘。要不要去吃午餐？我知道一間新的拉麵店。"
+        - role: user
+          text:
+            en: "Sure! Have you tried their spicy miso? I heard it's great."
+            ja: "いいね！そこの辛味噌は食べた？おいしいって聞いたよ。"
+            zh: "好啊！你吃過他們的辣味噌嗎？聽說很棒。"
+
+    - id: talk-3-after-meeting
+      title:
+        en: "After the Meeting"
+        ja: "会議のあとで"
+        zh: "會後在走廊"
+      messages:
+        - role: partner
+          text:
+            en: "Hey, I haven't seen you in a while. How have you been?"
+            ja: "久しぶりだね。最近どう？"
+            zh: "嘿，好一陣子沒看到你了，最近好嗎？"
+        - role: user
+          text:
+            en: "Pretty good, thanks! Any plans for the Mid-Autumn Festival holiday?"
+            ja: "元気だよ、ありがとう！中秋節の連休は何か予定ある？"
+            zh: "還不錯，謝謝！中秋連假有什麼安排嗎？"
+        - role: partner
+          text:
+            en: "We're going to Okinawa for four days with my parents."
+            ja: "両親と4日間、沖縄に行く予定だよ。"
+            zh: "我們要跟爸媽去沖繩玩四天。"
+        - role: user
+          text:
+            en: "That sounds like fun! Lucky you. I'm just staying home and sleeping."
+            ja: "楽しそう！うらやましいな。僕は家で寝てるだけだよ。"
+            zh: "聽起來很好玩！你真幸運，我只會待在家睡覺。"
+        - role: partner
+          text:
+            en: "Ha, that sounds nice too. I'd better run to my next meeting."
+            ja: "はは、それもいいね。次の会議に行かなきゃ。"
+            zh: "哈哈，那也很不錯。我得趕去下一場會議了。"
+        - role: user
+          text:
+            en: "No problem. It was nice chatting with you. Let's catch up soon!"
+            ja: "大丈夫。お話しできて楽しかった。近いうちにまた話そう！"
+            zh: "沒問題，跟你聊天很開心，改天再聊！"
+
+quiz:
+  questionsPerRound: 5
+  xpReward: 25
+  # Fill-in-the-blank questions. Each answer must match a word above
+  # (case-insensitive) so the result feeds that word's SRS card.
+  cloze:
+    - sentence: "Hey Amy, ___ so far?"
+      options: ["How's your week going", "It was nice chatting", "Let's catch up soon", "Tell me about it"]
+      answer: "How's your week going"
+      explain:
+        en: "It's a friendly opener for a coworker you meet in the pantry."
+        ja: "給湯室で会った同僚への、親しみやすい切り出し。"
+        zh: "在茶水間遇到同事時，這是很自然的開場白。"
+    - sentence: "___ over the long weekend? I stayed home and watched movies."
+      options: ["Did you do anything fun", "Any plans for", "Anyway", "I could use"]
+      answer: "Did you do anything fun"
+      explain:
+        en: "You're asking about what already happened, so use the past tense: 'Did you do anything fun'."
+        ja: "すでに過ぎたことを聞くので、過去形の Did you do anything fun。"
+        zh: "問的是已經發生的事，要用過去式 Did you do anything fun。"
+    - sentence: "___ the new bubble tea shop on Zhongshan Road? The line was long."
+      options: ["Have you tried", "Lucky you", "Can you believe", "Let's catch up soon"]
+      answer: "Have you tried"
+      explain:
+        en: "Asking whether someone has already had it — 'Have you tried' + the place."
+        ja: "もう行ったことがあるかを聞くので Have you tried＋場所。"
+        zh: "問對方有沒有去過或吃過，用 Have you tried＋店名。"
+    - sentence: "A: I waited an hour for a taxi this morning. B: ___. It rained all day."
+      options: ["Tell me about it", "Any plans for", "It was nice chatting", "Did you hear about"]
+      answer: "Tell me about it"
+      explain:
+        en: "B feels the same, so B agrees strongly: 'Tell me about it' means 'I totally agree'."
+        ja: "Bも同じ気持ちなので強く同意する。Tell me about it は「まったく同感」。"
+        zh: "B 也有同感，所以用 Tell me about it 表示「我完全同意」。"
+    - sentence: "___ the Dragon Boat Festival? I'm going to Tainan."
+      options: ["Any plans for", "Anyway", "Have you tried", "Tell me about it"]
+      answer: "Any plans for"
+      explain:
+        en: "You're asking about a coming holiday — 'Any plans for' + the holiday."
+        ja: "これからの連休について聞くので Any plans for＋連休名。"
+        zh: "問對方將來的假期安排，用 Any plans for＋假日名稱。"
+    - sentence: "A: I'm flying to Kyoto on Friday. B: ___! Take lots of photos."
+      options: ["Lucky you", "I should get back to work", "Did you hear about", "I could use"]
+      answer: "Lucky you"
+      explain:
+        en: "B is a little jealous in a friendly way — 'Lucky you'."
+        ja: "Bは少しうらやましい気持ちを軽く伝えているので Lucky you。"
+        zh: "B 有點羨慕但很友善，所以說 Lucky you。"
+    - sentence: "___ in about ten minutes, and I haven't prepared my slides yet."
+      options: ["I should get back to work", "Can you believe", "That sounds like fun", "Did you do anything fun"]
+      answer: "I should get back to work"
+      explain:
+        en: "You want to end the chat politely, and the reason is your own work."
+        ja: "自分の仕事を理由に、感じよく会話を終える言い方。"
+        zh: "用自己的工作當理由，禮貌地結束聊天。"
+    - sentence: "___ with you, Tom. Have a good rest of your day."
+      options: ["It was nice chatting", "Let's catch up soon", "Anyway", "How was your commute"]
+      answer: "It was nice chatting"
+      explain:
+        en: "You say it at the end of the chat, in the past tense."
+        ja: "会話の終わりに過去形で言う。"
+        zh: "在聊天結束時，用過去式說。"
