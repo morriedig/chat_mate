@@ -1,0 +1,464 @@
+# Chapter: Week 13 - Making Requests Politely
+# Phrases for asking coworkers, bosses and clients for help without sounding
+# pushy, and for saying yes or no to a request.
+# Structure: Could you -> Would you mind -> I was wondering if (softer each step).
+meta:
+  id: making-requests
+  title:
+    en: "Making Requests Politely"
+    ja: "丁寧に頼む"
+    zh: "有禮貌地提出請求"
+  description:
+    en: "Ask for help at work without sounding pushy: Could you, Would you mind, I was wondering if. Also how to say yes, no or 'let me check'."
+    ja: "仕事で押しつけがましくなく頼む言い方。Could you、Would you mind、I was wondering if。引き受け方、断り方も学びます。"
+    zh: "在工作上有禮貌地請人幫忙：Could you、Would you mind、I was wondering if，也學怎麼答應、拒絕或說「我確認一下」。"
+  icon: "support_agent"
+  order: 13
+  level: intermediate
+
+words:
+  - id: request-ladder
+    word:
+      en: "Could you → Would you mind → I was wondering if"
+      ja: "丁寧さの3段階：Could you → Would you mind → I was wondering if"
+      zh: "禮貌三階：Could you → Would you mind → I was wondering if"
+    reading: "KUD yoo, WUD yoo MAYND, ay wuz WUN-der-ing if"
+    phonetic: "/kʊd juː wʊd juː maɪnd aɪ wʌz ˈwʌndərɪŋ ɪf/"
+    description:
+      en: "Three levels of politeness. Use 'Could you' with teammates, 'Would you mind' with people you don't know well, and 'I was wondering if' with a boss or client."
+      ja: "丁寧さの3段階。同僚には Could you、あまり親しくない人には Would you mind、上司や取引先には I was wondering if。"
+      zh: "禮貌程度有三階：跟同事用 Could you，跟不太熟的人用 Would you mind，跟主管或客戶用 I was wondering if。"
+    sentence:
+      en: "Could you send it? Would you mind sending it? I was wondering if you could send it."
+      ja: "送ってもらえる？送っていただけますか？送っていただけないかと思いまして。"
+      zh: "可以寄給我嗎？你介意寄給我嗎？不知道你能不能寄給我。"
+
+  - id: could-you-take-a-look-at
+    word:
+      en: "could you take a look at"
+      ja: "〜を見てもらえますか"
+      zh: "可以幫我看一下"
+    reading: "kud yoo TAYK uh LUK at"
+    phonetic: "/kʊd juː teɪk ə lʊk æt/"
+    description:
+      en: "A very common work request. Follow it with a noun: 'Could you take a look at my draft?' Not: ✗ Could you take a look my draft → ✓ Could you take a look at my draft."
+      ja: "仕事でよく使う依頼。後ろは名詞。✗ Could you take a look my draft → ✓ Could you take a look at my draft"
+      zh: "工作上很常用的請求，後面接名詞。✗ Could you take a look my draft → ✓ Could you take a look at my draft"
+    sentence:
+      en: "Could you take a look at the contract before I send it out?"
+      ja: "送る前に契約書を見てもらえますか？"
+      zh: "我寄出去之前，可以幫我看一下合約嗎？"
+
+  - id: would-you-mind-helping
+    word:
+      en: "would you mind helping"
+      ja: "手伝っていただけますか"
+      zh: "你介意幫我一下嗎"
+    reading: "wud yoo MAYND HEL-ping"
+    phonetic: "/wʊd juː maɪnd ˈhelpɪŋ/"
+    description:
+      en: "After 'mind' use a verb + -ing. To say yes, answer 'Not at all' or 'Sure'. ✗ Would you mind to help me → ✓ Would you mind helping me."
+      ja: "mind の後ろは動詞の -ing 形。OK のときは Not at all や Sure。✗ Would you mind to help me → ✓ Would you mind helping me"
+      zh: "mind 後面要接動詞 -ing。答應時說 Not at all 或 Sure。✗ Would you mind to help me → ✓ Would you mind helping me"
+    sentence:
+      en: "Would you mind helping me with the printer? It keeps jamming."
+      ja: "プリンターを手伝っていただけますか？紙詰まりが続いて。"
+      zh: "你介意幫我看一下印表機嗎？它一直卡紙。"
+
+  - id: i-was-wondering-if
+    word:
+      en: "I was wondering if"
+      ja: "〜していただけないかと思いまして"
+      zh: "不知道可不可以"
+    reading: "ay wuz WUN-der-ing if"
+    phonetic: "/aɪ wʌz ˈwʌndərɪŋ ɪf/"
+    description:
+      en: "The softest way to ask, good for bosses and clients. The past tense makes it sound less pushy. Follow it with 'you could' or 'I could'."
+      ja: "いちばん控えめな頼み方。上司や取引先向け。過去形にすると押しつけがましくない。後ろは you could / I could。"
+      zh: "最委婉的請求方式，適合對主管或客戶說。用過去式聽起來比較不強迫。後面接 you could 或 I could。"
+    sentence:
+      en: "I was wondering if I could leave an hour early on Friday."
+      ja: "金曜日に1時間早く帰らせていただけないかと思いまして。"
+      zh: "不知道我週五可不可以早一個小時下班。"
+
+  - id: is-there-any-chance
+    word:
+      en: "is there any chance"
+      ja: "〜できる可能性はありますか"
+      zh: "有沒有可能"
+    reading: "iz thair EN-ee CHANS"
+    phonetic: "/ɪz ðer ˈeni tʃæns/"
+    description:
+      en: "Use it when you're not sure the answer will be yes. It gives the other person an easy way to say no."
+      ja: "答えが Yes とは限らないときに使う。相手が断りやすい聞き方。"
+      zh: "不確定對方會不會答應時用，讓對方比較容易拒絕，不尷尬。"
+    sentence:
+      en: "Is there any chance you could cover my shift on Saturday?"
+      ja: "土曜のシフトを代わってもらうことはできそうですか？"
+      zh: "你週六有沒有可能幫我代班？"
+
+  - id: when-you-get-a-chance
+    word:
+      en: "when you get a chance"
+      ja: "手が空いたときに"
+      zh: "你有空的時候"
+    reading: "wen yoo get uh CHANS"
+    phonetic: "/wen juː get ə tʃæns/"
+    description:
+      en: "Adds a relaxed tone and tells the other person it isn't urgent. Put it at the end of the request."
+      ja: "急ぎではないことを伝える、ゆったりした言い方。依頼の最後に付ける。"
+      zh: "讓語氣輕鬆，表示不急。放在請求的最後面。"
+    sentence:
+      en: "Could you review my slides when you get a chance?"
+      ja: "手が空いたときにスライドを確認してもらえますか？"
+      zh: "你有空的時候可以幫我看一下簡報嗎？"
+
+  - id: would-it-be-possible-to
+    word:
+      en: "would it be possible to"
+      ja: "〜することは可能でしょうか"
+      zh: "有沒有辦法"
+    reading: "wud it bee POS-uh-bul too"
+    phonetic: "/wʊd ɪt bi ˈpɑːsəbəl tuː/"
+    description:
+      en: "A formal request, often used by email. Follow it with 'to' + verb. ✗ Would it be possible send → ✓ Would it be possible to send."
+      ja: "メールでもよく使うフォーマルな依頼。後ろは to + 動詞。✗ Would it be possible send → ✓ Would it be possible to send"
+      zh: "比較正式的請求，email 裡很常見。後面接 to + 動詞。✗ Would it be possible send → ✓ Would it be possible to send"
+    sentence:
+      en: "Would it be possible to move our meeting to Thursday?"
+      ja: "会議を木曜に移していただくことは可能でしょうか？"
+      zh: "有沒有辦法把我們的會議改到週四？"
+
+  - id: if-its-not-too-much-trouble
+    word:
+      en: "if it's not too much trouble"
+      ja: "ご迷惑でなければ"
+      zh: "如果不會太麻煩的話"
+    reading: "if its not too MUCH TRUB-ul"
+    phonetic: "/ɪf ɪts nɑːt tuː mʌtʃ ˈtrʌbəl/"
+    description:
+      en: "Shows you respect the other person's time when the request is a bit big. Put it before or after the request."
+      ja: "少し大きなお願いのとき、相手の時間を気づかう言い方。依頼の前でも後でもよい。"
+      zh: "請求稍微大一點時，表示你尊重對方的時間。可放在請求前面或後面。"
+    sentence:
+      en: "If it's not too much trouble, could you translate this email into English?"
+      ja: "ご迷惑でなければ、このメールを英語にしていただけますか？"
+      zh: "如果不會太麻煩的話，可以幫我把這封信翻成英文嗎？"
+
+  - id: could-you-do-me-a-favor
+    word:
+      en: "could you do me a favor"
+      ja: "お願いがあるんですが"
+      zh: "可以幫我一個忙嗎"
+    reading: "kud yoo doo mee uh FAY-ver"
+    phonetic: "/kʊd juː duː mi ə ˈfeɪvər/"
+    description:
+      en: "Use it to open a request with someone you know well, then say what you need. ✗ Could you do a favor to me → ✓ Could you do me a favor."
+      ja: "親しい人に頼みごとを切り出す言い方。そのあと内容を言う。✗ Could you do a favor to me → ✓ Could you do me a favor"
+      zh: "跟熟的人開口拜託時用，說完再講內容。✗ Could you do a favor to me → ✓ Could you do me a favor"
+    sentence:
+      en: "Could you do me a favor? I need someone to watch my desk at lunch."
+      ja: "お願いがあるんだけど。お昼に席を見ていてくれない？"
+      zh: "可以幫我一個忙嗎？午餐時間我需要有人幫我看一下位子。"
+
+  - id: as-soon-as-you-can
+    word:
+      en: "as soon as you can"
+      ja: "できるだけ早く"
+      zh: "盡快"
+    reading: "az SOON az yoo kan"
+    phonetic: "/æz suːn æz juː kæn/"
+    description:
+      en: "Shows some urgency without sounding rude. It is softer than 'ASAP'. Add 'if possible' to make it even softer."
+      ja: "失礼にならない程度に急ぎを伝える。ASAP より柔らかい。if possible を付けるとさらに柔らかい。"
+      zh: "表達有點急但不失禮，比 ASAP 柔和。再加 if possible 會更委婉。"
+    sentence:
+      en: "Could you reply to the client as soon as you can? They need an answer today."
+      ja: "できるだけ早くクライアントに返信してもらえますか？今日中に答えが必要です。"
+      zh: "可以請你盡快回覆客戶嗎？他們今天需要答案。"
+
+  - id: no-rush
+    word:
+      en: "no rush"
+      ja: "急がないので"
+      zh: "不急"
+    reading: "noh RUSH"
+    phonetic: "/noʊ rʌʃ/"
+    description:
+      en: "Tells the other person they can take their time. Often added after a request. ✗ No hurry up → ✓ No rush."
+      ja: "相手に急がなくてよいと伝える。依頼のあとに付けることが多い。✗ No hurry up → ✓ No rush"
+      zh: "告訴對方可以慢慢來，常加在請求後面。✗ No hurry up → ✓ No rush"
+    sentence:
+      en: "Could you check the numbers? No rush, I don't need them until Monday."
+      ja: "数字を確認してもらえますか？急ぎません、月曜までに必要なだけです。"
+      zh: "可以幫我核對一下數字嗎？不急，我週一才要用。"
+
+  - id: sorry-to-bother-you
+    word:
+      en: "sorry to bother you"
+      ja: "お忙しいところすみません"
+      zh: "不好意思打擾你"
+    reading: "SOR-ee too BOTH-er yoo"
+    phonetic: "/ˈsɔːri tuː ˈbɑːðər juː/"
+    description:
+      en: "Use it before you interrupt someone who looks busy. Then say your request right away."
+      ja: "忙しそうな人に声をかけるときの前置き。そのあとすぐ用件を言う。"
+      zh: "要打斷看起來很忙的人時先說這句，接著馬上講你的需求。"
+    sentence:
+      en: "Sorry to bother you, but could you sign this form for me?"
+      ja: "お忙しいところすみませんが、この書類にサインしていただけますか？"
+      zh: "不好意思打擾你，可以幫我簽一下這張表單嗎？"
+
+  - id: id-really-appreciate-it
+    word:
+      en: "I'd really appreciate it"
+      ja: "とても助かります"
+      zh: "我會非常感激"
+    reading: "ayd RIL-ee uh-PREE-shee-ayt it"
+    phonetic: "/aɪd ˈrɪəli əˈpriːʃieɪt ɪt/"
+    description:
+      en: "Say it after a request to show thanks in advance. It sounds warmer than 'Thank you' alone. For someone who already helped, say 'I really appreciate it'."
+      ja: "依頼のあとに、先に感謝を伝える。Thank you だけより温かい。すでに助けてくれた人には I really appreciate it。"
+      zh: "在請求後面先表達感謝，比單說 Thank you 更有溫度。對方已經幫過忙時說 I really appreciate it。"
+    sentence:
+      en: "If you can join the call for me, I'd really appreciate it."
+      ja: "私の代わりに電話会議に出てもらえたら、とても助かります。"
+      zh: "如果你能幫我參加那個電話會議，我會非常感激。"
+
+  - id: thanks-in-advance
+    word:
+      en: "thanks in advance"
+      ja: "よろしくお願いします"
+      zh: "先謝謝你"
+    reading: "thanks in ad-VANS"
+    phonetic: "/θæŋks ɪn ədˈvæns/"
+    description:
+      en: "A short way to end a request in chat or email. Don't use it for big favors, because it can sound like you expect a yes."
+      ja: "チャットやメールで依頼を締める短い言い方。大きな頼みには不向き。Yes を当然と思っているように聞こえることがある。"
+      zh: "在聊天或 email 結尾的簡短說法。大的請求別用，會聽起來像你認定對方會答應。"
+    sentence:
+      en: "Please send me the file by noon. Thanks in advance!"
+      ja: "お昼までにファイルを送ってください。よろしくお願いします。"
+      zh: "請在中午前把檔案寄給我，先謝謝你！"
+
+  - id: sure-no-problem
+    word:
+      en: "Sure, no problem"
+      ja: "もちろん、いいですよ"
+      zh: "好啊，沒問題"
+    reading: "SHOR, noh PROB-lum"
+    phonetic: "/ʃʊr noʊ ˈprɑːbləm/"
+    description:
+      en: "The easy way to say yes to a request. It sounds friendly and a bit casual, so it fits teammates."
+      ja: "頼みごとを気軽に引き受ける言い方。親しみやすくややカジュアルで、同僚向け。"
+      zh: "輕鬆答應請求的說法，友善又有點隨性，適合對同事說。"
+    sentence:
+      en: "Sure, no problem. I'll send it over after lunch."
+      ja: "もちろん、いいですよ。お昼のあとに送ります。"
+      zh: "好啊，沒問題。午餐後我寄給你。"
+
+  - id: im-afraid-i-cant
+    word:
+      en: "I'm afraid I can't"
+      ja: "申し訳ないのですが、できません"
+      zh: "恐怕我沒辦法"
+    reading: "aym uh-FRAYD ay KANT"
+    phonetic: "/aɪm əˈfreɪd aɪ kænt/"
+    description:
+      en: "A polite way to say no. Give a short reason, and offer another option if you can."
+      ja: "丁寧に断る言い方。短い理由を添え、できれば別の案も出す。"
+      zh: "禮貌拒絕的說法。簡單說明原因，可以的話提供替代方案。"
+    sentence:
+      en: "I'm afraid I can't join tomorrow because I have a client visit. Can I send notes instead?"
+      ja: "あいにく明日はお客様の訪問があって参加できません。代わりにメモを送ってもよいですか？"
+      zh: "恐怕我明天沒辦法參加，因為要接待客戶。我可以改成寄筆記給你嗎？"
+
+  - id: let-me-check-and-get-back-to-you
+    word:
+      en: "let me check and get back to you"
+      ja: "確認して折り返します"
+      zh: "我確認一下再回覆你"
+    reading: "let mee CHEK and get BAK too yoo"
+    phonetic: "/let mi tʃek ænd get bæk tuː juː/"
+    description:
+      en: "Use it when you can't answer right away. It's better to say when you'll reply: '...by this afternoon.'"
+      ja: "すぐ答えられないときに使う。いつ返事するかも言うとよい：...by this afternoon."
+      zh: "無法馬上回答時用。最好再講什麼時候回覆：...by this afternoon."
+    sentence:
+      en: "Let me check and get back to you by this afternoon."
+      ja: "確認して、今日の午後までに折り返します。"
+      zh: "我確認一下，今天下午前再回覆你。"
+
+chat:
+  conversations:
+    - id: req-1-review-draft
+      title:
+        en: "Review My Draft"
+        ja: "資料のチェック依頼"
+        zh: "請同事看草稿"
+      messages:
+        - role: partner
+          text:
+            en: "Hi! How's the report going?"
+            ja: "お疲れさま！レポートはどう？"
+            zh: "嗨！報告進行得怎麼樣？"
+        - role: user
+          text:
+            en: "Almost done. Could you take a look at the summary when you get a chance?"
+            ja: "もうすぐ終わるよ。手が空いたときに要約を見てもらえる？"
+            zh: "快好了。你有空的時候可以幫我看一下摘要嗎？"
+        - role: partner
+          text:
+            en: "Sure, no problem. Is it urgent?"
+            ja: "もちろん。急ぎ？"
+            zh: "好啊，沒問題。很急嗎？"
+        - role: user
+          text:
+            en: "No rush. I just need your feedback before Friday."
+            ja: "急がないよ。金曜までに感想がもらえればいい。"
+            zh: "不急，我週五前拿到你的意見就好。"
+        - role: partner
+          text:
+            en: "Okay, I'll read it this afternoon."
+            ja: "わかった、午後に読むね。"
+            zh: "好，我下午看。"
+        - role: user
+          text:
+            en: "Thanks in advance! I'd really appreciate it."
+            ja: "先にありがとう！本当に助かる。"
+            zh: "先謝謝你！我會非常感激。"
+
+    - id: req-2-ask-manager
+      title:
+        en: "Asking My Manager"
+        ja: "上司へのお願い"
+        zh: "跟主管請求"
+      messages:
+        - role: partner
+          text:
+            en: "Hi, do you have a minute?"
+            ja: "ちょっといい？"
+            zh: "嗨，你有空嗎？"
+        - role: user
+          text:
+            en: "Sorry to bother you. I was wondering if I could work from home on Thursday."
+            ja: "お忙しいところすみません。木曜に在宅勤務させていただけないかと思いまして。"
+            zh: "不好意思打擾你。不知道我週四可不可以在家工作。"
+        - role: partner
+          text:
+            en: "Hmm, we have a client visit that day."
+            ja: "うーん、その日はお客様の訪問があるんだ。"
+            zh: "嗯，那天有客戶來訪。"
+        - role: user
+          text:
+            en: "I understand. Is there any chance I could join the visit by video?"
+            ja: "わかりました。ビデオで参加することはできそうですか？"
+            zh: "了解。有沒有可能讓我用視訊參加？"
+        - role: partner
+          text:
+            en: "Let me check and get back to you by tomorrow."
+            ja: "確認して、明日までに返事するよ。"
+            zh: "我確認一下，明天前再回覆你。"
+        - role: user
+          text:
+            en: "Great, thank you. I'd really appreciate it."
+            ja: "ありがとうございます。とても助かります。"
+            zh: "太好了，謝謝。我會非常感激。"
+
+    - id: req-3-vendor-call
+      title:
+        en: "Asking a Vendor"
+        ja: "取引先への依頼"
+        zh: "請廠商幫忙"
+      messages:
+        - role: partner
+          text:
+            en: "Hello, this is Kevin from the print shop. How can I help?"
+            ja: "印刷会社のケビンです。ご用件は？"
+            zh: "你好，我是印刷廠的 Kevin。請問有什麼需要？"
+        - role: user
+          text:
+            en: "Hi Kevin. Would it be possible to deliver the brochures a day earlier?"
+            ja: "こんにちは、ケビンさん。パンフレットを1日早く届けていただくことは可能でしょうか？"
+            zh: "嗨 Kevin。有沒有辦法把型錄提早一天送來？"
+        - role: partner
+          text:
+            en: "I'm afraid I can't promise that. We're very busy this week."
+            ja: "申し訳ないのですが、お約束はできません。今週はとても忙しくて。"
+            zh: "恐怕我不能保證，我們這週很忙。"
+        - role: user
+          text:
+            en: "I see. If it's not too much trouble, could you send me a quote for express delivery?"
+            ja: "わかりました。ご迷惑でなければ、お急ぎ配送の見積もりをいただけますか？"
+            zh: "了解。如果不會太麻煩的話，可以給我急件配送的報價嗎？"
+        - role: partner
+          text:
+            en: "Sure, no problem. I'll email it today."
+            ja: "もちろんです。今日メールで送ります。"
+            zh: "沒問題，我今天用 email 寄給你。"
+        - role: user
+          text:
+            en: "Perfect. Could you do me a favor and copy my manager too?"
+            ja: "助かります。お願いがあるのですが、上司もCCに入れてもらえますか？"
+            zh: "太好了。可以幫我一個忙，也 CC 給我主管嗎？"
+
+quiz:
+  questionsPerRound: 5
+  xpReward: 25
+  cloze:
+    - sentence: "Sorry to bother you, but ___ this error message?"
+      options: ["could you take a look at", "would you mind helping", "no rush", "thanks in advance"]
+      answer: "could you take a look at"
+      explain:
+        en: "'Could you take a look at' + a noun is the common way to ask someone to check something."
+        ja: "'Could you take a look at' + 名詞は、何かを見てもらうときの定番表現。"
+        zh: "要請人幫忙看某個東西，常用 'Could you take a look at' + 名詞。"
+    - sentence: "___ me with the slides? I've never used this template."
+      options: ["would you mind helping", "is there any chance", "Sure, no problem", "as soon as you can"]
+      answer: "would you mind helping"
+      explain:
+        en: "After 'mind' we use a verb + -ing, so 'helping'."
+        ja: "mind の後ろは動詞の -ing 形なので helping。"
+        zh: "mind 後面要接動詞 -ing，所以是 helping。"
+    - sentence: "Hi Ms. Lin, ___ you could join our meeting on Monday."
+      options: ["I was wondering if", "Could you do me a favor", "I'm afraid I can't", "No rush"]
+      answer: "I was wondering if"
+      explain:
+        en: "For a boss or client, the softest form 'I was wondering if' sounds most polite."
+        ja: "上司や取引先には、いちばん控えめな I was wondering if が丁寧。"
+        zh: "對主管或客戶，最委婉的 I was wondering if 聽起來最有禮貌。"
+    - sentence: "___ you could cover my shift on Saturday? I'll cover yours next time."
+      options: ["is there any chance", "thanks in advance", "sorry to bother you", "would it be possible to"]
+      answer: "is there any chance"
+      explain:
+        en: "'Is there any chance' is good when the answer might be no, because it makes it easy to refuse."
+        ja: "断られるかもしれないときは Is there any chance が向いている。相手が断りやすい。"
+        zh: "答案可能是不行時適合用 Is there any chance，對方比較好拒絕。"
+    - sentence: "Could you send me the file ___? There's no hurry."
+      options: ["when you get a chance", "as soon as you can", "I'd really appreciate it", "if it's not too much trouble"]
+      answer: "when you get a chance"
+      explain:
+        en: "'When you get a chance' tells the other person it isn't urgent."
+        ja: "when you get a chance は急ぎではないことを伝える。"
+        zh: "when you get a chance 表示不急，對方有空再做就好。"
+    - sentence: "___ join the lunch today. I have a deadline."
+      options: ["I'm afraid I can't", "let me check and get back to you", "thanks in advance", "no rush"]
+      answer: "I'm afraid I can't"
+      explain:
+        en: "'I'm afraid I can't' is a polite way to say no and give a reason."
+        ja: "I'm afraid I can't は丁寧に断り、理由を伝える言い方。"
+        zh: "I'm afraid I can't 是禮貌拒絕並說明原因的說法。"
+    - sentence: "Can I give you the answer later? ___ by this afternoon."
+      options: ["let me check and get back to you", "Sure, no problem", "sorry to bother you", "could you do me a favor"]
+      answer: "let me check and get back to you"
+      explain:
+        en: "You can't answer yet, so say you'll check and reply. Add a time."
+        ja: "まだ答えられないので、確認して返事すると伝える。時間も添える。"
+        zh: "還不能回答，所以說會確認後再回覆，最好加上時間。"
+    - sentence: "Please review the budget by Friday. ___!"
+      options: ["thanks in advance", "I'm afraid I can't", "is there any chance", "sorry to bother you"]
+      answer: "thanks in advance"
+      explain:
+        en: "'Thanks in advance' is a short way to end a request in chat or email."
+        ja: "Thanks in advance は、チャットやメールで依頼を締める短い言い方。"
+        zh: "Thanks in advance 是在聊天或 email 結尾的簡短說法。"
